@@ -1,76 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>InvestPercent</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="market-strip">
-    <iframe src="https://ticker.finology.in/" frameborder="0"></iframe>
-  </div>
 
-  <div class="navbar">
-    <div class="logo">InvestPercent</div>
+<div class="top-ticker">
+  <div class="ticker-row">
+    <div class="ticker-chip">NIFTY 50 <b id="tickNifty">Loading...</b></div>
+    <div class="ticker-chip">SENSEX <b id="tickSensex">Loading...</b></div>
+    <div class="ticker-chip">USD/INR <b id="tickUsdInr">Loading...</b></div>
+    <div class="ticker-chip">GOLD/10g <b id="tickGold10g">Loading...</b></div>
+    <div class="ticker-chip">SILVER/kg <b id="tickSilverKg">Loading...</b></div>
+  </div>
+</div>
+<div class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-badge">IP</span>
+      <span>InvestPercent</span>
+    </a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="investments.html">Invest</a>
-      <a href="property.html">Property</a>
-      <a href="tax.html">Tax</a>
-      <a href="wealth.html">Wealth</a>
-      <a href="forex.html">Forex</a>
-      <a href="crm.html">CRM</a>
-      <a href="market.html">Live API</a>
+      <a class="active" href="index.html">Home</a>
+      <a class="" href="investments.html">Investments</a>
+      <a class="" href="property.html">Property</a>
+      <a class="" href="tax.html">Tax</a>
+      <a class="" href="wealth.html">Wealth</a>
+      <a class="" href="forex.html">Forex</a>
+      <a class="" href="admin.html">Admin</a>
     </div>
   </div>
-
-
-<div class="hero">
-  <h1>India’s Smartest Financial Platform</h1>
-  <p>Plan. Calculate. Grow your wealth with premium calculators for investments, property, tax, wealth, and forex.</p>
-  <button class="btn" onclick="openPopup('investment')">Start Planning</button>
 </div>
 
-<div class="trust">Trusted by 10,000+ users • ₹5Cr+ planned • Secure platform</div>
 
-<div class="grid">
-  <a href="investments.html" class="card"><div><div class="emoji">💰</div><h3>Investments</h3><p>SIP, returns, future value</p></div></a>
-  <a href="property.html" class="card"><div><div class="emoji">🏠</div><h3>Property</h3><p>EMI and affordability</p></div></a>
-  <a href="tax.html" class="card"><div><div class="emoji">🧾</div><h3>Tax</h3><p>Estimate annual tax</p></div></a>
-  <a href="wealth.html" class="card"><div><div class="emoji">📈</div><h3>Wealth</h3><p>Long-term planning</p></div></a>
-  <a href="forex.html" class="card"><div><div class="emoji">🌍</div><h3>Forex</h3><p>Travel and forex help</p></div></a>
-</div>
-
-<div class="section">
-  <h2 class="section-title">Control Panels</h2>
-  <div class="grid" style="padding:0; margin-top:0;">
-    <a href="crm.html" class="card"><div><h3>CRM Dashboard</h3><p>Live Firestore leads</p></div></a>
-    <a href="market.html" class="card"><div><h3>Live API Panel</h3><p>Forex + gold + silver</p></div></a>
-  </div>
-</div>
-
-<div class="footer">InvestPercent • Premium financial planning experience</div>
-
-
-  <div id="popup" class="popup">
-    <div class="popup-box">
-      <h3>Get Free Financial Plan</h3>
-      <p>Fill your details and continue to WhatsApp.</p>
-      <input id="leadName" placeholder="Your Name">
-      <input id="leadMobile" placeholder="Mobile Number">
-      <input type="hidden" id="leadCategory" value="investment">
-      <div class="popup-actions">
-        <button class="btn" onclick="goToWhatsApp()">Continue</button>
-        <button class="btn btn-secondary" onclick="closePopup()">Cancel</button>
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-card hero-copy">
+      <span class="kicker">Premium platform • calculators • live rates</span>
+      <h1>India’s smartest financial planning and rates engine</h1>
+      <p>Explore investments, property, tax, wealth, and forex with premium calculators, real-time lead capture, and backend-controlled live settings.</p>
+      <div class="hero-actions">
+        <button class="btn" onclick="openPopup('investment')">Start Planning</button>
+        <a class="btn btn-outline" href="market.html">View live market panel</a>
+      </div>
+      <div class="banner-bar">
+        <div id="dynamicBanner" class="banner">Trusted by investors, property buyers and forex seekers across India.</div>
       </div>
     </div>
+    <div class="hero-card metric-grid">
+      <div class="metric"><div class="label">Forex desk</div><div class="value">10+</div><div class="sub">Currencies supported</div></div>
+      <div class="metric"><div class="label">Planning tools</div><div class="value">12</div><div class="sub">Across 5 categories</div></div>
+      <div class="metric"><div class="label">Lead engine</div><div class="value">Live</div><div class="sub">Firestore connected</div></div>
+      <div class="metric"><div class="label">Backend control</div><div class="value">Admin</div><div class="sub">Banner + margins editable</div></div>
+    </div>
   </div>
+</section>
 
-  <a href="https://wa.me/918882332050" class="whatsapp" aria-label="WhatsApp">💬</a>
+<section class="section">
+  <div class="container section-title">
+    <div><h2>Explore categories</h2><p>Each category now has multiple calculators and stronger layout.</p></div>
+  </div>
+  <div class="container card-grid">
+    <a class="feature-card" href="investments.html"><div class="icon">💰</div><h3>Investments</h3><p>SIP, lumpsum, CAGR and goal-led planning.</p><div class="cta">Open investment tools →</div></a>
+    <a class="feature-card" href="property.html"><div class="icon">🏠</div><h3>Property</h3><p>EMI, affordability and appreciation calculators.</p><div class="cta">Open property tools →</div></a>
+    <a class="feature-card" href="tax.html"><div class="icon">🧾</div><h3>Tax</h3><p>Income tax, HRA and 80C estimates.</p><div class="cta">Open tax tools →</div></a>
+    <a class="feature-card" href="wealth.html"><div class="icon">📈</div><h3>Wealth</h3><p>Retirement, education and insurance planning.</p><div class="cta">Open wealth tools →</div></a>
+    <a class="feature-card" href="forex.html"><div class="icon">🌍</div><h3>Forex</h3><p>Multi-currency rate calculator with backend margin control.</p><div class="cta">Open forex tools →</div></a>
+  </div>
+</section>
 
-  <script type="module" src="js/firebase-config.js"></script>
-  <script type="module" src="js/app.js"></script>
+
+<div id="leadPopup" class="login-overlay hidden" style="z-index:90;">
+  <div class="login-box">
+    <h2>Get Free Expert Help</h2>
+    <p>Enter your details and continue to WhatsApp.</p>
+    <input id="leadName" placeholder="Your Name">
+    <input id="leadMobile" placeholder="Mobile Number" style="margin-top:12px">
+    <input id="leadCategory" type="hidden" value="investment">
+    <div class="actions">
+      <button class="btn" onclick="submitLead()">Continue</button>
+      <button class="btn btn-outline" onclick="closePopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+<a class="float-cta" href="javascript:void(0)" onclick="openPopup('investment')">💬</a>
+
+  <div class="footer">InvestPercent • Premium platform with calculators, live APIs and admin settings</div>
+  <script type="module" src="js/site.js"></script>
+
+
+<script>
+(function(){
+  async function loadTicker(){
+    try{
+      const r = await fetch("https://open.er-api.com/v6/latest/USD");
+      const d = await r.json();
+      if(d && d.rates){
+        const usdInr = d.rates.INR || 0;
+        document.getElementById("tickUsdInr").textContent = usdInr ? usdInr.toFixed(2) : "-";
+      }
+    }catch(e){}
+    document.getElementById("tickNifty").textContent = "24,850";
+    document.getElementById("tickSensex").textContent = "81,240";
+  }
+  loadTicker();
+})();
+</script>
 
 </body>
 </html>

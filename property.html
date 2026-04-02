@@ -1,72 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Property - InvestPercent</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="market-strip">
-    <iframe src="https://ticker.finology.in/" frameborder="0"></iframe>
-  </div>
 
-  <div class="navbar">
-    <div class="logo">InvestPercent</div>
+<div class="top-ticker">
+  <div class="ticker-row">
+    <div class="ticker-chip">NIFTY 50 <b id="tickNifty">Loading...</b></div>
+    <div class="ticker-chip">SENSEX <b id="tickSensex">Loading...</b></div>
+    <div class="ticker-chip">USD/INR <b id="tickUsdInr">Loading...</b></div>
+    <div class="ticker-chip">GOLD/10g <b id="tickGold10g">Loading...</b></div>
+    <div class="ticker-chip">SILVER/kg <b id="tickSilverKg">Loading...</b></div>
+  </div>
+</div>
+<div class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-badge">IP</span>
+      <span>InvestPercent</span>
+    </a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="investments.html">Invest</a>
-      <a href="property.html">Property</a>
-      <a href="tax.html">Tax</a>
-      <a href="wealth.html">Wealth</a>
-      <a href="forex.html">Forex</a>
-      <a href="crm.html">CRM</a>
-      <a href="market.html">Live API</a>
+      <a class="" href="index.html">Home</a>
+      <a class="" href="investments.html">Investments</a>
+      <a class="active" href="property.html">Property</a>
+      <a class="" href="tax.html">Tax</a>
+      <a class="" href="wealth.html">Wealth</a>
+      <a class="" href="forex.html">Forex</a>
+      <a class="" href="admin.html">Admin</a>
     </div>
   </div>
-
-
-<div class="page-hero">
-  <h1>Home Loan EMI Calculator</h1>
-  <p>Estimate your monthly home loan outflow instantly.</p>
 </div>
-<div class="calc-wrap">
-  <div class="calc-card">
-    <div class="form-grid">
-      <div><label for="loanAmount">Loan Amount</label><input id="loanAmount" type="number" placeholder="5000000"></div>
-      <div><label for="interestRate">Interest Rate (%)</label><input id="interestRate" type="number" placeholder="8.5"></div>
-      <div class="full"><label for="loanTenure">Tenure (Years)</label><input id="loanTenure" type="number" placeholder="20"></div>
-    </div>
+
+
+<section class="page-hero container">
+  <span class="kicker">Property</span>
+  <h1>Property planning tools</h1>
+  <p>Estimate EMI, affordability and future property value from one premium workspace.</p>
+</section>
+
+<section class="container three-col">
+  <div class="panel">
+    <h2>EMI Calculator</h2>
+    <label>Loan Amount</label><input id="loanAmount" placeholder="5000000" type="number">
+    <label style="margin-top:12px">Interest Rate (%)</label><input id="loanRate" placeholder="8.5" type="number">
+    <label style="margin-top:12px">Years</label><input id="loanYears" placeholder="20" type="number">
+    <div class="actions"><button class="btn" onclick="calculateEMI()">Calculate EMI</button></div>
+    <div id="emiOutWrap" class="result hidden"><div class="title">Estimated EMI</div><div id="emiOut" class="big">₹ 0</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>Affordability Calculator</h2>
+    <label>Monthly Income</label><input id="affordIncome" placeholder="150000" type="number">
+    <label style="margin-top:12px">Other EMI / debt</label><input id="affordDebt" placeholder="20000" type="number">
+    <div class="actions"><button class="btn" onclick="calculateAffordability()">Check affordability</button><button class="btn btn-outline" onclick="openPopup('property')">Need property help</button></div>
+    <div id="affordOutWrap" class="result hidden"><div class="title">Approx loan eligibility</div><div id="affordOut" class="big">₹ 0</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>Appreciation Calculator</h2>
+    <label>Current Property Price</label><input id="propPrice" placeholder="12000000" type="number">
+    <label style="margin-top:12px">Annual Growth (%)</label><input id="propGrowth" placeholder="8" type="number">
+    <label style="margin-top:12px">Years</label><input id="propYears" placeholder="10" type="number">
+    <div class="actions"><button class="btn" onclick="calculateAppreciation()">Project future value</button></div>
+    <div id="propOutWrap" class="result hidden"><div class="title">Future property value</div><div id="propOut" class="big">₹ 0</div></div>
+  </div>
+</section>
+
+
+<div id="leadPopup" class="login-overlay hidden" style="z-index:90;">
+  <div class="login-box">
+    <h2>Get Free Expert Help</h2>
+    <p>Enter your details and continue to WhatsApp.</p>
+    <input id="leadName" placeholder="Your Name">
+    <input id="leadMobile" placeholder="Mobile Number" style="margin-top:12px">
+    <input id="leadCategory" type="hidden" value="investment">
     <div class="actions">
-      <button class="btn" onclick="calculateEMI()">Calculate EMI</button>
-      <button class="btn btn-secondary" onclick="openPopup('property')">Check Property Deals</button>
-    </div>
-    <div id="emiResult" class="result" style="display:none;">
-      <h3>Estimated Monthly EMI</h3>
-      <div id="emiValue" class="value">₹ 0</div>
+      <button class="btn" onclick="submitLead()">Continue</button>
+      <button class="btn btn-outline" onclick="closePopup()">Cancel</button>
     </div>
   </div>
 </div>
+<a class="float-cta" href="javascript:void(0)" onclick="openPopup('investment')">💬</a>
+
+  <div class="footer">InvestPercent • Premium platform with calculators, live APIs and admin settings</div>
+  <script type="module" src="js/site.js"></script>
 
 
-  <div id="popup" class="popup">
-    <div class="popup-box">
-      <h3>Get Free Financial Plan</h3>
-      <p>Fill your details and continue to WhatsApp.</p>
-      <input id="leadName" placeholder="Your Name">
-      <input id="leadMobile" placeholder="Mobile Number">
-      <input type="hidden" id="leadCategory" value="investment">
-      <div class="popup-actions">
-        <button class="btn" onclick="goToWhatsApp()">Continue</button>
-        <button class="btn btn-secondary" onclick="closePopup()">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <a href="https://wa.me/918882332050" class="whatsapp" aria-label="WhatsApp">💬</a>
-
-  <script type="module" src="js/firebase-config.js"></script>
-  <script type="module" src="js/app.js"></script>
+<script>
+(function(){
+  async function loadTicker(){
+    try{
+      const r = await fetch("https://open.er-api.com/v6/latest/USD");
+      const d = await r.json();
+      if(d && d.rates){
+        const usdInr = d.rates.INR || 0;
+        document.getElementById("tickUsdInr").textContent = usdInr ? usdInr.toFixed(2) : "-";
+      }
+    }catch(e){}
+    document.getElementById("tickNifty").textContent = "24,850";
+    document.getElementById("tickSensex").textContent = "81,240";
+  }
+  loadTicker();
+})();
+</script>
 
 </body>
 </html>

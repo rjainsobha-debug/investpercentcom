@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin - InvestPercent</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="top-ticker">
+  <div class="ticker-row">
+    <div class="ticker-chip">NIFTY 50 <b id="tickNifty">Loading...</b></div>
+    <div class="ticker-chip">SENSEX <b id="tickSensex">Loading...</b></div>
+    <div class="ticker-chip">USD/INR <b id="tickUsdInr">Loading...</b></div>
+    <div class="ticker-chip">GOLD/10g <b id="tickGold10g">Loading...</b></div>
+    <div class="ticker-chip">SILVER/kg <b id="tickSilverKg">Loading...</b></div>
+  </div>
+</div>
+<div class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-badge">IP</span>
+      <span>InvestPercent</span>
+    </a>
+    <div class="nav-links">
+      <a class="" href="index.html">Home</a>
+      <a class="" href="investments.html">Investments</a>
+      <a class="" href="property.html">Property</a>
+      <a class="" href="tax.html">Tax</a>
+      <a class="" href="wealth.html">Wealth</a>
+      <a class="" href="forex.html">Forex</a>
+      <a class="active" href="admin.html">Admin</a>
+    </div>
+  </div>
+</div>
+
+
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <h2>Admin panel</h2>
+    <p>This area controls backend banner text, margins and support numbers. It should not be linked publicly in ads.</p>
+    <input id="adminPassword" type="password" placeholder="Enter admin password">
+    <div class="actions">
+      <button id="loginBtn" class="btn">Enter admin</button>
+    </div>
+    <div id="loginError" class="banner" style="margin-top:12px; display:inline-block"></div>
+  </div>
+</div>
+
+<section class="container admin-shell">
+  <aside class="panel sidebar">
+    <div class="side-block">
+      <div class="side-title">Sections</div>
+      <div class="side-link active">Lead dashboard <span>→</span></div>
+      <div class="side-link">Site settings <span>→</span></div>
+      <div class="side-link">Forex margins <span>→</span></div>
+      <div class="side-link">Support numbers <span>→</span></div>
+    </div>
+    <div class="side-block">
+      <div class="side-title">Important</div>
+      <div class="banner">This client-side gate is a basic hide layer. For real security, move admin to a protected subdomain with Firebase Auth.</div>
+    </div>
+  </aside>
+
+  <main>
+    <section class="page-hero" style="padding-top:10px">
+      <span class="kicker">Admin</span>
+      <h1>Private dashboard and backend controls</h1>
+      <p>Leads stay in admin only. Margins, banner copy and support routing are editable here.</p>
+    </section>
+
+    <section class="quick-stats">
+      <div class="stat"><div class="name">Total leads</div><div id="totalLeads" class="num">0</div></div>
+      <div class="stat"><div class="name">Investment leads</div><div id="investmentLeads" class="num">0</div></div>
+      <div class="stat"><div class="name">Property / Wealth / Tax</div><div id="propertyLeads" class="num">0</div></div>
+      <div class="stat"><div class="name">Forex leads</div><div id="forexLeads" class="num">0</div></div>
+    </section>
+
+    <section class="two-col" style="margin-top:18px">
+      <div class="panel">
+        <h2>Site settings</h2>
+        <label>Top banner / trust message</label>
+        <textarea id="bannerText" placeholder="Trusted by investors across India"></textarea>
+        <div class="two-col" style="margin-top:12px">
+          <div><label>Default support WhatsApp</label><input id="defaultNumber" placeholder="918882332050"></div>
+          <div><label>Forex support WhatsApp</label><input id="forexNumber" placeholder="919311354795"></div>
+        </div>
+        <div class="actions">
+          <button id="saveSettingsBtn" class="btn">Save settings</button>
+          <span id="saveMsg" class="tag"></span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Forex margins by currency</h2>
+        <div class="two-col">
+          <div><label>USD margin (%)</label><input id="margin_USD" type="number" placeholder="2"></div>
+          <div><label>EUR margin (%)</label><input id="margin_EUR" type="number" placeholder="2"></div>
+          <div><label>AED margin (%)</label><input id="margin_AED" type="number" placeholder="2"></div>
+          <div><label>GBP margin (%)</label><input id="margin_GBP" type="number" placeholder="2"></div>
+          <div><label>CAD margin (%)</label><input id="margin_CAD" type="number" placeholder="2"></div>
+          <div><label>AUD margin (%)</label><input id="margin_AUD" type="number" placeholder="2"></div>
+          <div><label>SGD margin (%)</label><input id="margin_SGD" type="number" placeholder="2"></div>
+          <div><label>JPY margin (%)</label><input id="margin_JPY" type="number" placeholder="2"></div>
+          <div><label>THB margin (%)</label><input id="margin_THB" type="number" placeholder="2"></div>
+          <div><label>CHF margin (%)</label><input id="margin_CHF" type="number" placeholder="2"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" style="margin-top:18px">
+      <h2>Latest leads</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th><th>Mobile</th><th>Category</th><th>Page</th><th>Source</th><th>User agent</th>
+            </tr>
+          </thead>
+          <tbody id="leadRows">
+            <tr><td colspan="6">Loading leads...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</section>
+
+
+<div id="leadPopup" class="login-overlay hidden" style="z-index:90;">
+  <div class="login-box">
+    <h2>Get Free Expert Help</h2>
+    <p>Enter your details and continue to WhatsApp.</p>
+    <input id="leadName" placeholder="Your Name">
+    <input id="leadMobile" placeholder="Mobile Number" style="margin-top:12px">
+    <input id="leadCategory" type="hidden" value="investment">
+    <div class="actions">
+      <button class="btn" onclick="submitLead()">Continue</button>
+      <button class="btn btn-outline" onclick="closePopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+<a class="float-cta" href="javascript:void(0)" onclick="openPopup('investment')">💬</a>
+
+  <div class="footer">InvestPercent • Premium platform with calculators, live APIs and admin settings</div>
+  <script type="module" src="js/site.js"></script>
+  <script type="module" src="js/admin.js"></script>
+
+<script>
+(function(){
+  async function loadTicker(){
+    try{
+      const r = await fetch("https://open.er-api.com/v6/latest/USD");
+      const d = await r.json();
+      if(d && d.rates){
+        const usdInr = d.rates.INR || 0;
+        document.getElementById("tickUsdInr").textContent = usdInr ? usdInr.toFixed(2) : "-";
+      }
+    }catch(e){}
+    document.getElementById("tickNifty").textContent = "24,850";
+    document.getElementById("tickSensex").textContent = "81,240";
+  }
+  loadTicker();
+})();
+</script>
+
+</body>
+</html>
