@@ -1,3 +1,6 @@
+import { db } from "./firebase-config.js";
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
 function qs(id){ return document.getElementById(id); }
 
 window.openPopup = function(category='investment'){
@@ -12,7 +15,7 @@ window.closePopup = function(){
   if(popup) popup.classList.remove('show');
 }
 
-window.goToWhatsApp = function(){
+window.goToWhatsApp = async function(){
   const name = (qs('leadName')?.value || '').trim();
   const mobile = (qs('leadMobile')?.value || '').trim();
   const category = (qs('leadCategory')?.value || 'investment').trim();
@@ -25,9 +28,23 @@ window.goToWhatsApp = function(){
   let number = '918882332050';
   if(category === 'forex') number = '919311354795';
 
-  const msg = encodeURIComponent(`Hi, my name is ${name}. My mobile is ${mobile}. I need help with ${category}.`);
-  window.open(`https://wa.me/${number}?text=${msg}`, '_blank');
-  closePopup();
+  try {
+    await addDoc(collection(db, "leads"), {
+      name,
+      mobile,
+      category,
+      source: "website",
+      page: window.location.pathname,
+      createdAt: serverTimestamp()
+    });
+
+    const msg = encodeURIComponent(`Hi, my name is ${name}. My mobile is ${mobile}. I need help with ${category}.`);
+    window.open(`https://wa.me/${number}?text=${msg}`, '_blank');
+    closePopup();
+  } catch (err) {
+    console.error(err);
+    alert('Lead could not be saved. Please check Firestore rules or try again.');
+  }
 };
 
 window.calculateSIP = function(){
