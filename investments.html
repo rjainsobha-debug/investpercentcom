@@ -1,56 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>SIP Calculator</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
-  <div class="logo">InvestPercent</div>
-  <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="property.html">Property</a>
-    <a href="tax.html">Tax</a>
-    <a href="wealth.html">Wealth</a>
-    <a href="forex.html">Forex</a>
-  </div>
+<div class="logo">InvestPercent</div>
 </div>
 
-<!-- PAGE HEADER -->
-<div class="page-header">
-  <h1>SIP Calculator</h1>
-  <p>Plan your future wealth with smart investing</p>
+<div class="hero">
+<h1>SIP Calculator</h1>
+<input placeholder="Amount"><br>
+<input placeholder="Return %"><br>
+<input placeholder="Years"><br>
+<button class="btn">Calculate</button>
 </div>
 
-<!-- CALCULATOR CARD -->
-<div class="calc-container">
-
-  <div class="calc-card">
-    
-    <label>Monthly Investment</label>
-    <input id="sipAmount" type="number" placeholder="₹ 10,000">
-
-    <label>Expected Return (%)</label>
-    <input id="sipRate" type="number" placeholder="12">
-
-    <label>Time Period (Years)</label>
-    <input id="sipYears" type="number" placeholder="10">
-
-    <button class="btn" onclick="calculateSIP()">Calculate</button>
-
-    <div id="sipResult" class="result"></div>
-
-    <button class="btn secondary" onclick="submitLead()">
-      Build My ₹1 Crore Plan
-    </button>
-
-  </div>
-
-</div>
-
-<script src="js/app.js"></script>
 </body>
 </html>
