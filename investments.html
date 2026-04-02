@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SIP Calculator</title>
-  <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="container">
-
 <h2>SIP Calculator</h2>
 
-<input type="number" id="sipAmount" placeholder="Monthly Investment (₹)">
-<input type="number" id="sipRate" placeholder="Expected Return (%)">
-<input type="number" id="sipYears" placeholder="Years">
+<input id="sipAmount" placeholder="Monthly Investment">
+<input id="sipRate" placeholder="Return %">
+<input id="sipYears" placeholder="Years">
 
-<button class="btn" onclick="calculateSIP()">Calculate</button>
+<button onclick="calculateSIP()">Calculate</button>
 
-<div class="result" id="sipResult"></div>
+<div id="sipResult"></div>
 
-<button class="btn" onclick="sendToWhatsApp('8882332050')">
-Build My ₹1 Crore Plan
-</button>
-
-</div>
+<button onclick="submitLead()">Build My Plan</button>
 
 <script src="js/app.js"></script>
 </body>
