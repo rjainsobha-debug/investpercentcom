@@ -2,7 +2,9 @@
 <html>
 <head>
 <link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
 <div class="navbar">
@@ -11,11 +13,40 @@
 
 <div class="hero">
 <h1>SIP Calculator</h1>
-<input placeholder="Amount"><br>
-<input placeholder="Return %"><br>
-<input placeholder="Years"><br>
-<button class="btn">Calculate</button>
+
+<input id="amt" placeholder="Monthly Investment"><br>
+<input id="rate" placeholder="Return %"><br>
+<input id="years" placeholder="Years"><br>
+
+<button class="btn" onclick="calc()">Calculate</button>
+
+<h2 id="res"></h2>
+
+<canvas id="chart"></canvas>
+
 </div>
+
+<script>
+function calc(){
+let amt=document.getElementById("amt").value;
+let rate=document.getElementById("rate").value/100/12;
+let n=document.getElementById("years").value*12;
+
+let fv=amt*((Math.pow(1+rate,n)-1)/rate)*(1+rate);
+document.getElementById("res").innerHTML="₹ "+Math.round(fv);
+
+new Chart(document.getElementById("chart"),{
+type:"line",
+data:{
+labels:["Start","Mid","End"],
+datasets:[{
+data:[amt,fv/2,fv],
+borderColor:"#00D1B2"
+}]
+}
+});
+}
+</script>
 
 </body>
 </html>
