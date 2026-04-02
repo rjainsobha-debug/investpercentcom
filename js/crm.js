@@ -1,10 +1,5 @@
 import { db } from "./firebase-config.js";
-import {
-  collection,
-  query,
-  orderBy,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const totalEl = document.getElementById('totalLeads');
 const investEl = document.getElementById('investmentLeads');
