@@ -69,13 +69,6 @@ body {
   margin: 40px 0;
 }
 
-.card {
-  background: #121826;
-  padding: 25px;
-  border-radius: 15px;
-  transition: 0.3s;
-}
-
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 0 20px rgba(0,209,178,0.2);
@@ -95,4 +88,18 @@ input, select {
   margin-top: 15px;
   font-size: 20px;
   color: #00D1B2;
+}
+
+display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+
+/* MAKE WHOLE CARD CLICKABLE */
+.card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 0 30px rgba(0,209,178,0.3);
 }
