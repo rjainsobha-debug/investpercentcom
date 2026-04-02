@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EMI Calculator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h2>Home Loan EMI Calculator</h2>
+
+<input type="number" id="loanAmount" placeholder="Loan Amount (₹)">
+<input type="number" id="interestRate" placeholder="Interest Rate (%)">
+<input type="number" id="loanTenure" placeholder="Years">
+
+<button class="btn" onclick="calculateEMI()">Calculate EMI</button>
+
+<div class="result" id="emiResult"></div>
+
+<button class="btn" onclick="sendToWhatsApp('8882332050')">
+Check Best Property Deals
+</button>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
