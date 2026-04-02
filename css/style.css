@@ -5,6 +5,27 @@ body {
   color: #E6EAF2;
 }
 
+/* GLOW BACKGROUND */
+body::before, body::after {
+  content: "";
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  z-index: -1;
+}
+
+body::before {
+  background: radial-gradient(circle, rgba(0,209,178,0.15), transparent);
+  top: -200px;
+  left: -200px;
+}
+
+body::after {
+  background: radial-gradient(circle, rgba(79,140,255,0.15), transparent);
+  bottom: -200px;
+  right: -200px;
+}
+
 /* NAVBAR */
 .navbar {
   display: flex;
@@ -36,10 +57,17 @@ body {
 
 .hero h1 {
   font-size: 48px;
+  animation: fadeUp 1s ease forwards;
 }
 
 .hero p {
   color: #9AA4B2;
+  animation: fadeUp 1.5s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
 }
 
 /* BUTTON */
@@ -51,6 +79,13 @@ body {
   color: white;
   text-decoration: none;
   display: inline-block;
+}
+
+/* TRUST */
+.trust {
+  text-align: center;
+  margin-top: 15px;
+  color: #9AA4B2;
 }
 
 /* GRID */
@@ -65,7 +100,7 @@ body {
 /* CARDS */
 .card {
   width: 220px;
-  height: 120px;
+  height: 140px;
   background: #121826;
   border-radius: 20px;
   display: flex;
@@ -73,13 +108,27 @@ body {
   justify-content: center;
   text-decoration: none;
   color: #E6EAF2;
-  font-size: 18px;
   transition: 0.3s;
 }
 
 .card:hover {
   transform: translateY(-8px);
   box-shadow: 0 0 20px rgba(0,209,178,0.3);
+}
+
+.card div {
+  text-align: center;
+}
+
+.card p {
+  font-size: 13px;
+  color: #9AA4B2;
+}
+
+/* TRENDING */
+.trending {
+  text-align: center;
+  margin-top: 60px;
 }
 
 /* FLOAT BUTTON */
@@ -91,6 +140,7 @@ body {
   color: white;
   padding: 15px;
   border-radius: 50%;
+  font-size: 22px;
 }
 
 /* POPUP */
@@ -110,4 +160,5 @@ body {
   background:#121826;
   padding:20px;
   border-radius:10px;
+  text-align:center;
 }
