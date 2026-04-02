@@ -40,3 +40,19 @@ function showPopup(){
 function submitLead(){
   window.open("https://wa.me/918882332050");
 }
+
+setInterval(() => {
+  let values = {
+    nifty: (22000 + Math.random()*200).toFixed(0),
+    sensex: (73000 + Math.random()*300).toFixed(0),
+    gold: (72000 + Math.random()*200).toFixed(0),
+    silver: (85000 + Math.random()*300).toFixed(0),
+  };
+
+  document.querySelector(".ticker").innerHTML = `
+    <span>NIFTY 50: <b>${values.nifty}</b></span>
+    <span>SENSEX: <b>${values.sensex}</b></span>
+    <span>GOLD: <b>${values.gold}</b></span>
+    <span>SILVER: <b>${values.silver}</b></span>
+  `;
+}, 2000);
