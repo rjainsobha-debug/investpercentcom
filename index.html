@@ -1,51 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>InvestPercent</title>
-  <link rel="stylesheet" href="css/style.css">
+<title>InvestPercent</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="container">
+<div class="navbar">
+<div class="logo">InvestPercent</div>
+<div class="nav-links">
+<a href="investments.html">Invest</a>
+<a href="property.html">Property</a>
+<a href="tax.html">Tax</a>
+<a href="wealth.html">Wealth</a>
+<a href="forex.html">Forex</a>
+</div>
+</div>
 
-  <div class="navbar">
-    <div class="logo">InvestPercent</div>
-    <div class="nav-links">
-      <a href="investments.html">Invest</a>
-      <a href="property.html">Property</a>
-      <a href="tax.html">Tax</a>
-      <a href="wealth.html">Wealth</a>
-      <a href="forex.html">Forex</a>
-    </div>
-  </div>
-
-  <div class="hero">
-    <h1>India’s Smartest Financial Platform</h1>
-    <p>Plan. Calculate. Grow your wealth.</p>
-    <a href="investments.html" class="btn">Start Planning</a>
-  </div>
-
- <div class="grid">
-
-  <a href="investments.html" class="card">💰 Investments</a>
-  <a href="property.html" class="card">🏠 Property</a>
-  <a href="tax.html" class="card">🧾 Tax</a>
-  <a href="wealth.html" class="card">📈 Wealth</a>
-  <a href="forex.html" class="card">🌍 Forex</a>
+<div class="hero">
+<h1>India’s Smartest Financial Platform</h1>
+<p>Plan. Calculate. Grow your wealth.</p>
 <a href="#" class="btn" onclick="showPopup()">Start Planning</a>
 </div>
 
-  <a href="https://wa.me/918882332050" class="whatsapp-float" target="_blank">
-  💬
-</a>
-
-<div id="leadPopup" class="popup">
-  <div class="popup-content">
-    <h3>Get Your Free Plan</h3>
-    <input type="text" placeholder="Your Name">
-    <input type="text" placeholder="Mobile Number">
-    <button onclick="submitLead()">Continue</button>
-  </div>
+<div class="grid">
+<a href="investments.html" class="card">💰 Investments</a>
+<a href="property.html" class="card">🏠 Property</a>
+<a href="tax.html" class="card">🧾 Tax</a>
+<a href="wealth.html" class="card">📈 Wealth</a>
+<a href="forex.html" class="card">🌍 Forex</a>
 </div>
+
+<!-- popup -->
+<div id="leadPopup" class="popup">
+<div class="popup-content">
+<h3>Get Free Plan</h3>
+<input placeholder="Name"><br>
+<input placeholder="Mobile"><br>
+<button onclick="submitLead()">Continue</button>
+</div>
+</div>
+
+<a href="https://wa.me/918882332050" class="whatsapp-float">💬</a>
+
+<script src="js/app.js"></script>
 </body>
 </html>
