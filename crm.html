@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tax - InvestPercent</title>
+  <title>CRM Dashboard - InvestPercent</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -27,22 +27,33 @@
 
 
 <div class="page-hero">
-  <h1>Income Tax Calculator</h1>
-  <p>Quick estimate based on annual income.</p>
+  <h1>CRM Dashboard</h1>
+  <p>View live leads saved in Firestore.</p>
 </div>
-<div class="calc-wrap">
-  <div class="calc-card">
-    <div class="form-grid">
-      <div class="full"><label for="income">Annual Income</label><input id="income" type="number" placeholder="1200000"></div>
-    </div>
-    <div class="actions">
-      <button class="btn" onclick="calculateTax()">Calculate Tax</button>
-      <button class="btn btn-secondary" onclick="openPopup('tax')">Talk to Advisor</button>
-    </div>
-    <div id="taxResult" class="result" style="display:none;">
-      <h3>Estimated Tax</h3>
-      <div id="taxValue" class="value">₹ 0</div>
-    </div>
+
+<div class="stats-grid">
+  <div class="stat-card"><div class="label">Total Leads</div><div id="totalLeads" class="big">0</div></div>
+  <div class="stat-card"><div class="label">Investment Leads</div><div id="investmentLeads" class="big">0</div></div>
+  <div class="stat-card"><div class="label">Property / Wealth / Tax</div><div id="propertyLeads" class="big">0</div></div>
+  <div class="stat-card"><div class="label">Forex Leads</div><div id="forexLeads" class="big">0</div></div>
+</div>
+
+<div class="table-wrap">
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Mobile</th>
+          <th>Category</th>
+          <th>Page</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody id="leadRows">
+        <tr><td colspan="5">Loading leads...</td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -65,6 +76,6 @@
 
   <script type="module" src="js/firebase-config.js"></script>
   <script type="module" src="js/app.js"></script>
-
+  <script type="module" src="js/crm.js"></script>
 </body>
 </html>

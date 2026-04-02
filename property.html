@@ -20,6 +20,8 @@
       <a href="tax.html">Tax</a>
       <a href="wealth.html">Wealth</a>
       <a href="forex.html">Forex</a>
+      <a href="crm.html">CRM</a>
+      <a href="market.html">Live API</a>
     </div>
   </div>
 
@@ -28,29 +30,17 @@
   <h1>Home Loan EMI Calculator</h1>
   <p>Estimate your monthly home loan outflow instantly.</p>
 </div>
-
 <div class="calc-wrap">
   <div class="calc-card">
     <div class="form-grid">
-      <div>
-        <label for="loanAmount">Loan Amount</label>
-        <input id="loanAmount" type="number" placeholder="5000000">
-      </div>
-      <div>
-        <label for="interestRate">Interest Rate (%)</label>
-        <input id="interestRate" type="number" placeholder="8.5">
-      </div>
-      <div class="full">
-        <label for="loanTenure">Tenure (Years)</label>
-        <input id="loanTenure" type="number" placeholder="20">
-      </div>
+      <div><label for="loanAmount">Loan Amount</label><input id="loanAmount" type="number" placeholder="5000000"></div>
+      <div><label for="interestRate">Interest Rate (%)</label><input id="interestRate" type="number" placeholder="8.5"></div>
+      <div class="full"><label for="loanTenure">Tenure (Years)</label><input id="loanTenure" type="number" placeholder="20"></div>
     </div>
-
     <div class="actions">
       <button class="btn" onclick="calculateEMI()">Calculate EMI</button>
       <button class="btn btn-secondary" onclick="openPopup('property')">Check Property Deals</button>
     </div>
-
     <div id="emiResult" class="result" style="display:none;">
       <h3>Estimated Monthly EMI</h3>
       <div id="emiValue" class="value">₹ 0</div>
@@ -77,5 +67,6 @@
 
   <script type="module" src="js/firebase-config.js"></script>
   <script type="module" src="js/app.js"></script>
+
 </body>
 </html>
