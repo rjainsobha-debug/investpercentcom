@@ -1,113 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>InvestPercent</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InvestPercent</title>
+  <link rel="stylesheet" href="css/style.css">
 
 </head>
-
 <body>
-
-<!-- MARKET STRIP -->
-<div class="market-strip">
-  <iframe src="https://ticker.finology.in/" frameborder="0"></iframe>
-</div>
-
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="logo">InvestPercent</div>
-  <div class="nav-links">
-    <a href="investments.html">Invest</a>
-    <a href="property.html">Property</a>
-    <a href="tax.html">Tax</a>
-    <a href="wealth.html">Wealth</a>
-    <a href="forex.html">Forex</a>
+  <div class="market-strip">
+    <iframe src="https://ticker.finology.in/" frameborder="0"></iframe>
   </div>
-</div>
 
-<!-- HERO -->
+  <div class="navbar">
+    <div class="logo">InvestPercent</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="investments.html">Invest</a>
+      <a href="property.html">Property</a>
+      <a href="tax.html">Tax</a>
+      <a href="wealth.html">Wealth</a>
+      <a href="forex.html">Forex</a>
+    </div>
+  </div>
+
+
 <div class="hero">
   <h1>India’s Smartest Financial Platform</h1>
-  <p>Plan. Calculate. Grow your wealth.</p>
-  <button class="btn" onclick="openPopup()">Start Planning</button>
+  <p>Plan. Calculate. Grow your wealth with premium calculators for investments, property, tax, wealth, and forex.</p>
+  <button class="btn" onclick="openPopup('investment')">Start Planning</button>
 </div>
 
-<!-- TRUST -->
-<div class="trust">
-Trusted by 10,000+ users • ₹5Cr+ planned • Secure platform
-</div>
+<div class="trust">Trusted by 10,000+ users • ₹5Cr+ planned • Secure platform</div>
 
-<!-- CARDS -->
 <div class="grid">
-
-<a href="investments.html" class="card">
-  <div>💰<br>Investments<p>SIP & returns</p></div>
-</a>
-
-<a href="property.html" class="card">
-  <div>🏠<br>Property<p>EMI & value</p></div>
-</a>
-
-<a href="tax.html" class="card">
-  <div>🧾<br>Tax<p>Save tax</p></div>
-</a>
-
-<a href="wealth.html" class="card">
-  <div>📈<br>Wealth<p>Future plan</p></div>
-</a>
-
-<a href="forex.html" class="card">
-  <div>🌍<br>Forex<p>Best rates</p></div>
-</a>
-
+  <a href="investments.html" class="card">
+    <div>
+      <div class="emoji">💰</div>
+      <h3>Investments</h3>
+      <p>SIP, returns, future value</p>
+    </div>
+  </a>
+  <a href="property.html" class="card">
+    <div>
+      <div class="emoji">🏠</div>
+      <h3>Property</h3>
+      <p>EMI and affordability</p>
+    </div>
+  </a>
+  <a href="tax.html" class="card">
+    <div>
+      <div class="emoji">🧾</div>
+      <h3>Tax</h3>
+      <p>Estimate annual tax</p>
+    </div>
+  </a>
+  <a href="wealth.html" class="card">
+    <div>
+      <div class="emoji">📈</div>
+      <h3>Wealth</h3>
+      <p>Long-term planning</p>
+    </div>
+  </a>
+  <a href="forex.html" class="card">
+    <div>
+      <div class="emoji">🌍</div>
+      <h3>Forex</h3>
+      <p>Travel and forex help</p>
+    </div>
+  </a>
 </div>
 
-<!-- POPUP (OUTSIDE GRID) -->
-<div id="popup" class="popup">
-  <div class="popup-box">
-
-    <h3>Get Free Financial Plan</h3>
-
-    <input id="leadName" placeholder="Your Name">
-    <input id="leadMobile" placeholder="Mobile Number">
-
-    <button class="btn" onclick="goToWhatsApp()">Continue</button>
-    <br><br>
-    <button class="btn" onclick="closePopup()">Cancel</button>
-
+<div class="section trending">
+  <h2 class="section-title">Trending Calculators</h2>
+  <div class="grid" style="padding:0; margin-top:0;">
+    <a href="investments.html" class="card"><div><h3>SIP Calculator</h3><p>See future corpus</p></div></a>
+    <a href="property.html" class="card"><div><h3>EMI Calculator</h3><p>Monthly repayment</p></div></a>
+    <a href="tax.html" class="card"><div><h3>Tax Calculator</h3><p>Quick estimate</p></div></a>
   </div>
 </div>
 
-<!-- FLOAT BUTTON -->
-<a href="https://wa.me/918882332050" class="whatsapp">💬</a>
+<div class="footer">InvestPercent • Premium financial planning experience</div>
 
-<!-- 🔥 JS FIX (NO MODULE COMPLEXITY) -->
-<script>
 
-function openPopup() {
-  document.getElementById("popup").style.display = "flex";
-}
+  <div id="popup" class="popup">
+    <div class="popup-box">
+      <h3>Get Free Financial Plan</h3>
+      <p>Fill your details and continue to WhatsApp.</p>
+      <input id="leadName" placeholder="Your Name">
+      <input id="leadMobile" placeholder="Mobile Number">
+      <input type="hidden" id="leadCategory" value="investment">
+      <div class="popup-actions">
+        <button class="btn" onclick="goToWhatsApp()">Continue</button>
+        <button class="btn btn-secondary" onclick="closePopup()">Cancel</button>
+      </div>
+    </div>
+  </div>
 
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
-}
+  <a href="https://wa.me/918882332050" class="whatsapp" aria-label="WhatsApp">💬</a>
 
-function goToWhatsApp() {
-  let name = document.getElementById("leadName").value;
-  let mobile = document.getElementById("leadMobile").value;
-
-  if (!name || mobile.length < 10) {
-    alert("Enter valid details");
-    return;
-  }
-
-  window.open("https://wa.me/918882332050?text=Hi I want financial planning");
-  closePopup();
-}
-
-</script>
-
+  <script src="js/app.js"></script>
 </body>
 </html>
