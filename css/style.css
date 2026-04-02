@@ -216,3 +216,22 @@ body::after {
   background: linear-gradient(90deg, #4F8CFF, #00D1B2);
   margin-top: 15px;
 }
+
+.market-strip {
+  background: linear-gradient(90deg, #00D1B2, #4F8CFF);
+  color: #000;
+  padding: 8px 0;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.ticker {
+  display: flex;
+  gap: 40px;
+  animation: scrollTicker 20s linear infinite;
+}
+
+@keyframes scrollTicker {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
