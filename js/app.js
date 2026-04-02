@@ -49,7 +49,7 @@ window.goToWhatsApp = async function () {
 
     window.open(`https://wa.me/${number}?text=Hi%2C%20I%20need%20help%20with%20${category}`, "_blank");
 
-    closePopup();
+    window.closePopup();
 
   } catch (error) {
     console.error(error);
