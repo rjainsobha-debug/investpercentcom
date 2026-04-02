@@ -28,34 +28,73 @@
 
 <div class="page-hero">
   <h1>Live API Panel</h1>
-  <p>Real forex feed plus live gold and silver once you add your metals.dev key.</p>
+  <p>Multi-currency forex calculator plus India-friendly gold and silver rates.</p>
 </div>
 
 <div class="api-grid">
-  <div class="api-card">
-    <div class="small">USD / INR</div>
-    <div id="usdInr" class="rate">-</div>
-  </div>
-  <div class="api-card">
-    <div class="small">USD / EUR</div>
-    <div id="usdEur" class="rate">-</div>
-  </div>
-  <div class="api-card">
-    <div class="small">USD / AED</div>
-    <div id="usdAed" class="rate">-</div>
-  </div>
-  <div class="api-card">
-    <div class="small">Gold (INR / troy oz)</div>
-    <div id="goldInr" class="rate">-</div>
-  </div>
-  <div class="api-card">
-    <div class="small">Silver (INR / troy oz)</div>
-    <div id="silverInr" class="rate">-</div>
-  </div>
+  <div class="api-card"><div class="small">USD / INR</div><div id="usdInr" class="rate">-</div></div>
+  <div class="api-card"><div class="small">USD / EUR</div><div id="usdEur" class="rate">-</div></div>
+  <div class="api-card"><div class="small">USD / AED</div><div id="usdAed" class="rate">-</div></div>
+  <div class="api-card"><div class="small">Gold (₹ / gram)</div><div id="goldGram" class="rate">-</div></div>
+  <div class="api-card"><div class="small">Gold (₹ / 10g)</div><div id="gold10g" class="rate">-</div></div>
+  <div class="api-card"><div class="small">Silver (₹ / gram)</div><div id="silverGram" class="rate">-</div></div>
+  <div class="api-card"><div class="small">Silver (₹ / kg)</div><div id="silverKg" class="rate">-</div></div>
+  <div class="api-card"><div class="small">Gold (₹ / troy oz)</div><div id="goldOz" class="rate">-</div></div>
+  <div class="api-card"><div class="small">Silver (₹ / troy oz)</div><div id="silverOz" class="rate">-</div></div>
 </div>
 
-<div class="section" style="padding-top:0;">
-  <div id="metalWarn" class="warn"></div>
+<div id="metalWarn" class="warn"></div>
+
+<div class="market-tools">
+  <div class="panel">
+    <h2>Multi-Currency Forex Calculator</h2>
+    <p>Choose currencies, enter amount, and compare live conversion with your margin-adjusted rate.</p>
+    <div class="form-grid">
+      <div>
+        <label for="forexAmount">Amount</label>
+        <input id="forexAmount" type="number" placeholder="1000">
+      </div>
+      <div>
+        <label for="marginPercent">Your Margin (%)</label>
+        <input id="marginPercent" type="number" placeholder="2">
+      </div>
+      <div>
+        <label for="fromCurrency">From Currency</label>
+        <select id="fromCurrency"></select>
+      </div>
+      <div>
+        <label for="toCurrency">To Currency</label>
+        <select id="toCurrency"></select>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="calculateForex()">Calculate Forex</button>
+      <button class="btn btn-secondary" onclick="openPopup('forex')">Get Best Forex Rate</button>
+    </div>
+
+    <div id="fxResult" class="resultbox" style="display:none;">
+      <div class="small" id="pairText">USD → INR</div>
+      <div style="margin-top:14px;">
+        <div class="muted">Live Converted Amount</div>
+        <div id="liveRateValue" class="big">0</div>
+      </div>
+      <div style="margin-top:14px;">
+        <div class="muted">Your Margin-Adjusted Amount</div>
+        <div id="ourRateValue" class="big">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Gold & Silver Quick View</h2>
+    <p>India-ready display format for precious metals.</p>
+    <div class="resultbox">
+      <div class="muted">Gold Price per 10g</div>
+      <div id="gold10gSide" class="big">-</div>
+      <div class="muted" style="margin-top:18px;">Silver Price per kg</div>
+      <div id="silverKgSide" class="big">-</div>
+    </div>
+  </div>
 </div>
 
 
