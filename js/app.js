@@ -23,6 +23,13 @@ function calculateEMI() {
 }
 
 // WhatsApp Redirect
+function showPopup() {
+  document.getElementById("leadPopup").style.display = "flex";
+}
+
+function submitLead() {
+  window.open("https://wa.me/918882332050", "_blank");
+}
 function sendToWhatsApp(number) {
   let url = "https://wa.me/91" + number + "?text=I want consultation from InvestPercent";
   window.open(url, "_blank");
