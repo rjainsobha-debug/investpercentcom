@@ -1,138 +1,130 @@
+import { db } from "./firebase-config.js";
 import { METALS_API_KEY } from "./apis-config.js";
+import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const qs = (id)=>document.getElementById(id);
 
 let forexRates = null;
-let inrPerUsd = null;
-
-const currencyNames = {
-  USD: "US Dollar",
-  EUR: "Euro",
-  AED: "UAE Dirham",
-  GBP: "British Pound",
-  CAD: "Canadian Dollar",
-  AUD: "Australian Dollar",
-  SGD: "Singapore Dollar",
-  JPY: "Japanese Yen",
-  THB: "Thai Baht",
-  CHF: "Swiss Franc",
-  INR: "Indian Rupee"
+let siteSettings = {
+  forexMargins: { USD:2, EUR:2, AED:2, GBP:2, CAD:2, AUD:2, SGD:2, JPY:2, THB:2, CHF:2 }
 };
 
-function setText(id, value){
-  const el = document.getElementById(id);
-  if(el) el.textContent = value;
-}
+const currencyNames = {
+  USD:"US Dollar", EUR:"Euro", AED:"UAE Dirham", GBP:"British Pound", CAD:"Canadian Dollar",
+  AUD:"Australian Dollar", SGD:"Singapore Dollar", JPY:"Japanese Yen", THB:"Thai Baht", CHF:"Swiss Franc", INR:"Indian Rupee"
+};
 
-async function loadForex() {
-  try {
+function setText(id, value){ const el = qs(id); if(el) el.textContent = value; }
+function inr(num, digits=2){ return Number(num).toLocaleString("en-IN", {maximumFractionDigits: digits, minimumFractionDigits: digits}); }
+
+onSnapshot(doc(db, "settings", "site"), (snap) => {
+  if(snap.exists()){
+    siteSettings = { ...siteSettings, ...snap.data() };
+    const banner = qs("dynamicBanner");
+    if(banner) banner.textContent = siteSettings.bannerText || banner.textContent;
+  }
+});
+
+async function loadForex(){
+  try{
     const res = await fetch("https://open.er-api.com/v6/latest/USD");
     const data = await res.json();
-    if (data && data.rates) {
+    if(data && data.rates){
       forexRates = data.rates;
-      inrPerUsd = data.rates.INR;
-      setText("usdInr", data.rates.INR ? data.rates.INR.toFixed(2) : "-");
-      setText("usdEur", data.rates.EUR ? data.rates.EUR.toFixed(4) : "-");
-      setText("usdAed", data.rates.AED ? data.rates.AED.toFixed(4) : "-");
+      setText("usdInr", data.rates.INR?.toFixed(2) || "-");
+      setText("usdEur", data.rates.EUR?.toFixed(4) || "-");
+      setText("usdAed", data.rates.AED?.toFixed(4) || "-");
+      populateCurrencies();
     }
-  } catch (e) {
-    console.error(e);
-  }
+  }catch(err){ console.error(err); }
 }
 
-function toIndianNumber(num, decimals=2){
-  return Number(num).toLocaleString("en-IN", {maximumFractionDigits: decimals, minimumFractionDigits: decimals});
-}
-
-async function loadMetals() {
-  const warn = document.getElementById("metalWarn");
-  if (!METALS_API_KEY) {
-    warn.textContent = "Add your metals.dev API key in js/apis-config.js to enable live gold and silver.";
+async function loadMetals(){
+  if(!METALS_API_KEY){
+    setText("metalWarn", "Add your metals.dev key in js/apis-config.js to enable gold and silver.");
     return;
   }
-
-  try {
+  try{
     const res = await fetch(`https://api.metals.dev/v1/latest?api_key=${METALS_API_KEY}&currency=INR&unit=toz`);
     const data = await res.json();
-    if (data && data.metals) {
+    if(data && data.metals){
       const goldOz = Number(data.metals.gold || 0);
       const silverOz = Number(data.metals.silver || 0);
+      const goldGram = goldOz / 31.1035;
+      const gold10g = goldGram * 10;
+      const silverGram = silverOz / 31.1035;
+      const silverKg = silverGram * 1000;
 
-      setText("goldOz", "₹ " + toIndianNumber(goldOz));
-      setText("silverOz", "₹ " + toIndianNumber(silverOz));
-
-      const goldPerGram = goldOz / 31.1035;
-      const goldPer10g = goldPerGram * 10;
-      const silverPerGram = silverOz / 31.1035;
-      const silverPerKg = silverPerGram * 1000;
-
-      setText("goldGram", "₹ " + toIndianNumber(goldPerGram));
-      setText("gold10g", "₹ " + toIndianNumber(goldPer10g));
-      setText("silverGram", "₹ " + toIndianNumber(silverPerGram));
-      setText("silverKg", "₹ " + toIndianNumber(silverPerKg));
-      setText("gold10gSide", "₹ " + toIndianNumber(goldPer10g));
-      setText("silverKgSide", "₹ " + toIndianNumber(silverPerKg));
-
-      warn.textContent = "";
-    } else {
-      warn.textContent = "Metals API returned no data.";
+      setText("goldGram", "₹ " + inr(goldGram));
+      setText("gold10g", "₹ " + inr(gold10g));
+      setText("silverGram", "₹ " + inr(silverGram));
+      setText("silverKg", "₹ " + inr(silverKg));
+      setText("goldOz", "₹ " + inr(goldOz));
+      setText("silverOz", "₹ " + inr(silverOz));
+      setText("gold10gSide", "₹ " + inr(gold10g));
+      setText("silverKgSide", "₹ " + inr(silverKg));
     }
-  } catch (e) {
-    console.error(e);
-    warn.textContent = "Unable to fetch gold/silver. Check metals.dev key.";
+  }catch(err){
+    console.error(err);
+    setText("metalWarn", "Unable to fetch gold/silver. Check your metals.dev API key.");
   }
 }
 
 function populateCurrencies(){
-  const from = document.getElementById("fromCurrency");
-  const to = document.getElementById("toCurrency");
-  const currencies = ["USD","EUR","AED","GBP","CAD","AUD","SGD","JPY","THB","CHF","INR"];
-  currencies.forEach(code => {
-    const opt1 = document.createElement("option");
-    opt1.value = code;
-    opt1.textContent = `${code} - ${currencyNames[code] || code}`;
-    const opt2 = opt1.cloneNode(true);
-    from.appendChild(opt1);
-    to.appendChild(opt2);
+  const from = qs("fromCurrency");
+  const to = qs("toCurrency");
+  if(!from || !to || !forexRates) return;
+  from.innerHTML = "";
+  to.innerHTML = "";
+  const list = ["USD","EUR","AED","GBP","CAD","AUD","SGD","JPY","THB","CHF","INR"];
+  list.forEach(code => {
+    const a = document.createElement("option");
+    a.value = code;
+    a.textContent = `${code} - ${currencyNames[code]}`;
+    const b = a.cloneNode(true);
+    from.appendChild(a);
+    to.appendChild(b);
   });
   from.value = "USD";
   to.value = "INR";
+
+  const defaultMargin = qs("marginPercent");
+  if(defaultMargin){
+    defaultMargin.value = siteSettings.forexMargins?.USD ?? 2;
+  }
+  from.onchange = function(){
+    if(defaultMargin){
+      defaultMargin.dataset.touched = "1";
+      defaultMargin.value = siteSettings.forexMargins?.[from.value] ?? 2;
+    }
+  }
 }
 
 window.calculateForex = function(){
-  if(!forexRates){
-    alert("Forex rates are still loading. Please try again.");
-    return;
-  }
+  if(!forexRates){ alert("Rates are loading. Try again."); return; }
 
-  const amount = Number(document.getElementById("forexAmount").value || 0);
-  const from = document.getElementById("fromCurrency").value;
-  const to = document.getElementById("toCurrency").value;
-  const margin = Number(document.getElementById("marginPercent").value || 0);
+  const amount = Number(qs("forexAmount").value || 0);
+  const from = qs("fromCurrency").value;
+  const to = qs("toCurrency").value;
+  const margin = Number(qs("marginPercent").value || 0);
 
-  if(amount <= 0){
-    alert("Please enter amount.");
-    return;
-  }
-
-  // API base is USD. Convert from source currency to USD, then to target.
+  if(amount <= 0){ alert("Enter amount."); return; }
   const fromRate = forexRates[from];
   const toRate = forexRates[to];
-
-  if(!fromRate || !toRate){
-    alert("Currency pair unavailable.");
-    return;
-  }
+  if(!fromRate || !toRate){ alert("Currency unavailable."); return; }
 
   const usdAmount = amount / fromRate;
-  const liveConverted = usdAmount * toRate;
-  const ourRate = (toRate / fromRate) * (1 + margin / 100);
-  const ourConverted = amount * ourRate;
+  const live = usdAmount * toRate;
+  const pairRate = toRate / fromRate;
+  const adjustedRate = pairRate * (1 + margin/100);
+  const adjusted = amount * adjustedRate;
 
-  document.getElementById("liveRateValue").textContent = liveConverted.toLocaleString("en-IN", {maximumFractionDigits: 2});
-  document.getElementById("ourRateValue").textContent = ourConverted.toLocaleString("en-IN", {maximumFractionDigits: 2});
-  document.getElementById("pairText").textContent = `${from} → ${to}`;
-  document.getElementById("fxResult").style.display = "block";
-}
+  qs("pairText").textContent = `${from} → ${to}`;
+  qs("liveRateValue").textContent = live.toLocaleString("en-IN", {maximumFractionDigits:2});
+  qs("ourRateValue").textContent = adjusted.toLocaleString("en-IN", {maximumFractionDigits:2});
+  qs("appliedMargin").textContent = margin.toFixed(2) + "%";
+  qs("fxResult").classList.remove("hidden");
+};
 
-populateCurrencies();
 loadForex();
 loadMetals();
