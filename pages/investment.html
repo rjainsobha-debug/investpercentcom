@@ -24,59 +24,56 @@ loadComponent("header", "../components/header.html");
   <p>Plan smarter. Grow faster.</p>
 </section>
 
-<div class="layout">
+<!-- CENTERED EXPERIENCE -->
+<div class="center-wrap">
 
-<aside class="sidebar">
-  <div class="side-card">
-    <h4>Calculators</h4>
-    <a href="#sip">SIP</a>
-  </div>
-</aside>
+<div class="main-card">
 
-<main class="main">
+<h2>SIP Calculator</h2>
 
-<section class="calc-card">
+<!-- INPUTS -->
+<div class="input-grid">
 
-<div class="calc-grid">
-
-<div class="panel">
-
+<div>
 <label>Monthly Investment ₹</label>
 <input id="sip_amt" value="5000">
+</div>
 
+<div>
 <label>Years</label>
 <input id="sip_years" value="10">
+</div>
 
+<div>
 <label>Return %</label>
 <input id="sip_rate" value="12">
+</div>
+
+</div>
 
 <button class="btn-primary" onclick="calcSIP()">Calculate</button>
 
+<!-- RESULT -->
+<div class="result-bar">
+
+<div>
+<p>Invested</p>
+<h3 id="sip_invested">₹0</h3>
 </div>
 
-<div class="panel">
-
-<div class="result-panel">
-
-<div class="result-summary">
-
-<div class="result-item">
-<span>Invested</span>
-<strong id="sip_invested">₹0</strong>
+<div>
+<p>Returns</p>
+<h3 id="sip_returns">₹0</h3>
 </div>
 
-<div class="result-item">
-<span>Returns</span>
-<strong id="sip_returns">₹0</strong>
-</div>
-
-<div class="result-item total">
-<span>Total</span>
-<strong id="sip_total">₹0</strong>
+<div class="total-box">
+<p>Total</p>
+<h3 id="sip_total">₹0</h3>
 </div>
 
 </div>
 
+<!-- CHART -->
 <div class="chart-box">
 <canvas id="sip_chart"></canvas>
 </div>
@@ -85,12 +82,6 @@ loadComponent("header", "../components/header.html");
 
 </div>
 
-</div>
-
-</section>
-
-</main>
-</div>
 </div>
 
 <script>
@@ -119,7 +110,7 @@ data:{
 labels:["Invested","Returns"],
 datasets:[{
 data:[invested,returns],
-backgroundColor:["#38bdf8","#00d09c"]
+backgroundColor:["#38bdf8","#22c55e"]
 }]
 }
 });
