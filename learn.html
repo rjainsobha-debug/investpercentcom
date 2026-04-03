@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn Hub | InvestPercent</title>
+
+<link rel="stylesheet" href="../css/global.css">
+
+<style>
+body {
+  background:#0c0f1a;
+  color:#fff;
+  font-family:'Inter',sans-serif;
+}
+
+.hero {
+  text-align:center;
+  padding:80px 20px;
+}
+
+.hero h1 {
+  font-size:42px;
+  background: linear-gradient(90deg,#00ffa3,#00c3ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  max-width:1200px;
+  margin:auto;
+}
+
+.card {
+  background:rgba(255,255,255,0.05);
+  padding:20px;
+  border-radius:20px;
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:translateY(-5px);
+}
+
+button {
+  margin-top:10px;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:#00ffa3;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+<h1>Learn Finance the Smart Way</h1>
+<p>Simplified guides, tools & strategies</p>
+</section>
+
+<section class="grid">
+
+<div class="card">
+<h3>SIP vs Lump Sum</h3>
+<p>Understand which strategy builds more wealth</p>
+<button onclick="goInvest()">Try Calculator</button>
+</div>
+
+<div class="card">
+<h3>Tax Saving Guide</h3>
+<p>Maximize deductions under 80C</p>
+<button onclick="goInvest()">Calculate Tax</button>
+</div>
+
+<div class="card">
+<h3>Home Loan Strategy</h3>
+<p>Reduce EMI & interest burden</p>
+<button onclick="goInvest()">Check EMI</button>
+</div>
+
+<div class="card">
+<h3>Retirement Planning</h3>
+<p>Build your ₹5 Cr retirement plan</p>
+<button onclick="goInvest()">Start Planning</button>
+</div>
+
+</section>
+
+<section style="padding:40px;text-align:center">
+<h2>Need a personalized plan?</h2>
+<button onclick="window.location.href='https://justinvesting.in'">Talk to Advisor</button>
+</section>
+
+<script>
+function goInvest(){
+  window.location.href='../pages/investment.html';
+}
+</script>
+
+</body>
+</html>
