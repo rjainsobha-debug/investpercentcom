@@ -1,74 +1,404 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>InvestPercent</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>investpercent.com — Financial Universe</title>
+<meta name="description" content="500+ financial tools. SIP, Tax, EMI, Retirement and more.">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
+
+/* ================= THEME ================= */
+
+:root{
+--bg-primary:#0a0e1a;
+--bg-secondary:#0f1628;
+--bg-tertiary:#141d35;
+
+--accent:#00d4ff;
+--accent2:#7b61ff;
+
+--text:#ffffff;
+--text2:#a8b2d8;
+
+--card:rgba(255,255,255,0.05);
+}
+
+/* ================= BASE ================= */
+
 body{
 margin:0;
 font-family:Inter;
-background:linear-gradient(120deg,#041424,#0b2d4d);
-color:#fff;
+background:linear-gradient(135deg,#0a0e1a,#1a0533,#0a1628);
+color:var(--text);
 }
-.container{max-width:1200px;margin:auto;padding:20px}
 
-.nav{display:flex;justify-content:space-between}
-.logo{font-size:22px;font-weight:800}
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
 
-.hero{text-align:center;padding:80px 20px}
-.hero h1{font-size:48px}
-.hero p{color:#9bbbdc}
+/* ================= HEADER ================= */
+
+header{
+position:sticky;
+top:0;
+background:rgba(10,14,26,0.8);
+backdrop-filter:blur(10px);
+padding:15px;
+display:flex;
+justify-content:space-between;
+z-index:999;
+}
+
+.logo{
+font-weight:800;
+font-size:20px;
+background:linear-gradient(90deg,#00d4ff,#7b61ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.nav a{
+margin-left:15px;
+color:#a8b2d8;
+text-decoration:none;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+text-align:center;
+padding:80px 20px;
+}
+
+.hero h1{
+font-size:48px;
+}
+
+.hero p{
+color:var(--text2);
+}
+
+/* ================= BUTTON ================= */
 
 .btn{
-background:#32c7ff;
+background:linear-gradient(135deg,#00d4ff,#7b61ff);
+border:none;
 padding:14px 25px;
 border-radius:10px;
+color:#000;
 font-weight:700;
 cursor:pointer;
-border:none;
 }
+
+/* ================= CARDS ================= */
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
-margin-top:40px;
+margin-top:30px;
 }
+
 .card{
-background:#0b2d4d;
-padding:25px;
+background:var(--card);
+padding:20px;
 border-radius:20px;
+backdrop-filter:blur(10px);
 transition:.3s;
 }
-.card:hover{transform:translateY(-5px)}
+
+.card:hover{
+transform:scale(1.02);
+}
+
+/* ================= INPUT ================= */
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:none;
+background:#141d35;
+color:#fff;
+}
+
+/* ================= RESULT ================= */
+
+.result{
+margin-top:15px;
+font-size:20px;
+font-weight:700;
+color:#00e676;
+}
+
+/* ================= SEARCH ================= */
+
+#search{
+width:250px;
+padding:10px;
+border-radius:10px;
+border:none;
+}
+
+/* ================= SECTION ================= */
+
+.section{
+margin-top:50px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+text-align:center;
+padding:40px;
+color:#a8b2d8;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<div class="container nav">
-<div class="logo">Invest%</div>
-<div>
-<a href="investments.html">Investments</a>
-<a href="tax.html">Tax</a>
-<a href="loan.html">Loans</a>
+<!-- ================= HEADER ================= -->
+
+<header>
+<div class="logo">invest%</div>
+
+<input id="search" placeholder="Search tools...">
+
+<div class="nav">
+<a href="#investment">Investment</a>
+<a href="#tax">Tax</a>
+<a href="#loan">Loan</a>
 </div>
-</div>
+</header>
+
+<!-- ================= HERO ================= -->
 
 <section class="hero">
-<h1>Calculate Your Financial Future</h1>
-<p>All tools in one place — investments, tax, loans</p>
-<button class="btn" onclick="location.href='investments.html'">Start Now</button>
+<h1>Your Complete Financial Universe</h1>
+<p>From SIP to Tax. EMI to Retirement. All tools in one place.</p>
+<button class="btn" onclick="scrollToSection('investment')">Explore Tools</button>
 </section>
 
-<div class="container grid">
-<a href="investments.html" class="card">💰 Investment Tools</a>
-<a href="tax.html" class="card">🧾 Tax Calculators</a>
-<a href="loan.html" class="card">🏦 Loan Calculators</a>
+<!-- ================= INVESTMENT ================= -->
+
+<section id="investment" class="container section">
+
+<h2>Investment Tools</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>SIP Calculator</h3>
+
+<input id="sipAmount" placeholder="Monthly Investment">
+<input id="sipRate" placeholder="Return %">
+<input id="sipYears" placeholder="Years">
+
+<button class="btn" onclick="calcSIP()">Calculate</button>
+
+<canvas id="sipChart"></canvas>
+<div id="sipResult" class="result"></div>
 </div>
+
+<div class="card">
+<h3>Lumpsum</h3>
+
+<input id="lumpAmount" placeholder="Amount">
+<input id="lumpRate" placeholder="Return %">
+<input id="lumpYears" placeholder="Years">
+
+<button class="btn" onclick="calcLump()">Calculate</button>
+<div id="lumpResult" class="result"></div>
+</div>
+
+<div class="card">
+<h3>CAGR</h3>
+
+<input id="cagrStart" placeholder="Start">
+<input id="cagrEnd" placeholder="End">
+<input id="cagrYears" placeholder="Years">
+
+<button class="btn" onclick="calcCAGR()">Calculate</button>
+<div id="cagrResult" class="result"></div>
+</div>
+
+</div>
+</section>
+
+<!-- ================= TAX ================= -->
+
+<section id="tax" class="container section">
+
+<h2>Tax Calculator</h2>
+
+<div class="card">
+
+<input id="income" placeholder="Annual Income">
+
+<button class="btn" onclick="calcTax()">Calculate</button>
+
+<div id="taxResult" class="result"></div>
+
+</div>
+
+</section>
+
+<!-- ================= LOAN ================= -->
+
+<section id="loan" class="container section">
+
+<h2>Loan EMI</h2>
+
+<div class="card">
+
+<input id="loanAmount" placeholder="Loan Amount">
+<input id="loanRate" placeholder="Rate %">
+<input id="loanYears" placeholder="Years">
+
+<button class="btn" onclick="calcEMI()">Calculate</button>
+
+<canvas id="emiChart"></canvas>
+<div id="emiResult" class="result"></div>
+
+</div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+© 2026 investpercent.com — Built for the World
+</footer>
+
+<!-- ================= SCRIPT ================= -->
+
+<script>
+
+/* ================= SCROLL ================= */
+function scrollToSection(id){
+document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+/* ================= SEARCH ================= */
+
+document.getElementById("search").addEventListener("keyup",function(){
+let val=this.value.toLowerCase();
+
+document.querySelectorAll(".card").forEach(card=>{
+card.style.display=card.innerText.toLowerCase().includes(val)?"block":"none";
+});
+});
+
+/* ================= SIP ================= */
+
+function calcSIP(){
+
+let P=+sipAmount.value;
+let r=+sipRate.value/100/12;
+let n=+sipYears.value*12;
+
+let M=P*((Math.pow(1+r,n)-1)/r)*(1+r);
+
+sipResult.innerHTML="₹ "+Math.round(M);
+
+let data=[];
+let labels=[];
+
+for(let i=1;i<=n;i++){
+let val=P*((Math.pow(1+r,i)-1)/r)*(1+r);
+data.push(val);
+labels.push(i);
+}
+
+new Chart(sipChart,{
+type:'line',
+data:{labels:labels,datasets:[{data:data}]}
+});
+}
+
+/* ================= LUMPSUM ================= */
+
+function calcLump(){
+let P=+lumpAmount.value;
+let r=+lumpRate.value/100;
+let t=+lumpYears.value;
+
+let A=P*Math.pow(1+r,t);
+
+lumpResult.innerHTML="₹ "+Math.round(A);
+}
+
+/* ================= CAGR ================= */
+
+function calcCAGR(){
+let s=+cagrStart.value;
+let e=+cagrEnd.value;
+let y=+cagrYears.value;
+
+let c=Math.pow(e/s,1/y)-1;
+
+cagrResult.innerHTML=(c*100).toFixed(2)+"%";
+}
+
+/* ================= TAX ================= */
+
+function calcTax(){
+
+let inc=+income.value;
+
+let newTax = inc<=300000?0:
+inc<=700000?(inc-300000)*0.05:
+inc<=1000000?20000+(inc-700000)*0.1:
+inc<=1200000?50000+(inc-1000000)*0.15:
+inc<=1500000?80000+(inc-1200000)*0.2:
+140000+(inc-1500000)*0.3;
+
+let oldTax = inc<=250000?0:
+inc<=500000?(inc-250000)*0.05:
+inc<=1000000?12500+(inc-500000)*0.2:
+112500+(inc-1000000)*0.3;
+
+taxResult.innerHTML=
+"New: ₹"+Math.round(newTax*1.04)+"<br>"+
+"Old: ₹"+Math.round(oldTax*1.04)+"<br>"+
+(newTax<oldTax?"NEW BETTER 🏆":"OLD BETTER 🏆");
+}
+
+/* ================= EMI ================= */
+
+function calcEMI(){
+
+let P=+loanAmount.value;
+let r=+loanRate.value/100/12;
+let n=+loanYears.value*12;
+
+let emi=(P*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+let total=emi*n;
+
+emiResult.innerHTML="EMI: ₹"+Math.round(emi);
+
+new Chart(emiChart,{
+type:'pie',
+data:{
+labels:['Principal','Interest'],
+datasets:[{data:[P,total-P]}]
+}
+});
+}
+
+</script>
 
 </body>
 </html>
