@@ -3,29 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Simulator — investpercent</title>
 
-<title>Investment Tools — investpercent</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
 :root{
---bg:#0a0e1a;
---card:#111827;
+--bg:#020617;
+--card:#0f172a;
 --accent:#00d4ff;
 --accent2:#7b61ff;
---green:#00e676;
---text:#ffffff;
+--green:#22c55e;
+--text:#fff;
 --muted:#94a3b8;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-
 body{
+margin:0;
 font-family:'Inter';
-background:linear-gradient(180deg,#0a0e1a,#020617);
+background:var(--bg);
 color:var(--text);
 }
 
@@ -35,58 +33,43 @@ display:flex;
 justify-content:space-between;
 padding:20px 40px;
 background:#020617;
-position:sticky;
-top:0;
-z-index:1000;
 }
 
 .logo{
 font-family:'Poppins';
 font-weight:700;
-font-size:20px;
 background:linear-gradient(90deg,#00d4ff,#7b61ff);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 cursor:pointer;
 }
 
-.nav-links a{
-margin-left:20px;
-color:var(--muted);
-text-decoration:none;
-font-size:14px;
-}
-
-.nav-links a:hover{color:var(--accent)}
-
-/* HERO */
+/* HEADER */
 .header{
-padding:60px 40px 20px;
+padding:40px;
 }
 
 .header h1{
-font-size:34px;
-font-family:'Poppins';
+font-size:32px;
 }
 
 .header p{
 color:var(--muted);
-margin-top:8px;
 }
 
 /* LAYOUT */
 .main{
 display:grid;
-grid-template-columns:1fr 1fr;
+grid-template-columns:1fr 1.2fr;
 gap:30px;
-padding:20px 40px;
+padding:0 40px 40px;
 }
 
+/* CARD */
 .card{
 background:var(--card);
 padding:25px;
-border-radius:18px;
-border:1px solid rgba(255,255,255,0.05);
+border-radius:20px;
 }
 
 /* INPUT */
@@ -103,57 +86,38 @@ input{
 width:100%;
 margin-top:8px;
 padding:14px;
-border-radius:10px;
+border-radius:12px;
 border:none;
 background:#1e293b;
 color:white;
-font-size:14px;
+font-size:15px;
 }
 
-button{
-width:100%;
-padding:14px;
-border-radius:12px;
-border:none;
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
-font-weight:600;
-cursor:pointer;
-margin-top:10px;
-}
-
-/* RESULT PANEL */
-.result-box{
-text-align:center;
-}
-
+/* RESULT */
 .big{
-font-size:34px;
+font-size:38px;
 font-weight:700;
 color:var(--green);
-margin:10px 0;
 }
 
-.sub{
-color:var(--muted);
+.row{
+display:flex;
+justify-content:space-between;
+margin-top:10px;
 font-size:14px;
+color:var(--muted);
 }
 
 /* CTA */
 .cta{
-margin-top:25px;
-padding:20px;
+margin-top:20px;
+padding:18px;
 border-radius:14px;
 background:linear-gradient(90deg,#00d4ff,#7b61ff);
 text-align:center;
 color:black;
 font-weight:600;
 cursor:pointer;
-}
-
-.cta small{
-display:block;
-font-weight:400;
-margin-top:5px;
 }
 
 /* MOBILE */
@@ -168,61 +132,54 @@ margin-top:5px;
 
 <nav>
 <div class="logo" onclick="goHome()">invest%</div>
-
-<div class="nav-links">
-<a href="investment.html">Investment</a>
-<a href="#">Tax</a>
-<a href="#">Loan</a>
-<a href="#">Retirement</a>
-</div>
 </nav>
 
 <div class="header">
-<h1>Investment Calculator</h1>
-<p>Plan your wealth with precision</p>
+<h1>Investment Simulator</h1>
+<p>See your wealth grow in real time</p>
 </div>
 
 <div class="main">
 
-<!-- LEFT INPUT -->
+<!-- INPUT -->
 <div class="card">
 
 <div class="input-group">
 <label>Monthly Investment (₹)</label>
-<input id="amt" value="10000">
+<input id="amt" value="10000" oninput="calc()">
 </div>
 
 <div class="input-group">
-<label>Expected Return (%)</label>
-<input id="rate" value="12">
+<label>Return (%)</label>
+<input id="rate" value="12" oninput="calc()">
 </div>
 
 <div class="input-group">
-<label>Duration (Years)</label>
-<input id="years" value="10">
+<label>Years</label>
+<input id="years" value="10" oninput="calc()">
 </div>
 
-<button onclick="calc()">Calculate</button>
-
 </div>
 
-<!-- RIGHT RESULT -->
-<div class="card result-box">
+<!-- RESULT -->
+<div class="card">
 
-<div class="sub">Future Value</div>
-<div id="value" class="big">₹0</div>
+<div class="big" id="value">₹0</div>
 
-<div class="sub">Invested</div>
-<div id="invested">₹0</div>
+<div class="row">
+<span>Invested</span>
+<span id="invested">₹0</span>
+</div>
 
-<div class="sub">Estimated Gains</div>
-<div id="gains">₹0</div>
+<div class="row">
+<span>Returns</span>
+<span id="gains">₹0</span>
+</div>
 
 <canvas id="chart" style="margin-top:20px;"></canvas>
 
 <div class="cta" onclick="invest()">
 Start Investing →
-<small>Free portfolio review on justinvesting.in</small>
 </div>
 
 </div>
@@ -239,55 +196,49 @@ function invest(){
 window.open("https://justinvesting.in","_blank");
 }
 
+let chart;
+
 function calc(){
 
 let P = +amt.value;
 let r = rate.value/100/12;
 let n = years.value*12;
 
-let future = P*((Math.pow(1+r,n)-1)/r)*(1+r);
-let invested = P*n;
-let gain = future - invested;
+let total = 0;
+let invested = 0;
 
-animate("value",future);
-animate("invested",invested);
-animate("gains",gain);
+let labels = [];
+let data = [];
 
-renderChart(invested,future);
+for(let i=1;i<=n;i++){
+total = total*(1+r)+P;
+invested += P;
+
+if(i%12==0){
+labels.push("Year "+(i/12));
+data.push(Math.round(total));
+}
 }
 
-/* ANIMATION */
-function animate(id,val){
-let el = document.getElementById(id);
-let start = 0;
-let step = val/40;
+let final = total;
+let gain = final - invested;
 
-let int = setInterval(()=>{
-start += step;
-if(start>=val){
-start=val;
-clearInterval(int);
-}
-el.innerText="₹"+Math.round(start);
-},20);
-}
-
-/* CHART */
-let chart;
-
-function renderChart(invested,value){
+document.getElementById("value").innerText="₹"+Math.round(final);
+document.getElementById("invested").innerText="₹"+invested;
+document.getElementById("gains").innerText="₹"+Math.round(gain);
 
 if(chart) chart.destroy();
 
 chart = new Chart(document.getElementById("chart"),{
 type:"line",
 data:{
-labels:["0","2","4","6","8","10"],
+labels:labels,
 datasets:[{
-data:[0, value*0.2,value*0.4,value*0.6,value*0.8,value],
+data:data,
 borderColor:"#00d4ff",
+backgroundColor:"rgba(0,212,255,0.1)",
 fill:true,
-backgroundColor:"rgba(0,212,255,0.1)"
+tension:0.4
 }]
 },
 options:{
@@ -299,6 +250,8 @@ y:{grid:{color:"rgba(255,255,255,0.05)"}}
 }
 });
 }
+
+calc();
 
 </script>
 
