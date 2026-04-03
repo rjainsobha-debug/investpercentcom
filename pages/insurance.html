@@ -1,176 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Insurance Calculators | InvestPercent</title>
-
-<link rel="stylesheet" href="../css/global.css">
-<link rel="stylesheet" href="../css/calculator.css">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-
-<style>
-.section{margin-bottom:60px}
-.card{margin-bottom:20px}
-.big{font-size:30px;font-weight:700}
-.highlight{color:#ffd700}
-.tip{background:#1e293b;padding:15px;border-radius:10px;margin-top:15px}
-.cta{margin-top:20px;padding:15px;border-left:4px solid #ff4757}
-</style>
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/components.css">
 </head>
 
 <body>
 
 <div id="header"></div>
 
-<!-- HERO -->
-<section class="hero">
-🛡️ Home > Insurance & Life Tools
-<h1>Insurance & Life Planning Calculators</h1>
-<p>Protect what matters most. Calculate the right cover.</p>
-</section>
-
-<!-- BANNER -->
-<div class="card" style="border-left:4px solid #ff4757;background:linear-gradient(135deg,#ff475722,#ff6b3522)">
-🛡️ Get proper insurance coverage — protect your family today. justinvesting.in →
-</div>
-
-<div class="container">
-
-<!-- ================= TERM ================= -->
-<div id="term-insurance" class="card section">
-<h2>Term Insurance Cover Calculator</h2>
-
-<p>💙 Term insurance is the most important decision for your family.</p>
-
-<input type="number" id="income" placeholder="Annual Income">
-<input type="number" id="expenses" placeholder="Personal Expenses">
-<input type="number" id="age" placeholder="Current Age">
-<input type="number" id="retire" value="60">
-<input type="number" id="growth" value="8">
-<input type="number" id="discount" value="7">
-
-<button onclick="calcHLV()">Calculate HLV</button>
-
-<input type="number" id="loan" placeholder="Loans">
-<input type="number" id="years" placeholder="Support Years">
-<input type="number" id="edu" placeholder="Education Cost">
-
-<button onclick="calcDIME()">Calculate DIME</button>
-
-<div id="term_result"></div>
-
-<div class="tip">
-💡 ₹1Cr cover costs ~₹700/month — cheaper than coffee.
-</div>
-
-<div class="cta">
-🛡️ Compare term plans → justinvesting.in
-</div>
-</div>
-
-<!-- ================= HEALTH ================= -->
-<div id="health-insurance" class="card section">
-<h2>Health Insurance Premium Estimator</h2>
-
-<input type="number" id="h_age" placeholder="Age">
-<select id="cover">
-<option value="1">₹5L</option>
-<option value="2">₹10L</option>
-<option value="4">₹20L</option>
-<option value="7">₹1Cr</option>
-</select>
-
-<select id="city">
-<option value="1">Tier 1</option>
-<option value="0.85">Tier 2</option>
-<option value="0.75">Tier 3</option>
-</select>
-
-<button onclick="calcHealth()">Estimate</button>
-
-<div id="health_result"></div>
-
-<div class="tip">
-💡 Never depend only on employer insurance.
-</div>
-</div>
-
-<!-- ================= EDUCATION ================= -->
-<div id="education-cost" class="card section">
-<h2>Child Education Planner</h2>
-
-<input type="number" id="child_age" value="5">
-<input type="number" id="edu_age" value="18">
-<input type="number" id="cost" value="1200000">
-<input type="number" id="inflation" value="10">
-<input type="number" id="return" value="12">
-
-<button onclick="calcEdu()">Calculate</button>
-
-<div id="edu_result"></div>
-
-<canvas id="edu_chart"></canvas>
-
-<div class="tip">
-📚 Education inflation is 10–12% — plan early.
-</div>
-
-<div class="cta">
-🎓 Build education fund → absolutemoney.in
-</div>
-</div>
-
-</div>
-
-<script src="../js/global.js"></script>
-
+<script src="../js/main.js"></script>
 <script>
-
-// ================= HLV =================
-function calcHLV(){
-
-let income=+income.value;
-let expenses=+expenses.value;
-let years=retire.value-age.value;
-
-let net=income-expenses;
-let hlv=net*years;
-
-term_result.innerHTML=`HLV Cover: ₹${(hlv/10000000).toFixed(2)} Cr`;
-}
-
-// ================= DIME =================
-function calcDIME(){
-
-let dime=+loan.value + (+income.value * +years.value) + +edu.value;
-
-term_result.innerHTML+=`<br>DIME Cover: ₹${(dime/10000000).toFixed(2)} Cr`;
-}
-
-// ================= HEALTH =================
-function calcHealth(){
-
-let base=8000;
-let premium=base * cover.value * city.value;
-
-health_result.innerHTML=`₹${premium} - ₹${premium*1.5}`;
-}
-
-// ================= EDUCATION =================
-function calcEdu(){
-
-let years=edu_age.value-child_age.value;
-
-let future=cost.value*Math.pow(1+inflation.value/100,years);
-
-edu_result.innerHTML=`Future Cost: ₹${future.toFixed(0)}`;
-
-}
-
+loadComponent("header", "../components/header.html");
 </script>
+
+<div class="page-shell">
+  <h1>Investment Page</h1>
+</div>
 
 </body>
 </html>
