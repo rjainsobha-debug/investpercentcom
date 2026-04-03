@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Calculators | InvestPercent</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --bg:#0b0f1a;
+  --card:#12182b;
+  --accent:#ff6b35;
+  --text:#ffffff;
+  --muted:#aab0c0;
+}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+.container{max-width:1200px;margin:auto;padding:20px;}
+.hero{padding:40px 0;}
+.breadcrumb{color:var(--muted);font-size:13px;}
+.title{font-size:32px;font-weight:700;}
+.subtitle{color:var(--muted);}
+
+.warning{
+  background:linear-gradient(135deg,#ff4d4d,#ff6b35);
+  padding:20px;
+  border-radius:12px;
+  margin:20px 0;
+  font-weight:500;
+}
+
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:25px;
+  margin:25px 0;
+  box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+
+input,select{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+  border:none;
+  background:#1c2338;
+  color:#fff;
+}
+
+button{
+  background:var(--accent);
+  color:#fff;
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.result{
+  background:#1c2338;
+  padding:15px;
+  margin-top:15px;
+  border-radius:10px;
+}
+
+.green{color:#00e676;}
+.red{color:#ff5252;}
+
+.cta{
+  margin-top:20px;
+  padding:15px;
+  background:linear-gradient(135deg,#ff6b3522,#ffd70022);
+  border-left:4px solid var(--accent);
+}
+
+.flex{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+@media(max-width:768px){
+  .flex{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="breadcrumb">Home > Crypto & Alternative Assets</div>
+  <div class="title">₿ Crypto & Alternative Asset Calculators</div>
+  <div class="subtitle">High risk, high reward — calculate before you invest.</div>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="warning">
+⚠️ Cryptocurrency investments are highly volatile and unregulated in India. 
+You may lose your entire investment. These tools are educational only. 
+Always consult a SEBI-registered advisor.
+</div>
+
+<!-- ================== CALCULATOR 1 ================== -->
+<div class="card">
+<h2>Crypto Profit / Loss + Tax</h2>
+
+<div class="flex">
+<input id="buy" placeholder="Buy Price ₹">
+<input id="qty" placeholder="Quantity">
+<input id="sell" placeholder="Sell Price ₹">
+<input id="fee" placeholder="Total Fees ₹ (optional)">
+</div>
+
+<button onclick="calcPL()">Calculate</button>
+
+<div id="plRes" class="result"></div>
+<canvas id="plChart"></canvas>
+
+<div class="cta">
+📈 Explore tax-efficient investments → <b>justinvesting.in</b>
+</div>
+</div>
+
+<!-- ================== CALCULATOR 2 ================== -->
+<div class="card">
+<h2>Bitcoin DCA Calculator</h2>
+
+<div class="flex">
+<input id="monthly" placeholder="Monthly Investment ₹">
+<input id="years" placeholder="Years">
+<select id="rate">
+<option value="30">Conservative 30%</option>
+<option value="60">Moderate 60%</option>
+<option value="100">Aggressive 100%</option>
+<option value="-20">Bear Market -20%</option>
+</select>
+</div>
+
+<button onclick="calcDCA()">Calculate</button>
+
+<div id="dcaRes" class="result"></div>
+<canvas id="dcaChart"></canvas>
+</div>
+
+<!-- ================== CALCULATOR 3 ================== -->
+<div class="card">
+<h2>Gold vs Nifty vs Bitcoin</h2>
+
+<div class="flex">
+<input id="amt" placeholder="Investment ₹">
+<input id="start" placeholder="Start Year (2015)">
+<input id="end" placeholder="End Year (2024)">
+</div>
+
+<button onclick="compare()">Compare</button>
+
+<div id="cmpRes" class="result"></div>
+<canvas id="cmpChart"></canvas>
+</div>
+
+</div>
+
+<script>
+// ================= CALC 1 =================
+function calcPL(){
+let buy=+document.getElementById("buy").value;
+let qty=+document.getElementById("qty").value;
+let sell=+document.getElementById("sell").value;
+let fee=+document.getElementById("fee").value||0;
+
+let buyCost=(buy*qty)+fee;
+let sellVal=(sell*qty)-fee;
+let profit=sellVal-buyCost;
+
+let tax=profit>0?profit*0.312:0;
+let tds=sellVal>50000?sellVal*0.01:0;
+
+let net=profit-tax;
+
+document.getElementById("plRes").innerHTML=`
+Buy Cost: ₹${buyCost.toFixed(0)}<br>
+Sell Value: ₹${sellVal.toFixed(0)}<br>
+Gross P/L: <span class="${profit>=0?'green':'red'}">₹${profit.toFixed(0)}</span><br>
+Tax (31.2%): ₹${tax.toFixed(0)}<br>
+TDS: ₹${tds.toFixed(0)}<br>
+Net Profit: <b>₹${net.toFixed(0)}</b>
+`;
+
+new Chart(document.getElementById("plChart"),{
+type:'bar',
+data:{
+labels:["Buy","Sell","Tax","Net"],
+datasets:[{data:[buyCost,sellVal,tax,net]}]
+}
+});
+}
+
+// ================= CALC 2 =================
+function calcDCA(){
+let m=+document.getElementById("monthly").value;
+let y=+document.getElementById("years").value;
+let r=+document.getElementById("rate").value/100;
+
+let months=y*12;
+let val=0;
+let data=[];
+
+for(let i=0;i<months;i++){
+val=(val+m)*(1+r/12);
+data.push(val);
+}
+
+document.getElementById("dcaRes").innerHTML=
+`Final Value: ₹${val.toFixed(0)}`;
+
+new Chart(document.getElementById("dcaChart"),{
+type:'line',
+data:{
+labels:data.map((_,i)=>i+1),
+datasets:[{data:data}]
+}
+});
+}
+
+// ================= CALC 3 =================
+function compare(){
+let amt=+document.getElementById("amt").value;
+let years=+document.getElementById("end").value - +document.getElementById("start").value;
+
+let btc=amt*Math.pow(1.6,years);
+let nifty=amt*Math.pow(1.12,years);
+let gold=amt*Math.pow(1.1,years);
+
+document.getElementById("cmpRes").innerHTML=
+`Bitcoin: ₹${btc.toFixed(0)}<br>
+Nifty: ₹${nifty.toFixed(0)}<br>
+Gold: ₹${gold.toFixed(0)}`;
+
+new Chart(document.getElementById("cmpChart"),{
+type:'bar',
+data:{
+labels:["Bitcoin","Nifty","Gold"],
+datasets:[{data:[btc,nifty,gold]}]
+}
+});
+}
+</script>
+
+</body>
+</html>
