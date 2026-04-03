@@ -3,275 +3,204 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Investment Calculators | InvestPercent</title>
+
+<link rel="stylesheet" href="../css/theme.css">
+<link rel="stylesheet" href="../css/components.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
-/* ===== BASE ===== */
-body{
-margin:0;
-font-family:Inter, sans-serif;
-background:#07101d;
-color:#e6f0ff;
-}
-
-/* ===== NAVBAR ===== */
-.navbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:14px 30px;
-background:#07101d;
-border-bottom:1px solid rgba(255,255,255,0.08);
-position:sticky;
-top:0;
-z-index:100;
-}
-
-.logo{
-font-weight:700;
-}
-
-.nav-links a{
-margin-left:12px;
-padding:8px 14px;
-border-radius:20px;
-background:#0f1b2e;
-color:#cfe3ff;
-text-decoration:none;
-font-size:14px;
-}
-
-.nav-links a.active{
-background:#00d09c;
-color:#00221a;
-}
-
-/* ===== PAGE WIDTH FIX ===== */
+/* ===== PAGE LAYOUT FIX ===== */
 .container{
-max-width:1100px;
-margin:auto;
-padding:20px;
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
 }
 
 /* ===== HERO ===== */
 .hero{
-background:linear-gradient(135deg,#0f2b3a,#112d4e);
-padding:22px;
-border-radius:18px;
-margin-bottom:20px;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  padding:30px;
+  border-radius:20px;
+  margin-bottom:30px;
 }
 
-.hero h1{
-margin:0;
-font-size:24px;
-}
-
-.hero p{
-color:#9fb4d4;
-margin-top:5px;
-}
-
-/* ===== LAYOUT ===== */
+/* ===== MAIN GRID ===== */
 .layout{
-display:grid;
-grid-template-columns:260px 1fr;
-gap:20px;
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:20px;
 }
 
 /* ===== SIDEBAR ===== */
 .sidebar{
-background:#0e1828;
-border-radius:18px;
-padding:15px;
+  background:#0f172a;
+  border-radius:16px;
+  padding:15px;
 }
 
 .sidebar h4{
-font-size:12px;
-color:#8aa0bf;
-margin-bottom:10px;
+  font-size:12px;
+  color:#94a3b8;
+  margin-bottom:10px;
 }
 
-.side-card{
-display:flex;
-gap:10px;
-padding:12px;
-border-radius:14px;
-margin-bottom:10px;
-background:#121f34;
-cursor:pointer;
+.side-link{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:10px;
+  background:#111827;
+  cursor:pointer;
+  transition:0.2s;
 }
 
-.side-card:hover{
-background:#00d09c20;
+.side-link:hover{
+  background:#1f2937;
 }
 
-.side-num{
-width:26px;
-height:26px;
-border-radius:50%;
-background:#00d09c;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:12px;
-font-weight:bold;
-color:#00221a;
+.num{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:#10b981;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
 }
 
-/* ===== MAIN CARD ===== */
+/* ===== CARD ===== */
 .card{
-background:#0f1b2e;
-border-radius:18px;
-padding:20px;
+  background:#0f172a;
+  border-radius:18px;
+  padding:20px;
 }
 
 /* ===== INPUTS ===== */
 .input-group{
-margin-bottom:18px;
+  margin-bottom:15px;
 }
 
-label{
-font-size:13px;
-color:#9fb4d4;
-}
-
-input[type=range]{
-width:100%;
-accent-color:#00d09c;
-}
-
-.range-value{
-font-size:12px;
-color:#9fb4d4;
-margin-top:4px;
-}
-
-/* ===== BUTTON ===== */
-.btn{
-background:#00d09c;
-border:none;
-width:100%;
-padding:12px;
-border-radius:12px;
-font-weight:bold;
-cursor:pointer;
+input[type="range"]{
+  width:100%;
 }
 
 /* ===== RESULTS ===== */
 .results{
-display:flex;
-gap:10px;
-margin-top:15px;
+  display:flex;
+  gap:10px;
+  margin-top:15px;
 }
 
 .result-box{
-flex:1;
-background:#08111f;
-padding:10px;
-border-radius:10px;
-font-size:13px;
+  flex:1;
+  background:#020617;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
 }
 
 /* ===== CHART ===== */
 .chart{
-max-width:220px;
-margin:20px auto;
+  max-width:250px;
+  margin:auto;
+}
+
+/* ===== CTA ===== */
+.cta{
+  margin-top:20px;
+  padding:20px;
+  background:#020617;
+  border-radius:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.cta button{
+  background:#10b981;
+  border:none;
+  padding:10px 20px;
+  border-radius:10px;
 }
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:900px){
-.layout{
-grid-template-columns:1fr;
-}
+  .layout{
+    grid-template-columns:1fr;
+  }
 }
 
 </style>
+
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-<div class="logo">InvestPercent</div>
-
-<div class="nav-links">
-<a href="#">Home</a>
-<a class="active">Investment</a>
-<a>Savings</a>
-<a>Loans</a>
-<a>Retirement</a>
-</div>
-</div>
+<!-- NAVBAR (SAME STRUCTURE AS INDEX) -->
+<header class="nav-wrap">
+  <nav class="nav">
+    <a href="../index.html">InvestPercent</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a class="active">Investment</a>
+      <a href="./savings.html">Savings</a>
+      <a href="./loans.html">Loans</a>
+      <a href="./retirement.html">Retirement</a>
+    </div>
+  </nav>
+</header>
 
 <div class="container">
 
 <!-- HERO -->
 <div class="hero">
-<h1>Investment Calculators</h1>
-<p>Plan SIP, lumpsum, CAGR & wealth growth in one place</p>
+  <h2>Investment Calculators</h2>
+  <p>Plan SIP, lumpsum, CAGR & wealth growth in one place</p>
 </div>
 
 <div class="layout">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
+  <h4>JUMP TO</h4>
 
-<h4>JUMP TO</h4>
-
-<div class="side-card">
-<div class="side-num">1</div>
-<div>SIP Calculator</div>
-</div>
-
-<div class="side-card">
-<div class="side-num">2</div>
-<div>Lumpsum</div>
-</div>
-
-<div class="side-card">
-<div class="side-num">3</div>
-<div>CAGR</div>
-</div>
-
-<div class="side-card">
-<div class="side-num">4</div>
-<div>SWP</div>
-</div>
-
-<div class="side-card">
-<div class="side-num">5</div>
-<div>PPF</div>
-</div>
-
+  <div class="side-link"><div class="num">1</div> SIP</div>
+  <div class="side-link"><div class="num">2</div> Lumpsum</div>
+  <div class="side-link"><div class="num">3</div> CAGR</div>
+  <div class="side-link"><div class="num">4</div> SWP</div>
+  <div class="side-link"><div class="num">5</div> PPF</div>
 </div>
 
 <!-- MAIN -->
-<div class="card">
+<div>
 
-<h2>SIP Calculator</h2>
+<!-- SIP -->
+<div class="card">
+<h3>SIP Calculator</h3>
 
 <div class="input-group">
-<label>Monthly Investment ₹</label>
-<input type="range" id="amount" min="1000" max="50000" value="5000" oninput="amtVal.innerText=this.value">
-<div class="range-value">₹<span id="amtVal">5000</span></div>
+<label>Monthly ₹</label>
+<input type="range" id="sip_amt" value="5000" min="500" max="100000">
 </div>
 
 <div class="input-group">
 <label>Return %</label>
-<input type="range" id="rate" min="5" max="20" value="12" oninput="rateVal.innerText=this.value">
-<div class="range-value"><span id="rateVal">12</span>%</div>
+<input type="range" id="sip_rate" value="12" min="1" max="20">
 </div>
 
 <div class="input-group">
 <label>Years</label>
-<input type="range" id="years" min="1" max="30" value="10" oninput="yearVal.innerText=this.value">
-<div class="range-value"><span id="yearVal">10</span></div>
+<input type="range" id="sip_years" value="10" min="1" max="30">
 </div>
 
-<button class="btn" onclick="calc()">Calculate</button>
+<button onclick="calcSIP()">Calculate</button>
 
 <div class="results">
 <div class="result-box" id="invested"></div>
@@ -285,44 +214,44 @@ grid-template-columns:1fr;
 
 </div>
 
+<!-- CTA -->
+<div class="cta">
+<div>Want real investment plan?</div>
+<button onclick="window.open('https://justinvesting.in')">Talk to Advisor</button>
 </div>
 
+</div>
+
+</div>
 </div>
 
 <script>
 
-let chart;
+function calcSIP(){
+let P=sip_amt.value;
+let r=sip_rate.value/100/12;
+let n=sip_years.value*12;
 
-function calc(){
+let FV=P*((Math.pow(1+r,n)-1)/r)*(1+r);
 
-let m=amount.value;
-let r=rate.value/100/12;
-let n=years.value*12;
+let invested=P*n;
+let gain=FV-invested;
 
-let fv=m*((Math.pow(1+r,n)-1)/r)*(1+r);
-let invested=m*n;
+document.getElementById("invested").innerHTML="₹"+invested.toFixed(0);
+document.getElementById("returns").innerHTML="₹"+gain.toFixed(0);
+document.getElementById("total").innerHTML="₹"+FV.toFixed(0);
 
-document.getElementById("invested").innerHTML="Invested ₹"+invested.toLocaleString();
-document.getElementById("returns").innerHTML="Returns ₹"+Math.round(fv-invested).toLocaleString();
-document.getElementById("total").innerHTML="Total ₹"+Math.round(fv).toLocaleString();
-
-if(chart) chart.destroy();
-
-chart=new Chart(document.getElementById("chart"),{
-type:"bar",
+new Chart(chart,{
+type:'doughnut',
 data:{
 labels:["Invested","Returns"],
 datasets:[{
-data:[invested,fv-invested],
-backgroundColor:["#38bdf8","#00d09c"]
+data:[invested,gain],
+backgroundColor:["#38bdf8","#10b981"]
 }]
-},
-options:{plugins:{legend:{display:false}}}
-});
-
 }
-
-calc();
+});
+}
 
 </script>
 
