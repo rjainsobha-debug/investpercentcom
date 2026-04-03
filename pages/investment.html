@@ -25,55 +25,70 @@
       <p>Plan smarter. Grow faster.</p>
     </section>
 
-    <div class="main-card">
-      <h2>SIP Calculator</h2>
+    <div class="layout-3col">
 
-      <div class="input-grid">
-        <div>
-          <label for="sip_amt">Monthly Investment ₹</label>
-          <input id="sip_amt" type="number" value="5000" min="500" step="500">
+      <aside class="sidebar">
+        <h4>Calculators</h4>
+        <a href="#sip" class="active">SIP</a>
+        <a href="#lumpsum">Lumpsum</a>
+        <a href="#goal">Goal Planner</a>
+        <a href="#stepup">Step-Up SIP</a>
+        <a href="#retirement">Retirement</a>
+      </aside>
+
+      <div class="main-card" id="sip">
+        <h2>SIP Calculator</h2>
+
+        <div class="input-grid">
+          <div>
+            <label for="sip_amt">Monthly Investment ₹</label>
+            <input id="sip_amt" type="number" value="5000" min="500" step="500">
+          </div>
+
+          <div>
+            <label for="sip_years">Years</label>
+            <input id="sip_years" type="number" value="10" min="1" step="1">
+          </div>
+
+          <div class="full-width">
+            <label for="sip_rate">Expected Return %</label>
+            <input id="sip_rate" type="number" value="12" min="1" step="0.1">
+          </div>
         </div>
 
-        <div>
-          <label for="sip_years">Years</label>
-          <input id="sip_years" type="number" value="10" min="1" step="1">
-        </div>
-
-        <div class="full-width">
-          <label for="sip_rate">Expected Return %</label>
-          <input id="sip_rate" type="number" value="12" min="1" step="0.1">
-        </div>
+        <button class="btn-primary" onclick="calcSIP()">Calculate</button>
       </div>
 
-      <button class="btn-primary" onclick="calcSIP()">Calculate</button>
+      <div class="right-panel">
+        <div class="result-bar">
+          <div class="result-box">
+            <p>Invested</p>
+            <h3 id="sip_invested">₹0</h3>
+          </div>
 
-      <div class="result-bar">
-        <div class="result-box">
-          <p>Invested</p>
-          <h3 id="sip_invested">₹0</h3>
+          <div class="result-box">
+            <p>Returns</p>
+            <h3 id="sip_returns">₹0</h3>
+          </div>
+
+          <div class="result-box total-box">
+            <p>Total Value</p>
+            <h3 id="sip_total">₹0</h3>
+          </div>
         </div>
 
-        <div class="result-box">
-          <p>Returns</p>
-          <h3 id="sip_returns">₹0</h3>
+        <div class="chart-card">
+          <p class="chart-title">Investment vs Wealth Created</p>
+          <div class="chart-box">
+            <canvas id="sip_chart"></canvas>
+          </div>
         </div>
 
-        <div class="result-box total-box">
-          <p>Total Value</p>
-          <h3 id="sip_total">₹0</h3>
-        </div>
+        <p class="subtle-note">
+          This calculator estimates the future value of a monthly SIP using monthly compounding.
+        </p>
       </div>
 
-      <div class="chart-card">
-        <p class="chart-title">Investment vs Wealth Created</p>
-        <div class="chart-box">
-          <canvas id="sip_chart"></canvas>
-        </div>
-      </div>
-
-      <p class="subtle-note">
-        This calculator estimates the future value of a monthly SIP using monthly compounding.
-      </p>
     </div>
 
   </div>
