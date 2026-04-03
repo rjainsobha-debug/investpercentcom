@@ -4,12 +4,139 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Investment Calculators PRO | InvestPercent</title>
+<title>Investment Calculators | InvestPercent</title>
 
 <link rel="stylesheet" href="../css/theme.css">
 <link rel="stylesheet" href="../css/components.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* PAGE WIDTH FIX (VERY IMPORTANT) */
+.page-shell{
+max-width:1200px;
+margin:auto;
+}
+
+/* HERO */
+.hero{
+background: linear-gradient(135deg,#0f172a,#1e293b);
+padding:20px;
+border-radius:16px;
+margin-bottom:15px;
+}
+
+/* LAYOUT */
+.layout{
+display:grid;
+grid-template-columns:260px 1fr;
+gap:20px;
+}
+
+/* SIDEBAR */
+.sidebar{
+background:#0f172a;
+padding:15px;
+border-radius:16px;
+}
+
+.nav-card{
+display:flex;
+gap:12px;
+padding:12px;
+border-radius:14px;
+margin-bottom:10px;
+cursor:pointer;
+background:#020617;
+border:1px solid rgba(255,255,255,0.05);
+}
+
+.nav-card span{
+background:#1f2937;
+width:28px;
+height:28px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.nav-card strong{
+display:block;
+font-size:14px;
+}
+
+.nav-card p{
+font-size:11px;
+color:#9ca3af;
+}
+
+.nav-card:hover{
+background:#111827;
+}
+
+/* CARD */
+.card{
+background:#0f172a;
+padding:18px;
+border-radius:16px;
+margin-bottom:18px;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+/* INPUT */
+input[type=range]{
+width:100%;
+}
+
+.val{
+font-size:12px;
+color:#9ca3af;
+margin-bottom:10px;
+}
+
+/* RESULT */
+.results{
+text-align:center;
+}
+
+.result-box{
+background:#020617;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+/* SMALL CHART (FIXED) */
+.chart-box{
+max-width:220px;
+margin:auto;
+}
+
+/* CTA */
+.cta{
+margin-top:12px;
+padding:12px;
+background:#020617;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+.layout{grid-template-columns:1fr;}
+.grid{grid-template-columns:1fr;}
+}
+</style>
+
 </head>
 
 <body>
@@ -17,126 +144,128 @@
 <div id="header"></div>
 <script src="../js/main.js"></script>
 <script>
-loadComponent("header", "../components/header.html");
+loadComponent("header","../components/header.html");
 </script>
 
 <div class="page-shell">
 
-<!-- HERO -->
-<section class="hero pro-hero">
-  <div>
-    <h1>Investment Calculators</h1>
-    <p>Plan SIPs, Lumpsum, Goals and Wealth — all in one place</p>
-  </div>
-
-  <div class="hero-tags">
-    <span>5 premium tools</span>
-    <span>SIP + Lumpsum + SWP</span>
-    <span>Long-term planning</span>
-  </div>
-</section>
-
-<!-- CTA STRIP -->
-<div class="cta-strip">
-  Need expert help with mutual funds & asset allocation?
-  <a href="https://justinvesting.in" target="_blank">Talk to advisor →</a>
+<div class="hero">
+<h1>Investment Calculators</h1>
+<p>Plan smarter. Grow faster.</p>
 </div>
 
-<!-- LAYOUT -->
-<div class="pro-layout">
+<div class="layout">
 
 <!-- SIDEBAR -->
-<div class="pro-sidebar">
-  <h4>Jump to calculator</h4>
-  <a class="active">SIP Calculator</a>
-  <a>Lumpsum</a>
-  <a>Goal Planner</a>
-  <a>Step-Up SIP</a>
-  <a>Retirement</a>
+<div class="sidebar">
 
-  <div class="sidebar-box">
-    <h5>Quick note</h5>
-    <p>Wealth creation needs consistency. Stay invested long term.</p>
-  </div>
+<div class="nav-card" onclick="scrollToCalc('sip')">
+<span>1</span>
+<div>
+<strong>SIP Calculator</strong>
+<p>Monthly investing growth</p>
+</div>
+</div>
+
+<div class="nav-card" onclick="scrollToCalc('lump')">
+<span>2</span>
+<div>
+<strong>Lumpsum Calculator</strong>
+<p>One-time investment</p>
+</div>
+</div>
+
+<div class="nav-card">
+<span>3</span>
+<div>
+<strong>CAGR</strong>
+<p>Return analysis</p>
+</div>
+</div>
+
 </div>
 
 <!-- MAIN -->
 <div>
 
 <!-- SIP -->
-<div class="pro-card">
+<div class="card" id="sip">
 <h2>SIP Calculator</h2>
 
-<div class="pro-grid">
+<div class="grid">
 
 <div>
 
-<label>Monthly Investment ₹</label>
-<input id="sip_amt" type="range" min="1000" max="100000" value="5000" oninput="sip_amt_val.innerText=this.value">
-<div class="slider-val">₹<span id="sip_amt_val">5000</span></div>
+<label>Monthly ₹</label>
+<input id="sip_amt" type="range" min="1000" max="50000" value="5000" oninput="sip_amt_val.innerText=this.value">
+<div class="val">₹<span id="sip_amt_val">5000</span></div>
 
 <label>Return %</label>
 <input id="sip_rate" type="range" min="5" max="20" value="12" oninput="sip_rate_val.innerText=this.value">
-<div class="slider-val"><span id="sip_rate_val">12</span>%</div>
+<div class="val"><span id="sip_rate_val">12</span>%</div>
 
 <label>Years</label>
 <input id="sip_years" type="range" min="1" max="30" value="10" oninput="sip_years_val.innerText=this.value">
-<div class="slider-val"><span id="sip_years_val">10</span> yrs</div>
+<div class="val"><span id="sip_years_val">10</span></div>
 
-<button class="btn-primary" onclick="calcSIP()">Calculate SIP</button>
+<button class="btn-primary" onclick="calcSIP()">Calculate</button>
 
 </div>
 
-<div class="pro-results">
+<div class="results">
 
-<div class="result-box">Invested ₹<strong id="sip_inv">0</strong></div>
-<div class="result-box">Returns ₹<strong id="sip_ret">0</strong></div>
-<div class="result-box total">Total ₹<strong id="sip_tot">0</strong></div>
+<div class="result-box">Invested ₹<strong id="sip_i">0</strong></div>
+<div class="result-box">Returns ₹<strong id="sip_r">0</strong></div>
+<div class="result-box">Total ₹<strong id="sip_t">0</strong></div>
 
+<div class="chart-box">
 <canvas id="sip_chart"></canvas>
-
 </div>
 
 </div>
 
-<div class="cta-box">
-Want a real SIP plan, not just numbers?
-<a href="https://justinvesting.in" target="_blank">Start Your SIP →</a>
+</div>
+
+<div class="cta">
+<span>Want real SIP plan?</span>
+<a href="https://justinvesting.in" target="_blank">Start →</a>
 </div>
 
 </div>
 
 <!-- LUMPSUM -->
-<div class="pro-card">
+<div class="card" id="lump">
 <h2>Lumpsum Calculator</h2>
 
-<div class="pro-grid">
+<div class="grid">
 
 <div>
 
-<label>Investment ₹</label>
+<label>Amount ₹</label>
 <input id="lump_amt" type="range" min="10000" max="1000000" value="100000" oninput="lump_amt_val.innerText=this.value">
-<div class="slider-val">₹<span id="lump_amt_val">100000</span></div>
+<div class="val">₹<span id="lump_amt_val">100000</span></div>
 
 <label>Return %</label>
 <input id="lump_rate" type="range" min="5" max="20" value="12" oninput="lump_rate_val.innerText=this.value">
-<div class="slider-val"><span id="lump_rate_val">12</span>%</div>
+<div class="val"><span id="lump_rate_val">12</span>%</div>
 
 <label>Years</label>
 <input id="lump_years" type="range" min="1" max="30" value="10" oninput="lump_years_val.innerText=this.value">
-<div class="slider-val"><span id="lump_years_val">10</span> yrs</div>
+<div class="val"><span id="lump_years_val">10</span></div>
 
 <button class="btn-primary" onclick="calcLump()">Calculate</button>
 
 </div>
 
-<div class="pro-results">
+<div class="results">
 
-<div class="result-box">Invested ₹<strong id="lump_inv">0</strong></div>
-<div class="result-box">Gain ₹<strong id="lump_gain">0</strong></div>
-<div class="result-box total">Total ₹<strong id="lump_tot">0</strong></div>
+<div class="result-box">Invested ₹<strong id="lump_i">0</strong></div>
+<div class="result-box">Gain ₹<strong id="lump_g">0</strong></div>
+<div class="result-box">Total ₹<strong id="lump_t">0</strong></div>
 
+<div class="chart-box">
 <canvas id="lump_chart"></canvas>
+</div>
 
 </div>
 
@@ -153,38 +282,50 @@ Want a real SIP plan, not just numbers?
 <script>
 let sipChart,lumpChart;
 
-function format(n){return Math.round(n).toLocaleString("en-IN");}
+function format(x){return Math.round(x).toLocaleString("en-IN");}
 
-// SIP
+function scrollToCalc(id){
+document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+/* SIP */
 function calcSIP(){
-let P=+sip_amt.value,r=+sip_rate.value/1200,n=+sip_years.value*12;
+let P=sip_amt.value,r=sip_rate.value/1200,n=sip_years.value*12;
 let FV=P*((Math.pow(1+r,n)-1)/r)*(1+r);
 let inv=P*n,ret=FV-inv;
 
-sip_inv.innerText=format(inv);
-sip_ret.innerText=format(ret);
-sip_tot.innerText=format(FV);
+sip_i.innerText=format(inv);
+sip_r.innerText=format(ret);
+sip_t.innerText=format(FV);
 
 if(sipChart) sipChart.destroy();
 sipChart=new Chart(sip_chart,{
-type:"doughnut",
-data:{labels:["Invested","Returns"],datasets:[{data:[inv,ret],backgroundColor:["#38bdf8","#22c55e"]}]}
+type:"bar",
+data:{
+labels:["Invested","Returns"],
+datasets:[{data:[inv,ret],backgroundColor:["#38bdf8","#22c55e"]}]
+},
+options:{plugins:{legend:{display:false}}}
 });
 }
 
-// Lumpsum
+/* LUMP */
 function calcLump(){
-let P=+lump_amt.value,r=+lump_rate.value/100,t=+lump_years.value;
+let P=lump_amt.value,r=lump_rate.value/100,t=lump_years.value;
 let FV=P*Math.pow(1+r,t),gain=FV-P;
 
-lump_inv.innerText=format(P);
-lump_gain.innerText=format(gain);
-lump_tot.innerText=format(FV);
+lump_i.innerText=format(P);
+lump_g.innerText=format(gain);
+lump_t.innerText=format(FV);
 
 if(lumpChart) lumpChart.destroy();
 lumpChart=new Chart(lump_chart,{
-type:"doughnut",
-data:{labels:["Invested","Gain"],datasets:[{data:[P,gain],backgroundColor:["#38bdf8","#22c55e"]}]}
+type:"bar",
+data:{
+labels:["Invested","Gain"],
+datasets:[{data:[P,gain],backgroundColor:["#38bdf8","#22c55e"]}]
+},
+options:{plugins:{legend:{display:false}}}
 });
 }
 
