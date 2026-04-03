@@ -3,257 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crypto Calculators | InvestPercent</title>
+<title>Crypto Calculators Elite | InvestPercent</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-:root{
-  --bg:#0b0f1a;
-  --card:#12182b;
-  --accent:#ff6b35;
-  --text:#ffffff;
-  --muted:#aab0c0;
-}
-body{
-  margin:0;
-  font-family:'Inter',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+body{margin:0;font-family:Inter;background:#0b0f1a;color:#fff;}
 .container{max-width:1200px;margin:auto;padding:20px;}
-.hero{padding:40px 0;}
-.breadcrumb{color:var(--muted);font-size:13px;}
-.title{font-size:32px;font-weight:700;}
-.subtitle{color:var(--muted);}
-
-.warning{
-  background:linear-gradient(135deg,#ff4d4d,#ff6b35);
-  padding:20px;
-  border-radius:12px;
-  margin:20px 0;
-  font-weight:500;
-}
-
-.card{
-  background:var(--card);
-  border-radius:16px;
-  padding:25px;
-  margin:25px 0;
-  box-shadow:0 10px 40px rgba(0,0,0,0.4);
-}
-
-input,select{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:8px;
-  border:none;
-  background:#1c2338;
-  color:#fff;
-}
-
-button{
-  background:var(--accent);
-  color:#fff;
-  padding:10px 20px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.result{
-  background:#1c2338;
-  padding:15px;
-  margin-top:15px;
-  border-radius:10px;
-}
-
-.green{color:#00e676;}
-.red{color:#ff5252;}
-
-.cta{
-  margin-top:20px;
-  padding:15px;
-  background:linear-gradient(135deg,#ff6b3522,#ffd70022);
-  border-left:4px solid var(--accent);
-}
-
-.flex{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-}
-
-@media(max-width:768px){
-  .flex{grid-template-columns:1fr;}
-}
+.card{background:#12182b;border-radius:16px;padding:25px;margin:25px 0;}
+input,select{width:100%;padding:10px;margin:6px 0;border:none;border-radius:8px;background:#1c2338;color:#fff;}
+button{background:#ff6b35;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;}
+.result{background:#1c2338;padding:15px;border-radius:10px;margin-top:10px;}
+.green{color:#00e676;} .red{color:#ff5252;}
+.warning{background:linear-gradient(135deg,#ff4d4d,#ff6b35);padding:20px;border-radius:12px;}
+.flex{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<!-- HERO -->
-<div class="hero">
-  <div class="breadcrumb">Home > Crypto & Alternative Assets</div>
-  <div class="title">₿ Crypto & Alternative Asset Calculators</div>
-  <div class="subtitle">High risk, high reward — calculate before you invest.</div>
-</div>
+<h1>₿ Crypto Calculators (Elite)</h1>
 
-<!-- DISCLAIMER -->
 <div class="warning">
-⚠️ Cryptocurrency investments are highly volatile and unregulated in India. 
-You may lose your entire investment. These tools are educational only. 
-Always consult a SEBI-registered advisor.
+⚠️ Crypto is highly volatile & taxed at 31.2% in India. Losses cannot offset gains.
 </div>
 
-<!-- ================== CALCULATOR 1 ================== -->
+<!-- ===================== CALC 1 ===================== -->
 <div class="card">
-<h2>Crypto Profit / Loss + Tax</h2>
+<h2>Crypto Profit + Tax Engine</h2>
 
 <div class="flex">
 <input id="buy" placeholder="Buy Price ₹">
 <input id="qty" placeholder="Quantity">
-<input id="sell" placeholder="Sell Price ₹">
-<input id="fee" placeholder="Total Fees ₹ (optional)">
+<input id="sell" placeholder="Sell Price ₹ (optional)">
+<input id="fee" placeholder="Fees ₹">
 </div>
+
+<label><input type="checkbox" id="unsold"> Not Sold Yet (Unrealized)</label>
 
 <button onclick="calcPL()">Calculate</button>
 
 <div id="plRes" class="result"></div>
 <canvas id="plChart"></canvas>
-
-<div class="cta">
-📈 Explore tax-efficient investments → <b>justinvesting.in</b>
-</div>
 </div>
 
-<!-- ================== CALCULATOR 2 ================== -->
+<!-- ===================== CALC 2 ===================== -->
 <div class="card">
-<h2>Bitcoin DCA Calculator</h2>
+<h2>Bitcoin vs Nifty vs FD (DCA)</h2>
 
 <div class="flex">
-<input id="monthly" placeholder="Monthly Investment ₹">
+<input id="monthly" placeholder="Monthly ₹">
 <input id="years" placeholder="Years">
-<select id="rate">
-<option value="30">Conservative 30%</option>
-<option value="60">Moderate 60%</option>
-<option value="100">Aggressive 100%</option>
-<option value="-20">Bear Market -20%</option>
-</select>
 </div>
 
-<button onclick="calcDCA()">Calculate</button>
+<button onclick="calcDCA()">Compare</button>
 
 <div id="dcaRes" class="result"></div>
+
+<label><input type="checkbox" id="logToggle"> Log Scale</label>
 <canvas id="dcaChart"></canvas>
 </div>
 
-<!-- ================== CALCULATOR 3 ================== -->
+<!-- ===================== CALC 3 ===================== -->
 <div class="card">
-<h2>Gold vs Nifty vs Bitcoin</h2>
+<h2>Asset Comparison (Post-Tax)</h2>
 
 <div class="flex">
 <input id="amt" placeholder="Investment ₹">
-<input id="start" placeholder="Start Year (2015)">
-<input id="end" placeholder="End Year (2024)">
+<input id="yrs" placeholder="Years">
 </div>
 
 <button onclick="compare()">Compare</button>
 
 <div id="cmpRes" class="result"></div>
-<canvas id="cmpChart"></canvas>
 </div>
 
 </div>
 
 <script>
+
 // ================= CALC 1 =================
 function calcPL(){
-let buy=+document.getElementById("buy").value;
-let qty=+document.getElementById("qty").value;
-let sell=+document.getElementById("sell").value;
-let fee=+document.getElementById("fee").value||0;
+let buy=+buy.value;
+let qty=+qty.value;
+let sellVal=+sell.value;
+let feeVal=+fee.value||0;
+let unsold=document.getElementById("unsold").checked;
 
-let buyCost=(buy*qty)+fee;
-let sellVal=(sell*qty)-fee;
-let profit=sellVal-buyCost;
+let cost=(buy*qty)+feeVal;
+
+if(unsold){
+let unreal=(sellVal*qty)-cost;
+let tax=unreal>0?unreal*0.312:0;
+let breakeven=cost/(qty*(1-0.312));
+
+plRes.innerHTML=`
+Unrealized P/L: ₹${unreal.toFixed(0)}<br>
+If sold, Tax: ₹${tax.toFixed(0)}<br>
+Break-even Price: ₹${breakeven.toFixed(0)}
+`;
+return;
+}
+
+let sellTotal=(sellVal*qty)-feeVal;
+let profit=sellTotal-cost;
 
 let tax=profit>0?profit*0.312:0;
-let tds=sellVal>50000?sellVal*0.01:0;
-
+let tds=sellTotal>50000?sellTotal*0.01:0;
 let net=profit-tax;
 
-document.getElementById("plRes").innerHTML=`
-Buy Cost: ₹${buyCost.toFixed(0)}<br>
-Sell Value: ₹${sellVal.toFixed(0)}<br>
+plRes.innerHTML=`
 Gross P/L: <span class="${profit>=0?'green':'red'}">₹${profit.toFixed(0)}</span><br>
-Tax (31.2%): ₹${tax.toFixed(0)}<br>
+Tax: ₹${tax.toFixed(0)}<br>
 TDS: ₹${tds.toFixed(0)}<br>
-Net Profit: <b>₹${net.toFixed(0)}</b>
+Net Profit: ₹${net.toFixed(0)}
 `;
 
-new Chart(document.getElementById("plChart"),{
+new Chart(plChart,{
 type:'bar',
 data:{
 labels:["Buy","Sell","Tax","Net"],
-datasets:[{data:[buyCost,sellVal,tax,net]}]
+datasets:[{data:[cost,sellTotal,tax,net]}]
 }
 });
 }
 
 // ================= CALC 2 =================
 function calcDCA(){
-let m=+document.getElementById("monthly").value;
-let y=+document.getElementById("years").value;
-let r=+document.getElementById("rate").value/100;
+let m=+monthly.value;
+let y=+years.value;
 
-let months=y*12;
-let val=0;
-let data=[];
+let btc=[],nifty=[],fd=[];
+let b=0,n=0,f=0;
 
-for(let i=0;i<months;i++){
-val=(val+m)*(1+r/12);
-data.push(val);
+for(let i=0;i<y*12;i++){
+b=(b+m)*(1+0.60/12);
+n=(n+m)*(1+0.12/12);
+f=(f+m)*(1+0.07/12);
+
+btc.push(b);nifty.push(n);fd.push(f);
 }
 
-document.getElementById("dcaRes").innerHTML=
-`Final Value: ₹${val.toFixed(0)}`;
+dcaRes.innerHTML=`
+Bitcoin: ₹${b.toFixed(0)}<br>
+Nifty: ₹${n.toFixed(0)}<br>
+FD: ₹${f.toFixed(0)}
+`;
 
-new Chart(document.getElementById("dcaChart"),{
+new Chart(dcaChart,{
 type:'line',
 data:{
-labels:data.map((_,i)=>i+1),
-datasets:[{data:data}]
+labels:btc.map((_,i)=>i+1),
+datasets:[
+{label:"Bitcoin",data:btc},
+{label:"Nifty",data:nifty},
+{label:"FD",data:fd}
+]
+},
+options:{
+scales:{
+y:{type:logToggle.checked?'logarithmic':'linear'}
+}
 }
 });
 }
 
 // ================= CALC 3 =================
 function compare(){
-let amt=+document.getElementById("amt").value;
-let years=+document.getElementById("end").value - +document.getElementById("start").value;
+let amt=+amt.value;
+let y=+yrs.value;
 
-let btc=amt*Math.pow(1.6,years);
-let nifty=amt*Math.pow(1.12,years);
-let gold=amt*Math.pow(1.1,years);
+let btc=amt*Math.pow(1.6,y);
+let nifty=amt*Math.pow(1.12,y);
+let fd=amt*Math.pow(1.07,y);
 
-document.getElementById("cmpRes").innerHTML=
-`Bitcoin: ₹${btc.toFixed(0)}<br>
-Nifty: ₹${nifty.toFixed(0)}<br>
-Gold: ₹${gold.toFixed(0)}`;
+let btcTax=(btc-amt)*0.312;
+let niftyTax=(nifty-amt)*0.125;
 
-new Chart(document.getElementById("cmpChart"),{
-type:'bar',
-data:{
-labels:["Bitcoin","Nifty","Gold"],
-datasets:[{data:[btc,nifty,gold]}]
+cmpRes.innerHTML=`
+Bitcoin Post-Tax: ₹${(btc-btcTax).toFixed(0)}<br>
+Nifty Post-Tax: ₹${(nifty-niftyTax).toFixed(0)}<br>
+FD (Slab assumed 30%): ₹${(fd-(fd-amt)*0.3).toFixed(0)}
+`;
 }
-});
-}
+
 </script>
 
 </body>
