@@ -1,9 +1,11 @@
+/* ================= NAV ================= */
+
 .site-header {
   position: sticky;
   top: 0;
-  background: rgba(6,12,21,0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(6,12,21,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .nav-shell {
@@ -11,12 +13,20 @@
   margin: auto;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 14px 20px;
+}
+
+.brand {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
 }
 
 .top-nav {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .top-nav a {
@@ -25,7 +35,14 @@
   background: rgba(255,255,255,0.05);
   color: white;
   text-decoration: none;
+  font-size: 14px;
 }
+
+.top-nav a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* ================= DROPDOWN ================= */
 
 .dropdown {
   position: relative;
@@ -34,18 +51,89 @@
 .dropdown-menu {
   display: none;
   position: absolute;
+  top: 120%;
   background: #111827;
   padding: 10px;
   border-radius: 10px;
+  min-width: 180px;
 }
 
 .dropdown:hover .dropdown-menu {
   display: block;
 }
 
+/* ================= HERO ================= */
+
+.hero {
+  padding: 50px;
+  border-radius: 24px;
+  background: linear-gradient(135deg,#0b2a2f,#0c1f3f);
+  margin-bottom: 30px;
+}
+
+/* ================= LAYOUT ================= */
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 20px;
+}
+
+.sidebar {
+  background: rgba(255,255,255,0.03);
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================= CARDS ================= */
+
 .calc-card {
-  background: var(--card);
+  background: #111827;
   padding: 20px;
   border-radius: 20px;
   margin-bottom: 20px;
+}
+
+.calc-header h2 {
+  margin-bottom: 10px;
+}
+
+/* ================= FORM ================= */
+
+.calc-body label {
+  font-size: 13px;
+  color: #93a4bd;
+}
+
+.calc-body input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
+/* ================= BUTTON ================= */
+
+.btn-primary {
+  padding: 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#00d09c,#38bdf8);
+  border: none;
+  font-weight: bold;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px){
+  .layout {
+    grid-template-columns: 1fr;
+  }
 }
