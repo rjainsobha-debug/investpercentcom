@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="../css/theme.css">
 <link rel="stylesheet" href="../css/components.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
 
 <div id="header"></div>
-
 <script src="../js/main.js"></script>
 <script>
 loadComponent("header", "../components/header.html");
@@ -17,31 +21,176 @@ loadComponent("header", "../components/header.html");
 <div class="page-shell">
 
 <section class="hero">
-  <h1>Investment Tools</h1>
+  <h1>Investment Calculators</h1>
+  <p>Plan smarter. Grow faster.</p>
 </section>
 
 <div class="layout">
 
+<!-- SIDEBAR -->
 <aside class="sidebar">
   <a href="#sip">SIP</a>
+  <a href="#lumpsum">Lumpsum</a>
+  <a href="#goal">Goal</a>
+  <a href="#stepup">Step-Up SIP</a>
+  <a href="#retirement">Retirement</a>
+  <a href="#inflation">Inflation</a>
 </aside>
 
+<!-- MAIN -->
 <main class="main">
 
+<!-- ================= SIP ================= -->
 <section class="calc-card" id="sip">
 <h2>SIP Calculator</h2>
 
-<input placeholder="Monthly Investment">
-<input placeholder="Years">
+<label>Monthly Investment ₹</label>
+<input id="sip_amt" value="5000">
 
-<button class="btn-primary">Calculate</button>
+<label>Years</label>
+<input id="sip_years" value="10">
 
+<label>Return %</label>
+<input id="sip_rate" value="12">
+
+<button class="btn-primary" onclick="calcSIP()">Calculate</button>
+
+<div id="sip_result" class="result-box"></div>
+<canvas id="sip_chart"></canvas>
+</section>
+
+<!-- ================= LUMPSUM ================= -->
+<section class="calc-card" id="lumpsum">
+<h2>Lumpsum Calculator</h2>
+
+<input id="lump_amt" value="100000">
+<input id="lump_years" value="10">
+<input id="lump_rate" value="12">
+
+<button class="btn-primary" onclick="calcLump()">Calculate</button>
+
+<div id="lump_result"></div>
+<canvas id="lump_chart"></canvas>
+</section>
+
+<!-- ================= GOAL ================= -->
+<section class="calc-card" id="goal">
+<h2>Goal Planner</h2>
+
+<input id="goal_amt" value="1000000">
+<input id="goal_years" value="10">
+<input id="goal_rate" value="12">
+
+<button class="btn-primary" onclick="calcGoal()">Calculate</button>
+
+<div id="goal_result"></div>
+</section>
+
+<!-- ================= STEP UP ================= -->
+<section class="calc-card" id="stepup">
+<h2>Step-up SIP</h2>
+
+<input id="step_amt" value="5000">
+<input id="step_inc" value="10">
+<input id="step_years" value="10">
+<input id="step_rate" value="12">
+
+<button onclick="calcStep()">Calculate</button>
+
+<div id="step_result"></div>
+</section>
+
+<!-- ================= RETIREMENT ================= -->
+<section class="calc-card" id="retirement">
+<h2>Quick Retirement</h2>
+
+<input id="ret_exp" value="50000">
+<input id="ret_years" value="25">
+
+<button onclick="calcRet()">Calculate</button>
+
+<div id="ret_result"></div>
+</section>
+
+<!-- ================= INFLATION ================= -->
+<section class="calc-card" id="inflation">
+<h2>Inflation Impact</h2>
+
+<input id="inf_amt" value="50000">
+<input id="inf_years" value="10">
+<input id="inf_rate" value="6">
+
+<button onclick="calcInf()">Calculate</button>
+
+<div id="inf_result"></div>
 </section>
 
 </main>
+</div>
+</div>
 
-</div>
-</div>
+<script>
+
+// SIP
+function calcSIP(){
+let P=+sip_amt.value,r=+sip_rate.value/1200,n=+sip_years.value*12;
+let FV=P*((Math.pow(1+r,n)-1)/r)*(1+r);
+sip_result.innerHTML="₹"+FV.toFixed(0);
+
+new Chart(sip_chart,{
+type:"doughnut",
+data:{labels:["Invested","Returns"],datasets:[{data:[P*n,FV-(P*n)]}]}
+});
+}
+
+// Lumpsum
+function calcLump(){
+let P=+lump_amt.value,r=+lump_rate.value/100,t=+lump_years.value;
+let FV=P*Math.pow(1+r,t);
+lump_result.innerHTML="₹"+FV.toFixed(0);
+
+new Chart(lump_chart,{
+type:"line",
+data:{labels:[0,t],datasets:[{data:[P,FV]}]}
+});
+}
+
+// Goal
+function calcGoal(){
+let FV=+goal_amt.value,r=+goal_rate.value/1200,n=+goal_years.value*12;
+let sip=FV*r/(Math.pow(1+r,n)-1);
+goal_result.innerHTML="Required SIP ₹"+sip.toFixed(0);
+}
+
+// Step Up
+function calcStep(){
+let sip=+step_amt.value,inc=+step_inc.value/100,r=+step_rate.value/100,years=+step_years.value;
+let total=0;
+
+for(let i=1;i<=years;i++){
+  let annual=sip*12*Math.pow(1+r,years-i);
+  total+=annual;
+  sip*=1+inc;
+}
+
+step_result.innerHTML="₹"+total.toFixed(0);
+}
+
+// Retirement
+function calcRet(){
+let exp=+ret_exp.value;
+let corpus=exp*12*25;
+ret_result.innerHTML="Corpus ₹"+corpus.toFixed(0);
+}
+
+// Inflation
+function calcInf(){
+let amt=+inf_amt.value,r=+inf_rate.value/100,t=+inf_years.value;
+let future=amt*Math.pow(1+r,t);
+inf_result.innerHTML="Future Value ₹"+future.toFixed(0);
+}
+
+</script>
 
 </body>
 </html>
