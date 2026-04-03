@@ -9,26 +9,20 @@
 
 <style>
 
-/* ===== GLOBAL ===== */
+/* ===== BASE ===== */
 body{
 margin:0;
-font-family:Inter,system-ui;
-background:linear-gradient(180deg,#07101d,#08111f);
-color:#eaf2ff;
-}
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:20px;
+font-family:Inter, sans-serif;
+background:#07101d;
+color:#e6f0ff;
 }
 
 /* ===== NAVBAR ===== */
-.nav{
+.navbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:14px 20px;
+padding:14px 30px;
 background:#07101d;
 border-bottom:1px solid rgba(255,255,255,0.08);
 position:sticky;
@@ -37,40 +31,47 @@ z-index:100;
 }
 
 .logo{
-font-weight:800;
-font-size:18px;
+font-weight:700;
 }
 
 .nav-links a{
-margin-left:10px;
+margin-left:12px;
 padding:8px 14px;
 border-radius:20px;
 background:#0f1b2e;
-text-decoration:none;
 color:#cfe3ff;
+text-decoration:none;
 font-size:14px;
 }
 
 .nav-links a.active{
 background:#00d09c;
-color:#001b13;
+color:#00221a;
+}
+
+/* ===== PAGE WIDTH FIX ===== */
+.container{
+max-width:1100px;
+margin:auto;
+padding:20px;
 }
 
 /* ===== HERO ===== */
 .hero{
-background:linear-gradient(135deg,#0f2b3a,#10294a);
+background:linear-gradient(135deg,#0f2b3a,#112d4e);
 padding:22px;
-border-radius:20px;
+border-radius:18px;
 margin-bottom:20px;
 }
 
 .hero h1{
 margin:0;
-font-size:26px;
+font-size:24px;
 }
 
 .hero p{
-color:#a9bdd7;
+color:#9fb4d4;
+margin-top:5px;
 }
 
 /* ===== LAYOUT ===== */
@@ -87,23 +88,23 @@ border-radius:18px;
 padding:15px;
 }
 
-.sidebar h3{
+.sidebar h4{
 font-size:12px;
-color:#8fa6c4;
-letter-spacing:1px;
+color:#8aa0bf;
+margin-bottom:10px;
 }
 
-.side-item{
+.side-card{
 display:flex;
 gap:10px;
 padding:12px;
-margin-top:10px;
-border-radius:12px;
+border-radius:14px;
+margin-bottom:10px;
 background:#121f34;
 cursor:pointer;
 }
 
-.side-item:hover{
+.side-card:hover{
 background:#00d09c20;
 }
 
@@ -115,46 +116,45 @@ background:#00d09c;
 display:flex;
 align-items:center;
 justify-content:center;
-color:#001b13;
 font-size:12px;
 font-weight:bold;
+color:#00221a;
 }
 
-/* ===== CARD ===== */
+/* ===== MAIN CARD ===== */
 .card{
 background:#0f1b2e;
-border-radius:20px;
-padding:18px;
+border-radius:18px;
+padding:20px;
 }
 
-.card h2{
-margin-top:0;
-}
-
-/* ===== INPUT ===== */
+/* ===== INPUTS ===== */
 .input-group{
-margin-bottom:15px;
+margin-bottom:18px;
+}
+
+label{
+font-size:13px;
+color:#9fb4d4;
 }
 
 input[type=range]{
 width:100%;
+accent-color:#00d09c;
 }
 
-input[type=number]{
-width:100%;
-padding:10px;
-border-radius:10px;
-border:1px solid #24364f;
-background:#0b1423;
-color:white;
+.range-value{
+font-size:12px;
+color:#9fb4d4;
+margin-top:4px;
 }
 
 /* ===== BUTTON ===== */
 .btn{
 background:#00d09c;
 border:none;
-padding:12px;
 width:100%;
+padding:12px;
 border-radius:12px;
 font-weight:bold;
 cursor:pointer;
@@ -162,52 +162,29 @@ cursor:pointer;
 
 /* ===== RESULTS ===== */
 .results{
-display:grid;
-grid-template-columns:1fr 1fr;
+display:flex;
 gap:10px;
 margin-top:15px;
 }
 
 .result-box{
+flex:1;
 background:#08111f;
 padding:10px;
 border-radius:10px;
-font-size:14px;
+font-size:13px;
 }
 
 /* ===== CHART ===== */
 .chart{
-max-width:260px;
-margin:auto;
-}
-
-/* ===== CTA ===== */
-.cta{
-margin-top:15px;
-padding:15px;
-border-radius:14px;
-background:#00d09c20;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.cta a{
-background:#00d09c;
-padding:10px 16px;
-border-radius:10px;
-text-decoration:none;
-color:#002219;
-font-weight:bold;
+max-width:220px;
+margin:20px auto;
 }
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:900px){
 .layout{
 grid-template-columns:1fr;
-}
-.sidebar{
-order:2;
 }
 }
 
@@ -216,14 +193,16 @@ order:2;
 
 <body>
 
-<!-- NAV -->
-<div class="nav">
+<!-- NAVBAR -->
+<div class="navbar">
 <div class="logo">InvestPercent</div>
+
 <div class="nav-links">
 <a href="#">Home</a>
 <a class="active">Investment</a>
 <a>Savings</a>
 <a>Loans</a>
+<a>Retirement</a>
 </div>
 </div>
 
@@ -239,29 +218,30 @@ order:2;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<h3>JUMP TO</h3>
 
-<div class="side-item">
+<h4>JUMP TO</h4>
+
+<div class="side-card">
 <div class="side-num">1</div>
 <div>SIP Calculator</div>
 </div>
 
-<div class="side-item">
+<div class="side-card">
 <div class="side-num">2</div>
 <div>Lumpsum</div>
 </div>
 
-<div class="side-item">
+<div class="side-card">
 <div class="side-num">3</div>
 <div>CAGR</div>
 </div>
 
-<div class="side-item">
+<div class="side-card">
 <div class="side-num">4</div>
 <div>SWP</div>
 </div>
 
-<div class="side-item">
+<div class="side-card">
 <div class="side-num">5</div>
 <div>PPF</div>
 </div>
@@ -269,24 +249,26 @@ order:2;
 </div>
 
 <!-- MAIN -->
-<div>
-
 <div class="card">
+
 <h2>SIP Calculator</h2>
 
 <div class="input-group">
 <label>Monthly Investment ₹</label>
-<input type="range" id="sipAmount" min="1000" max="100000" value="5000">
+<input type="range" id="amount" min="1000" max="50000" value="5000" oninput="amtVal.innerText=this.value">
+<div class="range-value">₹<span id="amtVal">5000</span></div>
 </div>
 
 <div class="input-group">
 <label>Return %</label>
-<input type="range" id="sipRate" min="1" max="20" value="12">
+<input type="range" id="rate" min="5" max="20" value="12" oninput="rateVal.innerText=this.value">
+<div class="range-value"><span id="rateVal">12</span>%</div>
 </div>
 
 <div class="input-group">
 <label>Years</label>
-<input type="range" id="sipYears" min="1" max="30" value="10">
+<input type="range" id="years" min="1" max="30" value="10" oninput="yearVal.innerText=this.value">
+<div class="range-value"><span id="yearVal">10</span></div>
 </div>
 
 <button class="btn" onclick="calc()">Calculate</button>
@@ -294,17 +276,11 @@ order:2;
 <div class="results">
 <div class="result-box" id="invested"></div>
 <div class="result-box" id="returns"></div>
+<div class="result-box" id="total"></div>
 </div>
 
 <div class="chart">
 <canvas id="chart"></canvas>
-</div>
-
-<div class="cta">
-<div>Want expert SIP advice?</div>
-<a href="https://justinvesting.in">Start →</a>
-</div>
-
 </div>
 
 </div>
@@ -319,15 +295,16 @@ let chart;
 
 function calc(){
 
-let m = sipAmount.value;
-let r = sipRate.value/100/12;
-let n = sipYears.value*12;
+let m=amount.value;
+let r=rate.value/100/12;
+let n=years.value*12;
 
-let fv = m*((Math.pow(1+r,n)-1)/r)*(1+r);
-let invested = m*n;
+let fv=m*((Math.pow(1+r,n)-1)/r)*(1+r);
+let invested=m*n;
 
-investedDiv.innerHTML="Invested ₹"+invested.toLocaleString();
-returnsDiv.innerHTML="Returns ₹"+Math.round(fv-invested).toLocaleString();
+document.getElementById("invested").innerHTML="Invested ₹"+invested.toLocaleString();
+document.getElementById("returns").innerHTML="Returns ₹"+Math.round(fv-invested).toLocaleString();
+document.getElementById("total").innerHTML="Total ₹"+Math.round(fv).toLocaleString();
 
 if(chart) chart.destroy();
 
@@ -339,7 +316,8 @@ datasets:[{
 data:[invested,fv-invested],
 backgroundColor:["#38bdf8","#00d09c"]
 }]
-}
+},
+options:{plugins:{legend:{display:false}}}
 });
 
 }
