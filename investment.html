@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Investment Simulator — investpercent</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
+<title>Investment Dashboard — investpercent</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -20,10 +21,11 @@
 --muted:#94a3b8;
 }
 
+*{margin:0;padding:0;box-sizing:border-box}
+
 body{
-margin:0;
 font-family:'Inter';
-background:var(--bg);
+background:linear-gradient(180deg,#020617,#020617);
 color:var(--text);
 }
 
@@ -33,11 +35,13 @@ display:flex;
 justify-content:space-between;
 padding:20px 40px;
 background:#020617;
+border-bottom:1px solid rgba(255,255,255,0.05);
 }
 
 .logo{
 font-family:'Poppins';
 font-weight:700;
+font-size:20px;
 background:linear-gradient(90deg,#00d4ff,#7b61ff);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
@@ -46,72 +50,84 @@ cursor:pointer;
 
 /* HEADER */
 .header{
-padding:40px;
+text-align:center;
+padding:40px 20px 10px;
 }
 
 .header h1{
-font-size:32px;
+font-size:36px;
+font-family:'Poppins';
 }
 
 .header p{
 color:var(--muted);
+margin-top:10px;
 }
 
-/* LAYOUT */
+/* MAIN */
 .main{
-display:grid;
-grid-template-columns:1fr 1.2fr;
-gap:30px;
-padding:0 40px 40px;
+max-width:1200px;
+margin:auto;
+padding:20px;
 }
 
-/* CARD */
-.card{
-background:var(--card);
-padding:25px;
-border-radius:20px;
+/* TOP KPI */
+.kpi{
+text-align:center;
+margin-bottom:30px;
 }
 
-/* INPUT */
-.input-group{
-margin-bottom:20px;
-}
-
-label{
-font-size:13px;
-color:var(--muted);
-}
-
-input{
-width:100%;
-margin-top:8px;
-padding:14px;
-border-radius:12px;
-border:none;
-background:#1e293b;
-color:white;
-font-size:15px;
-}
-
-/* RESULT */
-.big{
-font-size:38px;
+.kpi .value{
+font-size:48px;
 font-weight:700;
 color:var(--green);
 }
 
-.row{
-display:flex;
-justify-content:space-between;
-margin-top:10px;
-font-size:14px;
+.kpi .sub{
 color:var(--muted);
+margin-top:5px;
+}
+
+/* CONTROLS */
+.controls{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:20px;
+margin-bottom:30px;
+}
+
+.control{
+background:var(--card);
+padding:20px;
+border-radius:14px;
+}
+
+.control label{
+font-size:13px;
+color:var(--muted);
+}
+
+.control input[type=range]{
+width:100%;
+margin-top:10px;
+}
+
+.control .val{
+margin-top:5px;
+font-weight:600;
+}
+
+/* CHART */
+.chart-box{
+background:var(--card);
+padding:20px;
+border-radius:16px;
 }
 
 /* CTA */
 .cta{
-margin-top:20px;
-padding:18px;
+margin-top:30px;
+padding:20px;
 border-radius:14px;
 background:linear-gradient(90deg,#00d4ff,#7b61ff);
 text-align:center;
@@ -122,7 +138,7 @@ cursor:pointer;
 
 /* MOBILE */
 @media(max-width:900px){
-.main{grid-template-columns:1fr}
+.controls{grid-template-columns:1fr}
 }
 
 </style>
@@ -136,52 +152,48 @@ cursor:pointer;
 
 <div class="header">
 <h1>Investment Simulator</h1>
-<p>See your wealth grow in real time</p>
+<p>Visualize your future wealth instantly</p>
 </div>
 
 <div class="main">
 
-<!-- INPUT -->
-<div class="card">
-
-<div class="input-group">
-<label>Monthly Investment (₹)</label>
-<input id="amt" value="10000" oninput="calc()">
+<!-- KPI -->
+<div class="kpi">
+<div class="value" id="future">₹0</div>
+<div class="sub">Projected Wealth</div>
 </div>
 
-<div class="input-group">
-<label>Return (%)</label>
-<input id="rate" value="12" oninput="calc()">
+<!-- CONTROLS -->
+<div class="controls">
+
+<div class="control">
+<label>Monthly Investment</label>
+<input type="range" min="1000" max="100000" value="10000" id="amt">
+<div class="val" id="amtVal">₹10,000</div>
 </div>
 
-<div class="input-group">
+<div class="control">
+<label>Return %</label>
+<input type="range" min="1" max="20" value="12" id="rate">
+<div class="val" id="rateVal">12%</div>
+</div>
+
+<div class="control">
 <label>Years</label>
-<input id="years" value="10" oninput="calc()">
+<input type="range" min="1" max="40" value="10" id="years">
+<div class="val" id="yearVal">10 Years</div>
 </div>
 
 </div>
 
-<!-- RESULT -->
-<div class="card">
-
-<div class="big" id="value">₹0</div>
-
-<div class="row">
-<span>Invested</span>
-<span id="invested">₹0</span>
+<!-- CHART -->
+<div class="chart-box">
+<canvas id="chart"></canvas>
 </div>
 
-<div class="row">
-<span>Returns</span>
-<span id="gains">₹0</span>
-</div>
-
-<canvas id="chart" style="margin-top:20px;"></canvas>
-
+<!-- CTA -->
 <div class="cta" onclick="invest()">
-Start Investing →
-</div>
-
+🚀 Start Investing Now →  
 </div>
 
 </div>
@@ -198,21 +210,23 @@ window.open("https://justinvesting.in","_blank");
 
 let chart;
 
+/* CALC */
 function calc(){
 
 let P = +amt.value;
 let r = rate.value/100/12;
 let n = years.value*12;
 
-let total = 0;
-let invested = 0;
+amtVal.innerText="₹"+P.toLocaleString();
+rateVal.innerText=rate.value+"%";
+yearVal.innerText=years.value+" Years";
 
-let labels = [];
-let data = [];
+let total=0;
+let labels=[];
+let data=[];
 
 for(let i=1;i<=n;i++){
 total = total*(1+r)+P;
-invested += P;
 
 if(i%12==0){
 labels.push("Year "+(i/12));
@@ -220,16 +234,11 @@ data.push(Math.round(total));
 }
 }
 
-let final = total;
-let gain = final - invested;
-
-document.getElementById("value").innerText="₹"+Math.round(final);
-document.getElementById("invested").innerText="₹"+invested;
-document.getElementById("gains").innerText="₹"+Math.round(gain);
+future.innerText="₹"+Math.round(total).toLocaleString();
 
 if(chart) chart.destroy();
 
-chart = new Chart(document.getElementById("chart"),{
+chart = new Chart(chartCanvas,{
 type:"line",
 data:{
 labels:labels,
@@ -249,7 +258,19 @@ y:{grid:{color:"rgba(255,255,255,0.05)"}}
 }
 }
 });
+
 }
+
+/* INIT */
+const amt = document.getElementById("amt");
+const rate = document.getElementById("rate");
+const years = document.getElementById("years");
+
+const chartCanvas = document.getElementById("chart");
+
+amt.oninput = calc;
+rate.oninput = calc;
+years.oninput = calc;
 
 calc();
 
