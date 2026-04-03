@@ -42,21 +42,42 @@ loadComponent("header", "../components/header.html");
 
 <!-- ================= SIP ================= -->
 <section class="calc-card" id="sip">
-<h2>SIP Calculator</h2>
 
-<label>Monthly Investment ₹</label>
-<input id="sip_amt" value="5000">
+<div class="calc-header">
+  <h2>SIP Calculator</h2>
+</div>
 
-<label>Years</label>
-<input id="sip_years" value="10">
+<div class="calc-grid">
 
-<label>Return %</label>
-<input id="sip_rate" value="12">
+  <!-- LEFT PANEL -->
+  <div class="panel">
 
-<button class="btn-primary" onclick="calcSIP()">Calculate</button>
+    <label>Monthly Investment ₹</label>
+    <input id="sip_amt" value="5000">
 
-<div id="sip_result" class="result-box"></div>
-<canvas id="sip_chart"></canvas>
+    <label>Years</label>
+    <input id="sip_years" value="10">
+
+    <label>Expected Return %</label>
+    <input id="sip_rate" value="12">
+
+    <button class="btn-primary" onclick="calcSIP()">Calculate</button>
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="panel">
+
+    <div id="sip_result" class="result-box">
+      Results will appear here
+    </div>
+
+    <canvas id="sip_chart"></canvas>
+
+  </div>
+
+</div>
+
 </section>
 
 <!-- ================= LUMPSUM ================= -->
