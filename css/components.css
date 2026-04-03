@@ -1,120 +1,134 @@
-/* ================= NAVBAR ================= */
+/* NAVBAR */
 
 .site-header {
   position: sticky;
   top: 0;
   background: #0b1220;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  z-index: 100;
+  border-bottom: 1px solid var(--border);
 }
 
 .nav-shell {
-  max-width: 1100px;
+  max-width: 1000px;
   margin: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 20px;
+  padding: 12px;
+}
+
+.brand {
+  font-weight: bold;
 }
 
 .top-nav {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
 
-.top-nav a {
+.top-nav a,
+.dropdown span {
   padding: 8px 14px;
   border-radius: 999px;
   background: #1f2937;
   color: white;
+  font-size: 13px;
   text-decoration: none;
-  font-size: 14px;
-  transition: 0.2s;
 }
 
-.top-nav a:hover {
-  background: #374151;
+.top-nav a.active {
+  background: #22c55e;
+  color: black;
 }
 
-/* ================= HERO ================= */
+/* DROPDOWN */
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background: #111827;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 6px;
+  color: white;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* PAGE */
+
+.page-shell {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* HERO */
 
 .hero {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 40px;
-  border-radius: 20px;
+  margin: 20px auto;
+  padding: 30px;
+  border-radius: 16px;
   background: #111827;
   text-align: center;
 }
 
-.hero h1 {
-  margin-bottom: 10px;
-}
-
-/* ================= CENTER LAYOUT ================= */
-
-.center-wrap {
-  display: flex;
-  justify-content: center;
-}
-
-/* ================= MAIN CARD ================= */
+/* CARD */
 
 .main-card {
-  width: 600px;
   background: #111827;
-  padding: 30px;
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.08);
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
 }
 
-/* ================= INPUT GRID ================= */
+/* INPUT GRID */
 
 .input-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 12px;
 }
 
-/* ================= INPUT ================= */
-
 label {
-  font-size: 13px;
-  color: #9ca3af;
-  display: block;
-  margin-bottom: 5px;
+  font-size: 12px;
+  color: var(--muted);
 }
 
 input {
   width: 100%;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
   background: #0b1220;
   color: white;
 }
 
-/* ================= BUTTON ================= */
+/* BUTTON */
 
 .btn-primary {
   width: 100%;
   padding: 14px;
-  border-radius: 12px;
+  margin-top: 15px;
+  border-radius: 10px;
   background: #22c55e;
   color: black;
   font-weight: bold;
-  border: none;
-  margin-top: 10px;
-  cursor: pointer;
 }
 
-.btn-primary:hover {
-  background: #16a34a;
-}
-
-/* ================= RESULT ================= */
+/* RESULT */
 
 .result-bar {
   display: flex;
@@ -126,42 +140,23 @@ input {
   text-align: center;
 }
 
-.result-bar p {
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-.result-bar h3 {
-  margin-top: 4px;
-}
-
 .total-box {
   background: #22c55e;
   color: black;
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-radius: 10px;
 }
 
-/* ================= CHART ================= */
+/* CHART */
 
 .chart-box {
-  max-width: 260px;
-  margin: 20px auto;
+  max-width: 220px;
+  margin: auto;
 }
 
-/* ================= RESPONSIVE ================= */
+/* MOBILE */
 
-@media (max-width: 768px) {
-  .main-card {
-    width: 90%;
-  }
-
-  .input-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .result-bar {
-    flex-direction: column;
-    gap: 10px;
-  }
+@media(max-width:768px){
+  .input-grid { grid-template-columns:1fr; }
+  .result-bar { flex-direction:column; gap:10px; }
 }
