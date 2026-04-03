@@ -1,112 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Calculators | InvestPercent</title>
 
-<link rel="stylesheet" href="../css/theme.css">
-<link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/components.css">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
-<div id="header"></div>
-<script src="../js/main.js"></script>
-<script>
-loadComponent("header", "../components/header.html");
-</script>
+  <div id="header"></div>
+  <script src="../js/main.js"></script>
+  <script>
+    loadComponent("header", "../components/header.html");
+  </script>
 
-<div class="page-shell">
+  <div class="page-shell">
 
-<section class="hero">
-  <h1>Investment Calculators</h1>
-  <p>Plan smarter. Grow faster.</p>
-</section>
+    <section class="hero">
+      <h1>Investment Calculators</h1>
+      <p>Plan smarter. Grow faster.</p>
+    </section>
 
-<div class="main-card">
+    <div class="main-card">
+      <h2>SIP Calculator</h2>
 
-<h2>SIP Calculator</h2>
+      <div class="input-grid">
+        <div>
+          <label for="sip_amt">Monthly Investment ₹</label>
+          <input id="sip_amt" type="number" value="5000" min="500" step="500">
+        </div>
 
-<div class="input-grid">
+        <div>
+          <label for="sip_years">Years</label>
+          <input id="sip_years" type="number" value="10" min="1" step="1">
+        </div>
 
-<div>
-<label>Monthly Investment ₹</label>
-<input id="sip_amt" value="5000">
-</div>
+        <div class="full-width">
+          <label for="sip_rate">Expected Return %</label>
+          <input id="sip_rate" type="number" value="12" min="1" step="0.1">
+        </div>
+      </div>
 
-<div>
-<label>Years</label>
-<input id="sip_years" value="10">
-</div>
+      <button class="btn-primary" onclick="calcSIP()">Calculate</button>
 
-<div>
-<label>Return %</label>
-<input id="sip_rate" value="12">
-</div>
+      <div class="result-bar">
+        <div class="result-box">
+          <p>Invested</p>
+          <h3 id="sip_invested">₹0</h3>
+        </div>
 
-</div>
+        <div class="result-box">
+          <p>Returns</p>
+          <h3 id="sip_returns">₹0</h3>
+        </div>
 
-<button class="btn-primary" onclick="calcSIP()">Calculate</button>
+        <div class="result-box total-box">
+          <p>Total Value</p>
+          <h3 id="sip_total">₹0</h3>
+        </div>
+      </div>
 
-<div class="result-bar">
+      <div class="chart-card">
+        <p class="chart-title">Investment vs Wealth Created</p>
+        <div class="chart-box">
+          <canvas id="sip_chart"></canvas>
+        </div>
+      </div>
 
-<div>
-<p>Invested</p>
-<h3 id="sip_invested">₹0</h3>
-</div>
+      <p class="subtle-note">
+        This calculator estimates the future value of a monthly SIP using monthly compounding.
+      </p>
+    </div>
 
-<div>
-<p>Returns</p>
-<h3 id="sip_returns">₹0</h3>
-</div>
+  </div>
 
-<div class="total-box">
-<p>Total</p>
-<h3 id="sip_total">₹0</h3>
-</div>
+  <script>
+    let sipChart;
 
-</div>
+    function formatINR(value) {
+      return "₹" + Math.round(value).toLocaleString("en-IN");
+    }
 
-<div class="chart-box">
-<canvas id="sip_chart"></canvas>
-</div>
+    function calcSIP() {
+      const P = Number(document.getElementById("sip_amt").value || 0);
+      const annualRate = Number(document.getElementById("sip_rate").value || 0);
+      const years = Number(document.getElementById("sip_years").value || 0);
 
-</div>
+      const r = annualRate / 1200;
+      const n = years * 12;
 
-</div>
+      let FV = 0;
+      if (r === 0) {
+        FV = P * n;
+      } else {
+        FV = P * (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
+      }
 
-<script>
-let sipChart;
+      const invested = P * n;
+      const returns = FV - invested;
 
-function calcSIP(){
-let P=+sip_amt.value;
-let r=+sip_rate.value/1200;
-let n=+sip_years.value*12;
+      document.getElementById("sip_invested").textContent = formatINR(invested);
+      document.getElementById("sip_returns").textContent = formatINR(returns);
+      document.getElementById("sip_total").textContent = formatINR(FV);
 
-let FV=P*((Math.pow(1+r,n)-1)/r)*(1+r);
+      if (sipChart) sipChart.destroy();
 
-let invested=P*n;
-let returns=FV-invested;
+      sipChart = new Chart(document.getElementById("sip_chart"), {
+        type: "doughnut",
+        data: {
+          labels: ["Invested", "Returns"],
+          datasets: [{
+            data: [invested, returns],
+            backgroundColor: ["#38bdf8", "#22c55e"],
+            borderColor: "#0b1220",
+            borderWidth: 2,
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          cutout: "58%",
+          plugins: {
+            legend: {
+              position: "top",
+              labels: {
+                color: "#cbd5e1",
+                boxWidth: 14,
+                boxHeight: 14,
+                padding: 14,
+                font: {
+                  size: 11
+                }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${formatINR(context.parsed)}`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
 
-sip_invested.innerHTML="₹"+invested.toFixed(0);
-sip_returns.innerHTML="₹"+returns.toFixed(0);
-sip_total.innerHTML="₹"+FV.toFixed(0);
-
-if(sipChart) sipChart.destroy();
-
-sipChart=new Chart(sip_chart,{
-type:"doughnut",
-data:{
-labels:["Invested","Returns"],
-datasets:[{
-data:[invested,returns],
-backgroundColor:["#38bdf8","#22c55e"]
-}]
-}
-});
-}
-</script>
+    calcSIP();
+  </script>
 
 </body>
 </html>
