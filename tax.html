@@ -1,277 +1,975 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tax Dashboard — investpercent</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-body{
-margin:0;
-font-family:'Inter';
-background:#060915;
-color:white;
-}
-
-.container{
-max-width:1300px;
-margin:auto;
-padding:20px;
-}
-
-nav{
-display:flex;
-justify-content:space-between;
-padding:16px 20px;
-border-bottom:1px solid rgba(255,255,255,0.05);
-}
-
-.logo{
-font-family:'Poppins';
-font-size:22px;
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
--webkit-background-clip:text;
-color:transparent;
-cursor:pointer;
-}
-
-.nav-links a{
-margin-left:12px;
-padding:8px 12px;
-border-radius:10px;
-color:#aaa;
-text-decoration:none;
-}
-
-.nav-links a.active{
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
-color:black;
-}
-
-/* TABS */
-.tabs{
-display:flex;
-gap:10px;
-margin:20px 0;
-flex-wrap:wrap;
-}
-
-.tab{
-padding:10px 14px;
-border-radius:10px;
-background:#111827;
-cursor:pointer;
-}
-
-.tab.active{
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
-color:black;
-}
-
-/* LAYOUT */
-.main{
-display:grid;
-grid-template-columns:380px 1fr;
-gap:20px;
-}
-
-.panel{
-background:#111827;
-padding:20px;
-border-radius:20px;
-}
-
-/* INPUT */
-.control{
-margin-bottom:15px;
-}
-
-label{
-font-size:13px;
-color:#94a3b8;
-}
-
-input{
-width:100%;
-padding:10px;
-margin-top:5px;
-border-radius:8px;
-border:none;
-background:#1e293b;
-color:white;
-}
-
-/* KPI */
-.kpi{
-font-size:40px;
-color:#00e676;
-font-weight:700;
-}
-
-.sub{
-color:#94a3b8;
-}
-
-/* CTA */
-.cta{
-margin-top:20px;
-padding:12px;
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
-color:black;
-text-align:center;
-border-radius:10px;
-cursor:pointer;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Dashboard — investpercent</title>
+  <meta name="description" content="Premium tax dashboard with Income Tax, Salary In-hand, HRA, 80C and Capital Gains calculators." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --bg:#060915;
+      --panel:#0f1830;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.13);
+      --text:#f7fbff;
+      --muted:#9da9c6;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --red:#ff607d;
+      --orange:#ff9951;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
+      --hero:
+        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
+        linear-gradient(180deg,#070c18 0%,#091224 100%);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0; pointer-events:none; z-index:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
+    }
+    a{text-decoration:none;color:inherit}
+    button,input{font:inherit}
+    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:18px 18px 38px}
+    .nav{
+      position:sticky;top:0;z-index:30;
+      display:flex;justify-content:space-between;align-items:center;gap:18px;
+      padding:16px 20px;margin-bottom:18px;
+      border:1px solid var(--line);border-radius:22px;
+      background:rgba(6,10,24,.72);backdrop-filter:blur(18px);
+      box-shadow:var(--shadow2);
+    }
+    .brand{display:flex;align-items:center;gap:14px;cursor:pointer}
+    .brand-mark{
+      width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+      background:var(--grad);color:#07101e;font-weight:800;box-shadow:0 10px 24px rgba(79,163,255,.22)
+    }
+    .brand-name{font-family:Poppins,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.03em}
+    .brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .nav-links{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .nav-links a{
+      padding:11px 14px;border-radius:12px;color:var(--muted);font-weight:700;
+      transition:.2s ease;border:1px solid transparent
+    }
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.04);border-color:var(--line)}
+    .nav-links a.active{color:#08111f;background:var(--grad)}
+    .hero{
+      background:var(--hero);border:1px solid var(--line);border-radius:32px;padding:28px;
+      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:18px
+    }
+    .hero::after{
+      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);pointer-events:none
+    }
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+    .hero-copy h1{
+      margin:0;font-family:Poppins,sans-serif;font-size:clamp(34px,5vw,58px);
+      line-height:1.02;letter-spacing:-.045em;max-width:840px
+    }
+    .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy p{margin:14px 0 0;color:var(--muted);font-size:18px;max-width:760px;line-height:1.6}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:none;cursor:pointer;border-radius:14px;padding:13px 18px;font-weight:800;transition:.2s ease
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .tabbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .tab{
+      background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
+      padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease
+    }
+    .tab:hover{color:var(--text);border-color:var(--line2)}
+    .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
+    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:14px}
+    .metric-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:18px;min-height:110px;position:relative;overflow:hidden
+    }
+    .metric-card::before{
+      content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
+      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
+    }
+    .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+    .metric-value{font-size:clamp(28px,3vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1}
+    .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)} .metric-value.red{color:var(--orange)}
+    .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
+    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:18px;margin-top:18px}
+    .panel{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
+    .controls{padding:22px;position:relative;overflow:hidden}
+    .controls::after{
+      content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
+    }
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+    .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+    .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
+    .control-group{
+      margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
+    }
+    .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .control-name{font-size:14px;font-weight:700;color:var(--text)}
+    .control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
+    input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
+    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-webkit-slider-thumb{
+      appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
+      border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-moz-range-thumb{
+      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+    .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+    .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card{
+      margin-top:18px;padding:18px;border-radius:20px;
+      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
+      border:1px solid rgba(255,255,255,.1)
+    }
+    .advisor-card h4{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
+    .advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .advisor-actions .btn{flex:1;min-width:150px}
+    .dashboard{padding:18px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:800px}
+    .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
+    .wealth-card,.insight-card,.chart-card,.timeline-card,.table-card{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
+    }
+    .wealth-card{
+      padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:188px;
+      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
+    }
+    .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+    .wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
+    .wealth-number{
+      font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff
+    }
+    .wealth-number .grad{
+      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .wealth-sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:660px}
+    .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+    .wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .wealth-stat .s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+    .wealth-stat .s-value{font-size:24px;font-weight:800;letter-spacing:-.03em}
+    .insight-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:188px}
+    .insight-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .insight-box strong{display:block;font-size:15px;margin-bottom:6px;letter-spacing:-.02em}
+    .insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
+    .chart-card{padding:18px;min-height:390px;display:flex;flex-direction:column}
+    .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+    .chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
+    .legend{display:flex;gap:12px;flex-wrap:wrap}
+    .legend-item{
+      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px
+    }
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .chart-wrap{position:relative;flex:1;min-height:280px;margin-top:8px}
+    .timeline-card,.table-card{padding:18px}
+    .timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+    .timeline-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .milestone{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+    .m-amount{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
+    .m-note{color:#8390b1;font-size:13px;line-height:1.45}
+    .table-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+    .table-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .amort-wrap{overflow:auto;border-radius:18px;border:1px solid rgba(255,255,255,.06)}
+    table{width:100%;border-collapse:collapse;min-width:560px}
+    th,td{padding:12px 14px;text-align:left}
+    th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:rgba(255,255,255,.04)}
+    td{border-top:1px solid rgba(255,255,255,.05);font-size:14px;color:#e7edff}
+    tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+    @media(max-width:1180px){
+      .top-metrics{grid-template-columns:1fr 1fr}
+      .layout{grid-template-columns:1fr}
+      .dashboard{min-height:auto}
+      .dash-top{grid-template-columns:1fr}
+      .timeline-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:760px){
+      .page{padding:12px 12px 28px}
+      .nav{padding:14px}
+      .hero{padding:18px}
+      .controls,.dashboard{padding:16px}
+      .wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
+      .hero-copy p{font-size:15px}
+      .metric-value{font-size:30px}
+      .wealth-number{font-size:42px}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page">
+    <nav class="nav">
+      <div class="brand" onclick="location.href='index.html'">
+        <div class="brand-mark">%</div>
+        <div class="brand-name">invest<span>percent</span></div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="investment.html">Investment</a>
+        <a href="loan.html">Loan</a>
+        <a href="tax.html" class="active">Tax</a>
+        <a href="play.html">Play</a>
+        <a href="learn.html">Learn</a>
+      </div>
+    </nav>
 
-<nav>
-<div class="logo" onclick="location.href='index.html'">invest%</div>
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>Tax <span class="grad">Decision Dashboard</span></h1>
+          <p>Model your tax payable and in-hand outcome in one premium shell. Switch between income tax, salary, HRA, 80C and capital gains without breaking the product feel.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="scrollToControls()">Start Planning</button>
+          <button class="btn secondary" onclick="copySummary()">Copy Summary</button>
+        </div>
+      </div>
 
-<div class="nav-links">
-<a href="index.html">Home</a>
-<a href="investment.html">Investment</a>
-<a href="loan.html">Loan</a>
-<a href="tax.html" class="active">Tax</a>
-<a href="play.html">Play</a>
-<a href="learn.html">Learn</a>
-</div>
-</nav>
+      <div class="tabbar" id="tabs"></div>
 
-<div class="container">
+      <div class="top-metrics">
+        <div class="metric-card">
+          <div class="metric-label">Current mode</div>
+          <div class="metric-value cyan" id="modeHeadline">Income Tax</div>
+          <div class="metric-sub" id="modeSub">See tax payable, in-hand outcome and rate impact from your current assumptions.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Primary output</div>
+          <div class="metric-value red" id="topPrimary">₹1.17 L</div>
+          <div class="metric-sub" id="topPrimarySub">Estimated tax payable</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Secondary output</div>
+          <div class="metric-value green" id="topSecondary">₹10.03 L</div>
+          <div class="metric-sub" id="topSecondarySub">Estimated post-tax amount</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Effective rate</div>
+          <div class="metric-value gold" id="topRate">9.8%</div>
+          <div class="metric-sub">Current scenario</div>
+        </div>
+      </div>
+    </section>
 
-<div class="tabs" id="tabs"></div>
+    <section class="layout">
+      <aside class="panel controls" id="controlsAnchor">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Control Panel</div>
+            <div class="panel-desc" id="controlDesc">Adjust income, deductions or exemptions. The tax dashboard updates instantly.</div>
+          </div>
+          <div class="badge" id="panelBadge">TAX MODE</div>
+        </div>
 
-<div class="main">
+        <div id="dynamicControls"></div>
 
-<!-- CONTROLS -->
-<div class="panel" id="controls"></div>
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="k">Decision mood</div>
+            <div class="v" id="miniMood">Taxable</div>
+          </div>
+          <div class="mini">
+            <div class="k">Power insight</div>
+            <div class="v" id="miniInsight">Deduction Matters</div>
+          </div>
+        </div>
 
-<!-- DASHBOARD -->
-<div class="panel">
+        <div class="advisor-card">
+          <h4>Need help turning numbers into action?</h4>
+          <p>Use this dashboard for planning, then move to an advisor or your next workflow once you’ve identified the better direction.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="copySummary()">Copy summary</button>
+            <button class="btn secondary" onclick="location.href='learn.html'">Open Learn</button>
+          </div>
+        </div>
+      </aside>
 
-<div class="kpi" id="result">₹0</div>
-<div class="sub" id="sub">Tax Payable</div>
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title" id="wealthTitle">Estimated Tax Payable</div>
+                <div class="pill" id="wealthPill">Primary Output</div>
+              </div>
+              <div class="wealth-number"><span class="grad" id="wealthNumber">₹1,17,000</span></div>
+              <div class="wealth-sub" id="wealthNarrative">This is your estimated tax output under the current mode and assumptions. Your post-tax figure is shown in the KPI strip and breakdown cards.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label" id="stat1Label">Post-tax amount</div>
+                <div class="s-value" id="stat1Value">₹10,03,000</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat2Label">Effective tax rate</div>
+                <div class="s-value" id="stat2Value">9.8%</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat3Label">Tax saved</div>
+                <div class="s-value" id="stat3Value">₹30,000</div>
+              </div>
+            </div>
+          </div>
 
-<canvas id="chart"></canvas>
+          <div class="insight-card">
+            <div class="insight-title">Decision insights</div>
+            <div class="insight-box"><strong id="insight1Title"></strong><span id="insight1Text"></span></div>
+            <div class="insight-box"><strong id="insight2Title"></strong><span id="insight2Text"></span></div>
+            <div class="insight-box"><strong id="insight3Title"></strong><span id="insight3Text"></span></div>
+          </div>
+        </div>
 
-<div class="cta">Talk to Tax Advisor →</div>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title" id="chartTitle">Tax view</div>
+              <div class="chart-meta" id="chartMeta">Visual breakdown of gross amount, deductions, taxable base and final outcome.</div>
+            </div>
+            <div class="legend" id="chartLegend"></div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="taxChart"></canvas>
+          </div>
+        </div>
 
-</div>
+        <div class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title" id="timelineTitle">Milestones</div>
+              <div class="chart-meta" id="timelineMeta">Quick planning checkpoints based on your current assumptions.</div>
+            </div>
+          </div>
+          <div class="timeline-grid" id="timelineGrid"></div>
+        </div>
 
-</div>
+        <div class="table-card">
+          <div class="table-head">
+            <div>
+              <div class="table-title" id="tableTitle">Computation summary</div>
+              <div class="chart-meta" id="tableMeta">A clean summary of the current tax-mode calculation.</div>
+            </div>
+          </div>
+          <div class="amort-wrap">
+            <table>
+              <thead>
+                <tr id="tableHeaderRow"></tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 
-</div>
+  <script>
+    const CALCS = {
+      income: {
+        label:"Income Tax",
+        badge:"TAX MODE",
+        title:"Income Tax",
+        sub:"See tax payable, in-hand outcome and rate impact from your current assumptions.",
+        desc:"Adjust gross income, deductions and exemptions. This simplified model helps you think through your annual tax burden.",
+        wealthTitle:"Estimated Tax Payable",
+        wealthPill:"Primary Output",
+        chartTitle:"Tax view",
+        chartMeta:"Visual breakdown of gross income, deductions, taxable base and final outcome.",
+        timelineTitle:"Milestones",
+        timelineMeta:"Quick planning checkpoints based on your current assumptions.",
+        controls:[
+          {id:"income", label:"Annual income", min:300000, max:10000000, step:50000, value:1200000, format:"currency"},
+          {id:"deduction", label:"Deductions", min:0, max:500000, step:10000, value:150000, format:"currency"},
+          {id:"hra", label:"Extra exemption / relief", min:0, max:300000, step:10000, value:50000, format:"currency"}
+        ]
+      },
+      salary: {
+        label:"Salary In-hand",
+        badge:"SALARY MODE",
+        title:"Salary to In-hand",
+        sub:"Convert headline salary into estimated take-home after deductions and tax.",
+        desc:"Use a simplified salary planning view to understand how CTC turns into monthly or annual in-hand.",
+        wealthTitle:"Estimated In-hand",
+        wealthPill:"Take-home View",
+        chartTitle:"Salary composition",
+        chartMeta:"Gross salary, deductions, tax and final in-hand shown together.",
+        timelineTitle:"Salary checkpoints",
+        timelineMeta:"Quick checkpoints for annual and monthly take-home planning.",
+        controls:[
+          {id:"ctc", label:"Annual CTC", min:300000, max:10000000, step:50000, value:1200000, format:"currency"},
+          {id:"deduction", label:"Other deductions", min:0, max:500000, step:10000, value:100000, format:"currency"},
+          {id:"taxRate", label:"Tax assumption", min:0, max:35, step:0.5, value:10, format:"percent"}
+        ]
+      },
+      hra: {
+        label:"HRA",
+        badge:"HRA MODE",
+        title:"HRA Exemption",
+        sub:"Test the likely exempt portion of rent support relative to salary and rent outgo.",
+        desc:"This simplified HRA planner helps you estimate exempt and taxable HRA under common planning assumptions.",
+        wealthTitle:"Estimated HRA Exemption",
+        wealthPill:"Exemption View",
+        chartTitle:"HRA breakdown",
+        chartMeta:"Salary base, rent paid and eligible exemption shown in one visual.",
+        timelineTitle:"HRA checkpoints",
+        timelineMeta:"Key points helping you understand exempt vs taxable support.",
+        controls:[
+          {id:"basic", label:"Basic salary", min:100000, max:5000000, step:25000, value:600000, format:"currency"},
+          {id:"hra", label:"HRA received", min:0, max:2000000, step:25000, value:240000, format:"currency"},
+          {id:"rent", label:"Annual rent paid", min:0, max:2000000, step:25000, value:300000, format:"currency"}
+        ]
+      },
+      c80: {
+        label:"80C Planner",
+        badge:"80C MODE",
+        title:"80C Deduction Planner",
+        sub:"See how close you are to the 80C limit and how much deduction room remains.",
+        desc:"Use this to plan EPF, PPF, ELSS or other 80C-style contributions against the simplified cap.",
+        wealthTitle:"Eligible 80C Deduction",
+        wealthPill:"Deduction View",
+        chartTitle:"80C usage",
+        chartMeta:"Planned investment, eligible deduction and remaining room against the cap.",
+        timelineTitle:"Planning checkpoints",
+        timelineMeta:"Simple milestones to help you fill the deduction bucket thoughtfully.",
+        controls:[
+          {id:"planned", label:"Planned 80C investment", min:0, max:300000, step:5000, value:100000, format:"currency"},
+          {id:"limit", label:"80C limit", min:50000, max:300000, step:5000, value:150000, format:"currency"}
+        ]
+      },
+      gains: {
+        label:"Capital Gains",
+        badge:"GAINS MODE",
+        title:"Capital Gains Tax",
+        sub:"Estimate tax payable on a simple gain scenario from buy price to sell price.",
+        desc:"Use a simplified gains planner to estimate gross gain, tax outgo and net realization.",
+        wealthTitle:"Estimated Gains Tax",
+        wealthPill:"Gains View",
+        chartTitle:"Capital gains view",
+        chartMeta:"Buy cost, sale value, gross gain and estimated tax shown together.",
+        timelineTitle:"Gain checkpoints",
+        timelineMeta:"Simple checkpoints showing how much of the gain survives after tax.",
+        controls:[
+          {id:"buy", label:"Buy value", min:10000, max:50000000, step:10000, value:500000, format:"currency"},
+          {id:"sell", label:"Sell value", min:10000, max:100000000, step:10000, value:800000, format:"currency"},
+          {id:"taxRate", label:"Tax rate", min:0, max:35, step:0.5, value:15, format:"percent"}
+        ]
+      }
+    };
 
-<script>
+    let state = {};
+    let active = 'income';
+    let chart;
 
-let mode="income";
+    const $ = id => document.getElementById(id);
 
-const tabsData=[
-["income","Income Tax"],
-["salary","Salary"],
-["hra","HRA"],
-["80c","80C"],
-["cg","Capital Gains"]
-];
+    function formatValue(v, kind){
+      v = Number(v);
+      if(kind === 'currency') return '₹' + Math.round(v).toLocaleString('en-IN');
+      if(kind === 'percent') return Number(v).toFixed(1).replace('.0','') + '%';
+      return v;
+    }
+    function fmtCurrency(v){ return '₹' + Math.round(v).toLocaleString('en-IN'); }
+    function fmtShort(v){
+      if (Math.abs(v) >= 10000000) return '₹' + (v/10000000).toFixed(2).replace(/\.00$/,'') + ' Cr';
+      if (Math.abs(v) >= 100000) return '₹' + (v/100000).toFixed(2).replace(/\.00$/,'') + ' L';
+      return fmtCurrency(v);
+    }
 
-function renderTabs(){
-tabs.innerHTML=tabsData.map(t=>
-`<div class="tab ${mode==t[0]?"active":""}" onclick="switchTab('${t[0]}')">${t[1]}</div>`
-).join("");
-}
+    function initState(){
+      Object.keys(CALCS).forEach(key=>{
+        state[key]={};
+        CALCS[key].controls.forEach(c=> state[key][c.id]=c.value);
+      });
+    }
 
-function switchTab(m){
-mode=m;
-renderTabs();
-renderControls();
-calc();
-}
+    function renderTabs(){
+      $('tabs').innerHTML = Object.entries(CALCS).map(([key, cfg]) =>
+        `<button class="tab ${key===active?'active':''}" data-key="${key}">${cfg.label}</button>`
+      ).join('');
+      document.querySelectorAll('.tab').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          active = btn.dataset.key;
+          renderTabs();
+          renderControls();
+          update();
+        });
+      });
+    }
 
-function renderControls(){
+    function renderControls(){
+      const cfg = CALCS[active];
+      $('panelBadge').textContent = cfg.badge;
+      $('controlDesc').textContent = cfg.desc;
+      $('modeHeadline').textContent = cfg.title;
+      $('modeSub').textContent = cfg.sub;
 
-let html="";
+      $('dynamicControls').innerHTML = cfg.controls.map(c=>`
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">${c.label}</div>
+            <div class="control-value" id="view-${c.id}">${formatValue(state[active][c.id], c.format)}</div>
+          </div>
+          <input type="range" id="ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${state[active][c.id]}">
+        </div>
+      `).join('');
 
-if(mode=="income"){
-html=`
-<div class="control"><label>Income</label><input id="x" value="1200000"></div>
-<div class="control"><label>Deductions</label><input id="y" value="150000"></div>
-`;
-}
+      cfg.controls.forEach(c=>{
+        $(`ctrl-${c.id}`).addEventListener('input', e=>{
+          state[active][c.id] = Number(e.target.value);
+          $(`view-${c.id}`).textContent = formatValue(state[active][c.id], c.format);
+          update();
+        });
+      });
+    }
 
-if(mode=="salary"){
-html=`
-<div class="control"><label>CTC</label><input id="x" value="1200000"></div>
-`;
-}
+    function renderChart(labels, series, title, meta){
+      $('chartTitle').textContent = title;
+      $('chartMeta').textContent = meta;
+      $('chartLegend').innerHTML = series.map(s=>`
+        <div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>
+      `).join('');
 
-if(mode=="hra"){
-html=`
-<div class="control"><label>Salary</label><input id="x" value="500000"></div>
-<div class="control"><label>Rent</label><input id="y" value="150000"></div>
-`;
-}
+      const ctx = $('taxChart').getContext('2d');
+      const gradient = ctx.createLinearGradient(0,0,0,360);
+      gradient.addColorStop(0, 'rgba(0,212,255,.26)');
+      gradient.addColorStop(.55, 'rgba(79,163,255,.12)');
+      gradient.addColorStop(1, 'rgba(79,163,255,0)');
 
-if(mode=="80c"){
-html=`
-<div class="control"><label>Investment</label><input id="x" value="100000"></div>
-`;
-}
+      if(chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type:'line',
+        data:{
+          labels,
+          datasets:series.map((s, idx)=>({
+            label:s.label,
+            data:s.data,
+            borderColor:s.color,
+            backgroundColor: idx===0 ? gradient : 'transparent',
+            fill: !!s.fill,
+            borderWidth: idx===0 ? 3 : 2.2,
+            pointRadius: idx===0 ? 2 : 0,
+            pointHoverRadius: 5,
+            pointBackgroundColor: s.color,
+            pointBorderColor: '#08111f',
+            tension:.32
+          }))
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          interaction:{mode:'index',intersect:false},
+          plugins:{
+            legend:{display:false},
+            tooltip:{
+              backgroundColor:'rgba(7,12,28,.96)',
+              borderColor:'rgba(255,255,255,.08)',
+              borderWidth:1,
+              titleColor:'#fff',
+              bodyColor:'#dce6ff',
+              padding:12,
+              callbacks:{ label:(ctx)=>`${ctx.dataset.label}: ${fmtCurrency(ctx.raw)}` }
+            }
+          },
+          scales:{
+            x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:12}}},
+            y:{
+              beginAtZero:true,
+              grid:{color:'rgba(255,255,255,.06)'},
+              ticks:{color:'rgba(220,230,255,.55)',font:{size:12}, callback:(v)=>fmtShort(v)}
+            }
+          }
+        }
+      });
+    }
 
-if(mode=="cg"){
-html=`
-<div class="control"><label>Buy Price</label><input id="x" value="500000"></div>
-<div class="control"><label>Sell Price</label><input id="y" value="800000"></div>
-`;
-}
+    function setInsights(a,b,c){
+      $('insight1Title').textContent = a.title; $('insight1Text').textContent = a.text;
+      $('insight2Title').textContent = b.title; $('insight2Text').textContent = b.text;
+      $('insight3Title').textContent = c.title; $('insight3Text').textContent = c.text;
+    }
 
-controls.innerHTML=html;
-document.querySelectorAll("input").forEach(i=>i.oninput=calc);
-}
+    function setTop(primary, primarySub, secondary, secondarySub, rate){
+      $('topPrimary').textContent = primary;
+      $('topPrimarySub').textContent = primarySub;
+      $('topSecondary').textContent = secondary;
+      $('topSecondarySub').textContent = secondarySub;
+      $('topRate').textContent = rate;
+    }
 
-function calc(){
+    function setWealthArea({title,pill,value,narrative,stat1,stat2,stat3,mood,power,isRate=false}){
+      $('wealthTitle').textContent = title;
+      $('wealthPill').textContent = pill;
+      $('wealthNumber').textContent = isRate ? value : fmtCurrency(value);
+      $('wealthNarrative').textContent = narrative;
+      $('stat1Label').textContent = stat1.label; $('stat1Value').textContent = stat1.value;
+      $('stat2Label').textContent = stat2.label; $('stat2Value').textContent = stat2.value;
+      $('stat3Label').textContent = stat3.label; $('stat3Value').textContent = stat3.value;
+      $('miniMood').textContent = mood;
+      $('miniInsight').textContent = power;
+    }
 
-let val=0;
+    function renderMilestones(title, meta, items){
+      $('timelineTitle').textContent = title;
+      $('timelineMeta').textContent = meta;
+      $('timelineGrid').innerHTML = items.map(item=>`
+        <div class="milestone">
+          <div class="m-year">${item.year}</div>
+          <div class="m-amount">${item.amount}</div>
+          <div class="m-note">${item.note}</div>
+        </div>
+      `).join('');
+    }
 
-if(mode=="income"){
-val=(x.value - y.value)*0.2;
-sub.innerText="Estimated Tax";
-}
+    function renderTable(headers, rows, title, meta){
+      $('tableTitle').textContent = title;
+      $('tableMeta').textContent = meta;
+      $('tableHeaderRow').innerHTML = headers.map(h=>`<th>${h}</th>`).join('');
+      $('tableBody').innerHTML = rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
+    }
 
-if(mode=="salary"){
-val=x.value*0.7;
-sub.innerText="In-hand Salary";
-}
+    function incomeTaxCalc(income, deduction, hra){
+      const gross = income;
+      const totalDed = deduction + hra;
+      const taxable = Math.max(gross - totalDed, 0);
+      const tax = taxable * 0.20;
+      const post = gross - tax;
+      const rate = gross > 0 ? (tax/gross)*100 : 0;
+      return {gross,totalDed,taxable,tax,post,rate};
+    }
 
-if(mode=="hra"){
-val=Math.min(x.value*0.4,y.value);
-sub.innerText="HRA Exemption";
-}
+    function salaryCalc(ctc, deduction, taxRate){
+      const gross = ctc;
+      const tax = Math.max(gross - deduction, 0) * taxRate/100;
+      const post = gross - deduction - tax;
+      const monthly = post/12;
+      const rate = gross > 0 ? (tax/gross)*100 : 0;
+      return {gross,deduction,tax,post,monthly,rate};
+    }
 
-if(mode=="80c"){
-val=Math.min(x.value,150000);
-sub.innerText="Eligible Deduction";
-}
+    function hraCalc(basic, hraReceived, rent){
+      const rule2 = basic * 0.40;
+      const rule3 = Math.max(rent - basic * 0.10, 0);
+      const exempt = Math.min(hraReceived, rule2, rule3);
+      const taxable = Math.max(hraReceived - exempt, 0);
+      return {basic,hraReceived,rent,exempt,taxable};
+    }
 
-if(mode=="cg"){
-val=(y.value - x.value)*0.15;
-sub.innerText="Capital Gains Tax";
-}
+    function c80Calc(planned, limit){
+      const eligible = Math.min(planned, limit);
+      const room = Math.max(limit - eligible, 0);
+      const overflow = Math.max(planned - limit, 0);
+      return {planned,limit,eligible,room,overflow};
+    }
 
-result.innerText="₹"+Math.round(val).toLocaleString();
+    function gainsCalc(buy, sell, taxRate){
+      const gain = Math.max(sell - buy, 0);
+      const tax = gain * taxRate/100;
+      const post = sell - tax;
+      const rate = sell > 0 ? (tax/sell)*100 : 0;
+      return {buy,sell,gain,tax,post,rate};
+    }
 
-}
+    function update(){
+      const s = state[active];
+      const cfg = CALCS[active];
 
-renderTabs();
-renderControls();
-calc();
+      $('panelBadge').textContent = cfg.badge;
+      $('controlDesc').textContent = cfg.desc;
+      $('modeHeadline').textContent = cfg.title;
+      $('modeSub').textContent = cfg.sub;
 
-</script>
+      if(active === 'income'){
+        const r = incomeTaxCalc(s.income, s.deduction, s.hra);
+        setTop(fmtShort(r.tax), 'Estimated tax payable', fmtShort(r.post), 'Estimated post-tax amount', r.rate.toFixed(1)+'%');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:r.tax,
+          narrative:`With gross income of ${fmtCurrency(r.gross)} and total deductions / exemptions of ${fmtCurrency(r.totalDed)}, the simplified tax estimate comes to ${fmtCurrency(r.tax)}.`,
+          stat1:{label:'Post-tax amount', value:fmtCurrency(r.post)},
+          stat2:{label:'Effective tax rate', value:r.rate.toFixed(1)+'%'},
+          stat3:{label:'Taxable income', value:fmtCurrency(r.taxable)},
+          mood:r.rate < 10 ? 'Efficient' : 'Tax Heavy',
+          power:`Deduction ${fmtShort(r.totalDed)}`
+        });
+        setInsights(
+          {title:'Deductions are shaping the outcome.', text:'Every eligible deduction directly lowers the taxable base in this simplified view.'},
+          {title:'Tax payable and post-tax amount should be read together.', text:'One number tells you the burden, the other tells you the money that stays with you.'},
+          {title:'Use this as a planning lens, not a filing engine.', text:'This dashboard is best for quick decision support before final tax computation.'}
+        );
+        renderChart(
+          ['Gross','Deductions','Taxable','Tax','Post-tax'],
+          [
+            {label:'Amount', data:[r.gross,r.totalDed,r.taxable,r.tax,r.post], color:'#00d4ff', fill:true},
+            {label:'Tax', data:[0,0,0,r.tax,0], color:'#ff9951', fill:false}
+          ],
+          cfg.chartTitle, cfg.chartMeta
+        );
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {year:'Gross', amount:fmtShort(r.gross), note:'Headline annual income'},
+          {year:'Deduct', amount:fmtShort(r.totalDed), note:'Combined deduction and exemption effect'},
+          {year:'Tax', amount:fmtShort(r.tax), note:'Estimated simplified tax outgo'},
+          {year:'Keep', amount:fmtShort(r.post), note:'Estimated post-tax amount'}
+        ]);
+        renderTable(
+          ['Metric','Value'],
+          [
+            ['Gross income', fmtCurrency(r.gross)],
+            ['Deductions', fmtCurrency(s.deduction)],
+            ['Extra exemption / relief', fmtCurrency(s.hra)],
+            ['Total deduction / exemption', fmtCurrency(r.totalDed)],
+            ['Taxable income', fmtCurrency(r.taxable)],
+            ['Estimated tax', fmtCurrency(r.tax)],
+            ['Estimated post-tax amount', fmtCurrency(r.post)],
+            ['Effective tax rate', r.rate.toFixed(1)+'%']
+          ],
+          'Income tax summary',
+          'A simplified snapshot of the current income-tax mode.'
+        );
+      }
 
+      if(active === 'salary'){
+        const r = salaryCalc(s.ctc, s.deduction, s.taxRate);
+        setTop(fmtShort(r.post), 'Estimated annual in-hand', fmtShort(r.monthly), 'Estimated monthly in-hand', r.rate.toFixed(1)+'%');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:r.post,
+          narrative:`From a CTC of ${fmtCurrency(r.gross)}, this simplified view estimates annual in-hand of ${fmtCurrency(r.post)} and monthly take-home of ${fmtCurrency(r.monthly)}.`,
+          stat1:{label:'Monthly in-hand', value:fmtCurrency(r.monthly)},
+          stat2:{label:'Tax outgo', value:fmtCurrency(r.tax)},
+          stat3:{label:'Other deductions', value:fmtCurrency(r.deduction)},
+          mood:r.post > r.gross*0.7 ? 'Healthy Take-home' : 'Compressed Take-home',
+          power:`Tax ${r.rate.toFixed(1)}%`
+        });
+        setInsights(
+          {title:'CTC is not cash in hand.', text:'Your final take-home depends on the interaction between deductions and tax, not the headline package alone.'},
+          {title:'Monthly planning matters.', text:'Use the monthly in-hand output for real budgeting, not just the annual figure.'},
+          {title:'This is a planning simplification.', text:'Use it to think through salary quality, not as a substitute for final payroll logic.'}
+        );
+        renderChart(
+          ['CTC','Deductions','Tax','Annual In-hand','Monthly In-hand x12'],
+          [
+            {label:'Amount', data:[r.gross,r.deduction,r.tax,r.post,r.monthly*12], color:'#00d4ff', fill:true},
+            {label:'Tax', data:[0,0,r.tax,0,0], color:'#ff9951', fill:false}
+          ],
+          cfg.chartTitle, cfg.chartMeta
+        );
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {year:'CTC', amount:fmtShort(r.gross), note:'Headline annual package'},
+          {year:'Less', amount:fmtShort(r.deduction), note:'Other deduction impact'},
+          {year:'Tax', amount:fmtShort(r.tax), note:'Estimated simplified tax'},
+          {year:'In-hand', amount:fmtShort(r.post), note:'Annual money that remains'}
+        ]);
+        renderTable(
+          ['Metric','Value'],
+          [
+            ['Annual CTC', fmtCurrency(r.gross)],
+            ['Other deductions', fmtCurrency(r.deduction)],
+            ['Estimated tax', fmtCurrency(r.tax)],
+            ['Estimated annual in-hand', fmtCurrency(r.post)],
+            ['Estimated monthly in-hand', fmtCurrency(r.monthly)],
+            ['Effective tax rate', r.rate.toFixed(1)+'%']
+          ],
+          'Salary to in-hand summary',
+          'A quick salary-planning snapshot based on your current assumptions.'
+        );
+      }
+
+      if(active === 'hra'){
+        const r = hraCalc(s.basic, s.hra, s.rent);
+        setTop(fmtShort(r.exempt), 'Estimated HRA exemption', fmtShort(r.taxable), 'Taxable HRA', ((r.exempt/Math.max(r.hraReceived,1))*100).toFixed(1)+'%');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:r.exempt,
+          narrative:`Based on the current basic salary, HRA received and annual rent, the simplified exempt HRA estimate is ${fmtCurrency(r.exempt)}.`,
+          stat1:{label:'Taxable HRA', value:fmtCurrency(r.taxable)},
+          stat2:{label:'HRA received', value:fmtCurrency(r.hraReceived)},
+          stat3:{label:'Annual rent', value:fmtCurrency(r.rent)},
+          mood:r.exempt > 0 ? 'Exemption Active' : 'Low Benefit',
+          power:`Exempt ${((r.exempt/Math.max(r.hraReceived,1))*100).toFixed(0)}%`
+        });
+        setInsights(
+          {title:'Rent and salary both matter.', text:'HRA benefit depends not only on HRA received, but also on the interaction between rent paid and basic salary.'},
+          {title:'Exemption is rarely the full HRA.', text:'In many cases, only part of the received HRA remains exempt under planning assumptions.'},
+          {title:'This is a simplified planning view.', text:'Use this to estimate likely range before detailed salary-structure review.'}
+        );
+        renderChart(
+          ['Basic Salary','HRA Received','Rent Paid','Exempt HRA','Taxable HRA'],
+          [
+            {label:'Amount', data:[r.basic,r.hraReceived,r.rent,r.exempt,r.taxable], color:'#00d4ff', fill:true},
+            {label:'Taxable Portion', data:[0,0,0,0,r.taxable], color:'#ff9951', fill:false}
+          ],
+          cfg.chartTitle, cfg.chartMeta
+        );
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {year:'Basic', amount:fmtShort(r.basic), note:'Salary base for HRA logic'},
+          {year:'HRA', amount:fmtShort(r.hraReceived), note:'Support received from employer'},
+          {year:'Exempt', amount:fmtShort(r.exempt), note:'Estimated exempt portion'},
+          {year:'Taxable', amount:fmtShort(r.taxable), note:'Remaining taxable HRA'}
+        ]);
+        renderTable(
+          ['Metric','Value'],
+          [
+            ['Basic salary', fmtCurrency(r.basic)],
+            ['HRA received', fmtCurrency(r.hraReceived)],
+            ['Annual rent paid', fmtCurrency(r.rent)],
+            ['Estimated exempt HRA', fmtCurrency(r.exempt)],
+            ['Estimated taxable HRA', fmtCurrency(r.taxable)]
+          ],
+          'HRA summary',
+          'A simplified HRA exemption view using the current inputs.'
+        );
+      }
+
+      if(active === 'c80'){
+        const r = c80Calc(s.planned, s.limit);
+        setTop(fmtShort(r.eligible), 'Eligible deduction', fmtShort(r.room), 'Remaining room', ((r.eligible/Math.max(r.limit,1))*100).toFixed(1)+'%');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:r.eligible,
+          narrative:`With planned 80C investment of ${fmtCurrency(r.planned)} against a limit of ${fmtCurrency(r.limit)}, the eligible deduction is ${fmtCurrency(r.eligible)}.`,
+          stat1:{label:'Remaining room', value:fmtCurrency(r.room)},
+          stat2:{label:'Planned amount', value:fmtCurrency(r.planned)},
+          stat3:{label:'Limit used', value:((r.eligible/Math.max(r.limit,1))*100).toFixed(1)+'%'},
+          mood:r.room === 0 ? 'Bucket Filled' : 'Room Left',
+          power:`Room ${fmtShort(r.room)}`
+        });
+        setInsights(
+          {title:'80C planning is a bucket exercise.', text:'What matters is not just investment, but how much of the eligible cap is actually being used.'},
+          {title:r.room === 0 ? 'You have filled the bucket.' : 'There is still deduction room left.', text:r.room === 0 ? 'Additional investment may still matter for wealth, but not for this deduction bucket.' : 'You may still have room to optimize within the current cap.'},
+          {title:'Eligibility and usefulness are different questions.', text:'This helps you see deduction efficiency, not whether a given product is suitable for your goals.'}
+        );
+        renderChart(
+          ['Planned','Eligible','Remaining Room','Overflow'],
+          [
+            {label:'Amount', data:[r.planned,r.eligible,r.room,r.overflow], color:'#00d4ff', fill:true},
+            {label:'Unused / Excess', data:[0,0,r.room,r.overflow], color:'#ff9951', fill:false}
+          ],
+          cfg.chartTitle, cfg.chartMeta
+        );
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {year:'Planned', amount:fmtShort(r.planned), note:'Current planned 80C-style investment'},
+          {year:'Eligible', amount:fmtShort(r.eligible), note:'Amount that fits into the cap'},
+          {year:'Room', amount:fmtShort(r.room), note:'Still available under the cap'},
+          {year:'Overflow', amount:fmtShort(r.overflow), note:'Planned above the cap'}
+        ]);
+        renderTable(
+          ['Metric','Value'],
+          [
+            ['Planned investment', fmtCurrency(r.planned)],
+            ['Limit', fmtCurrency(r.limit)],
+            ['Eligible deduction', fmtCurrency(r.eligible)],
+            ['Remaining room', fmtCurrency(r.room)],
+            ['Overflow above limit', fmtCurrency(r.overflow)]
+          ],
+          '80C planner summary',
+          'A simple view of how much of the deduction bucket is being used.'
+        );
+      }
+
+      if(active === 'gains'){
+        const r = gainsCalc(s.buy, s.sell, s.taxRate);
+        setTop(fmtShort(r.tax), 'Estimated gains tax', fmtShort(r.post), 'Estimated net realization', r.taxRate ? r.taxRate : s.taxRate.toFixed(1)+'%');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:r.tax,
+          narrative:`With a buy value of ${fmtCurrency(r.buy)} and sell value of ${fmtCurrency(r.sell)}, the simplified gains tax estimate comes to ${fmtCurrency(r.tax)}.`,
+          stat1:{label:'Gross gain', value:fmtCurrency(r.gain)},
+          stat2:{label:'Net realization', value:fmtCurrency(r.post)},
+          stat3:{label:'Applied tax rate', value:s.taxRate.toFixed(1)+'%'},
+          mood:r.gain > 0 ? 'Gain Realized' : 'No Gain',
+          power:`Net ${fmtShort(r.post)}`
+        });
+        setInsights(
+          {title:'What matters is the gain, not the sale value alone.', text:'Tax is driven by the gap between buy and sell values in this simplified view.'},
+          {title:'Tax rate changes the net outcome sharply.', text:'A higher applied rate can materially cut what remains after realization.'},
+          {title:'Use this for quick planning.', text:'This mode helps you sense post-tax realization before a more detailed computation.'}
+        );
+        renderChart(
+          ['Buy Value','Sell Value','Gross Gain','Estimated Tax','Net Realization'],
+          [
+            {label:'Amount', data:[r.buy,r.sell,r.gain,r.tax,r.post], color:'#00d4ff', fill:true},
+            {label:'Tax', data:[0,0,0,r.tax,0], color:'#ff9951', fill:false}
+          ],
+          cfg.chartTitle, cfg.chartMeta
+        );
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {year:'Buy', amount:fmtShort(r.buy), note:'Original acquisition value'},
+          {year:'Sell', amount:fmtShort(r.sell), note:'Sale-side realization'},
+          {year:'Gain', amount:fmtShort(r.gain), note:'Gross gain before tax'},
+          {year:'Net', amount:fmtShort(r.post), note:'Amount after estimated tax'}
+        ]);
+        renderTable(
+          ['Metric','Value'],
+          [
+            ['Buy value', fmtCurrency(r.buy)],
+            ['Sell value', fmtCurrency(r.sell)],
+            ['Gross gain', fmtCurrency(r.gain)],
+            ['Applied tax rate', s.taxRate.toFixed(1)+'%'],
+            ['Estimated gains tax', fmtCurrency(r.tax)],
+            ['Estimated net realization', fmtCurrency(r.post)]
+          ],
+          'Capital gains summary',
+          'A simplified gains-tax planning snapshot.'
+        );
+      }
+    }
+
+    function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smooth', block:'start'}); }
+    function copySummary(){
+      const summary = `investpercent Tax Dashboard
+Mode: ${CALCS[active].label}
+Primary: ${$('wealthNumber').textContent}
+${$('stat1Label').textContent}: ${$('stat1Value').textContent}
+${$('stat2Label').textContent}: ${$('stat2Value').textContent}
+${$('stat3Label').textContent}: ${$('stat3Value').textContent}`;
+      navigator.clipboard.writeText(summary).then(()=>{
+        const old = $('miniInsight').textContent;
+        $('miniInsight').textContent = 'Summary Copied';
+        setTimeout(()=> $('miniInsight').textContent = old, 1500);
+      });
+    }
+
+    initState();
+    renderTabs();
+    renderControls();
+    update();
+  </script>
 </body>
 </html>
