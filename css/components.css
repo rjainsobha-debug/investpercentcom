@@ -89,3 +89,37 @@
     grid-template-columns: 1fr;
   }
 }
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown span {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background: #0d1728;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  display: none;
+  min-width: 180px;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 8px 10px;
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
