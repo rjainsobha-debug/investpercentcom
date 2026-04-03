@@ -6,14 +6,40 @@
 
 <title>Investment Calculators | InvestPercent</title>
 
-<link rel="stylesheet" href="../css/theme.css">
-<link rel="stylesheet" href="../css/components.css">
+<!-- ✅ CORRECT CSS PATH (ROOT FILE) -->
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/components.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
-/* ===== PAGE LAYOUT FIX ===== */
+/* ===== GLOBAL ===== */
+body{
+  background:#020617;
+  color:white;
+  font-family:system-ui;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  padding:15px 40px;
+  background:#020617;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.nav-links a{
+  margin-left:10px;
+  padding:8px 14px;
+  border-radius:20px;
+  background:#111827;
+  text-decoration:none;
+  color:white;
+}
+
+/* ===== CONTAINER ===== */
 .container{
   max-width:1100px;
   margin:auto;
@@ -22,13 +48,13 @@
 
 /* ===== HERO ===== */
 .hero{
-  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  padding:30px;
-  border-radius:20px;
-  margin-bottom:30px;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  padding:25px;
+  border-radius:16px;
+  margin-bottom:25px;
 }
 
-/* ===== MAIN GRID ===== */
+/* ===== GRID ===== */
 .layout{
   display:grid;
   grid-template-columns:220px 1fr;
@@ -38,67 +64,50 @@
 /* ===== SIDEBAR ===== */
 .sidebar{
   background:#0f172a;
-  border-radius:16px;
+  border-radius:14px;
   padding:15px;
 }
 
-.sidebar h4{
-  font-size:12px;
-  color:#94a3b8;
-  margin-bottom:10px;
-}
-
-.side-link{
+.side-item{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:12px;
-  border-radius:12px;
+  padding:10px;
   margin-bottom:10px;
+  border-radius:10px;
   background:#111827;
-  cursor:pointer;
-  transition:0.2s;
-}
-
-.side-link:hover{
-  background:#1f2937;
 }
 
 .num{
-  width:28px;
-  height:28px;
-  border-radius:50%;
   background:#10b981;
+  width:25px;
+  height:25px;
+  border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:13px;
 }
 
 /* ===== CARD ===== */
 .card{
   background:#0f172a;
-  border-radius:18px;
   padding:20px;
+  border-radius:16px;
 }
 
-/* ===== INPUTS ===== */
-.input-group{
-  margin-bottom:15px;
-}
-
-input[type="range"]{
+/* ===== INPUT ===== */
+input[type=range]{
   width:100%;
 }
 
-/* ===== RESULTS ===== */
+/* ===== RESULT ===== */
 .results{
   display:flex;
   gap:10px;
   margin-top:15px;
 }
 
-.result-box{
+.box{
   flex:1;
   background:#020617;
   padding:10px;
@@ -108,7 +117,7 @@ input[type="range"]{
 
 /* ===== CHART ===== */
 .chart{
-  max-width:250px;
+  max-width:220px;
   margin:auto;
 }
 
@@ -117,10 +126,9 @@ input[type="range"]{
   margin-top:20px;
   padding:20px;
   background:#020617;
-  border-radius:15px;
+  border-radius:12px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
 }
 
 .cta button{
@@ -143,78 +151,66 @@ input[type="range"]{
 
 <body>
 
-<!-- NAVBAR (SAME STRUCTURE AS INDEX) -->
-<header class="nav-wrap">
-  <nav class="nav">
-    <a href="../index.html">InvestPercent</a>
-    <div class="nav-links">
-      <a href="../index.html">Home</a>
-      <a class="active">Investment</a>
-      <a href="./savings.html">Savings</a>
-      <a href="./loans.html">Loans</a>
-      <a href="./retirement.html">Retirement</a>
-    </div>
-  </nav>
-</header>
+<!-- NAVBAR -->
+<div class="navbar">
+  <div>InvestPercent</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a class="active">Investment</a>
+    <a href="pages/savings.html">Savings</a>
+    <a href="pages/loans.html">Loans</a>
+    <a href="pages/retirement.html">Retirement</a>
+  </div>
+</div>
 
 <div class="container">
 
 <!-- HERO -->
 <div class="hero">
   <h2>Investment Calculators</h2>
-  <p>Plan SIP, lumpsum, CAGR & wealth growth in one place</p>
+  <p>Plan SIP, lumpsum & wealth growth</p>
 </div>
 
 <div class="layout">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <h4>JUMP TO</h4>
-
-  <div class="side-link"><div class="num">1</div> SIP</div>
-  <div class="side-link"><div class="num">2</div> Lumpsum</div>
-  <div class="side-link"><div class="num">3</div> CAGR</div>
-  <div class="side-link"><div class="num">4</div> SWP</div>
-  <div class="side-link"><div class="num">5</div> PPF</div>
+  <div class="side-item"><div class="num">1</div>SIP</div>
+  <div class="side-item"><div class="num">2</div>Lumpsum</div>
+  <div class="side-item"><div class="num">3</div>CAGR</div>
+  <div class="side-item"><div class="num">4</div>SWP</div>
+  <div class="side-item"><div class="num">5</div>PPF</div>
 </div>
 
 <!-- MAIN -->
 <div>
 
-<!-- SIP -->
 <div class="card">
 <h3>SIP Calculator</h3>
 
-<div class="input-group">
 <label>Monthly ₹</label>
-<input type="range" id="sip_amt" value="5000" min="500" max="100000">
-</div>
+<input type="range" id="amt" value="5000" min="500" max="100000">
 
-<div class="input-group">
 <label>Return %</label>
-<input type="range" id="sip_rate" value="12" min="1" max="20">
-</div>
+<input type="range" id="rate" value="12" min="1" max="20">
 
-<div class="input-group">
 <label>Years</label>
-<input type="range" id="sip_years" value="10" min="1" max="30">
-</div>
+<input type="range" id="years" value="10" min="1" max="30">
 
-<button onclick="calcSIP()">Calculate</button>
+<button onclick="calc()">Calculate</button>
 
 <div class="results">
-<div class="result-box" id="invested"></div>
-<div class="result-box" id="returns"></div>
-<div class="result-box" id="total"></div>
+<div class="box" id="i"></div>
+<div class="box" id="r"></div>
+<div class="box" id="t"></div>
 </div>
 
 <div class="chart">
-<canvas id="chart"></canvas>
+<canvas id="c"></canvas>
 </div>
 
 </div>
 
-<!-- CTA -->
 <div class="cta">
 <div>Want real investment plan?</div>
 <button onclick="window.open('https://justinvesting.in')">Talk to Advisor</button>
@@ -223,25 +219,26 @@ input[type="range"]{
 </div>
 
 </div>
+
 </div>
 
 <script>
 
-function calcSIP(){
-let P=sip_amt.value;
-let r=sip_rate.value/100/12;
-let n=sip_years.value*12;
+function calc(){
+let P=amt.value;
+let r=rate.value/100/12;
+let n=years.value*12;
 
 let FV=P*((Math.pow(1+r,n)-1)/r)*(1+r);
 
 let invested=P*n;
 let gain=FV-invested;
 
-document.getElementById("invested").innerHTML="₹"+invested.toFixed(0);
-document.getElementById("returns").innerHTML="₹"+gain.toFixed(0);
-document.getElementById("total").innerHTML="₹"+FV.toFixed(0);
+i.innerHTML="₹"+invested.toFixed(0);
+r.innerHTML="₹"+gain.toFixed(0);
+t.innerHTML="₹"+FV.toFixed(0);
 
-new Chart(chart,{
+new Chart(c,{
 type:'doughnut',
 data:{
 labels:["Invested","Returns"],
