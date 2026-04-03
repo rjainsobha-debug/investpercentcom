@@ -5,14 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Loan & EMI Calculators | InvestPercent</title>
 
-  <link rel="stylesheet" href="../css/global.css" />
-  <link rel="stylesheet" href="../css/calculator.css" />
-
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
     :root {
@@ -40,13 +34,8 @@
       --max: 1380px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -63,6 +52,93 @@
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(7, 16, 29, 0.82);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-shell {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(0,208,156,0.2), rgba(56,189,248,0.16));
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    }
+
+    .brand-text {
+      display: grid;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .brand-sub {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .top-nav a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: #dce8f7;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: 0.2s ease;
+    }
+
+    .top-nav a:hover,
+    .top-nav a.active {
+      background: rgba(0,208,156,0.12);
+      border-color: rgba(0,208,156,0.28);
+      color: #dbfff5;
+      transform: translateY(-1px);
+    }
+
+    .mobile-links {
+      display: none;
     }
 
     .page-shell {
@@ -207,7 +283,7 @@
 
     .sidebar {
       position: sticky;
-      top: 18px;
+      top: 90px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -295,6 +371,11 @@
       border-radius: 14px;
       padding: 12px 14px;
       color: #dbe8f7;
+    }
+
+    .related-links a:hover {
+      background: rgba(56,189,248,0.1);
+      border-color: rgba(56,189,248,0.28);
     }
 
     .main {
@@ -607,9 +688,7 @@
       color: #d9f4ff;
     }
 
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
     .prepay-grid {
       display: grid;
@@ -661,8 +740,7 @@
       min-width: 760px;
     }
 
-    th,
-    td {
+    th, td {
       padding: 13px 14px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
       text-align: left;
@@ -677,13 +755,9 @@
       text-transform: uppercase;
     }
 
-    td {
-      color: #dbe8f7;
-    }
+    td { color: #dbe8f7; }
 
-    tbody tr:hover {
-      background: rgba(255,255,255,0.03);
-    }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
 
     .small-muted {
       color: var(--muted);
@@ -907,64 +981,123 @@
       font-size: 0.9rem;
     }
 
+    .footer-links a:hover {
+      background: rgba(0,208,156,0.1);
+      border-color: rgba(0,208,156,0.28);
+    }
+
     .section-spacer {
       height: 2px;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
       margin: 10px 0 0;
     }
 
+    .site-footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 50px;
+      background: rgba(7,16,29,0.5);
+    }
+
+    .footer-shell {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 22px 20px 34px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-nav a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: #dbe8f7;
+      font-weight: 700;
+    }
+
+    .footer-nav a:hover {
+      background: rgba(56,189,248,0.1);
+      border-color: rgba(56,189,248,0.25);
+    }
+
     @media (max-width: 1180px) {
-      .layout {
-        grid-template-columns: 1fr;
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; top: auto; }
+      .calc-grid { grid-template-columns: 1fr; }
+      .comparison-grid { grid-template-columns: 1fr; }
+      .top-nav { display: none; }
+      .mobile-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 14px;
       }
-      .sidebar {
-        position: static;
-      }
-      .calc-grid {
-        grid-template-columns: 1fr;
-      }
-      .comparison-grid {
-        grid-template-columns: 1fr;
+      .mobile-links a {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.03);
+        color: #dce8f7;
+        font-weight: 700;
+        font-size: 0.88rem;
       }
     }
 
     @media (max-width: 820px) {
-      .hero-stats {
-        grid-template-columns: 1fr;
-        max-width: 100%;
-      }
+      .hero-stats { grid-template-columns: 1fr; max-width: 100%; }
       .result-grid,
       .mini-results,
       .prepay-grid,
-      .strategy-toggle {
-        grid-template-columns: 1fr;
-      }
-      .debt-row {
-        grid-template-columns: 1fr;
-      }
-      .cta-card {
-        align-items: flex-start;
-      }
-      .page-shell {
-        padding: 18px 14px 50px;
-      }
+      .strategy-toggle { grid-template-columns: 1fr; }
+      .debt-row { grid-template-columns: 1fr; }
+      .cta-card { align-items: flex-start; }
+      .page-shell { padding: 18px 14px 50px; }
+      .nav-shell { padding: 12px 14px; }
       .hero,
       .calc-header,
-      .calc-body {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-      .panel {
-        padding: 16px;
-      }
+      .calc-body { padding-left: 18px; padding-right: 18px; }
+      .panel { padding: 16px; }
     }
   </style>
 </head>
 <body>
+  <header class="site-header">
+    <div class="nav-shell">
+      <a href="../index.html" class="brand">
+        <div class="brand-mark"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="brand-text">
+          <div class="brand-title">InvestPercent</div>
+          <div class="brand-sub">Your complete financial universe</div>
+        </div>
+      </a>
+
+      <nav class="top-nav">
+        <a href="../index.html">Home</a>
+        <a href="./investment.html">Investment</a>
+        <a href="./savings.html">Savings</a>
+        <a href="./tax.html">Tax</a>
+        <a href="./loans.html" class="active">Loans</a>
+        <a href="./retirement.html">Retirement</a>
+        <a href="./personal-finance.html">Personal Finance</a>
+        <a href="./crypto.html">Crypto</a>
+      </nav>
+    </div>
+  </header>
+
   <div class="page-shell">
     <section class="hero">
       <div class="breadcrumb">
-        <span>Home</span>
+        <a href="../index.html">Home</a>
         <i class="fa-solid fa-angle-right"></i>
         <span>Loan & EMI Calculators</span>
       </div>
@@ -974,6 +1107,15 @@
           <div class="hero-icon">🏦</div>
           <h1>Loan & EMI Calculators</h1>
           <p>Know your EMI before you sign. Compare loan costs, test prepayments, and build a smarter payoff plan before taking on debt.</p>
+
+          <div class="mobile-links">
+            <a href="./investment.html">Investment</a>
+            <a href="./savings.html">Savings</a>
+            <a href="./tax.html">Tax</a>
+            <a href="./retirement.html">Retirement</a>
+            <a href="./personal-finance.html">Personal Finance</a>
+            <a href="./crypto.html">Crypto</a>
+          </div>
         </div>
 
         <div class="hero-stats">
@@ -1032,9 +1174,12 @@
         <div class="side-card">
           <div class="side-title">Related pages</div>
           <div class="related-links">
-            <a href="../pages/savings.html">Savings & FD <i class="fa-solid fa-arrow-right"></i></a>
-            <a href="../pages/retirement.html">Retirement Planning <i class="fa-solid fa-arrow-right"></i></a>
-            <a href="../pages/personal-finance.html">Personal Finance <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="./investment.html">Investment Calculators <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="./savings.html">Savings & FD <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="./tax.html">Tax Calculators <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="./retirement.html">Retirement Planning <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="./personal-finance.html">Personal Finance <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="./crypto.html">Crypto Tools <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
 
@@ -1047,7 +1192,6 @@
       </aside>
 
       <main class="main">
-        <!-- HOME LOAN -->
         <section class="calc-card" id="home-loan">
           <div class="calc-header">
             <div class="calc-topline">
@@ -1167,7 +1311,6 @@
               <div class="panel">
                 <div class="section-title">Loan results</div>
                 <div class="result-grid" id="hl_results"></div>
-
                 <div class="note-box" id="hl_ratio_box"></div>
 
                 <div class="chart-card" style="margin-top:16px;">
@@ -1218,7 +1361,6 @@
           </div>
         </section>
 
-        <!-- PERSONAL LOAN -->
         <section class="calc-card" id="personal-loan">
           <div class="calc-header">
             <div class="calc-topline">
@@ -1345,7 +1487,6 @@
           </div>
         </section>
 
-        <!-- DEBT PAYOFF -->
         <section class="calc-card" id="debt-payoff">
           <div class="calc-header">
             <div class="calc-topline">
@@ -1454,25 +1595,33 @@
           </div>
         </section>
 
-        <!--
-          IP:ADD_CALCULATOR
-          FUTURE CALCULATORS — Add below this line:
-          - Car Loan EMI Calculator (id="car-loan")
-          - Education Loan with Moratorium (id="education-loan")
-          - Loan vs Rent Comparator (id="loan-vs-rent")
-          - Balance Transfer Savings Calculator (id="balance-transfer")
-          - Credit Card Minimum Payment Trap (id="credit-card-trap")
-          - Overdraft vs Personal Loan Comparator (id="od-vs-pl")
-        -->
-
         <div class="footer-links">
-          <a href="../pages/savings.html">Savings & FD</a>
-          <a href="../pages/retirement.html">Retirement Planning</a>
-          <a href="../pages/personal-finance.html">Personal Finance</a>
+          <a href="./investment.html">Investment</a>
+          <a href="./savings.html">Savings & FD</a>
+          <a href="./tax.html">Tax</a>
+          <a href="./retirement.html">Retirement</a>
+          <a href="./personal-finance.html">Personal Finance</a>
+          <a href="./crypto.html">Crypto</a>
         </div>
       </main>
     </div>
   </div>
+
+  <footer class="site-footer">
+    <div class="footer-shell">
+      <div>© 2026 InvestPercent. Calculate. Compare. Grow.</div>
+      <div class="footer-nav">
+        <a href="../index.html">Home</a>
+        <a href="./investment.html">Investment</a>
+        <a href="./savings.html">Savings</a>
+        <a href="./tax.html">Tax</a>
+        <a href="./loans.html">Loans</a>
+        <a href="./retirement.html">Retirement</a>
+        <a href="./personal-finance.html">Personal Finance</a>
+        <a href="./crypto.html">Crypto</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
     const fmtCurrency = (num) => {
@@ -1481,15 +1630,6 @@
         style: "currency",
         currency: "INR",
         maximumFractionDigits: 0
-      }).format(value);
-    };
-
-    const fmtCurrency2 = (num) => {
-      const value = Number(num || 0);
-      return new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-        maximumFractionDigits: 2
       }).format(value);
     };
 
@@ -1510,9 +1650,9 @@
     const monthsToYearsMonths = (months) => {
       const y = Math.floor(months / 12);
       const m = months % 12;
-      if (y === 0) return `${m} months`;
-      if (m === 0) return `${y} years`;
-      return `${y} years ${m} months`;
+      if (y === 0) return \`\${m} months\`;
+      if (m === 0) return \`\${y} years\`;
+      return \`\${y} years \${m} months\`;
     };
 
     const addMonthsToToday = (monthsToAdd) => {
@@ -1525,7 +1665,6 @@
     let personalLoanChart = null;
     let debtChart = null;
 
-    // HOME LOAN
     const hlAmount = document.getElementById("hl_amount");
     const hlRate = document.getElementById("hl_rate");
     const hlYears = document.getElementById("hl_years");
@@ -1547,11 +1686,11 @@
 
     function updateHomeLoanDisplays() {
       hlAmountDisplay.textContent = fmtCurrency(hlAmount.value);
-      hlRateDisplay.textContent = `${Number(hlRate.value).toFixed(2)}%`;
-      hlYearsDisplay.textContent = `${hlYears.value} years`;
+      hlRateDisplay.textContent = \`\${Number(hlRate.value).toFixed(2)}%\`;
+      hlYearsDisplay.textContent = \`\${hlYears.value} years\`;
     }
 
-    function buildHomeLoanSchedule(P, annualRate, months, emiValue, prepaymentAmount = 0, prepaymentMonth = 0) {
+    function buildHomeLoanSchedule(P, annualRate, months, emiValue) {
       const r = annualRate / 12 / 100;
       let balance = Number(P);
       let totalInterest = 0;
@@ -1559,7 +1698,6 @@
       let totalPaid = 0;
       let schedule = [];
       let month = 0;
-      let prepaymentApplied = false;
 
       while (balance > 0.01 && month < 1000) {
         month++;
@@ -1574,36 +1712,15 @@
         }
 
         balance = opening - principal;
-
-        if (!prepaymentApplied && prepaymentAmount > 0 && month === Number(prepaymentMonth) && balance > 0) {
-          const applied = Math.min(prepaymentAmount, balance);
-          balance -= applied;
-          prepaymentApplied = true;
-        }
-
         const closing = Math.max(balance, 0);
 
-        schedule.push({
-          month,
-          opening,
-          emi,
-          principal,
-          interest,
-          closing
-        });
-
+        schedule.push({ month, opening, emi, principal, interest, closing });
         totalInterest += interest;
         totalPrincipal += principal;
         totalPaid += emi;
       }
 
-      return {
-        schedule,
-        totalInterest,
-        totalPrincipal,
-        totalPaid,
-        monthsTaken: schedule.length
-      };
+      return { schedule, totalInterest, totalPrincipal, totalPaid, monthsTaken: schedule.length };
     }
 
     function calculateReducedTenure(balanceAfterPrepayment, annualRate, emiValue) {
@@ -1646,52 +1763,52 @@
 
       hlSchedule = base.schedule;
 
-      hlResults.innerHTML = `
+      hlResults.innerHTML = \`
         <div class="result-box">
           <div class="label">Monthly EMI</div>
-          <div class="value">${fmtCurrency(emiValue)}</div>
+          <div class="value">\${fmtCurrency(emiValue)}</div>
         </div>
         <div class="result-box">
           <div class="label">Total Interest Payable</div>
-          <div class="value">${fmtCurrency(base.totalInterest)}</div>
+          <div class="value">\${fmtCurrency(base.totalInterest)}</div>
         </div>
         <div class="result-box">
           <div class="label">Total Amount Payable</div>
-          <div class="value">${fmtCurrency(totalPayable)}</div>
+          <div class="value">\${fmtCurrency(totalPayable)}</div>
           <div class="sub">Principal + Interest</div>
         </div>
         <div class="result-box">
           <div class="label">Processing Fee</div>
-          <div class="value">${fmtCurrency(processingFee)}</div>
+          <div class="value">\${fmtCurrency(processingFee)}</div>
         </div>
         <div class="result-box">
           <div class="label">Effective Total Cost</div>
-          <div class="value">${fmtCurrency(effectiveTotalCost)}</div>
+          <div class="value">\${fmtCurrency(effectiveTotalCost)}</div>
         </div>
         <div class="result-box">
           <div class="label">Loan Tenure</div>
-          <div class="value">${years} years</div>
-          <div class="sub">${months} months</div>
+          <div class="value">\${years} years</div>
+          <div class="sub">\${months} months</div>
         </div>
-      `;
+      \`;
 
-      hlRatioBox.innerHTML = `For every <strong>₹1 borrowed</strong>, you pay <strong>₹${ratio.toFixed(2)}</strong> in interest.`;
+      hlRatioBox.innerHTML = \`For every <strong>₹1 borrowed</strong>, you pay <strong>₹\${ratio.toFixed(2)}</strong> in interest.\`;
 
       const rowsToShow = hlShowFull ? hlSchedule : hlSchedule.slice(0, 12);
-      hlAmortBody.innerHTML = rowsToShow.map(row => `
+      hlAmortBody.innerHTML = rowsToShow.map(row => \`
         <tr>
-          <td>${row.month}</td>
-          <td>${fmtCurrency(row.opening)}</td>
-          <td>${fmtCurrency(row.emi)}</td>
-          <td>${fmtCurrency(row.principal)}</td>
-          <td>${fmtCurrency(row.interest)}</td>
-          <td>${fmtCurrency(row.closing)}</td>
+          <td>\${row.month}</td>
+          <td>\${fmtCurrency(row.opening)}</td>
+          <td>\${fmtCurrency(row.emi)}</td>
+          <td>\${fmtCurrency(row.principal)}</td>
+          <td>\${fmtCurrency(row.interest)}</td>
+          <td>\${fmtCurrency(row.closing)}</td>
         </tr>
-      `).join("");
+      \`).join("");
 
       hlShowFullBtn.innerHTML = hlShowFull
-        ? `<i class="fa-solid fa-eye-slash"></i> Show First 12 Months Only`
-        : `<i class="fa-solid fa-table-list"></i> Show Full Amortization Schedule`;
+        ? \`<i class="fa-solid fa-eye-slash"></i> Show First 12 Months Only\`
+        : \`<i class="fa-solid fa-table-list"></i> Show Full Amortization Schedule\`;
 
       const ctx = document.getElementById("hl_chart").getContext("2d");
       if (homeLoanChart) homeLoanChart.destroy();
@@ -1700,21 +1817,14 @@
         data: {
           labels: ["Principal", "Total Interest"],
           datasets: [{
-            data: [P, base.totalInterest],
-            backgroundColor: ["#38bdf8", "#8b5cf6"],
-            borderColor: ["#38bdf8", "#8b5cf6"],
-            borderWidth: 1
+            data: [P, base.totalInterest]
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: {
-              labels: {
-                color: "#dbe8f7"
-              }
-            }
+            legend: { labels: { color: "#dbe8f7" } }
           }
         }
       });
@@ -1726,14 +1836,8 @@
 
         if (balanceAfterMonth !== null && ppAmount > 0) {
           const reducedBalance = Math.max(0, balanceAfterMonth - ppAmount);
-
-          // New EMI keeping original remaining tenure
           const remainingMonths = months - ppMonth;
-          const newEmi = remainingMonths > 0
-            ? emiFormula(reducedBalance, annualRate, remainingMonths)
-            : 0;
-
-          // Reduced tenure keeping same EMI
+          const newEmi = remainingMonths > 0 ? emiFormula(reducedBalance, annualRate, remainingMonths) : 0;
           const tenureCalc = calculateReducedTenure(reducedBalance, annualRate, emiValue);
           const remainingInterestOriginal = base.schedule
             .filter(r => r.month > ppMonth)
@@ -1742,7 +1846,7 @@
           const interestSaved = Math.max(0, remainingInterestOriginal - tenureCalc.interest);
 
           document.getElementById("hl_new_emi").textContent = newEmi > 0 ? fmtCurrency(newEmi) : "—";
-          document.getElementById("hl_reduced_tenure").textContent = `${monthsToYearsMonths(ppMonth + tenureCalc.months)} total`;
+          document.getElementById("hl_reduced_tenure").textContent = \`\${monthsToYearsMonths(ppMonth + tenureCalc.months)} total\`;
           document.getElementById("hl_interest_saved").textContent = fmtCurrency(interestSaved);
         } else {
           document.getElementById("hl_new_emi").textContent = "—";
@@ -1753,11 +1857,7 @@
     }
 
     document.getElementById("hl_calc_btn").addEventListener("click", renderHomeLoan);
-
-    [hlAmount, hlRate, hlYears].forEach(el => {
-      el.addEventListener("input", renderHomeLoan);
-    });
-
+    [hlAmount, hlRate, hlYears].forEach(el => el.addEventListener("input", renderHomeLoan));
     hlFee.addEventListener("input", renderHomeLoan);
 
     hlShowFullBtn.addEventListener("click", () => {
@@ -1773,9 +1873,7 @@
       renderHomeLoan();
     });
 
-    [hlPrepayAmount, hlPrepayMonth].forEach(el => {
-      el.addEventListener("input", renderHomeLoan);
-    });
+    [hlPrepayAmount, hlPrepayMonth].forEach(el => el.addEventListener("input", renderHomeLoan));
 
     document.querySelectorAll("#hl_presets .preset-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -1797,7 +1895,7 @@
         row.closing.toFixed(2)
       ]);
 
-      const csv = [header, ...rows].map(r => r.join(",")).join("\n");
+      const csv = [header, ...rows].map(r => r.join(",")).join("\\n");
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
@@ -1805,7 +1903,6 @@
       link.click();
     });
 
-    // PERSONAL LOAN
     const plAmount = document.getElementById("pl_amount");
     const plRate = document.getElementById("pl_rate");
     const plMonths = document.getElementById("pl_months");
@@ -1820,12 +1917,12 @@
 
     function updatePersonalLoanDisplays() {
       plAmountDisplay.textContent = fmtCurrency(plAmount.value);
-      plRateDisplay.textContent = `${Number(plRate.value).toFixed(2)}%`;
-      plMonthsDisplay.textContent = `${plMonths.value} months`;
+      plRateDisplay.textContent = \`\${Number(plRate.value).toFixed(2)}%\`;
+      plMonthsDisplay.textContent = \`\${plMonths.value} months\`;
       const totalMonths = Number(plMonths.value);
       const years = Math.floor(totalMonths / 12);
       const months = totalMonths % 12;
-      plYearEquivalent.textContent = `= ${years} years ${months} months`;
+      plYearEquivalent.textContent = \`= \${years} years \${months} months\`;
     }
 
     function buildPersonalLoanBalanceCurve(P, annualRate, emiValue, extraMonthly = 0) {
@@ -1854,12 +1951,7 @@
         balances.push(Math.max(0, balance));
       }
 
-      return {
-        months: month,
-        totalInterest,
-        totalPaid,
-        balances
-      };
+      return { months: month, totalInterest, totalPaid, balances };
     }
 
     function renderPersonalLoan() {
@@ -1876,53 +1968,52 @@
       const totalPayable = (emiValue * months) + fee;
       const ear = (Math.pow(1 + (annualRate / 12 / 100), 12) - 1) * 100;
 
-      plResults.innerHTML = `
+      plResults.innerHTML = \`
         <div class="result-box">
           <div class="label">Monthly EMI</div>
-          <div class="value">${fmtCurrency(emiValue)}</div>
+          <div class="value">\${fmtCurrency(emiValue)}</div>
         </div>
         <div class="result-box">
           <div class="label">Total Interest</div>
-          <div class="value">${fmtCurrency(totalInterest)}</div>
+          <div class="value">\${fmtCurrency(totalInterest)}</div>
         </div>
         <div class="result-box">
           <div class="label">Total Payable</div>
-          <div class="value">${fmtCurrency(totalPayable)}</div>
+          <div class="value">\${fmtCurrency(totalPayable)}</div>
           <div class="sub">Includes processing fee</div>
         </div>
         <div class="result-box">
           <div class="label">Effective Annual Rate</div>
-          <div class="value">${fmtNum(ear, 2)}%</div>
+          <div class="value">\${fmtNum(ear, 2)}%</div>
         </div>
-      `;
+      \`;
 
       const regular = buildPersonalLoanBalanceCurve(P, annualRate, emiValue, 0);
       const accelerated = buildPersonalLoanBalanceCurve(P, annualRate, emiValue, extra);
 
       const monthsSaved = Math.max(0, regular.months - accelerated.months);
       const interestSaved = Math.max(0, regular.totalInterest - accelerated.totalInterest);
-      document.getElementById("pl_months_saved").textContent = monthsSaved ? `${monthsSaved} months` : "0 months";
+      document.getElementById("pl_months_saved").textContent = monthsSaved ? \`\${monthsSaved} months\` : "0 months";
       document.getElementById("pl_interest_saved").textContent = fmtCurrency(interestSaved);
       document.getElementById("pl_payoff_date").textContent = addMonthsToToday(accelerated.months);
 
-      plCompareBody.innerHTML = `
+      plCompareBody.innerHTML = \`
         <tr>
           <td>No prepayment</td>
-          <td>${fmtCurrency(regular.totalInterest)}</td>
-          <td>${fmtCurrency(regular.totalPaid + fee)}</td>
-          <td>${regular.months} months</td>
+          <td>\${fmtCurrency(regular.totalInterest)}</td>
+          <td>\${fmtCurrency(regular.totalPaid + fee)}</td>
+          <td>\${regular.months} months</td>
         </tr>
         <tr>
-          <td>With ${fmtCurrency(extra)} extra/month</td>
-          <td>${fmtCurrency(accelerated.totalInterest)}</td>
-          <td>${fmtCurrency(accelerated.totalPaid + fee)}</td>
-          <td>${accelerated.months} months</td>
+          <td>With \${fmtCurrency(extra)} extra/month</td>
+          <td>\${fmtCurrency(accelerated.totalInterest)}</td>
+          <td>\${fmtCurrency(accelerated.totalPaid + fee)}</td>
+          <td>\${accelerated.months} months</td>
         </tr>
-      `;
+      \`;
 
       const maxLen = Math.max(regular.balances.length, accelerated.balances.length);
       const labels = Array.from({ length: maxLen }, (_, i) => i);
-
       const regularData = Array.from({ length: maxLen }, (_, i) => regular.balances[i] ?? 0);
       const acceleratedData = Array.from({ length: maxLen }, (_, i) => accelerated.balances[i] ?? 0);
 
@@ -1957,18 +2048,12 @@
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: "index", intersect: false },
-          plugins: {
-            legend: { labels: { color: "#dbe8f7" } }
-          },
+          plugins: { legend: { labels: { color: "#dbe8f7" } } },
           scales: {
             x: {
               ticks: { color: "#afc2d8" },
               grid: { color: "rgba(255,255,255,0.06)" },
-              title: {
-                display: true,
-                text: "Month",
-                color: "#c9d8e8"
-              }
+              title: { display: true, text: "Month", color: "#c9d8e8" }
             },
             y: {
               ticks: {
@@ -1976,11 +2061,7 @@
                 callback: (value) => "₹" + Number(value).toLocaleString("en-IN")
               },
               grid: { color: "rgba(255,255,255,0.06)" },
-              title: {
-                display: true,
-                text: "Outstanding balance",
-                color: "#c9d8e8"
-              }
+              title: { display: true, text: "Outstanding balance", color: "#c9d8e8" }
             }
           }
         }
@@ -1991,7 +2072,6 @@
     [plAmount, plRate, plMonths].forEach(el => el.addEventListener("input", renderPersonalLoan));
     [plFee, plExtra].forEach(el => el.addEventListener("input", renderPersonalLoan));
 
-    // DEBT PAYOFF
     const debtList = document.getElementById("debt_list");
     const addDebtBtn = document.getElementById("add_debt_btn");
     const debtExtra = document.getElementById("debt_extra");
@@ -2007,25 +2087,25 @@
 
       const row = document.createElement("div");
       row.className = "debt-row";
-      row.innerHTML = `
+      row.innerHTML = \`
         <div class="field">
           <label>Debt Name</label>
-          <input type="text" class="debt-name" placeholder="e.g. HDFC Credit Card" value="${data.name || ""}">
+          <input type="text" class="debt-name" placeholder="e.g. HDFC Credit Card" value="\${data.name || ""}">
         </div>
         <div class="field">
           <label>Current Balance ₹</label>
-          <input type="number" class="debt-balance" min="0" step="100" value="${data.balance ?? ""}">
+          <input type="number" class="debt-balance" min="0" step="100" value="\${data.balance ?? ""}">
         </div>
         <div class="field">
           <label>Annual Interest Rate %</label>
-          <input type="number" class="debt-rate" min="0" step="0.1" value="${data.rate ?? ""}">
+          <input type="number" class="debt-rate" min="0" step="0.1" value="\${data.rate ?? ""}">
         </div>
         <div class="field">
           <label>Minimum Monthly Payment ₹</label>
-          <input type="number" class="debt-min" min="0" step="100" value="${data.min ?? ""}">
+          <input type="number" class="debt-min" min="0" step="100" value="\${data.min ?? ""}">
         </div>
         <button class="delete-debt" type="button" title="Delete debt">×</button>
-      `;
+      \`;
       row.querySelector(".delete-debt").addEventListener("click", () => {
         row.remove();
         debtRowCount--;
@@ -2038,7 +2118,7 @@
       const rows = Array.from(document.querySelectorAll(".debt-row"));
       return rows.map((row, idx) => ({
         id: idx + 1,
-        name: row.querySelector(".debt-name").value.trim() || `Debt ${idx + 1}`,
+        name: row.querySelector(".debt-name").value.trim() || \`Debt \${idx + 1}\`,
         balance: Number(row.querySelector(".debt-balance").value || 0),
         rate: Number(row.querySelector(".debt-rate").value || 0),
         min: Number(row.querySelector(".debt-min").value || 0)
@@ -2083,7 +2163,6 @@
       while (month < maxMonths && debts.some(d => d.balance > 0.01)) {
         month++;
 
-        // Interest first
         debts.forEach(d => {
           if (d.balance > 0.01) {
             const monthlyRate = d.rate / 12 / 100;
@@ -2096,7 +2175,6 @@
 
         let availableExtra = Number(extraMonthly || 0);
 
-        // Minimum payments to all
         debts.forEach(d => {
           if (d.balance > 0.01) {
             const payment = Math.min(d.min, d.balance);
@@ -2108,10 +2186,6 @@
             }
           }
         });
-
-        // Redirect all freed minimums + extra to target debt
-        let openDebts = debts.filter(d => d.balance > 0.01);
-        if (!openDebts.length) break;
 
         let rollingExtra = availableExtra;
         let safety = 0;
@@ -2130,9 +2204,6 @@
             rollingExtra += target.min;
           }
         }
-
-        // If any debt got closed this month, its min payment gets redirected starting next month naturally by target selection,
-        // but to model faster stacking within the same month above, we added released min to rollingExtra.
       }
 
       const timeline = debts.map(d => ({
@@ -2143,26 +2214,20 @@
         monthPaidOff: d.paidOffMonth ?? "Not paid"
       }));
 
-      return {
-        months: month,
-        totalInterest,
-        totalPaid,
-        timeline
-      };
+      return { months: month, totalInterest, totalPaid, timeline };
     }
 
     function renderDebtPayoff() {
       debtExtraDisplay.textContent = fmtCurrency(debtExtra.value);
-
       const debts = getDebtInputs();
 
       if (!debts.length) {
-        debtCompareCards.innerHTML = `
+        debtCompareCards.innerHTML = \`
           <div class="compare-card" style="grid-column:1/-1;">
             <h4>Add at least one debt to begin</h4>
             <div class="small-muted">Enter balance, interest rate, and minimum monthly payment.</div>
           </div>
-        `;
+        \`;
         debtTimelineBody.innerHTML = "";
         if (debtChart) {
           debtChart.destroy();
@@ -2180,50 +2245,50 @@
       if (avalanche.totalInterest < snowball.totalInterest) winner = "avalanche";
       else if (snowball.totalInterest < avalanche.totalInterest) winner = "snowball";
 
-      debtCompareCards.innerHTML = `
+      debtCompareCards.innerHTML = \`
         <div class="compare-card">
-          ${winner === "avalanche" ? `<div class="winner-badge">Winner</div>` : ""}
+          \${winner === "avalanche" ? \`<div class="winner-badge">Winner</div>\` : ""}
           <h4>AVALANCHE</h4>
-          <div class="big">${avalanche.months} months</div>
+          <div class="big">\${avalanche.months} months</div>
           <div class="compare-list">
-            <div class="compare-row"><span>Debt-free in</span><strong>${avalanche.months} months</strong></div>
-            <div class="compare-row"><span>Total interest</span><strong>${fmtCurrency(avalanche.totalInterest)}</strong></div>
-            <div class="compare-row"><span>Total paid</span><strong>${fmtCurrency(avalanche.totalPaid)}</strong></div>
+            <div class="compare-row"><span>Debt-free in</span><strong>\${avalanche.months} months</strong></div>
+            <div class="compare-row"><span>Total interest</span><strong>\${fmtCurrency(avalanche.totalInterest)}</strong></div>
+            <div class="compare-row"><span>Total paid</span><strong>\${fmtCurrency(avalanche.totalPaid)}</strong></div>
           </div>
         </div>
 
         <div class="compare-card">
-          ${winner === "snowball" ? `<div class="winner-badge">Winner</div>` : ""}
+          \${winner === "snowball" ? \`<div class="winner-badge">Winner</div>\` : ""}
           <h4>SNOWBALL</h4>
-          <div class="big">${snowball.months} months</div>
+          <div class="big">\${snowball.months} months</div>
           <div class="compare-list">
-            <div class="compare-row"><span>Debt-free in</span><strong>${snowball.months} months</strong></div>
-            <div class="compare-row"><span>Total interest</span><strong>${fmtCurrency(snowball.totalInterest)}</strong></div>
-            <div class="compare-row"><span>Total paid</span><strong>${fmtCurrency(snowball.totalPaid)}</strong></div>
+            <div class="compare-row"><span>Debt-free in</span><strong>\${snowball.months} months</strong></div>
+            <div class="compare-row"><span>Total interest</span><strong>\${fmtCurrency(snowball.totalInterest)}</strong></div>
+            <div class="compare-row"><span>Total paid</span><strong>\${fmtCurrency(snowball.totalPaid)}</strong></div>
           </div>
         </div>
 
         <div class="compare-card">
           <h4>MINIMUM ONLY</h4>
-          <div class="big">${minimumOnly.months} months</div>
+          <div class="big">\${minimumOnly.months} months</div>
           <div class="compare-list">
-            <div class="compare-row"><span>Debt-free in</span><strong>${minimumOnly.months} months</strong></div>
-            <div class="compare-row"><span>Total interest</span><strong>${fmtCurrency(minimumOnly.totalInterest)}</strong></div>
-            <div class="compare-row"><span>Total paid</span><strong>${fmtCurrency(minimumOnly.totalPaid)}</strong></div>
+            <div class="compare-row"><span>Debt-free in</span><strong>\${minimumOnly.months} months</strong></div>
+            <div class="compare-row"><span>Total interest</span><strong>\${fmtCurrency(minimumOnly.totalInterest)}</strong></div>
+            <div class="compare-row"><span>Total paid</span><strong>\${fmtCurrency(minimumOnly.totalPaid)}</strong></div>
           </div>
         </div>
-      `;
+      \`;
 
       const selected = activeStrategy === "snowball" ? snowball : avalanche;
-      debtTimelineBody.innerHTML = selected.timeline.map(item => `
+      debtTimelineBody.innerHTML = selected.timeline.map(item => \`
         <tr>
-          <td>${item.name}</td>
-          <td>${fmtCurrency(item.startingBalance)}</td>
-          <td>${item.monthsToPayoff}</td>
-          <td>${fmtCurrency(item.interestPaid)}</td>
-          <td>${item.monthPaidOff}</td>
+          <td>\${item.name}</td>
+          <td>\${fmtCurrency(item.startingBalance)}</td>
+          <td>\${item.monthsToPayoff}</td>
+          <td>\${fmtCurrency(item.interestPaid)}</td>
+          <td>\${item.monthPaidOff}</td>
         </tr>
-      `).join("");
+      \`).join("");
 
       const ctx = document.getElementById("debt_chart").getContext("2d");
       if (debtChart) debtChart.destroy();
@@ -2241,9 +2306,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: { labels: { color: "#dbe8f7" } }
-          },
+          plugins: { legend: { labels: { color: "#dbe8f7" } } },
           scales: {
             x: {
               ticks: { color: "#afc2d8" },
@@ -2284,12 +2347,10 @@
       });
     });
 
-    // Seed default debts
     createDebtRow({ name: "HDFC Credit Card", balance: 120000, rate: 36, min: 6000 });
     createDebtRow({ name: "Personal Loan", balance: 300000, rate: 14, min: 9500 });
     createDebtRow({ name: "Consumer Durable EMI", balance: 45000, rate: 18, min: 3000 });
 
-    // Initial render
     updateHomeLoanDisplays();
     updatePersonalLoanDisplays();
     renderHomeLoan();
