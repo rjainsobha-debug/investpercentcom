@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Retirement Planning Calculators — Corpus & FIRE | investpercent.com</title>
+  <meta
+    name="description"
+    content="Plan retirement with premium corpus and FIRE calculators. Estimate corpus needs, monthly SIP, FIRE number, timeline, and passive income on investpercent.com."
+  />
+  <meta
+    name="keywords"
+    content="retirement corpus calculator, fire calculator, retirement planning india, monthly sip for retirement, financial independence calculator"
+  />
+  <meta name="author" content="investpercent.com" />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="canonical" href="https://investpercent.com/pages/retirement.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Retirement Planning Calculators — Corpus & FIRE | investpercent.com" />
+  <meta
+    property="og:description"
+    content="Calculate your retirement corpus, monthly SIP need, FIRE number, timeline, and passive income with premium retirement planning tools."
+  />
+  <meta property="og:url" content="https://investpercent.com/pages/retirement.html" />
+  <meta property="og:image" content="https://investpercent.com/assets/og-image.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Retirement Planning Calculators — Corpus & FIRE | investpercent.com" />
+  <meta
+    name="twitter:description"
+    content="Calculate your retirement corpus, monthly SIP need, FIRE number, timeline, and passive income with premium retirement planning tools."
+  />
+  <meta name="twitter:image" content="https://investpercent.com/assets/og-image.jpg" />
+
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/calculator.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <style>
+    .ip-page-shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .ip-sidebar {
+      position: sticky;
+      top: 120px;
+    }
+
+    .ip-sidebar-card {
+      padding: 20px;
+      background:
+        linear-gradient(180deg, rgba(255, 215, 0, 0.05), rgba(255, 107, 53, 0.03)),
+        var(--bg-card);
+    }
+
+    .ip-sidebar-title {
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .ip-sidebar-nav {
+      display: grid;
+      gap: 10px;
+    }
+
+    .ip-sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-subtle);
+      transition: var(--transition);
+    }
+
+    .ip-sidebar-link:hover,
+    .ip-sidebar-link.is-active {
+      border-color: var(--accent-gold);
+      transform: translateX(4px);
+      box-shadow: 0 0 18px rgba(255, 215, 0, 0.15);
+    }
+
+    .ip-page-main {
+      min-width: 0;
+    }
+
+    .ip-page-hero {
+      padding: 34px 0 16px;
+    }
+
+    .ip-breadcrumb {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+
+    .ip-breadcrumb a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .ip-breadcrumb a:hover {
+      color: var(--accent-gold);
+    }
+
+    .ip-page-hero-card {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding: 28px;
+      background:
+        linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(255, 107, 53, 0.05)),
+        var(--bg-card);
+      border: 1px solid rgba(255, 215, 0, 0.14);
+    }
+
+    .ip-page-hero-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      background: linear-gradient(135deg, rgba(255,215,0,0.14), rgba(255,107,53,0.16));
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      box-shadow: 0 0 22px rgba(255, 215, 0, 0.14);
+      flex-shrink: 0;
+    }
+
+    .ip-page-hero-content h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.05;
+    }
+
+    .ip-page-hero-content p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    .ip-page-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .ip-page-meta .ip-badge {
+      font-size: 0.82rem;
+    }
+
+    .ip-retirement-banner {
+      margin: 18px 0 28px;
+      border-left: 4px solid #ffd700;
+      background: linear-gradient(135deg, #ffd70022, #ff6b3522);
+      padding: 18px 22px;
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid rgba(255,215,0,0.15);
+    }
+
+    .ip-retirement-banner-text {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .ip-retirement-banner a {
+      text-decoration: none;
+      color: var(--accent-gold);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .ip-calculator-block {
+      margin-bottom: 28px;
+      scroll-margin-top: 110px;
+    }
+
+    .ip-calculator-block > .ip-card {
+      background:
+        linear-gradient(180deg, rgba(255,215,0,0.03), rgba(255,255,255,0.01)),
+        var(--bg-card);
+      border: 1px solid rgba(255,215,0,0.12);
+    }
+
+    .ip-calc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .ip-calc-title-wrap {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      min-width: 0;
+    }
+
+    .ip-calc-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      background: rgba(255,215,0,0.10);
+      border: 1px solid rgba(255,215,0,0.18);
+      color: var(--accent-gold);
+      flex-shrink: 0;
+    }
+
+    .ip-calc-title-wrap h2 {
+      margin: 0 0 6px;
+      font-size: 1.5rem;
+    }
+
+    .ip-calc-title-wrap p {
+      margin: 0;
+      color: var(--text-secondary);
+    }
+
+    .ip-fav-btn {
+      flex-shrink: 0;
+      min-width: auto;
+      padding: 12px 16px;
+    }
+
+    .ip-input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .ip-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .ip-field-full {
+      grid-column: 1 / -1;
+    }
+
+    .ip-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .ip-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ip-inline-output {
+      font-size: 0.88rem;
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+
+    .ip-inline-meta {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      margin-top: -2px;
+    }
+
+    .ip-range-wrap {
+      display: grid;
+      gap: 10px;
+    }
+
+    .ip-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .ip-results-panel {
+      min-height: 100%;
+      display: grid;
+      gap: 18px;
+    }
+
+    .ip-result-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ip-result-cell {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,215,0,0.10);
+      min-height: 112px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .ip-result-value {
+      font-size: clamp(1.05rem, 2vw, 1.55rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.1;
+      word-break: break-word;
+    }
+
+    .ip-result-value.ip-highlight-gold {
+      background: linear-gradient(135deg, #ffd700, #ff6b35);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .ip-result-value.ip-highlight-cyan {
+      color: var(--accent-cyan);
+    }
+
+    .ip-result-label {
+      color: var(--text-secondary);
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .ip-results-panel.slideInRight {
+      animation: slideInRight 0.4s ease both;
+    }
+
+    .ip-chart-card {
+      height: 340px;
+      padding: 18px;
+      border: 1px solid rgba(255,215,0,0.10);
+    }
+
+    .ip-chart-card canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .ip-collapsible-table {
+      display: grid;
+      gap: 12px;
+    }
+
+    .ip-table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .ip-collapse-trigger {
+      justify-self: start;
+    }
+
+    .ip-tip-box {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,107,53,0.08));
+      border: 1px solid rgba(255,215,0,0.16);
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+    }
+
+    .ip-milestone-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .ip-milestone-card {
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,215,0,0.10);
+    }
+
+    .ip-milestone-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .ip-milestone-value {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .ip-fire-tagline {
+      margin: 4px 0 0;
+      color: var(--accent-gold);
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+
+    .ip-progress-wrap {
+      display: grid;
+      gap: 10px;
+      padding: 16px 18px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,215,0,0.10);
+    }
+
+    .ip-progress-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .ip-progress-label {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .ip-progress-value {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+
+    .ip-progress-bar {
+      height: 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ip-progress-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      transition: width 0.9s ease;
+      background: linear-gradient(135deg, #ff4757, #ff9f43);
+    }
+
+    .ip-scenario-table-wrap {
+      overflow-x: auto;
+      border: 1px solid rgba(255,215,0,0.10);
+      border-radius: var(--radius-lg);
+    }
+
+    .ip-scenario-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .ip-scenario-table th,
+    .ip-scenario-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .ip-scenario-table th {
+      color: var(--accent-gold);
+      background: rgba(255,255,255,0.03);
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ip-scenario-table td {
+      color: var(--text-secondary);
+    }
+
+    .partner-cta-box {
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1.5px solid rgba(255,215,0,0.2);
+      background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,107,53,0.05));
+    }
+
+    .partner-logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.6rem;
+      background: rgba(255,215,0,0.12);
+      flex-shrink: 0;
+    }
+
+    .partner-info {
+      display: grid;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .partner-tagline {
+      margin: 0;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .partner-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: start;
+      padding: 14px 24px;
+      border-radius: var(--radius-md);
+      font-weight: 800;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 6px 20px rgba(255, 168, 0, 0.22);
+    }
+
+    .partner-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(255, 168, 0, 0.28);
+      filter: brightness(1.04);
+    }
+
+    .ip-related-section {
+      margin-top: 10px;
+      padding-bottom: 12px;
+    }
+
+    .ip-related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .ip-related-card {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .ip-related-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+    }
+
+    .ip-related-card p {
+      margin: 0 0 14px;
+      color: var(--text-secondary);
+    }
+
+    .ip-related-link {
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+
+    .ip-hidden {
+      display: none !important;
+    }
+
+    .ip-toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .ip-toggle {
+      position: relative;
+      width: 58px;
+      height: 32px;
+      display: inline-block;
+    }
+
+    .ip-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .ip-toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .ip-toggle-slider::before {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      left: 4px;
+      top: 3px;
+      border-radius: 50%;
+      background: #fff;
+      transition: var(--transition);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+    }
+
+    .ip-toggle input:checked + .ip-toggle-slider {
+      background: linear-gradient(135deg, rgba(255,215,0,0.45), rgba(255,107,53,0.45));
+      border-color: rgba(255,215,0,0.35);
+    }
+
+    .ip-toggle input:checked + .ip-toggle-slider::before {
+      transform: translateX(26px);
+    }
+
+    .ip-tooltip-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,215,0,0.20);
+      background: rgba(255,215,0,0.08);
+      color: var(--accent-gold);
+      display: inline-grid;
+      place-items: center;
+      font-size: 0.72rem;
+      cursor: help;
+      line-height: 1;
+    }
+
+    .ip-tooltip-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .ip-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px) scale(0.98);
+      min-width: 220px;
+      max-width: 280px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(10, 14, 26, 0.95);
+      color: #fff;
+      border: 1px solid rgba(255,215,0,0.14);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.32);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.22s ease;
+      font-size: 0.83rem;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    .ip-tooltip.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+    .ip-fire-big-number {
+      font-size: clamp(1.7rem, 4vw, 2.7rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffd700, #ff6b35);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @media (max-width: 1199px) {
+      .ip-page-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .ip-sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .ip-page-hero-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .ip-retirement-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .ip-input-grid,
+      .ip-related-grid,
+      .ip-milestone-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ip-result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ip-chart-card {
+        height: 240px;
+      }
+
+      .partner-cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .ip-tooltip {
+        left: 0;
+        transform: translateX(0) translateY(6px) scale(0.98);
+      }
+
+      .ip-tooltip.is-visible {
+        transform: translateX(0) translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="ip-header"></div>
+
+  <main class="ip-page-main-wrap">
+    <section class="ip-page-hero">
+      <div class="ip-container">
+        <div class="ip-breadcrumb">
+          <a href="/index.html">Home</a> &gt; <span>Retirement Planning</span>
+        </div>
+
+        <div class="ip-page-hero-card ip-card">
+          <div class="ip-page-hero-icon">🌅</div>
+          <div class="ip-page-hero-content">
+            <h1>Retirement Planning Calculators</h1>
+            <p>Calculate your freedom number. Start today.</p>
+            <div class="ip-page-meta">
+              <span class="ip-badge">2 Premium Calculators</span>
+              <span class="ip-badge">Private Wealth Style</span>
+              <span class="ip-badge">Updated 2026</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ip-retirement-banner">
+          <div class="ip-retirement-banner-text">
+            👑 Your retirement deserves expert planning — absolutemoney.in →
+          </div>
+          <a href="https://absolutemoney.in" target="_blank" rel="noopener noreferrer">
+            Visit absolutemoney.in
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="ip-page-content">
+      <div class="ip-container">
+        <div class="ip-page-shell">
+          <aside class="ip-sidebar">
+            <div class="ip-sidebar-card ip-card">
+              <div class="ip-sidebar-title">On this page</div>
+              <nav class="ip-sidebar-nav">
+                <a class="ip-sidebar-link" href="#retirement-corpus" data-calc-nav-link>
+                  <i class="fa-solid fa-landmark"></i>
+                  <span>Retirement Corpus</span>
+                </a>
+                <a class="ip-sidebar-link" href="#fire" data-calc-nav-link>
+                  <i class="fa-solid fa-fire-flame-curved"></i>
+                  <span>FIRE Calculator</span>
+                </a>
+              </nav>
+            </div>
+          </aside>
+
+          <div class="ip-page-main">
+            <!-- RETIREMENT CORPUS CALCULATOR -->
+            <section class="ip-calculator-block" id="retirement-corpus">
+              <div class="ip-card">
+                <div class="ip-calc-header">
+                  <div class="ip-calc-title-wrap">
+                    <div class="ip-calc-icon"><i class="fa-solid fa-landmark"></i></div>
+                    <div>
+                      <h2>Retirement Corpus Calculator</h2>
+                      <p>A premium retirement planning view of what you need, what you already have, and what you must start investing now.</p>
+                    </div>
+                  </div>
+
+                  <button
+                    class="ip-btn-outline ip-fav-btn"
+                    type="button"
+                    data-favorite-id="retirement-corpus"
+                    aria-pressed="false"
+                  >
+                    ⭐ Save
+                  </button>
+                </div>
+
+                <div class="calculator-container">
+                  <div class="calculator-inputs">
+                    <div class="ip-input-grid">
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="retCurrentAge">
+                            Current Age
+                            <span class="ip-tooltip-wrapper">
+                              <button class="ip-tooltip-btn" type="button">?</button>
+                              <span class="ip-tooltip">Your current age today. The model projects from here until life expectancy.</span>
+                            </span>
+                          </label>
+                          <span class="ip-inline-output" id="retCurrentAgeOutput">30</span>
+                        </div>
+                        <input class="ip-input" id="retCurrentAge" type="number" min="20" max="60" step="1" value="30" />
+                        <input class="ip-range" id="retCurrentAgeRange" type="range" min="20" max="60" step="1" value="30" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="retAge">
+                            Desired Retirement Age
+                            <span class="ip-tooltip-wrapper">
+                              <button class="ip-tooltip-btn" type="button">?</button>
+                              <span class="ip-tooltip">The age when you want work income to stop and retirement income to begin.</span>
+                            </span>
+                          </label>
+                          <span class="ip-inline-output" id="retAgeOutput">60</span>
+                        </div>
+                        <input class="ip-input" id="retAge" type="number" min="40" max="70" step="1" value="60" />
+                        <input class="ip-range" id="retAgeRange" type="range" min="40" max="70" step="1" value="60" />
+                        <div class="ip-inline-meta" id="yearsToRetirementMeta">Years to retirement: 30</div>
+                      </div>
+
+                      <div class="ip-field">
+                        <label class="ip-label" for="retMonthlyExpenses">
+                          Current Monthly Expenses ₹
+                          <span class="ip-tooltip-wrapper">
+                            <button class="ip-tooltip-btn" type="button">?</button>
+                            <span class="ip-tooltip">What you spend today for your current lifestyle. Inflation will increase this over time.</span>
+                          </span>
+                        </label>
+                        <input class="ip-input" id="retMonthlyExpenses" type="number" min="1000" step="1000" value="60000" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="retInflation">
+                            Expected Inflation Rate % per year
+                            <span class="ip-tooltip-wrapper">
+                              <button class="ip-tooltip-btn" type="button">?</button>
+                              <span class="ip-tooltip">Inflation is the silent force that raises your required corpus. Even 1% higher inflation changes the number significantly.</span>
+                            </span>
+                          </label>
+                          <span class="ip-inline-output" id="retInflationOutput">6%</span>
+                        </div>
+                        <input class="ip-input" id="retInflation" type="number" min="3" max="10" step="0.1" value="6" />
+                        <input class="ip-range" id="retInflationRange" type="range" min="3" max="10" step="0.1" value="6" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="retPreReturn">
+                            Expected Investment Return % pre-retirement
+                            <span class="ip-tooltip-wrapper">
+                              <button class="ip-tooltip-btn" type="button">?</button>
+                              <span class="ip-tooltip">Expected annualized return while you are still building wealth before retirement.</span>
+                            </span>
+                          </label>
+                          <span class="ip-inline-output" id="retPreReturnOutput">12%</span>
+                        </div>
+                        <input class="ip-input" id="retPreReturn" type="number" min="8" max="18" step="0.1" value="12" />
+                        <input class="ip-range" id="retPreReturnRange" type="range" min="8" max="18" step="0.1" value="12" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="retPostReturn">
+                            Expected Return % post-retirement
+                            <span class="ip-tooltip-wrapper">
+                              <button class="ip-tooltip-btn" type="button">?</button>
+                              <span class="ip-tooltip">Post-retirement portfolios are typically more conservative.</span>
+                            </span>
+                          </label>
+                          <span class="ip-inline-output" id="retPostReturnOutput">7%</span>
+                        </div>
+                        <input class="ip-input" id="retPostReturn" type="number" min="5" max="10" step="0.1" value="7" />
+                        <input class="ip-range" id="retPostReturnRange" type="range" min="5" max="10" step="0.1" value="7" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="retLifeExpectancy">
+                            Life Expectancy in years
+                            <span class="ip-tooltip-wrapper">
+                              <button class="ip-tooltip-btn" type="button">?</button>
+                              <span class="ip-tooltip">The model assumes your corpus needs to support you till this age.</span>
+                            </span>
+                          </label>
+                          <span class="ip-inline-output" id="retLifeExpectancyOutput">85</span>
+                        </div>
+                        <input class="ip-input" id="retLifeExpectancy" type="number" min="70" max="100" step="1" value="85" />
+                        <input class="ip-range" id="retLifeExpectancyRange" type="range" min="70" max="100" step="1" value="85" />
+                        <div class="ip-inline-meta" id="yearsInRetirementMeta">Years in retirement: 25</div>
+                      </div>
+
+                      <div class="ip-field">
+                        <label class="ip-label" for="retCurrentSavings">
+                          Current Savings / Investments Already Made ₹
+                          <span class="ip-tooltip-wrapper">
+                            <button class="ip-tooltip-btn" type="button">?</button>
+                            <span class="ip-tooltip">This amount is projected forward at your pre-retirement return rate.</span>
+                          </span>
+                        </label>
+                        <input class="ip-input" id="retCurrentSavings" type="number" min="0" step="10000" value="0" />
+                      </div>
+                    </div>
+
+                    <div class="ip-actions-row">
+                      <button class="ip-btn-primary" type="button" id="retirementCalculate">Calculate Retirement Plan</button>
+                      <button class="ip-btn-outline" type="button" id="retirementReset">Reset</button>
+                    </div>
+                  </div>
+
+                  <div class="calculator-results">
+                    <div class="ip-results-panel" id="retirementResultsPanel">
+                      <div class="ip-result-grid">
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Monthly Expenses at Retirement</div>
+                          <div class="ip-result-value" id="retExpenseAtRetirement">₹0</div>
+                        </div>
+
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Total Corpus Needed</div>
+                          <div class="ip-result-value ip-highlight-cyan" id="retCorpusNeeded">₹0</div>
+                        </div>
+
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Current Savings Will Grow To</div>
+                          <div class="ip-result-value" id="retSavingsFuture">₹0</div>
+                        </div>
+
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Additional Corpus Needed</div>
+                          <div class="ip-result-value" id="retAdditionalCorpus">₹0</div>
+                        </div>
+
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Monthly SIP You Need to Start NOW</div>
+                          <div class="ip-result-value ip-highlight-gold" id="retMonthlySip">₹0</div>
+                        </div>
+
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Inflation-adjusted Corpus Coverage</div>
+                          <div class="ip-result-value" id="retCoverageYears">0 years</div>
+                        </div>
+                      </div>
+
+                      <div class="ip-milestone-grid">
+                        <div class="ip-milestone-card">
+                          <div class="ip-milestone-title">🟡 50% FIRE</div>
+                          <div class="ip-milestone-value" id="retHalfFire">₹0</div>
+                        </div>
+                        <div class="ip-milestone-card">
+                          <div class="ip-milestone-title">🟢 Full FIRE</div>
+                          <div class="ip-milestone-value" id="retFullFire">₹0</div>
+                        </div>
+                      </div>
+
+                      <div class="ip-card ip-chart-card">
+                        <canvas id="retirementChart"></canvas>
+                      </div>
+
+                      <div class="ip-collapsible-table">
+                        <div class="ip-table-wrap">
+                          <table class="ip-table">
+                            <thead>
+                              <tr>
+                                <th>Year</th>
+                                <th>Age</th>
+                                <th>Annual Savings</th>
+                                <th>Corpus at Year End</th>
+                              </tr>
+                            </thead>
+                            <tbody id="retirementTableBody"></tbody>
+                          </table>
+                        </div>
+                        <button class="ip-btn-outline ip-collapse-trigger" type="button" id="retirementShowAll">Show All</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ip-tip-box">
+                  💡 Retiring 5 years earlier (at 55 vs 60) can increase your required corpus by 40–60% due to both fewer accumulation years and more retirement years to fund.
+                </div>
+
+                <div class="partner-cta-box" style="border-color:#ffd700;">
+                  <span class="partner-logo">👑</span>
+                  <div class="partner-info">
+                    <p class="partner-tagline" id="retirementCtaText">
+                      This is serious money — ₹0 crore is your number. Talk to a wealth manager who specializes in retirement planning.
+                    </p>
+                    <a
+                      href="https://absolutemoney.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="partner-cta-btn"
+                      style="background:linear-gradient(135deg, #ffd700, #ff6b35);color:#000;"
+                    >
+                      Book Free Retirement Consultation — absolutemoney.in →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- FIRE CALCULATOR -->
+            <section class="ip-calculator-block" id="fire">
+              <div class="ip-card">
+                <div class="ip-calc-header">
+                  <div class="ip-calc-title-wrap">
+                    <div class="ip-calc-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                    <div>
+                      <h2>FIRE Calculator</h2>
+                      <p>Financial Independence, Retire Early</p>
+                      <div class="ip-fire-tagline">What's your number? Find out when you can stop working.</div>
+                    </div>
+                  </div>
+
+                  <button
+                    class="ip-btn-outline ip-fav-btn"
+                    type="button"
+                    data-favorite-id="fire"
+                    aria-pressed="false"
+                  >
+                    ⭐ Save
+                  </button>
+                </div>
+
+                <div class="calculator-container">
+                  <div class="calculator-inputs">
+                    <div class="ip-input-grid">
+                      <div class="ip-field">
+                        <label class="ip-label" for="fireCurrentExpenses">Current Monthly Expenses ₹</label>
+                        <input class="ip-input" id="fireCurrentExpenses" type="number" min="1000" step="1000" value="60000" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-toggle-row">
+                          <label class="ip-label" for="fireSameAsCurrent">FIRE Monthly Lifestyle ₹</label>
+                          <span class="ip-inline-meta">Same as current</span>
+                          <label class="ip-toggle">
+                            <input id="fireSameAsCurrent" type="checkbox" checked />
+                            <span class="ip-toggle-slider"></span>
+                          </label>
+                        </div>
+                        <input class="ip-input" id="fireLifestyleExpenses" type="number" min="1000" step="1000" value="60000" />
+                      </div>
+
+                      <div class="ip-field">
+                        <label class="ip-label" for="fireCurrentSavings">Current Total Savings &amp; Investments ₹</label>
+                        <input class="ip-input" id="fireCurrentSavings" type="number" min="0" step="10000" value="500000" />
+                      </div>
+
+                      <div class="ip-field">
+                        <label class="ip-label" for="fireMonthlySavings">Monthly Savings You Can Invest ₹</label>
+                        <input class="ip-input" id="fireMonthlySavings" type="number" min="0" step="1000" value="30000" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="fireReturn">Expected Annual Return on Investments %</label>
+                          <span class="ip-inline-output" id="fireReturnOutput">10%</span>
+                        </div>
+                        <input class="ip-input" id="fireReturn" type="number" min="8" max="18" step="0.1" value="10" />
+                        <input class="ip-range" id="fireReturnRange" type="range" min="8" max="18" step="0.1" value="10" />
+                      </div>
+
+                      <div class="ip-field">
+                        <label class="ip-label" for="fireCurrentAge">Your Current Age</label>
+                        <input class="ip-input" id="fireCurrentAge" type="number" min="18" max="70" step="1" value="30" />
+                      </div>
+                    </div>
+
+                    <div class="ip-actions-row">
+                      <button class="ip-btn-primary" type="button" id="fireCalculate">Calculate My FIRE Plan</button>
+                      <button class="ip-btn-outline" type="button" id="fireReset">Reset</button>
+                    </div>
+                  </div>
+
+                  <div class="calculator-results">
+                    <div class="ip-results-panel" id="fireResultsPanel">
+                      <div class="ip-result-grid">
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">🎯 Your FIRE Number</div>
+                          <div class="ip-result-value ip-fire-big-number" id="fireNumber">₹0</div>
+                        </div>
+
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">⏱️ Years to FIRE</div>
+                          <div class="ip-result-value" id="fireYears">0.0 years</div>
+                        </div>
+
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">🎂 Your FIRE Age</div>
+                          <div class="ip-result-value" id="fireAge">0 years</div>
+                        </div>
+
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">💰 Monthly Passive Income at FIRE</div>
+                          <div class="ip-result-value" id="firePassiveIncome">₹0</div>
+                        </div>
+
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">📊 Today's Progress</div>
+                          <div class="ip-result-value" id="fireProgressPercent">0%</div>
+                        </div>
+                      </div>
+
+                      <div class="ip-progress-wrap">
+                        <div class="ip-progress-head">
+                          <div class="ip-progress-label" id="fireProgressLabel">You are 0% of the way to Financial Freedom</div>
+                          <div class="ip-progress-value" id="fireProgressValue">0 / 100%</div>
+                        </div>
+                        <div class="ip-progress-bar">
+                          <div class="ip-progress-fill" id="fireProgressFill"></div>
+                        </div>
+                      </div>
+
+                      <div class="ip-scenario-table-wrap">
+                        <table class="ip-scenario-table">
+                          <thead>
+                            <tr>
+                              <th>Scenario</th>
+                              <th>Years to FIRE</th>
+                              <th>FIRE Age</th>
+                            </tr>
+                          </thead>
+                          <tbody id="fireScenarioBody"></tbody>
+                        </table>
+                      </div>
+
+                      <div class="ip-card ip-chart-card">
+                        <canvas id="fireChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ip-tip-box">
+                  💡 Increasing your savings rate from 20% to 30% of income can cut your FIRE timeline by nearly 7–10 years.
+                </div>
+
+                <div class="partner-cta-box" style="border-color:#ffd700;">
+                  <span class="partner-logo">👑</span>
+                  <div class="partner-info">
+                    <p class="partner-tagline">
+                      Your FIRE journey needs a co-pilot. Talk to a wealth advisor who has helped hundreds achieve financial independence.
+                    </p>
+                    <a
+                      href="https://absolutemoney.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="partner-cta-btn"
+                      style="background:linear-gradient(135deg, #ffd700, #ff6b35);color:#000;"
+                    >
+                      Start My FIRE Journey — absolutemoney.in →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!--
+              IP:ADD_CALCULATOR
+              FUTURE CALCULATORS — Add below this line:
+              - NPS Pension Calculator (id="nps-pension")
+              - Post-Retirement Income Planner (id="post-retirement")
+              - Government Employee Pension (id="govt-pension")
+              - Partial Retirement / Semi-FIRE Calculator (id="semi-fire")
+              - Annuity vs SWP Comparator (id="annuity-vs-swp")
+            -->
+
+            <section class="ip-related-section">
+              <div class="ip-section-head">
+                <span class="ip-badge">Related Pages</span>
+                <h2>You might also like</h2>
+                <p>Retirement planning works best when it connects to savings, protection, and overall net worth.</p>
+              </div>
+
+              <div class="ip-related-grid">
+                <a href="/pages/investment.html" class="ip-card ip-related-card">
+                  <h3>Investment Calculators</h3>
+                  <p>Run SIP, lump sum, CAGR, and PPF calculations to build your retirement engine.</p>
+                  <span class="ip-related-link">Explore Investments →</span>
+                </a>
+
+                <a href="/pages/personal.html" class="ip-card ip-related-card">
+                  <h3>Personal Finance</h3>
+                  <p>Track budget, salary, and net worth to improve your retirement readiness.</p>
+                  <span class="ip-related-link">Explore Personal Finance →</span>
+                </a>
+
+                <a href="/pages/insurance.html" class="ip-card ip-related-card">
+                  <h3>Insurance &amp; Life</h3>
+                  <p>Protect your retirement plan with the right cover and long-term family planning.</p>
+                  <span class="ip-related-link">Explore Insurance →</span>
+                </a>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="ip-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/charts.js"></script>
+  <script src="/js/global.js"></script>
+
+  <script>
+    (function () {
+      const U = window.IPUtils;
+      const C = window.IPCharts;
+
+      function syncPair(numberInput, rangeInput, outputEl, formatter) {
+        function updateFrom(source) {
+          let value = U.toNumber(source.value);
+
+          const min = U.toNumber(numberInput.min || rangeInput.min || 0);
+          const max = U.toNumber(numberInput.max || rangeInput.max || value);
+
+          value = U.clamp(value, min, max);
+
+          numberInput.value = value;
+          rangeInput.value = value;
+          outputEl.textContent = formatter(value);
+        }
+
+        numberInput.addEventListener("input", () => updateFrom(numberInput));
+        rangeInput.addEventListener("input", () => updateFrom(rangeInput));
+        updateFrom(numberInput);
+      }
+
+      function formatYears(value) {
+        const years = Math.max(0, U.toNumber(value));
+        return `${years} ${years === 1 ? "year" : "years"}`;
+      }
+
+      function animateMoney(el, value) {
+        if (!el) return;
+        U.animateCounter(el, 0, value, 900, "₹");
+      }
+
+      function setSlideIn(panel) {
+        if (!panel) return;
+        panel.classList.remove("slideInRight");
+        void panel.offsetWidth;
+        panel.classList.add("slideInRight");
+      }
+
+      function buildRows(tableBody, rows, renderRow, showAllBtn, initialRows = 10) {
+        let expanded = false;
+
+        function render() {
+          const visibleRows = expanded ? rows : rows.slice(0, initialRows);
+          tableBody.innerHTML = visibleRows.map(renderRow).join("");
+          if (rows.length <= initialRows) {
+            showAllBtn.classList.add("ip-hidden");
+          } else {
+            showAllBtn.classList.remove("ip-hidden");
+            showAllBtn.textContent = expanded ? "Show Less" : "Show All";
+          }
+        }
+
+        showAllBtn.onclick = function () {
+          expanded = !expanded;
+          render();
+        };
+
+        render();
+      }
+
+      function updateRetirementMeta() {
+        const currentAge = U.toNumber(document.getElementById("retCurrentAge").value);
+        const retirementAge = U.toNumber(document.getElementById("retAge").value);
+        const lifeExpectancy = U.toNumber(document.getElementById("retLifeExpectancy").value);
+
+        const yearsToRetirement = Math.max(0, retirementAge - currentAge);
+        const yearsInRetirement = Math.max(0, lifeExpectancy - retirementAge);
+
+        document.getElementById("yearsToRetirementMeta").textContent = `Years to retirement: ${yearsToRetirement}`;
+        document.getElementById("yearsInRetirementMeta").textContent = `Years in retirement: ${yearsInRetirement}`;
+      }
+
+      function calcRetirementPlan(inputs) {
+        const yearsToRetirement = Math.max(0, inputs.retirementAge - inputs.currentAge);
+        const yearsInRetirement = Math.max(0, inputs.lifeExpectancy - inputs.retirementAge);
+
+        const monthlyExpensesAtRetirement =
+          inputs.currentMonthlyExpenses * Math.pow(1 + inputs.inflation / 100, yearsToRetirement);
+
+        const annualExpensesAtRetirement = monthlyExpensesAtRetirement * 12;
+
+        const realReturn =
+          ((1 + inputs.postRetReturn / 100) / (1 + inputs.inflation / 100)) - 1;
+
+        let corpusNeeded = 0;
+        if (realReturn > 0) {
+          corpusNeeded =
+            annualExpensesAtRetirement *
+            (1 - Math.pow(1 + realReturn, -yearsInRetirement)) /
+            realReturn;
+        } else {
+          corpusNeeded = annualExpensesAtRetirement * yearsInRetirement;
+        }
+
+        const fvCurrentSavings =
+          inputs.currentSavings * Math.pow(1 + inputs.preRetReturn / 100, yearsToRetirement);
+
+        const additionalCorpusNeeded = Math.max(0, corpusNeeded - fvCurrentSavings);
+
+        const monthlyRate = inputs.preRetReturn / 12 / 100;
+        const totalMonths = yearsToRetirement * 12;
+
+        let monthlySipNeeded = 0;
+        if (additionalCorpusNeeded > 0 && totalMonths > 0) {
+          if (monthlyRate === 0) {
+            monthlySipNeeded = additionalCorpusNeeded / totalMonths;
+          } else {
+            monthlySipNeeded =
+              additionalCorpusNeeded *
+              monthlyRate /
+              (Math.pow(1 + monthlyRate, totalMonths) - 1) /
+              (1 + monthlyRate);
+          }
+        }
+
+        const halfFire = corpusNeeded * 0.5;
+        const fullFire = corpusNeeded;
+
+        const labels = [];
+        const accumulationSeries = [];
+        const depletionSeries = [];
+        const goalSeries = [];
+        const tableRows = [];
+
+        let corpus = inputs.currentSavings;
+        const annualContribution = monthlySipNeeded * 12;
+
+        for (let year = 0; year <= yearsToRetirement; year += 1) {
+          const age = inputs.currentAge + year;
+          labels.push(`${age}`);
+          goalSeries.push(Math.round(corpusNeeded));
+
+          if (year === 0) {
+            accumulationSeries.push(Math.round(corpus));
+            depletionSeries.push(null);
+          } else {
+            corpus = corpus * (1 + inputs.preRetReturn / 100) + annualContribution;
+            accumulationSeries.push(Math.round(corpus));
+            depletionSeries.push(null);
+          }
+
+          if (year > 0) {
+            tableRows.push({
+              year,
+              age,
+              annualSavings: annualContribution,
+              corpusEnd: corpus
+            });
+          }
+        }
+
+        let retirementCorpus = Math.max(corpusNeeded, accumulationSeries[accumulationSeries.length - 1]);
+        accumulationSeries[accumulationSeries.length - 1] = Math.round(retirementCorpus);
+
+        let depletionCorpus = retirementCorpus;
+        for (let year = 1; year <= yearsInRetirement; year += 1) {
+          const age = inputs.retirementAge + year;
+          labels.push(`${age}`);
+          goalSeries.push(Math.round(corpusNeeded));
+          accumulationSeries.push(null);
+
+          depletionCorpus =
+            depletionCorpus * (1 + inputs.postRetReturn / 100) - annualExpensesAtRetirement;
+          depletionCorpus = Math.max(0, depletionCorpus);
+          depletionSeries.push(Math.round(depletionCorpus));
+        }
+
+        let coverageYears = 0;
+        let checkCorpus = retirementCorpus;
+        for (let i = 0; i < 100; i += 1) {
+          checkCorpus = checkCorpus * (1 + inputs.postRetReturn / 100) - annualExpensesAtRetirement;
+          if (checkCorpus > 0) coverageYears += 1;
+          else break;
+        }
+
+        return {
+          yearsToRetirement,
+          yearsInRetirement,
+          monthlyExpensesAtRetirement,
+          annualExpensesAtRetirement,
+          realReturn,
+          corpusNeeded,
+          fvCurrentSavings,
+          additionalCorpusNeeded,
+          monthlySipNeeded,
+          coverageYears,
+          halfFire,
+          fullFire,
+          labels,
+          accumulationSeries,
+          depletionSeries,
+          goalSeries,
+          tableRows
+        };
+      }
+
+      function renderRetirement() {
+        const inputs = {
+          currentAge: U.toNumber(document.getElementById("retCurrentAge").value),
+          retirementAge: U.toNumber(document.getElementById("retAge").value),
+          currentMonthlyExpenses: U.toNumber(document.getElementById("retMonthlyExpenses").value),
+          inflation: U.toNumber(document.getElementById("retInflation").value),
+          preRetReturn: U.toNumber(document.getElementById("retPreReturn").value),
+          postRetReturn: U.toNumber(document.getElementById("retPostReturn").value),
+          lifeExpectancy: U.toNumber(document.getElementById("retLifeExpectancy").value),
+          currentSavings: U.toNumber(document.getElementById("retCurrentSavings").value)
+        };
+
+        if (inputs.retirementAge <= inputs.currentAge) {
+          document.getElementById("retAge").value = inputs.currentAge + 1;
+          document.getElementById("retAgeRange").value = inputs.currentAge + 1;
+          updateRetirementOutputs();
+          return renderRetirement();
+        }
+
+        if (inputs.lifeExpectancy <= inputs.retirementAge) {
+          document.getElementById("retLifeExpectancy").value = inputs.retirementAge + 1;
+          document.getElementById("retLifeExpectancyRange").value = inputs.retirementAge + 1;
+          updateRetirementOutputs();
+          return renderRetirement();
+        }
+
+        const data = calcRetirementPlan(inputs);
+
+        animateMoney(document.getElementById("retExpenseAtRetirement"), data.monthlyExpensesAtRetirement);
+        animateMoney(document.getElementById("retCorpusNeeded"), data.corpusNeeded);
+        animateMoney(document.getElementById("retSavingsFuture"), data.fvCurrentSavings);
+        animateMoney(document.getElementById("retAdditionalCorpus"), data.additionalCorpusNeeded);
+        animateMoney(document.getElementById("retMonthlySip"), data.monthlySipNeeded);
+        document.getElementById("retCoverageYears").textContent = `${data.coverageYears} years`;
+
+        animateMoney(document.getElementById("retHalfFire"), data.halfFire);
+        animateMoney(document.getElementById("retFullFire"), data.fullFire);
+
+        setSlideIn(document.getElementById("retirementResultsPanel"));
+
+        C.createLineChart(
+          "retirementChart",
+          data.labels,
+          [
+            {
+              label: "Accumulation",
+              data: data.accumulationSeries,
+              borderColor: C.CHART_COLORS.cyan.border,
+              backgroundColor: "rgba(0,212,255,0.10)",
+              fill: false,
+              spanGaps: false
+            },
+            {
+              label: "Retirement Depletion",
+              data: data.depletionSeries,
+              borderColor: C.CHART_COLORS.orange.border,
+              backgroundColor: "rgba(255,107,53,0.16)",
+              fill: true,
+              spanGaps: false
+            },
+            {
+              label: "Goal Corpus",
+              data: data.goalSeries,
+              borderColor: C.CHART_COLORS.gold.border,
+              backgroundColor: "transparent",
+              borderDash: [7, 6],
+              fill: false,
+              pointRadius: 0
+            }
+          ],
+          {
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (ctx) {
+                    if (ctx.parsed.y == null) return null;
+                    return `${ctx.dataset.label}: ₹${new Intl.NumberFormat("en-IN").format(ctx.parsed.y)}`;
+                  }
+                }
+              }
+            }
+          }
+        );
+
+        buildRows(
+          document.getElementById("retirementTableBody"),
+          data.tableRows,
+          (row) => `
+            <tr>
+              <td>Year ${row.year}</td>
+              <td>${row.age}</td>
+              <td>${U.formatINR(row.annualSavings)}</td>
+              <td>${U.formatINR(row.corpusEnd)}</td>
+            </tr>
+          `,
+          document.getElementById("retirementShowAll"),
+          10
+        );
+
+        const corpusCrore = data.corpusNeeded / 10000000;
+        document.getElementById("retirementCtaText").textContent =
+          `This is serious money — ₹${corpusCrore.toFixed(2)} crore is your number. Talk to a wealth manager who specializes in retirement planning.`;
+      }
+
+      function updateRetirementOutputs() {
+        document.getElementById("retCurrentAgeOutput").textContent = U.formatNumber(document.getElementById("retCurrentAge").value);
+        document.getElementById("retAgeOutput").textContent = U.formatNumber(document.getElementById("retAge").value);
+        document.getElementById("retInflationOutput").textContent = `${U.toNumber(document.getElementById("retInflation").value).toFixed(1).replace(/\.0$/, "")}%`;
+        document.getElementById("retPreReturnOutput").textContent = `${U.toNumber(document.getElementById("retPreReturn").value).toFixed(1).replace(/\.0$/, "")}%`;
+        document.getElementById("retPostReturnOutput").textContent = `${U.toNumber(document.getElementById("retPostReturn").value).toFixed(1).replace(/\.0$/, "")}%`;
+        document.getElementById("retLifeExpectancyOutput").textContent = U.formatNumber(document.getElementById("retLifeExpectancy").value);
+        updateRetirementMeta();
+      }
+
+      function resetRetirement() {
+        document.getElementById("retCurrentAge").value = 30;
+        document.getElementById("retCurrentAgeRange").value = 30;
+        document.getElementById("retAge").value = 60;
+        document.getElementById("retAgeRange").value = 60;
+        document.getElementById("retMonthlyExpenses").value = 60000;
+        document.getElementById("retInflation").value = 6;
+        document.getElementById("retInflationRange").value = 6;
+        document.getElementById("retPreReturn").value = 12;
+        document.getElementById("retPreReturnRange").value = 12;
+        document.getElementById("retPostReturn").value = 7;
+        document.getElementById("retPostReturnRange").value = 7;
+        document.getElementById("retLifeExpectancy").value = 85;
+        document.getElementById("retLifeExpectancyRange").value = 85;
+        document.getElementById("retCurrentSavings").value = 0;
+        updateRetirementOutputs();
+        renderRetirement();
+      }
+
+      function fireSimulation(fireNumber, currentSavings, monthlySavings, annualReturn) {
+        let corpus = currentSavings;
+        let month = 0;
+        const monthlyReturn = annualReturn / 12 / 100;
+
+        while (corpus < fireNumber && month < 600) {
+          corpus = corpus * (1 + monthlyReturn) + monthlySavings;
+          month += 1;
+        }
+
+        return {
+          months: month,
+          years: month / 12,
+          reached: corpus >= fireNumber
+        };
+      }
+
+      function calcFirePlan(inputs) {
+        const fireNumber = inputs.fireLifestyleExpenses * 12 * 25;
+        const passiveIncome = fireNumber * 0.04 / 12;
+        const progress = fireNumber > 0 ? (inputs.currentSavings / fireNumber) * 100 : 0;
+
+        const currentPlan = fireSimulation(
+          fireNumber,
+          inputs.currentSavings,
+          inputs.monthlySavings,
+          inputs.returnRate
+        );
+
+        const saveMorePlan = fireSimulation(
+          fireNumber,
+          inputs.currentSavings,
+          inputs.monthlySavings * 1.2,
+          inputs.returnRate
+        );
+
+        const betterReturnPlan = fireSimulation(
+          fireNumber,
+          inputs.currentSavings,
+          inputs.monthlySavings,
+          inputs.returnRate + 2
+        );
+
+        const bothPlan = fireSimulation(
+          fireNumber,
+          inputs.currentSavings,
+          inputs.monthlySavings * 1.2,
+          inputs.returnRate + 2
+        );
+
+        const currentFireAge = inputs.currentAge + currentPlan.years;
+        const monthlyReturn = inputs.returnRate / 12 / 100;
+
+        const monthsToPlot = Math.min(Math.max(Math.ceil(currentPlan.months), 12), 600);
+        const labels = [];
+        const corpusSeries = [];
+        const fireTargetSeries = [];
+        let corpus = inputs.currentSavings;
+
+        for (let month = 0; month <= monthsToPlot; month += 1) {
+          labels.push((month / 12).toFixed(1));
+          corpusSeries.push(Math.round(corpus));
+          fireTargetSeries.push(Math.round(fireNumber));
+          corpus = corpus * (1 + monthlyReturn) + inputs.monthlySavings;
+        }
+
+        return {
+          fireNumber,
+          passiveIncome,
+          progress,
+          currentPlan,
+          saveMorePlan,
+          betterReturnPlan,
+          bothPlan,
+          fireAge: currentFireAge,
+          labels,
+          corpusSeries,
+          fireTargetSeries
+        };
+      }
+
+      function renderFireScenarios(data, currentAge) {
+        const rows = [
+          {
+            label: "Current plan",
+            years: data.currentPlan.years,
+            age: currentAge + data.currentPlan.years
+          },
+          {
+            label: "Save 20% more/month",
+            years: data.saveMorePlan.years,
+            age: currentAge + data.saveMorePlan.years
+          },
+          {
+            label: "Earn 2% more returns",
+            years: data.betterReturnPlan.years,
+            age: currentAge + data.betterReturnPlan.years
+          },
+          {
+            label: "Both",
+            years: data.bothPlan.years,
+            age: currentAge + data.bothPlan.years
+          }
+        ];
+
+        document.getElementById("fireScenarioBody").innerHTML = rows.map((row) => `
+          <tr>
+            <td>${row.label}</td>
+            <td>${row.years.toFixed(1)} years</td>
+            <td>${row.age.toFixed(1)} years</td>
+          </tr>
+        `).join("");
+      }
+
+      function updateProgressBar(progress) {
+        const fill = document.getElementById("fireProgressFill");
+        const label = document.getElementById("fireProgressLabel");
+        const value = document.getElementById("fireProgressValue");
+        const clamped = Math.max(0, Math.min(progress, 100));
+
+        fill.style.width = `${clamped}%`;
+
+        if (clamped <= 33) {
+          fill.style.background = "linear-gradient(135deg, #ff4757, #ff6b6b)";
+        } else if (clamped <= 66) {
+          fill.style.background = "linear-gradient(135deg, #ff9f43, #feca57)";
+        } else {
+          fill.style.background = "linear-gradient(135deg, #00c853, #00e676)";
+        }
+
+        label.textContent = `You are ${clamped.toFixed(1)}% of the way to Financial Freedom`;
+        value.textContent = `${clamped.toFixed(1)} / 100%`;
+      }
+
+      function renderFire() {
+        const inputs = {
+          currentExpenses: U.toNumber(document.getElementById("fireCurrentExpenses").value),
+          fireLifestyleExpenses: U.toNumber(document.getElementById("fireLifestyleExpenses").value),
+          currentSavings: U.toNumber(document.getElementById("fireCurrentSavings").value),
+          monthlySavings: U.toNumber(document.getElementById("fireMonthlySavings").value),
+          returnRate: U.toNumber(document.getElementById("fireReturn").value),
+          currentAge: U.toNumber(document.getElementById("fireCurrentAge").value)
+        };
+
+        const data = calcFirePlan(inputs);
+
+        animateMoney(document.getElementById("fireNumber"), data.fireNumber);
+        document.getElementById("fireYears").textContent = `${data.currentPlan.years.toFixed(1)} years`;
+        document.getElementById("fireAge").textContent = `${data.fireAge.toFixed(1)} years old`;
+        animateMoney(document.getElementById("firePassiveIncome"), data.passiveIncome);
+        document.getElementById("fireProgressPercent").textContent = `${data.progress.toFixed(1)}%`;
+
+        updateProgressBar(data.progress);
+        renderFireScenarios(data, inputs.currentAge);
+        setSlideIn(document.getElementById("fireResultsPanel"));
+
+        C.createLineChart(
+          "fireChart",
+          data.labels,
+          [
+            {
+              label: "Corpus Growth",
+              data: data.corpusSeries,
+              borderColor: C.CHART_COLORS.cyan.border,
+              backgroundColor: "rgba(0,212,255,0.10)",
+              fill: false
+            },
+            {
+              label: "FIRE Target",
+              data: data.fireTargetSeries,
+              borderColor: C.CHART_COLORS.gold.border,
+              backgroundColor: "transparent",
+              borderDash: [8, 6],
+              fill: false,
+              pointRadius: 0
+            }
+          ],
+          {
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (ctx) {
+                    return `${ctx.dataset.label}: ₹${new Intl.NumberFormat("en-IN").format(ctx.parsed.y)}`;
+                  }
+                }
+              }
+            }
+          }
+        );
+      }
+
+      function updateFireOutputs() {
+        document.getElementById("fireReturnOutput").textContent =
+          `${U.toNumber(document.getElementById("fireReturn").value).toFixed(1).replace(/\.0$/, "")}%`;
+      }
+
+      function syncFireLifestyle() {
+        const same = document.getElementById("fireSameAsCurrent").checked;
+        const current = document.getElementById("fireCurrentExpenses");
+        const lifestyle = document.getElementById("fireLifestyleExpenses");
+
+        if (same) {
+          lifestyle.value = current.value;
+          lifestyle.setAttribute("readonly", "readonly");
+        } else {
+          lifestyle.removeAttribute("readonly");
+        }
+      }
+
+      function resetFire() {
+        document.getElementById("fireCurrentExpenses").value = 60000;
+        document.getElementById("fireSameAsCurrent").checked = true;
+        document.getElementById("fireLifestyleExpenses").value = 60000;
+        document.getElementById("fireCurrentSavings").value = 500000;
+        document.getElementById("fireMonthlySavings").value = 30000;
+        document.getElementById("fireReturn").value = 10;
+        document.getElementById("fireReturnRange").value = 10;
+        document.getElementById("fireCurrentAge").value = 30;
+        syncFireLifestyle();
+        updateFireOutputs();
+        renderFire();
+      }
+
+      function initSidebarHighlight() {
+        const sections = Array.from(document.querySelectorAll(".ip-calculator-block"));
+        const links = Array.from(document.querySelectorAll(".ip-sidebar-link"));
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const id = `#${entry.target.id}`;
+            links.forEach((link) => {
+              link.classList.toggle("is-active", link.getAttribute("href") === id);
+            });
+          });
+        }, { threshold: 0.35 });
+
+        sections.forEach((section) => observer.observe(section));
+      }
+
+      function initTooltips() {
+        document.querySelectorAll(".ip-tooltip-wrapper").forEach((wrapper) => {
+          const btn = wrapper.querySelector(".ip-tooltip-btn");
+          const tooltip = wrapper.querySelector(".ip-tooltip");
+          if (!btn || !tooltip) return;
+
+          const show = () => tooltip.classList.add("is-visible");
+          const hide = () => tooltip.classList.remove("is-visible");
+
+          btn.addEventListener("mouseenter", show);
+          btn.addEventListener("mouseleave", hide);
+          btn.addEventListener("focus", show);
+          btn.addEventListener("blur", hide);
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            tooltip.classList.toggle("is-visible");
+          });
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!e.target.closest(".ip-tooltip-wrapper")) {
+            document.querySelectorAll(".ip-tooltip").forEach((tip) => tip.classList.remove("is-visible"));
+          }
+        });
+      }
+
+      function bindControls() {
+        syncPair(
+          document.getElementById("retCurrentAge"),
+          document.getElementById("retCurrentAgeRange"),
+          document.getElementById("retCurrentAgeOutput"),
+          (v) => U.formatNumber(v)
+        );
+
+        syncPair(
+          document.getElementById("retAge"),
+          document.getElementById("retAgeRange"),
+          document.getElementById("retAgeOutput"),
+          (v) => U.formatNumber(v)
+        );
+
+        syncPair(
+          document.getElementById("retInflation"),
+          document.getElementById("retInflationRange"),
+          document.getElementById("retInflationOutput"),
+          (v) => `${U.toNumber(v).toFixed(1).replace(/\.0$/, "")}%`
+        );
+
+        syncPair(
+          document.getElementById("retPreReturn"),
+          document.getElementById("retPreReturnRange"),
+          document.getElementById("retPreReturnOutput"),
+          (v) => `${U.toNumber(v).toFixed(1).replace(/\.0$/, "")}%`
+        );
+
+        syncPair(
+          document.getElementById("retPostReturn"),
+          document.getElementById("retPostReturnRange"),
+          document.getElementById("retPostReturnOutput"),
+          (v) => `${U.toNumber(v).toFixed(1).replace(/\.0$/, "")}%`
+        );
+
+        syncPair(
+          document.getElementById("retLifeExpectancy"),
+          document.getElementById("retLifeExpectancyRange"),
+          document.getElementById("retLifeExpectancyOutput"),
+          (v) => U.formatNumber(v)
+        );
+
+        syncPair(
+          document.getElementById("fireReturn"),
+          document.getElementById("fireReturnRange"),
+          document.getElementById("fireReturnOutput"),
+          (v) => `${U.toNumber(v).toFixed(1).replace(/\.0$/, "")}%`
+        );
+
+        [
+          "retCurrentAge", "retAge", "retLifeExpectancy",
+          "retInflation", "retPreReturn", "retPostReturn"
+        ].forEach((id) => {
+          document.getElementById(id).addEventListener("input", updateRetirementMeta);
+        });
+
+        document.getElementById("retirementCalculate").addEventListener("click", renderRetirement);
+        document.getElementById("retirementReset").addEventListener("click", resetRetirement);
+
+        document.getElementById("fireCalculate").addEventListener("click", renderFire);
+        document.getElementById("fireReset").addEventListener("click", resetFire);
+
+        document.getElementById("fireSameAsCurrent").addEventListener("change", function () {
+          syncFireLifestyle();
+          renderFire();
+        });
+
+        document.getElementById("fireCurrentExpenses").addEventListener("input", function () {
+          if (document.getElementById("fireSameAsCurrent").checked) {
+            document.getElementById("fireLifestyleExpenses").value = this.value;
+          }
+        });
+
+        document.getElementById("fireLifestyleExpenses").addEventListener("input", function () {
+          if (document.getElementById("fireSameAsCurrent").checked) {
+            this.value = document.getElementById("fireCurrentExpenses").value;
+          }
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        bindControls();
+        initSidebarHighlight();
+        initTooltips();
+        updateRetirementOutputs();
+        updateFireOutputs();
+        syncFireLifestyle();
+
+        renderRetirement();
+        renderFire();
+      });
+    })();
+  </script>
+</body>
+</html>
