@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Tools — investpercent</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+--bg:#0a0e1a;
+--card:#0f1628;
+--accent:#00d4ff;
+--accent2:#7b61ff;
+--green:#00e676;
+--text:#fff;
+--muted:#9aa4c7;
+}
+
+body{
+margin:0;
+font-family:'Inter';
+background:var(--bg);
+color:var(--text);
+}
+
+/* NAVBAR */
+nav{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 40px;
+background:rgba(10,14,26,0.7);
+backdrop-filter:blur(10px);
+z-index:1000;
+}
+
+.logo{
+font-family:'Poppins';
+font-size:22px;
+font-weight:700;
+background:linear-gradient(90deg,#00d4ff,#7b61ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+cursor:pointer;
+}
+
+.nav-links{
+display:flex;
+gap:25px;
+}
+
+.nav-links a{
+color:var(--muted);
+text-decoration:none;
+transition:.3s;
+padding:6px 10px;
+border-radius:8px;
+}
+
+.nav-links a:hover{
+color:var(--accent);
+background:rgba(0,212,255,0.1);
+}
+
+/* PAGE */
+.container{
+padding:100px 40px 40px;
+max-width:1100px;
+margin:auto;
+}
+
+h1{
+font-family:'Poppins';
+margin-bottom:30px;
+}
+
+/* CARD */
+.card{
+background:rgba(255,255,255,0.04);
+padding:25px;
+border-radius:16px;
+margin-bottom:30px;
+border:1px solid rgba(255,255,255,0.05);
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:10px;
+border:none;
+background:#141d35;
+color:#fff;
+}
+
+button{
+padding:12px;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#00d4ff,#7b61ff);
+cursor:pointer;
+font-weight:600;
+width:100%;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+background:#141d35;
+border-radius:10px;
+display:none;
+}
+
+.cta{
+margin-top:15px;
+padding:15px;
+background:linear-gradient(90deg,#00d4ff,#7b61ff);
+border-radius:10px;
+text-align:center;
+color:#000;
+cursor:pointer;
+font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+<div class="logo" onclick="goHome()">invest%</div>
+
+<div class="nav-links">
+<a href="investment.html">Investment</a>
+<a href="#">Tax</a>
+<a href="#">Loan</a>
+<a href="#">Retirement</a>
+<a href="#">Global</a>
+</div>
+</nav>
+
+<div class="container">
+
+<h1>Investment Calculators</h1>
+
+<!-- SIP -->
+<div class="card">
+<h2>SIP Calculator</h2>
+
+<input id="sipAmount" type="number" placeholder="Monthly Investment ₹">
+<input id="sipRate" type="number" placeholder="Return %">
+<input id="sipYears" type="number" placeholder="Years">
+
+<button onclick="calcSIP()">Calculate</button>
+
+<div id="sipResult" class="result"></div>
+<canvas id="sipChart"></canvas>
+
+<div class="cta" onclick="goInvest()">Start SIP Now →</div>
+</div>
+
+<!-- LUMPSUM -->
+<div class="card">
+<h2>Lump Sum Calculator</h2>
+
+<input id="lumpAmount" placeholder="Amount">
+<input id="lumpRate" placeholder="Return %">
+<input id="lumpYears" placeholder="Years">
+
+<button onclick="calcLump()">Calculate</button>
+
+<div id="lumpResult" class="result"></div>
+<canvas id="lumpChart"></canvas>
+</div>
+
+<!-- CAGR -->
+<div class="card">
+<h2>CAGR Calculator</h2>
+
+<input id="startVal" placeholder="Start Value">
+<input id="endVal" placeholder="End Value">
+<input id="years" placeholder="Years">
+
+<button onclick="calcCAGR()">Calculate</button>
+
+<div id="cagrResult" class="result"></div>
+</div>
+
+</div>
+
+<script>
+
+/* NAV */
+function goHome(){
+window.location.href = "index.html";
+}
+
+function goInvest(){
+window.open("https://justinvesting.in","_blank");
+}
+
+/* SIP */
+function calcSIP(){
+let P = +sipAmount.value;
+let r = sipRate.value/100/12;
+let n = sipYears.value*12;
+
+let M = P*((Math.pow(1+r,n)-1)/r)*(1+r);
+
+let res = document.getElementById("sipResult");
+res.style.display="block";
+res.innerHTML = "Future Value: ₹"+Math.round(M);
+
+renderChart("sipChart",[P*n,M]);
+}
+
+/* LUMP */
+function calcLump(){
+let P = +lumpAmount.value;
+let r = lumpRate.value/100;
+let t = lumpYears.value;
+
+let A = P*Math.pow((1+r),t);
+
+let res = document.getElementById("lumpResult");
+res.style.display="block";
+res.innerHTML = "Maturity: ₹"+Math.round(A);
+
+renderChart("lumpChart",[P,A]);
+}
+
+/* CAGR */
+function calcCAGR(){
+let s = +startVal.value;
+let e = +endVal.value;
+let y = +years.value;
+
+let c = (Math.pow(e/s,1/y)-1)*100;
+
+let res = document.getElementById("cagrResult");
+res.style.display="block";
+res.innerHTML = "CAGR: "+c.toFixed(2)+"%";
+}
+
+/* CHART */
+function renderChart(id,data){
+new Chart(document.getElementById(id),{
+type:'bar',
+data:{
+labels:["Invested","Value"],
+datasets:[{data:data}]
+}
+});
+}
+
+</script>
+
+</body>
+</html>
