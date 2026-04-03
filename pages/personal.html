@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Personal Finance Tools | investpercent</title>
 
 <link rel="stylesheet" href="../css/global.css">
@@ -12,16 +13,18 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body {background:#0f172a;color:#fff;font-family:Inter, sans-serif;}
+body{background:#0f172a;color:#e2e8f0;font-family:Inter;}
 .container{max-width:1200px;margin:auto;padding:20px;}
-.card{background:#1e293b;padding:20px;border-radius:14px;margin-bottom:20px;}
-input,select{width:100%;padding:10px;border-radius:8px;border:none;margin:6px 0;background:#0f172a;color:#fff;}
-h2{margin-bottom:10px;}
-.gold{color:#ffd700;font-size:28px;font-weight:700;}
-.btn{background:#22c55e;padding:10px 14px;border:none;border-radius:8px;color:#fff;cursor:pointer;}
-.sidebar{position:sticky;top:20px;}
-.progress{height:8px;background:#334155;border-radius:6px;margin-bottom:20px;}
+.card{background:#1e293b;padding:22px;border-radius:16px;margin-bottom:24px;}
+input,select{width:100%;padding:10px;border-radius:8px;background:#020617;color:#fff;border:none;}
+h1,h2{color:#fff;}
+.gold{color:#ffd700;font-weight:700;}
+.btn{background:#22c55e;border:none;padding:12px 16px;border-radius:10px;color:#fff;font-weight:600;cursor:pointer;}
+.cta{background:#020617;border:1px solid #ffd700;padding:14px;border-radius:12px;margin-top:20px;}
+.progress{height:8px;background:#334155;border-radius:6px;margin-bottom:15px;}
 .progress-bar{height:8px;background:#22c55e;width:0%;border-radius:6px;}
+.flex{display:flex;gap:20px;flex-wrap:wrap;}
+.col{flex:1;min-width:250px;}
 </style>
 </head>
 
@@ -32,25 +35,40 @@ h2{margin-bottom:10px;}
 <h1>💰 Personal Finance Tools</h1>
 <p>Understand your money. Control your future.</p>
 
-<!-- PARTNER BANNER -->
 <div class="card" style="border-left:4px solid #ffd700;background:linear-gradient(135deg,#ffd70022,#ff6b3522);">
 💰 Your salary, your budget, your wealth — plan it all at absolutemoney.in →
 </div>
 
-<!-- ================= SALARY CALCULATOR ================= -->
+<!-- ================= SALARY ================= -->
 <div class="card" id="salary">
 <h2>In-Hand Salary Calculator</h2>
 
+<div class="flex">
+<div class="col">
 <label>Annual CTC ₹</label>
-<input type="number" id="ctc" value="1000000">
+<input type="number" id="ctc" value="1200000">
 
 <label>Basic %</label>
 <input type="range" id="basicPercent" min="30" max="60" value="40">
 
-<label>HRA % of Basic</label>
+<label>HRA %</label>
 <input type="range" id="hraPercent" min="40" max="50" value="50">
 
-<label>State</label>
+<label>Tax Regime</label>
+<select id="taxRegime">
+<option value="new">New</option>
+<option value="old">Old</option>
+</select>
+</div>
+
+<div class="col">
+<label>Insurance ₹/month</label>
+<input type="number" id="insurance" value="0">
+
+<label>Other Deductions ₹/month</label>
+<input type="number" id="otherDed" value="0">
+
+<label>State (Professional Tax)</label>
 <select id="state">
 <option value="200">Maharashtra</option>
 <option value="200">Karnataka</option>
@@ -59,57 +77,84 @@ h2{margin-bottom:10px;}
 <option value="0">Other</option>
 </select>
 
-<label>Health Insurance ₹/month</label>
-<input type="number" id="insurance" value="0">
-
 <button class="btn" onclick="calcSalary()">Calculate</button>
+</div>
+</div>
 
 <div id="salaryResult"></div>
 <canvas id="salaryChart"></canvas>
+
+<div class="cta">
+💡 Increase basic → better PF & HRA benefits. Balance tax impact smartly.
+<br><br>
+<button class="btn">Invest Your Savings → justinvesting.in</button>
+</div>
 </div>
 
 <!-- ================= NET WORTH ================= -->
 <div class="card" id="net-worth">
-<h2>Net Worth Calculator</h2>
+<h2>Net Worth Dashboard</h2>
 
-<label>Cash ₹</label>
-<input type="number" id="cash">
+<div class="flex">
+<div class="col">
+<h3>Assets</h3>
+<input placeholder="Cash" id="cash">
+<input placeholder="Investments" id="investments">
+<input placeholder="Property" id="property">
+<input placeholder="Gold" id="gold">
+</div>
 
-<label>Investments ₹</label>
-<input type="number" id="investments">
+<div class="col">
+<h3>Liabilities</h3>
+<input placeholder="Loans" id="loans">
+<input placeholder="Credit Card" id="cc">
+<input placeholder="Other Liabilities" id="otherLiab">
+</div>
+</div>
 
-<label>Property ₹</label>
-<input type="number" id="property">
-
-<label>Loans ₹</label>
-<input type="number" id="loans">
-
-<button class="btn" onclick="calcNetWorth()">Calculate</button>
+<button class="btn" onclick="calcNetWorth()">Analyze</button>
 
 <div id="nwResult"></div>
 <canvas id="nwChart"></canvas>
+
+<div class="cta">
+👑 Optimize your net worth with expert wealth strategies  
+<button class="btn">Speak to absolutemoney.in →</button>
+</div>
 </div>
 
 <!-- ================= BUDGET ================= -->
 <div class="card" id="budget">
-<h2>Budget Planner</h2>
+<h2>Budget Planner (50/30/20)</h2>
 
-<label>Monthly Income ₹</label>
-<input type="number" id="income">
+<input id="income" placeholder="Monthly Income">
 
-<label>Needs ₹</label>
-<input type="number" id="needs">
+<div class="flex">
+<div class="col">
+<h3>Needs</h3>
+<input id="needs">
+</div>
 
-<label>Wants ₹</label>
-<input type="number" id="wants">
+<div class="col">
+<h3>Wants</h3>
+<input id="wants">
+</div>
 
-<label>Savings ₹</label>
-<input type="number" id="savings">
+<div class="col">
+<h3>Savings</h3>
+<input id="savings">
+</div>
+</div>
 
-<button class="btn" onclick="calcBudget()">Analyze</button>
+<button class="btn" onclick="calcBudget()">Check Budget</button>
 
 <div id="budgetResult"></div>
 <canvas id="budgetChart"></canvas>
+
+<div class="cta">
+💡 Saving 35%+ accelerates financial freedom massively  
+<button class="btn">Get Financial Plan → absolutemoney.in</button>
+</div>
 </div>
 
 <!-- ================= FINANCIAL HEALTH ================= -->
@@ -118,11 +163,14 @@ h2{margin-bottom:10px;}
 
 <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
 
-<div id="quiz"></div>
+<div id="quizBox"></div>
 
+<div class="flex">
+<button class="btn" onclick="prevQ()">Previous</button>
 <button class="btn" onclick="nextQ()">Next</button>
+</div>
 
-<div id="scoreResult"></div>
+<div id="finalScore"></div>
 <canvas id="radarChart"></canvas>
 
 </div>
@@ -133,43 +181,60 @@ h2{margin-bottom:10px;}
 
 /* ================= SALARY ================= */
 function calcSalary(){
-let ctc = +document.getElementById('ctc').value;
-let basicP = +document.getElementById('basicPercent').value/100;
-let hraP = +document.getElementById('hraPercent').value/100;
-
-let basic = ctc*basicP/12;
-let hra = basic*hraP;
+let ctc = +ctcEl.value;
+let basic = (ctc*(basicPercent.value/100))/12;
+let hra = basic*(hraPercent.value/100);
 let pf = basic*0.12;
-let tax = ctc*0.1/12;
+let pt = state.value;
+let tax = calculateTax(ctc, taxRegime.value)/12;
 
-let net = basic + hra - pf - tax;
+let net = basic + hra - pf - pt - tax - insurance.value - otherDed.value;
 
-document.getElementById('salaryResult').innerHTML =
-`<p>Basic: ₹${basic.toFixed()}</p>
-<p>HRA: ₹${hra.toFixed()}</p>
-<p>PF: ₹${pf.toFixed()}</p>
-<p class="gold">Take Home: ₹${net.toFixed()}</p>`;
+salaryResult.innerHTML =
+`<div class="flex">
+<div class="col">
+<p>Basic ₹${basic.toFixed()}</p>
+<p>HRA ₹${hra.toFixed()}</p>
+<p>PF ₹${pf.toFixed()}</p>
+</div>
+<div class="col">
+<p>Tax ₹${tax.toFixed()}</p>
+<p>Other ₹${otherDed.value}</p>
+</div>
+</div>
+<h2 class="gold">₹${net.toFixed()} / month</h2>`;
 
-new Chart(document.getElementById('salaryChart'),{
+new Chart(salaryChart,{
 type:'doughnut',
 data:{labels:['Basic','HRA'],datasets:[{data:[basic,hra]}]}
 });
 }
 
+/* TAX ENGINE */
+function calculateTax(income, regime){
+if(regime==='new'){
+if(income<300000) return 0;
+if(income<600000) return income*0.05;
+if(income<900000) return income*0.1;
+return income*0.2;
+}else{
+return income*0.15;
+}
+}
+
 /* ================= NET WORTH ================= */
 function calcNetWorth(){
-let assets = (+cash.value)+(+investments.value)+(+property.value);
-let liabilities = (+loans.value);
-let nw = assets - liabilities;
+let assets = (+cash.value)+(+investments.value)+(+property.value)+(+gold.value);
+let liab = (+loans.value)+(+cc.value)+(+otherLiab.value);
+let nw = assets - liab;
 
-document.getElementById('nwResult').innerHTML =
-`<p>Total Assets: ₹${assets}</p>
-<p>Total Liabilities: ₹${liabilities}</p>
-<p class="gold">Net Worth: ₹${nw}</p>`;
+nwResult.innerHTML =
+`<h2 class="gold">₹${nw}</h2>
+<p>Assets ₹${assets} | Liabilities ₹${liab}</p>`;
 
-new Chart(document.getElementById('nwChart'),{
+new Chart(nwChart,{
 type:'bar',
-data:{labels:['Assets','Liabilities'],datasets:[{data:[assets,liabilities]}]}
+data:{labels:['Assets','Liabilities'],datasets:[{data:[assets,liab]}]}
 });
 }
 
@@ -180,50 +245,57 @@ let n = +needs.value;
 let w = +wants.value;
 let s = +savings.value;
 
-let score = 100 - Math.abs(n - i*0.5);
+let score = 100 - (Math.abs(n-i*0.5)+Math.abs(s-i*0.2))/i*100;
 
-document.getElementById('budgetResult').innerHTML =
-`<p>Score: ${score.toFixed()}</p>`;
+budgetResult.innerHTML = `<h2 class="gold">Score ${score.toFixed()}</h2>`;
 
-new Chart(document.getElementById('budgetChart'),{
+new Chart(budgetChart,{
 type:'doughnut',
 data:{labels:['Needs','Wants','Savings'],datasets:[{data:[n,w,s]}]}
 });
 }
 
 /* ================= QUIZ ================= */
-let questions=[
-["Emergency fund?",[0,5,15,25]],
-["Savings rate?",[0,5,15,20,25]],
-["Debt?",[0,5,10,15,20]]
+const questions=[
+{q:"Emergency fund?",opts:[0,5,15,25]},
+{q:"Savings rate?",opts:[0,5,15,20,25]},
+{q:"Debt?",opts:[0,5,10,15,20]},
+{q:"Insurance?",opts:[0,5,10,20]},
+{q:"Retirement?",opts:[0,5,10,20]}
 ];
 
-let q=0,score=0;
+let index=0,total=0;
 
-function showQ(){
-document.getElementById('quiz').innerHTML =
-`<p>${questions[q][0]}</p>
-<input type="number" id="ans">`;
-document.getElementById('progressBar').style.width=(q/10*100)+"%";
+function renderQ(){
+quizBox.innerHTML =
+`<h3>${questions[index].q}</h3>
+<input id="ans" type="number" placeholder="Enter score">`;
+progressBar.style.width=((index+1)/questions.length*100)+'%';
 }
-showQ();
+renderQ();
 
 function nextQ(){
-let val = +document.getElementById('ans').value;
-score += val;
-q++;
-if(q<questions.length){showQ();}
-else{
-let finalScore = (score/175)*100;
-document.getElementById('scoreResult').innerHTML =
-`<h3 class="gold">Score: ${finalScore.toFixed()}</h3>`;
-
-new Chart(document.getElementById('radarChart'),{
-type:'radar',
-data:{labels:['Emergency','Savings','Debt'],
-datasets:[{data:[50,60,70]}]}
-});
+total+=+ans.value;
+index++;
+if(index<questions.length) renderQ();
+else showResult();
 }
+
+function prevQ(){
+if(index>0){index--;renderQ();}
+}
+
+function showResult(){
+let score=(total/175)*100;
+finalScore.innerHTML=`<h2 class="gold">${score.toFixed()}</h2>`;
+
+new Chart(radarChart,{
+type:'radar',
+data:{
+labels:['Emergency','Savings','Debt','Insurance','Retirement'],
+datasets:[{data:[60,70,50,80,65]}]
+}
+});
 }
 
 </script>
