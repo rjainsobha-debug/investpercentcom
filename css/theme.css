@@ -1,0 +1,28 @@
+:root {
+  --bg: #08111f;
+  --card: #111827;
+  --text: #ffffff;
+  --muted: #93a4bd;
+  --accent: #00d09c;
+  --max: 1200px;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui;
+  background: linear-gradient(135deg,#08111f,#0b1d2c);
+  color: var(--text);
+}
+
+.page-shell {
+  max-width: var(--max);
+  margin: auto;
+  padding: 20px;
+}
+
+.hero {
+  padding: 40px 20px;
+  border-radius: 20px;
+  background: linear-gradient(135deg,#0b2a2f,#0c1f3f);
+  margin-bottom: 30px;
+}
