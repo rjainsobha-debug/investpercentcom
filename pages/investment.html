@@ -24,14 +24,10 @@ loadComponent("header", "../components/header.html");
   <p>Plan smarter. Grow faster.</p>
 </section>
 
-<!-- CENTERED EXPERIENCE -->
-<div class="center-wrap">
-
 <div class="main-card">
 
 <h2>SIP Calculator</h2>
 
-<!-- INPUTS -->
 <div class="input-grid">
 
 <div>
@@ -53,7 +49,6 @@ loadComponent("header", "../components/header.html");
 
 <button class="btn-primary" onclick="calcSIP()">Calculate</button>
 
-<!-- RESULT -->
 <div class="result-bar">
 
 <div>
@@ -73,7 +68,6 @@ loadComponent("header", "../components/header.html");
 
 </div>
 
-<!-- CHART -->
 <div class="chart-box">
 <canvas id="sip_chart"></canvas>
 </div>
@@ -82,10 +76,7 @@ loadComponent("header", "../components/header.html");
 
 </div>
 
-</div>
-
 <script>
-
 let sipChart;
 
 function calcSIP(){
@@ -115,7 +106,6 @@ backgroundColor:["#38bdf8","#22c55e"]
 }
 });
 }
-
 </script>
 
 </body>
