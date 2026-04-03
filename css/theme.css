@@ -1,28 +1,22 @@
 :root {
-  --bg: #08111f;
-  --card: #111827;
+  --bg: #070f1a;
+  --card: #0f172a;
+  --card-light: #111c33;
+
   --text: #ffffff;
-  --muted: #93a4bd;
+  --muted: #8ea2c0;
+
   --accent: #00d09c;
+  --accent2: #38bdf8;
+
+  --border: rgba(255,255,255,0.08);
+
   --max: 1200px;
 }
 
 body {
   margin: 0;
   font-family: system-ui;
-  background: linear-gradient(135deg,#08111f,#0b1d2c);
+  background: radial-gradient(circle at top,#0b1f3a,#070f1a);
   color: var(--text);
-}
-
-.page-shell {
-  max-width: var(--max);
-  margin: auto;
-  padding: 20px;
-}
-
-.hero {
-  padding: 40px 20px;
-  border-radius: 20px;
-  background: linear-gradient(135deg,#0b2a2f,#0c1f3f);
-  margin-bottom: 30px;
 }
