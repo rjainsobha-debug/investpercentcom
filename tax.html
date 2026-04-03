@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tax Dashboard — investpercent</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+margin:0;
+font-family:'Inter';
+background:#060915;
+color:white;
+}
+
+.container{
+max-width:1300px;
+margin:auto;
+padding:20px;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+padding:16px 20px;
+border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.logo{
+font-family:'Poppins';
+font-size:22px;
+background:linear-gradient(90deg,#00d4ff,#7b61ff);
+-webkit-background-clip:text;
+color:transparent;
+cursor:pointer;
+}
+
+.nav-links a{
+margin-left:12px;
+padding:8px 12px;
+border-radius:10px;
+color:#aaa;
+text-decoration:none;
+}
+
+.nav-links a.active{
+background:linear-gradient(90deg,#00d4ff,#7b61ff);
+color:black;
+}
+
+/* TABS */
+.tabs{
+display:flex;
+gap:10px;
+margin:20px 0;
+flex-wrap:wrap;
+}
+
+.tab{
+padding:10px 14px;
+border-radius:10px;
+background:#111827;
+cursor:pointer;
+}
+
+.tab.active{
+background:linear-gradient(90deg,#00d4ff,#7b61ff);
+color:black;
+}
+
+/* LAYOUT */
+.main{
+display:grid;
+grid-template-columns:380px 1fr;
+gap:20px;
+}
+
+.panel{
+background:#111827;
+padding:20px;
+border-radius:20px;
+}
+
+/* INPUT */
+.control{
+margin-bottom:15px;
+}
+
+label{
+font-size:13px;
+color:#94a3b8;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-top:5px;
+border-radius:8px;
+border:none;
+background:#1e293b;
+color:white;
+}
+
+/* KPI */
+.kpi{
+font-size:40px;
+color:#00e676;
+font-weight:700;
+}
+
+.sub{
+color:#94a3b8;
+}
+
+/* CTA */
+.cta{
+margin-top:20px;
+padding:12px;
+background:linear-gradient(90deg,#00d4ff,#7b61ff);
+color:black;
+text-align:center;
+border-radius:10px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo" onclick="location.href='index.html'">invest%</div>
+
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="investment.html">Investment</a>
+<a href="loan.html">Loan</a>
+<a href="tax.html" class="active">Tax</a>
+<a href="play.html">Play</a>
+<a href="learn.html">Learn</a>
+</div>
+</nav>
+
+<div class="container">
+
+<div class="tabs" id="tabs"></div>
+
+<div class="main">
+
+<!-- CONTROLS -->
+<div class="panel" id="controls"></div>
+
+<!-- DASHBOARD -->
+<div class="panel">
+
+<div class="kpi" id="result">₹0</div>
+<div class="sub" id="sub">Tax Payable</div>
+
+<canvas id="chart"></canvas>
+
+<div class="cta">Talk to Tax Advisor →</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let mode="income";
+
+const tabsData=[
+["income","Income Tax"],
+["salary","Salary"],
+["hra","HRA"],
+["80c","80C"],
+["cg","Capital Gains"]
+];
+
+function renderTabs(){
+tabs.innerHTML=tabsData.map(t=>
+`<div class="tab ${mode==t[0]?"active":""}" onclick="switchTab('${t[0]}')">${t[1]}</div>`
+).join("");
+}
+
+function switchTab(m){
+mode=m;
+renderTabs();
+renderControls();
+calc();
+}
+
+function renderControls(){
+
+let html="";
+
+if(mode=="income"){
+html=`
+<div class="control"><label>Income</label><input id="x" value="1200000"></div>
+<div class="control"><label>Deductions</label><input id="y" value="150000"></div>
+`;
+}
+
+if(mode=="salary"){
+html=`
+<div class="control"><label>CTC</label><input id="x" value="1200000"></div>
+`;
+}
+
+if(mode=="hra"){
+html=`
+<div class="control"><label>Salary</label><input id="x" value="500000"></div>
+<div class="control"><label>Rent</label><input id="y" value="150000"></div>
+`;
+}
+
+if(mode=="80c"){
+html=`
+<div class="control"><label>Investment</label><input id="x" value="100000"></div>
+`;
+}
+
+if(mode=="cg"){
+html=`
+<div class="control"><label>Buy Price</label><input id="x" value="500000"></div>
+<div class="control"><label>Sell Price</label><input id="y" value="800000"></div>
+`;
+}
+
+controls.innerHTML=html;
+document.querySelectorAll("input").forEach(i=>i.oninput=calc);
+}
+
+function calc(){
+
+let val=0;
+
+if(mode=="income"){
+val=(x.value - y.value)*0.2;
+sub.innerText="Estimated Tax";
+}
+
+if(mode=="salary"){
+val=x.value*0.7;
+sub.innerText="In-hand Salary";
+}
+
+if(mode=="hra"){
+val=Math.min(x.value*0.4,y.value);
+sub.innerText="HRA Exemption";
+}
+
+if(mode=="80c"){
+val=Math.min(x.value,150000);
+sub.innerText="Eligible Deduction";
+}
+
+if(mode=="cg"){
+val=(y.value - x.value)*0.15;
+sub.innerText="Capital Gains Tax";
+}
+
+result.innerText="₹"+Math.round(val).toLocaleString();
+
+}
+
+renderTabs();
+renderControls();
+calc();
+
+</script>
+
+</body>
+</html>
