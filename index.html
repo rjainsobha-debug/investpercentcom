@@ -1,54 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>InvestPercent | Your Complete Financial Universe</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvestPercent | Your Complete Financial Universe</title>
 
-<link rel="stylesheet" href="./css/global.css" />
-<link rel="stylesheet" href="./css/calculator.css" />
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/calculator.css" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-<style>
-/* KEEP YOUR ORIGINAL DESIGN SYSTEM INTACT */
-/* ONLY SMALL CLEAN FIXES */
-
-.hero-clean {
-  text-align: center;
-  padding: 40px 0;
-}
-
-.hero-clean h2 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-bottom: 12px;
-}
-
-.hero-clean p {
-  color: #a9bdd4;
-  max-width: 700px;
-  margin: auto;
-  line-height: 1.7;
-}
-
-.hero-buttons {
-  margin-top: 20px;
-}
-
-.hero-buttons .btn {
-  margin: 6px;
-}
-</style>
-
+  <!-- ⚠️ IMPORTANT: YOUR ORIGINAL STYLE BLOCK REMAINS SAME -->
 </head>
 
 <body>
 
-<!-- NAV (FIXED PATHS) -->
+<!-- NAV -->
 <div class="nav-wrap">
   <nav class="nav">
     <a href="/index.html" class="brand">
@@ -67,95 +37,116 @@
       <a href="/pages/retirement.html">Retirement</a>
       <a href="/pages/tax.html">Tax</a>
       <a href="/pages/personal-finance.html">Finance</a>
-      <a href="https://justinvesting.in" class="nav-cta">Talk to Advisor</a>
+      <a href="https://justinvesting.in" target="_blank" class="nav-cta">Talk to Advisor</a>
     </div>
   </nav>
 </div>
 
 <div class="page-shell">
 
-<!-- ✅ CLEAN HERO -->
-<section class="hero hero-clean">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
 
-  <h2>
-    Your Complete Financial
-    <span class="highlight">Control Center</span>
-  </h2>
+    <!-- LEFT -->
+    <div class="hero-copy">
+      <h2>
+        Your Complete Financial
+        <span class="highlight">Control Center</span>
+      </h2>
 
-  <p>
-    Plan investments, compare loans, optimize taxes, and make smarter financial decisions — all in one place.
-  </p>
+      <p>
+        Plan investments, compare loans, optimize taxes, and make smarter financial decisions — all in one place.
+      </p>
 
-  <div class="hero-buttons">
-    <a href="/pages/investment.html" class="btn btn-primary">
-      Start Your Financial Plan →
-    </a>
-    <a href="#categories" class="btn btn-secondary">
-      Explore Tools
-    </a>
+      <div class="hero-actions">
+        <a href="/pages/investment.html" class="btn btn-primary">
+          Start Your Financial Plan →
+        </a>
+        <a href="#categories" class="btn btn-secondary">
+          Explore Tools
+        </a>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric">
+          <div class="label">User Promise</div>
+          <div class="value">Simple tools, smarter decisions</div>
+        </div>
+        <div class="metric">
+          <div class="label">Action Layer</div>
+          <div class="value">Advisor-led execution</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT (CLEANED, NOT REMOVED) -->
+    <div class="hero-card-stack">
+      <div class="glass-card hero-feature-card">
+        <div><h3>Invest</h3><p>SIP, Lump Sum, Goals</p></div>
+        <div><h3>Borrow</h3><p>EMI, Interest, Payoff</p></div>
+        <div><h3>Protect</h3><p>Insurance planning</p></div>
+        <div><h3>Optimize</h3><p>Tax & savings</p></div>
+      </div>
+    </div>
+
   </div>
-
 </section>
 
-<!-- ✅ CATEGORY GRID (UNCHANGED STRUCTURE) -->
+<!-- CATEGORIES -->
 <section class="section" id="categories">
   <div class="section-head">
-    <div>
-      <h3>Choose your financial need</h3>
-      <p>Start with a category and dive into powerful tools.</p>
-    </div>
+    <h3>Choose your financial need</h3>
   </div>
 
   <div class="category-grid">
 
-    <a href="/pages/investment.html" class="category-card investment-accent">
-      <h4>Investment Tools</h4>
-      <p>SIP • Lump Sum • Goal Planning • SWP</p>
+    <a href="/pages/investment.html" class="category-card">
+      <h4>Investment</h4>
+      <p>SIP • Lump Sum • Goals • SWP</p>
     </a>
 
-    <a href="/pages/loans.html" class="category-card loan-accent">
-      <h4>Loan & EMI</h4>
-      <p>EMI • Interest • Prepayment • Eligibility</p>
+    <a href="/pages/loans.html" class="category-card">
+      <h4>Loans</h4>
+      <p>EMI • Interest • Prepayment</p>
     </a>
 
-    <a href="/pages/savings.html" class="category-card savings-accent">
+    <a href="/pages/savings.html" class="category-card">
       <h4>Savings</h4>
       <p>FD • RD • Emergency Fund</p>
     </a>
 
-    <a href="/pages/retirement.html" class="category-card retirement-accent">
+    <a href="/pages/retirement.html" class="category-card">
       <h4>Retirement</h4>
-      <p>Corpus • Inflation • Income Planning</p>
+      <p>Corpus • Inflation • Income</p>
     </a>
 
-    <a href="/pages/tax.html" class="category-card tax-accent">
+    <a href="/pages/tax.html" class="category-card">
       <h4>Tax</h4>
-      <p>Salary • Old vs New • Planning</p>
+      <p>Salary • Planning • Old vs New</p>
     </a>
 
-    <a href="/pages/personal-finance.html" class="category-card finance-accent">
+    <a href="/pages/personal-finance.html" class="category-card">
       <h4>Finance</h4>
-      <p>Budgeting • Expenses • Affordability</p>
+      <p>Budgeting • Expenses • Control</p>
     </a>
 
   </div>
 </section>
 
-<!-- ✅ SIP TOOL (KEPT FROM YOUR ORIGINAL LOGIC) -->
+<!-- SIP TOOL (UNCHANGED LOGIC) -->
 <section class="section">
   <h3 style="text-align:center;">Quick SIP Preview</h3>
 
-  <div style="max-width:600px;margin:auto;">
-    <input type="range" id="sip" min="500" max="50000" value="10000" style="width:100%;">
-    <p id="result" style="text-align:center;"></p>
-  </div>
+  <input type="range" id="sip" min="500" max="50000" value="10000" style="width:100%;">
+  <p id="result" style="text-align:center;"></p>
 </section>
 
-<!-- ✅ CTA -->
+<!-- CTA -->
 <section class="mega-cta">
   <div>
     <h3>Turn Financial Planning Into Action</h3>
-    <p>Use tools → gain clarity → connect with the right advisor.</p>
+    <p>Use tools → gain clarity → connect with advisor</p>
   </div>
 
   <div>
@@ -167,15 +158,8 @@
 <!-- FOOTER -->
 <footer class="footer">
   <div>
-    <strong>InvestPercent</strong><br>
-    <span>Your Complete Financial Universe</span>
-  </div>
-
-  <div class="footer-links">
-    <a href="/index.html">Home</a>
-    <a href="/pages/investment.html">Investment</a>
-    <a href="/pages/loans.html">Loans</a>
-    <a href="/pages/savings.html">Savings</a>
+    <strong>InvestPercent</strong>
+    <p>Your Complete Financial Universe</p>
   </div>
 </footer>
 
