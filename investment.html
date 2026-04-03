@@ -1,280 +1,1748 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investment Dashboard — investpercent</title>
+  <meta name="description" content="Interactive investment dashboard for SIP, Lump Sum, Step-Up SIP and scenario comparison." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<title>Investment Dashboard — investpercent</title>
+  <style>
+    :root{
+      --bg:#050816;
+      --bg-2:#091022;
+      --panel:#0e1730;
+      --panel-2:#111c39;
+      --panel-3:#162344;
+      --line:rgba(255,255,255,.08);
+      --line-2:rgba(255,255,255,.14);
+      --text:#f8fbff;
+      --muted:#99a6c7;
+      --soft:#7f8db0;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --red:#ff5d7a;
+      --shadow:0 20px 60px rgba(0,0,0,.38);
+      --shadow-soft:0 12px 40px rgba(0,0,0,.26);
+      --grad-main:linear-gradient(135deg, #00d4ff 0%, #4fa3ff 40%, #7b61ff 100%);
+      --grad-hero:radial-gradient(circle at 20% 20%, rgba(0,212,255,.16), transparent 28%), radial-gradient(circle at 82% 12%, rgba(123,97,255,.18), transparent 24%), linear-gradient(180deg,#040814 0%,#071024 100%);
+      --grad-card:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      --radius-xl:28px;
+      --radius-lg:22px;
+      --radius-md:16px;
+      --radius-sm:12px;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
 
-<style>
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 90%);
+      z-index:0;
+    }
 
-:root{
---bg:#020617;
---card:#0f172a;
---accent:#00d4ff;
---accent2:#7b61ff;
---green:#22c55e;
---text:#fff;
---muted:#94a3b8;
-}
+    a{color:inherit;text-decoration:none}
+    button,input{font:inherit}
 
-*{margin:0;padding:0;box-sizing:border-box}
+    .page{
+      position:relative;
+      z-index:1;
+      max-width:1440px;
+      margin:0 auto;
+      padding:18px 18px 40px;
+    }
 
-body{
-font-family:'Inter';
-background:linear-gradient(180deg,#020617,#020617);
-color:var(--text);
-}
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:16px 20px;
+      margin-bottom:18px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:rgba(6,10,24,.72);
+      backdrop-filter:blur(18px);
+      box-shadow:var(--shadow-soft);
+    }
 
-/* NAV */
-nav{
-display:flex;
-justify-content:space-between;
-padding:20px 40px;
-background:#020617;
-border-bottom:1px solid rgba(255,255,255,0.05);
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      cursor:pointer;
+      min-width:180px;
+    }
 
-.logo{
-font-family:'Poppins';
-font-weight:700;
-font-size:20px;
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-cursor:pointer;
-}
+    .brand-mark{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:var(--grad-main);
+      color:#06101f;
+      font-weight:800;
+      box-shadow:0 10px 24px rgba(79,163,255,.22);
+    }
 
-/* HEADER */
-.header{
-text-align:center;
-padding:40px 20px 10px;
-}
+    .brand-name{
+      font-family:Poppins,sans-serif;
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
 
-.header h1{
-font-size:36px;
-font-family:'Poppins';
-}
+    .brand-name span{
+      background:var(--grad-main);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
 
-.header p{
-color:var(--muted);
-margin-top:10px;
-}
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
 
-/* MAIN */
-.main{
-max-width:1200px;
-margin:auto;
-padding:20px;
-}
+    .nav-links a{
+      padding:11px 14px;
+      border-radius:12px;
+      color:var(--muted);
+      border:1px solid transparent;
+      transition:.2s ease;
+      font-weight:600;
+    }
 
-/* TOP KPI */
-.kpi{
-text-align:center;
-margin-bottom:30px;
-}
+    .nav-links a:hover{
+      color:var(--text);
+      background:rgba(255,255,255,.04);
+      border-color:var(--line);
+    }
 
-.kpi .value{
-font-size:48px;
-font-weight:700;
-color:var(--green);
-}
+    .nav-links a.active{
+      color:#071120;
+      background:var(--grad-main);
+      box-shadow:0 10px 24px rgba(79,163,255,.18);
+    }
 
-.kpi .sub{
-color:var(--muted);
-margin-top:5px;
-}
+    .nav-links a.coming{
+      opacity:.65;
+      cursor:not-allowed;
+    }
 
-/* CONTROLS */
-.controls{
-display:grid;
-grid-template-columns:1fr 1fr 1fr;
-gap:20px;
-margin-bottom:30px;
-}
+    .hero{
+      background:var(--grad-hero);
+      border:1px solid var(--line);
+      border-radius:32px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+      margin-bottom:18px;
+    }
 
-.control{
-background:var(--card);
-padding:20px;
-border-radius:14px;
-}
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto -120px -120px auto;
+      width:320px;
+      height:320px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);
+      pointer-events:none;
+    }
 
-.control label{
-font-size:13px;
-color:var(--muted);
-}
+    .hero-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:26px;
+      flex-wrap:wrap;
+    }
 
-.control input[type=range]{
-width:100%;
-margin-top:10px;
-}
+    .hero-copy h1{
+      margin:0;
+      font-family:Poppins,sans-serif;
+      font-size:clamp(34px,5vw,60px);
+      line-height:1.02;
+      letter-spacing:-.045em;
+      max-width:780px;
+    }
 
-.control .val{
-margin-top:5px;
-font-weight:600;
-}
+    .hero-copy h1 .grad{
+      background:var(--grad-main);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
 
-/* CHART */
-.chart-box{
-background:var(--card);
-padding:20px;
-border-radius:16px;
-}
+    .hero-copy p{
+      margin:14px 0 0;
+      color:var(--muted);
+      font-size:18px;
+      max-width:760px;
+      line-height:1.6;
+    }
 
-/* CTA */
-.cta{
-margin-top:30px;
-padding:20px;
-border-radius:14px;
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
-text-align:center;
-color:black;
-font-weight:600;
-cursor:pointer;
-}
+    .hero-cta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-/* MOBILE */
-@media(max-width:900px){
-.controls{grid-template-columns:1fr}
-}
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius:14px;
+      padding:13px 18px;
+      font-weight:700;
+      transition:.2s ease;
+    }
 
-</style>
+    .btn.primary{
+      background:var(--grad-main);
+      color:#071120;
+      box-shadow:0 12px 26px rgba(79,163,255,.22);
+    }
+
+    .btn.secondary{
+      color:var(--text);
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .btn:hover{transform:translateY(-1px)}
+
+    .tabbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .tab{
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:13px 16px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .tab:hover{color:var(--text); border-color:var(--line-2)}
+    .tab.active{
+      color:#071120;
+      background:var(--grad-main);
+      border-color:transparent;
+      box-shadow:0 10px 22px rgba(79,163,255,.22);
+    }
+
+    .top-metrics{
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr 1fr;
+      gap:14px;
+    }
+
+    .metric-card{
+      background:var(--grad-card);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      min-height:110px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .metric-card::before{
+      content:"";
+      position:absolute;
+      top:-20%;
+      right:-10%;
+      width:180px;
+      height:180px;
+      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);
+      pointer-events:none;
+    }
+
+    .metric-label{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.02em;
+      margin-bottom:10px;
+      text-transform:uppercase;
+    }
+
+    .metric-value{
+      font-size:clamp(28px,3vw,44px);
+      font-weight:800;
+      letter-spacing:-.04em;
+      line-height:1;
+    }
+
+    .metric-sub{
+      margin-top:8px;
+      color:var(--soft);
+      font-size:14px;
+    }
+
+    .metric-value.green{color:var(--green)}
+    .metric-value.cyan{color:var(--cyan)}
+    .metric-value.gold{color:var(--gold)}
+
+    .layout{
+      display:grid;
+      grid-template-columns:390px minmax(0,1fr);
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(14,23,48,.96), rgba(10,18,37,.96));
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+    }
+
+    .controls{
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .controls::after{
+      content:"";
+      position:absolute;
+      inset:auto -70px -70px auto;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);
+      pointer-events:none;
+    }
+
+    .panel-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .panel-title{
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .panel-desc{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+    }
+
+    .badge{
+      align-self:flex-start;
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      color:var(--text);
+      font-size:12px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .control-group{
+      margin-bottom:16px;
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .control-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+
+    .control-name{
+      font-size:14px;
+      font-weight:700;
+      color:var(--text);
+    }
+
+    .control-value{
+      min-width:110px;
+      text-align:right;
+      font-weight:800;
+      color:var(--cyan);
+      letter-spacing:-.02em;
+    }
+
+    .range-wrap{
+      position:relative;
+      padding-top:2px;
+    }
+
+    input[type="range"]{
+      width:100%;
+      appearance:none;
+      background:transparent;
+      cursor:pointer;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track{
+      height:8px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65));
+    }
+
+    input[type="range"]::-webkit-slider-thumb{
+      appearance:none;
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      margin-top:-7px;
+      background:#fff;
+      border:4px solid var(--cyan);
+      box-shadow:0 0 0 6px rgba(0,212,255,.14);
+    }
+
+    input[type="range"]::-moz-range-track{
+      height:8px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65));
+    }
+
+    input[type="range"]::-moz-range-thumb{
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      background:#fff;
+      border:4px solid var(--cyan);
+      box-shadow:0 0 0 6px rgba(0,212,255,.14);
+    }
+
+    .mini-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .mini{
+      padding:14px;
+      border-radius:16px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .mini .k{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .mini .v{
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .advisor-card{
+      margin-top:18px;
+      padding:18px;
+      border-radius:20px;
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%),
+        linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
+      border:1px solid rgba(255,255,255,.1);
+    }
+
+    .advisor-card h4{
+      margin:0 0 8px;
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .advisor-card p{
+      margin:0 0 14px;
+      color:#d8e2ff;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .advisor-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .advisor-actions .btn{
+      flex:1;
+      min-width:150px;
+    }
+
+    .dashboard{
+      padding:18px;
+      display:grid;
+      grid-template-rows:auto auto 1fr auto;
+      gap:14px;
+      min-height:760px;
+    }
+
+    .dash-top{
+      display:grid;
+      grid-template-columns:1.4fr .95fr;
+      gap:14px;
+    }
+
+    .wealth-card,
+    .insight-card,
+    .chart-card,
+    .timeline-card{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:22px;
+    }
+
+    .wealth-card{
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:180px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    }
+
+    .wealth-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .wealth-title{
+      font-size:15px;
+      font-weight:800;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.03em;
+    }
+
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.07);
+      color:#d8e2ff;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .wealth-number{
+      font-size:clamp(40px,4vw,64px);
+      font-weight:800;
+      letter-spacing:-.05em;
+      line-height:.95;
+      margin:8px 0 10px;
+      color:#fff;
+    }
+
+    .wealth-number .grad{
+      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .wealth-sub{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.6;
+      max-width:660px;
+    }
+
+    .wealth-split{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .wealth-stat{
+      padding:14px;
+      border-radius:16px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .wealth-stat .s-label{
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .wealth-stat .s-value{
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .insight-card{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:180px;
+    }
+
+    .insight-title{
+      font-size:14px;
+      font-weight:800;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.03em;
+      margin-bottom:2px;
+    }
+
+    .insight-box{
+      padding:14px;
+      border-radius:16px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .insight-box strong{
+      display:block;
+      font-size:15px;
+      margin-bottom:6px;
+      letter-spacing:-.02em;
+    }
+
+    .insight-box span{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .chart-card{
+      padding:18px;
+      min-height:380px;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .chart-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
+    .chart-title{
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .chart-meta{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:6px;
+    }
+
+    .legend{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .legend-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      padding:9px 12px;
+      border-radius:999px;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      display:inline-block;
+    }
+
+    .dot.cyan{background:var(--cyan)}
+    .dot.blue{background:var(--blue)}
+    .dot.green{background:var(--green)}
+
+    .chart-wrap{
+      position:relative;
+      flex:1;
+      min-height:280px;
+      margin-top:8px;
+    }
+
+    .timeline-card{
+      padding:18px;
+    }
+
+    .timeline-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+
+    .timeline-title{
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .timeline-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    .milestone{
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .milestone .m-year{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .milestone .m-amount{
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.04em;
+      margin-bottom:8px;
+    }
+
+    .milestone .m-note{
+      color:var(--soft);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .compare-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .compare-card{
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .compare-card h4{
+      margin:0 0 12px;
+      font-size:16px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .compare-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 0;
+      border-bottom:1px dashed rgba(255,255,255,.08);
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .compare-row:last-child{border-bottom:none}
+    .compare-row strong{color:var(--text)}
+
+    .hidden{display:none !important}
+
+    @media (max-width: 1180px){
+      .top-metrics{grid-template-columns:1fr 1fr}
+      .layout{grid-template-columns:1fr}
+      .dashboard{min-height:auto}
+      .dash-top{grid-template-columns:1fr}
+      .timeline-grid{grid-template-columns:1fr 1fr}
+    }
+
+    @media (max-width: 760px){
+      .page{padding:12px 12px 28px}
+      .nav{padding:14px}
+      .hero{padding:18px}
+      .controls,.dashboard{padding:16px}
+      .wealth-split{grid-template-columns:1fr}
+      .timeline-grid,.compare-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
+      .hero-copy p{font-size:15px}
+      .metric-value{font-size:30px}
+      .wealth-number{font-size:42px}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page">
+    <nav class="nav">
+      <div class="brand" onclick="location.href='index.html'">
+        <div class="brand-mark">%</div>
+        <div class="brand-name">invest<span>percent</span></div>
+      </div>
 
-<nav>
-<div class="logo" onclick="goHome()">invest%</div>
-</nav>
+      <div class="nav-links">
+        <a href="investment.html" class="active">Investment</a>
+        <a href="#" class="coming">Tax</a>
+        <a href="#" class="coming">Loan</a>
+        <a href="#" class="coming">Retirement</a>
+        <a href="#" class="coming">Global</a>
+      </div>
+    </nav>
 
-<div class="header">
-<h1>Investment Simulator</h1>
-<p>Visualize your future wealth instantly</p>
-</div>
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>Investment <span class="grad">Decision Dashboard</span></h1>
+          <p>
+            Not just a calculator. Model your SIP, Lump Sum, Step-Up SIP and scenario comparison
+            inside a product-style investing cockpit.
+          </p>
+        </div>
 
-<div class="main">
+        <div class="hero-cta">
+          <button class="btn primary" onclick="scrollToControls()">Start Planning</button>
+          <button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
+        </div>
+      </div>
 
-<!-- KPI -->
-<div class="kpi">
-<div class="value" id="future">₹0</div>
-<div class="sub">Projected Wealth</div>
-</div>
+      <div class="tabbar" id="tabs">
+        <button class="tab active" data-tab="sip">SIP Dashboard</button>
+        <button class="tab" data-tab="lumpsum">Lump Sum</button>
+        <button class="tab" data-tab="stepup">Step-Up SIP</button>
+        <button class="tab" data-tab="compare">Compare Scenarios</button>
+      </div>
 
-<!-- CONTROLS -->
-<div class="controls">
+      <div class="top-metrics">
+        <div class="metric-card">
+          <div class="metric-label">Current mode</div>
+          <div class="metric-value cyan" id="modeHeadline">SIP Growth Engine</div>
+          <div class="metric-sub" id="modeSub">Monthly investing with compounding and long-term wealth projection.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Projected wealth</div>
+          <div class="metric-value green" id="topProjected">₹23,00,387</div>
+          <div class="metric-sub">At current settings</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Total gains</div>
+          <div class="metric-value cyan" id="topGains">₹11,00,387</div>
+          <div class="metric-sub">Above invested capital</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Approx CAGR</div>
+          <div class="metric-value gold" id="topCagr">12.0%</div>
+          <div class="metric-sub">Blended annual growth</div>
+        </div>
+      </div>
+    </section>
 
-<div class="control">
-<label>Monthly Investment</label>
-<input type="range" min="1000" max="100000" value="10000" id="amt">
-<div class="val" id="amtVal">₹10,000</div>
-</div>
+    <section class="layout">
+      <aside class="panel controls" id="controlsAnchor">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Control Panel</div>
+            <div class="panel-desc" id="controlDesc">
+              Tune contribution, return and duration. Your dashboard updates instantly.
+            </div>
+          </div>
+          <div class="badge" id="panelBadge">SIP MODE</div>
+        </div>
 
-<div class="control">
-<label>Return %</label>
-<input type="range" min="1" max="20" value="12" id="rate">
-<div class="val" id="rateVal">12%</div>
-</div>
+        <div id="sipControls">
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Monthly SIP</div>
+              <div class="control-value" id="sipMonthlyValue">₹10,000</div>
+            </div>
+            <div class="range-wrap">
+              <input id="sipMonthly" type="range" min="1000" max="100000" step="500" value="10000">
+            </div>
+          </div>
 
-<div class="control">
-<label>Years</label>
-<input type="range" min="1" max="40" value="10" id="years">
-<div class="val" id="yearVal">10 Years</div>
-</div>
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Expected return</div>
+              <div class="control-value" id="sipReturnValue">12%</div>
+            </div>
+            <div class="range-wrap">
+              <input id="sipReturn" type="range" min="1" max="25" step="0.1" value="12">
+            </div>
+          </div>
 
-</div>
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Duration</div>
+              <div class="control-value" id="sipYearsValue">10 Years</div>
+            </div>
+            <div class="range-wrap">
+              <input id="sipYears" type="range" min="1" max="40" step="1" value="10">
+            </div>
+          </div>
+        </div>
 
-<!-- CHART -->
-<div class="chart-box">
-<canvas id="chart"></canvas>
-</div>
+        <div id="lumpsumControls" class="hidden">
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Investment amount</div>
+              <div class="control-value" id="lumpAmountValue">₹5,00,000</div>
+            </div>
+            <div class="range-wrap">
+              <input id="lumpAmount" type="range" min="10000" max="10000000" step="10000" value="500000">
+            </div>
+          </div>
 
-<!-- CTA -->
-<div class="cta" onclick="invest()">
-🚀 Start Investing Now →  
-</div>
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Expected return</div>
+              <div class="control-value" id="lumpReturnValue">12%</div>
+            </div>
+            <div class="range-wrap">
+              <input id="lumpReturn" type="range" min="1" max="25" step="0.1" value="12">
+            </div>
+          </div>
 
-</div>
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Duration</div>
+              <div class="control-value" id="lumpYearsValue">10 Years</div>
+            </div>
+            <div class="range-wrap">
+              <input id="lumpYears" type="range" min="1" max="40" step="1" value="10">
+            </div>
+          </div>
+        </div>
 
-<script>
+        <div id="stepupControls" class="hidden">
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Starting monthly SIP</div>
+              <div class="control-value" id="stepMonthlyValue">₹10,000</div>
+            </div>
+            <div class="range-wrap">
+              <input id="stepMonthly" type="range" min="1000" max="100000" step="500" value="10000">
+            </div>
+          </div>
 
-function goHome(){
-window.location.href="index.html";
-}
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Annual step-up</div>
+              <div class="control-value" id="stepIncreaseValue">10%</div>
+            </div>
+            <div class="range-wrap">
+              <input id="stepIncrease" type="range" min="0" max="25" step="1" value="10">
+            </div>
+          </div>
 
-function invest(){
-window.open("https://justinvesting.in","_blank");
-}
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Expected return</div>
+              <div class="control-value" id="stepReturnValue">12%</div>
+            </div>
+            <div class="range-wrap">
+              <input id="stepReturn" type="range" min="1" max="25" step="0.1" value="12">
+            </div>
+          </div>
 
-let chart;
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Duration</div>
+              <div class="control-value" id="stepYearsValue">15 Years</div>
+            </div>
+            <div class="range-wrap">
+              <input id="stepYears" type="range" min="1" max="40" step="1" value="15">
+            </div>
+          </div>
+        </div>
 
-/* CALC */
-function calc(){
+        <div id="compareControls" class="hidden">
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Scenario A monthly SIP</div>
+              <div class="control-value" id="cmpAMonthlyValue">₹10,000</div>
+            </div>
+            <div class="range-wrap">
+              <input id="cmpAMonthly" type="range" min="1000" max="100000" step="500" value="10000">
+            </div>
+          </div>
 
-let P = +amt.value;
-let r = rate.value/100/12;
-let n = years.value*12;
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Scenario A return</div>
+              <div class="control-value" id="cmpAReturnValue">12%</div>
+            </div>
+            <div class="range-wrap">
+              <input id="cmpAReturn" type="range" min="1" max="25" step="0.1" value="12">
+            </div>
+          </div>
 
-amtVal.innerText="₹"+P.toLocaleString();
-rateVal.innerText=rate.value+"%";
-yearVal.innerText=years.value+" Years";
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Scenario B monthly SIP</div>
+              <div class="control-value" id="cmpBMonthlyValue">₹15,000</div>
+            </div>
+            <div class="range-wrap">
+              <input id="cmpBMonthly" type="range" min="1000" max="100000" step="500" value="15000">
+            </div>
+          </div>
 
-let total=0;
-let labels=[];
-let data=[];
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Scenario B return</div>
+              <div class="control-value" id="cmpBReturnValue">12%</div>
+            </div>
+            <div class="range-wrap">
+              <input id="cmpBReturn" type="range" min="1" max="25" step="0.1" value="12">
+            </div>
+          </div>
 
-for(let i=1;i<=n;i++){
-total = total*(1+r)+P;
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Shared duration</div>
+              <div class="control-value" id="cmpYearsValue">10 Years</div>
+            </div>
+            <div class="range-wrap">
+              <input id="cmpYears" type="range" min="1" max="40" step="1" value="10">
+            </div>
+          </div>
+        </div>
 
-if(i%12==0){
-labels.push("Year "+(i/12));
-data.push(Math.round(total));
-}
-}
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="k">Break-even mood</div>
+            <div class="v" id="miniMood">Strong</div>
+          </div>
+          <div class="mini">
+            <div class="k">Power insight</div>
+            <div class="v" id="miniInsight">Compounding On</div>
+          </div>
+        </div>
 
-future.innerText="₹"+Math.round(total).toLocaleString();
+        <div class="advisor-card">
+          <h4>Ready to move from simulation to action?</h4>
+          <p>
+            Use this dashboard to explore possibilities, then take the next step with a guided investment conversation.
+          </p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="openAdvisor()">Start with justinvesting.in</button>
+            <button class="btn secondary" onclick="copySummary()">Copy summary</button>
+          </div>
+        </div>
+      </aside>
 
-if(chart) chart.destroy();
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title" id="wealthTitle">SIP Wealth Projection</div>
+                <div class="pill" id="wealthPill">Live Mode</div>
+              </div>
 
-chart = new Chart(chartCanvas,{
-type:"line",
-data:{
-labels:labels,
-datasets:[{
-data:data,
-borderColor:"#00d4ff",
-backgroundColor:"rgba(0,212,255,0.1)",
-fill:true,
-tension:0.4
-}]
-},
-options:{
-plugins:{legend:{display:false}},
-scales:{
-x:{grid:{display:false}},
-y:{grid:{color:"rgba(255,255,255,0.05)"}}
-}
-}
-});
+              <div class="wealth-number"><span class="grad" id="wealthNumber">₹23,00,387</span></div>
+              <div class="wealth-sub" id="wealthNarrative">
+                If you keep investing consistently, your capital compounds into a much larger future corpus over time.
+              </div>
+            </div>
 
-}
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label">Invested capital</div>
+                <div class="s-value" id="statInvested">₹12,00,000</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Estimated gains</div>
+                <div class="s-value" id="statGains">₹11,00,387</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Multiple on money</div>
+                <div class="s-value" id="statMultiple">1.92x</div>
+              </div>
+            </div>
+          </div>
 
-/* INIT */
-const amt = document.getElementById("amt");
-const rate = document.getElementById("rate");
-const years = document.getElementById("years");
+          <div class="insight-card">
+            <div class="insight-title">Decision insights</div>
 
-const chartCanvas = document.getElementById("chart");
+            <div class="insight-box">
+              <strong id="insight1Title">Time is doing the heavy lifting.</strong>
+              <span id="insight1Text">A big part of your eventual corpus comes in later years when compounding accelerates.</span>
+            </div>
 
-amt.oninput = calc;
-rate.oninput = calc;
-years.oninput = calc;
+            <div class="insight-box">
+              <strong id="insight2Title">Contribution efficiency is healthy.</strong>
+              <span id="insight2Text">Your selected monthly commitment is creating meaningful long-term scale.</span>
+            </div>
 
-calc();
+            <div class="insight-box">
+              <strong id="insight3Title">Stay invested for full impact.</strong>
+              <span id="insight3Text">Shortening the duration reduces the compounding curve sharply.</span>
+            </div>
+          </div>
+        </div>
 
-</script>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title" id="chartTitle">Projected wealth curve</div>
+              <div class="chart-meta" id="chartMeta">Year-by-year view of corpus growth, invested capital and compounding effect.</div>
+            </div>
+            <div class="legend" id="chartLegend">
+              <div class="legend-item"><span class="dot cyan"></span> Portfolio value</div>
+              <div class="legend-item"><span class="dot blue"></span> Invested capital</div>
+              <div class="legend-item"><span class="dot green"></span> Wealth gain</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="wealthChart"></canvas>
+          </div>
+        </div>
 
+        <div class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title" id="timelineTitle">Milestones</div>
+              <div class="chart-meta" id="timelineMeta">Key value checkpoints on your investing journey.</div>
+            </div>
+          </div>
+
+          <div class="timeline-grid" id="timelineGrid"></div>
+
+          <div class="compare-grid hidden" id="compareGrid">
+            <div class="compare-card">
+              <h4>Scenario A</h4>
+              <div class="compare-row"><span>Monthly SIP</span><strong id="cmpAVal1">₹10,000</strong></div>
+              <div class="compare-row"><span>Projected value</span><strong id="cmpAVal2">₹23,00,387</strong></div>
+              <div class="compare-row"><span>Total invested</span><strong id="cmpAVal3">₹12,00,000</strong></div>
+              <div class="compare-row"><span>Estimated gains</span><strong id="cmpAVal4">₹11,00,387</strong></div>
+            </div>
+            <div class="compare-card">
+              <h4>Scenario B</h4>
+              <div class="compare-row"><span>Monthly SIP</span><strong id="cmpBVal1">₹15,000</strong></div>
+              <div class="compare-row"><span>Projected value</span><strong id="cmpBVal2">₹34,50,580</strong></div>
+              <div class="compare-row"><span>Total invested</span><strong id="cmpBVal3">₹18,00,000</strong></div>
+              <div class="compare-row"><span>Estimated gains</span><strong id="cmpBVal4">₹16,50,580</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script>
+    let activeTab = "sip";
+    let chart;
+
+    const tabs = document.querySelectorAll(".tab");
+
+    const fmtCurrency = (num) => "₹" + Math.round(num).toLocaleString("en-IN");
+    const fmtShort = (num) => {
+      if (num >= 10000000) return "₹" + (num / 10000000).toFixed(2).replace(/\.00$/,'') + " Cr";
+      if (num >= 100000) return "₹" + (num / 100000).toFixed(2).replace(/\.00$/,'') + " L";
+      return fmtCurrency(num);
+    };
+    const fmtPercent = (num) => Number(num).toFixed(1).replace(".0","") + "%";
+
+    function scrollToControls(){
+      document.getElementById("controlsAnchor").scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function openAdvisor(){
+      window.open("https://justinvesting.in","_blank");
+    }
+
+    function copySummary(){
+      const summary = buildSummaryText();
+      navigator.clipboard.writeText(summary).then(() => {
+        const old = document.getElementById("miniInsight").textContent;
+        document.getElementById("miniInsight").textContent = "Summary Copied";
+        setTimeout(()=>document.getElementById("miniInsight").textContent = old, 1800);
+      });
+    }
+
+    function buildSummaryText(){
+      const wealth = document.getElementById("wealthNumber").textContent;
+      const invested = document.getElementById("statInvested").textContent;
+      const gains = document.getElementById("statGains").textContent;
+      return `investpercent Investment Dashboard
+Mode: ${activeTab.toUpperCase()}
+Projected Wealth: ${wealth}
+Invested Capital: ${invested}
+Estimated Gains: ${gains}`;
+    }
+
+    function setDisplayMode(mode){
+      activeTab = mode;
+      tabs.forEach(tab => tab.classList.toggle("active", tab.dataset.tab === mode));
+
+      document.getElementById("sipControls").classList.toggle("hidden", mode !== "sip");
+      document.getElementById("lumpsumControls").classList.toggle("hidden", mode !== "lumpsum");
+      document.getElementById("stepupControls").classList.toggle("hidden", mode !== "stepup");
+      document.getElementById("compareControls").classList.toggle("hidden", mode !== "compare");
+
+      document.getElementById("compareGrid").classList.toggle("hidden", mode !== "compare");
+      document.getElementById("timelineGrid").classList.toggle("hidden", mode === "compare");
+
+      if(mode === "sip"){
+        setModeCopy("SIP Growth Engine","Monthly investing with compounding and long-term wealth projection.","SIP MODE","Tune contribution, return and duration. Your dashboard updates instantly.");
+      }else if(mode === "lumpsum"){
+        setModeCopy("Lump Sum Projection","One-time capital deployment with compounding over your chosen horizon.","LUMP SUM","Model a single investment amount and see how it compounds across years.");
+      }else if(mode === "stepup"){
+        setModeCopy("Step-Up Accelerator","Increase your SIP every year to push the corpus much higher.","STEP-UP MODE","Model a rising SIP journey where contribution increases each year.");
+      }else{
+        setModeCopy("Scenario Comparison","Compare two investing paths side by side and see the gap clearly.","COMPARE MODE","Use parallel scenarios to compare impact of contribution and return assumptions.");
+      }
+
+      updateAll();
+    }
+
+    function setModeCopy(headline, sub, badge, desc){
+      document.getElementById("modeHeadline").textContent = headline;
+      document.getElementById("modeSub").textContent = sub;
+      document.getElementById("panelBadge").textContent = badge;
+      document.getElementById("controlDesc").textContent = desc;
+    }
+
+    tabs.forEach(tab => tab.addEventListener("click", () => setDisplayMode(tab.dataset.tab)));
+
+    function yearlySipData(monthly, annualReturn, years){
+      const monthlyRate = annualReturn / 12 / 100;
+      let value = 0;
+      let invested = 0;
+      const labels = [];
+      const corpus = [];
+      const contributions = [];
+      const gains = [];
+
+      for(let y=1; y<=years; y++){
+        for(let m=1; m<=12; m++){
+          value = value * (1 + monthlyRate) + monthly;
+          invested += monthly;
+        }
+        labels.push("Year " + y);
+        corpus.push(Math.round(value));
+        contributions.push(Math.round(invested));
+        gains.push(Math.round(value - invested));
+      }
+
+      return {
+        labels,
+        corpus,
+        contributions,
+        gains,
+        projected: value,
+        invested
+      };
+    }
+
+    function yearlyLumpsumData(amount, annualReturn, years){
+      const labels = [];
+      const corpus = [];
+      const contributions = [];
+      const gains = [];
+
+      for(let y=1; y<=years; y++){
+        const value = amount * Math.pow(1 + annualReturn / 100, y);
+        labels.push("Year " + y);
+        corpus.push(Math.round(value));
+        contributions.push(amount);
+        gains.push(Math.round(value - amount));
+      }
+
+      return {
+        labels,
+        corpus,
+        contributions,
+        gains,
+        projected: corpus[corpus.length-1] || amount,
+        invested: amount
+      };
+    }
+
+    function yearlyStepupData(startMonthly, stepUp, annualReturn, years){
+      const monthlyRate = annualReturn / 12 / 100;
+      let value = 0;
+      let invested = 0;
+      let currentMonthly = startMonthly;
+      const labels = [];
+      const corpus = [];
+      const contributions = [];
+      const gains = [];
+
+      for(let y=1; y<=years; y++){
+        for(let m=1; m<=12; m++){
+          value = value * (1 + monthlyRate) + currentMonthly;
+          invested += currentMonthly;
+        }
+        labels.push("Year " + y);
+        corpus.push(Math.round(value));
+        contributions.push(Math.round(invested));
+        gains.push(Math.round(value - invested));
+        currentMonthly = currentMonthly * (1 + stepUp / 100);
+      }
+
+      return {
+        labels,
+        corpus,
+        contributions,
+        gains,
+        projected: value,
+        invested
+      };
+    }
+
+    function getMilestones(labels, corpus, contributions){
+      const totalYears = labels.length;
+      const picks = Array.from(new Set([
+        1,
+        Math.max(1, Math.ceil(totalYears * 0.33)),
+        Math.max(1, Math.ceil(totalYears * 0.66)),
+        totalYears
+      ])).slice(0,4);
+
+      return picks.map(year => {
+        const idx = year - 1;
+        const val = corpus[idx] || 0;
+        const inv = contributions[idx] || 0;
+        return {
+          year,
+          value: val,
+          note: val > inv ? `${fmtShort(val - inv)} gains unlocked` : `Capital building phase`
+        };
+      });
+    }
+
+    function yearsToDouble(rate){
+      if(rate <= 0) return null;
+      return (72 / rate).toFixed(1);
+    }
+
+    function setControlValues(){
+      document.getElementById("sipMonthlyValue").textContent = fmtCurrency(+sipMonthly.value);
+      document.getElementById("sipReturnValue").textContent = fmtPercent(+sipReturn.value);
+      document.getElementById("sipYearsValue").textContent = sipYears.value + " Years";
+
+      document.getElementById("lumpAmountValue").textContent = fmtCurrency(+lumpAmount.value);
+      document.getElementById("lumpReturnValue").textContent = fmtPercent(+lumpReturn.value);
+      document.getElementById("lumpYearsValue").textContent = lumpYears.value + " Years";
+
+      document.getElementById("stepMonthlyValue").textContent = fmtCurrency(+stepMonthly.value);
+      document.getElementById("stepIncreaseValue").textContent = fmtPercent(+stepIncrease.value);
+      document.getElementById("stepReturnValue").textContent = fmtPercent(+stepReturn.value);
+      document.getElementById("stepYearsValue").textContent = stepYears.value + " Years";
+
+      document.getElementById("cmpAMonthlyValue").textContent = fmtCurrency(+cmpAMonthly.value);
+      document.getElementById("cmpAReturnValue").textContent = fmtPercent(+cmpAReturn.value);
+      document.getElementById("cmpBMonthlyValue").textContent = fmtCurrency(+cmpBMonthly.value);
+      document.getElementById("cmpBReturnValue").textContent = fmtPercent(+cmpBReturn.value);
+      document.getElementById("cmpYearsValue").textContent = cmpYears.value + " Years";
+    }
+
+    function updateAll(){
+      setControlValues();
+
+      if(activeTab === "sip"){
+        const monthly = +sipMonthly.value;
+        const annualReturn = +sipReturn.value;
+        const years = +sipYears.value;
+
+        const data = yearlySipData(monthly, annualReturn, years);
+        const gains = data.projected - data.invested;
+        const multiple = data.projected / data.invested;
+
+        setTopMetrics(data.projected, gains, annualReturn);
+        setWealthArea({
+          title:"SIP Wealth Projection",
+          pill:"Live SIP",
+          value:data.projected,
+          invested:data.invested,
+          gains,
+          multiple,
+          narrative:`Investing ${fmtCurrency(monthly)} every month for ${years} years at ${fmtPercent(annualReturn)} can potentially build a corpus of ${fmtShort(data.projected)}.`,
+          mood: years >= 10 ? "Long Game" : "Early Builder",
+          power: yearsToDouble(annualReturn) ? `Doubles in ~${yearsToDouble(annualReturn)} yrs` : "Compounding On"
+        });
+
+        setInsights(
+          "Time is compounding for you.",
+          `With a ${years}-year horizon, later years contribute disproportionately to total wealth creation.`,
+          gains > data.invested ? "Returns are overtaking capital." : "Capital is still leading the build-up.",
+          gains > data.invested ? `Your wealth gains are now a bigger engine than fresh contributions.` : `You are still in the capital accumulation phase — keep extending duration.`,
+          "Consistency matters more than timing.",
+          `A regular SIP keeps you on track even when markets move unevenly over shorter periods.`
+        );
+
+        setChart(
+          data.labels,
+          [
+            {label:"Portfolio value", data:data.corpus, color:"#00d4ff", fill:true},
+            {label:"Invested capital", data:data.contributions, color:"#4fa3ff", fill:false},
+            {label:"Wealth gain", data:data.gains, color:"#00e676", fill:false}
+          ],
+          "Projected wealth curve",
+          "Year-by-year view of corpus growth, invested capital and compounding effect."
+        );
+
+        setTimeline("Milestones","Key value checkpoints on your SIP journey.", getMilestones(data.labels, data.corpus, data.contributions));
+      }
+
+      if(activeTab === "lumpsum"){
+        const amount = +lumpAmount.value;
+        const annualReturn = +lumpReturn.value;
+        const years = +lumpYears.value;
+
+        const data = yearlyLumpsumData(amount, annualReturn, years);
+        const gains = data.projected - data.invested;
+        const multiple = data.projected / data.invested;
+
+        setTopMetrics(data.projected, gains, annualReturn);
+        setWealthArea({
+          title:"Lump Sum Projection",
+          pill:"One-time Capital",
+          value:data.projected,
+          invested:data.invested,
+          gains,
+          multiple,
+          narrative:`A one-time investment of ${fmtCurrency(amount)} growing at ${fmtPercent(annualReturn)} over ${years} years can reach ${fmtShort(data.projected)}.`,
+          mood: annualReturn >= 12 ? "Growth Tilt" : "Steady Growth",
+          power: yearsToDouble(annualReturn) ? `Doubles in ~${yearsToDouble(annualReturn)} yrs` : "Capital On"
+        });
+
+        setInsights(
+          "Lump sum rewards time in market.",
+          `The earlier the capital gets deployed, the longer compounding can work without new contributions.`,
+          years >= 10 ? "Duration is your edge." : "Try extending the horizon.",
+          years >= 10 ? `A long holding period reduces the pressure to chase short-term outcomes.` : `Increasing tenure usually creates a much stronger ending value.`,
+          "One decision, long runway.",
+          `This mode is useful when you have idle cash, bonus money or a windfall to deploy thoughtfully.`
+        );
+
+        setChart(
+          data.labels,
+          [
+            {label:"Portfolio value", data:data.corpus, color:"#00d4ff", fill:true},
+            {label:"Invested capital", data:data.contributions, color:"#4fa3ff", fill:false},
+            {label:"Wealth gain", data:data.gains, color:"#00e676", fill:false}
+          ],
+          "Lump sum compounding path",
+          "How one-time capital compounds across your selected investment horizon."
+        );
+
+        setTimeline("Milestones","Key checkpoints for your lump sum journey.", getMilestones(data.labels, data.corpus, data.contributions));
+      }
+
+      if(activeTab === "stepup"){
+        const monthly = +stepMonthly.value;
+        const increase = +stepIncrease.value;
+        const annualReturn = +stepReturn.value;
+        const years = +stepYears.value;
+
+        const data = yearlyStepupData(monthly, increase, annualReturn, years);
+        const gains = data.projected - data.invested;
+        const multiple = data.projected / data.invested;
+
+        setTopMetrics(data.projected, gains, annualReturn);
+        setWealthArea({
+          title:"Step-Up SIP Projection",
+          pill:"Income-linked Growth",
+          value:data.projected,
+          invested:data.invested,
+          gains,
+          multiple,
+          narrative:`Starting with ${fmtCurrency(monthly)} and increasing it by ${fmtPercent(increase)} every year can materially expand long-term wealth creation.`,
+          mood: increase >= 10 ? "Aggressive Builder" : "Disciplined Upgrader",
+          power: `Step-up ${fmtPercent(increase)}`
+        });
+
+        setInsights(
+          "Rising SIPs create outsized impact.",
+          `When contributions increase with income, the final corpus can move much faster than a flat SIP path.`,
+          gains > data.invested ? "Compounding and step-up are aligned." : "Contribution expansion is still building momentum.",
+          gains > data.invested ? `Both rising capital and portfolio growth are working together now.` : `The early years are laying the foundation for later acceleration.`,
+          "Useful for salary-linked planning.",
+          `This mode suits professionals who want investing to grow as cash flow grows.`
+        );
+
+        setChart(
+          data.labels,
+          [
+            {label:"Portfolio value", data:data.corpus, color:"#00d4ff", fill:true},
+            {label:"Invested capital", data:data.contributions, color:"#4fa3ff", fill:false},
+            {label:"Wealth gain", data:data.gains, color:"#00e676", fill:false}
+          ],
+          "Step-up wealth curve",
+          "A growing contribution plan often creates a visibly steeper ending trajectory."
+        );
+
+        setTimeline("Milestones","Key checkpoints on your step-up journey.", getMilestones(data.labels, data.corpus, data.contributions));
+      }
+
+      if(activeTab === "compare"){
+        const aMonthly = +cmpAMonthly.value;
+        const aReturn = +cmpAReturn.value;
+        const bMonthly = +cmpBMonthly.value;
+        const bReturn = +cmpBReturn.value;
+        const years = +cmpYears.value;
+
+        const a = yearlySipData(aMonthly, aReturn, years);
+        const b = yearlySipData(bMonthly, bReturn, years);
+
+        const aGains = a.projected - a.invested;
+        const bGains = b.projected - b.invested;
+        const winnerGap = b.projected - a.projected;
+        const better = winnerGap >= 0 ? "Scenario B" : "Scenario A";
+
+        setTopMetrics(Math.max(a.projected, b.projected), Math.max(aGains, bGains), Math.max(aReturn, bReturn));
+        setWealthArea({
+          title:"Scenario Comparison",
+          pill:"A vs B",
+          value:Math.max(a.projected, b.projected),
+          invested:Math.max(a.invested, b.invested),
+          gains:Math.max(aGains, bGains),
+          multiple:Math.max(a.projected / a.invested, b.projected / b.invested),
+          narrative:`${better} ends ahead by ${fmtShort(Math.abs(winnerGap))} after ${years} years. Small monthly changes can create large long-term differences.`,
+          mood: better + " Leads",
+          power: `Gap ${fmtShort(Math.abs(winnerGap))}`
+        });
+
+        setInsights(
+          `${better} finishes stronger.`,
+          `${better} creates a visibly higher final corpus at the same duration.`,
+          "Small changes scale over time.",
+          `Even a modest SIP difference compounds into a large wealth gap over ${years} years.`,
+          "Use compare before committing.",
+          `This helps you decide whether to raise contribution, improve horizon, or keep the current path.`
+        );
+
+        setChart(
+          a.labels,
+          [
+            {label:"Scenario A", data:a.corpus, color:"#00d4ff", fill:true},
+            {label:"Scenario B", data:b.corpus, color:"#7b61ff", fill:false}
+          ],
+          "Scenario comparison curve",
+          "Two SIP paths shown together so the wealth gap is visible at a glance."
+        );
+
+        document.getElementById("cmpAVal1").textContent = fmtCurrency(aMonthly);
+        document.getElementById("cmpAVal2").textContent = fmtCurrency(a.projected);
+        document.getElementById("cmpAVal3").textContent = fmtCurrency(a.invested);
+        document.getElementById("cmpAVal4").textContent = fmtCurrency(aGains);
+
+        document.getElementById("cmpBVal1").textContent = fmtCurrency(bMonthly);
+        document.getElementById("cmpBVal2").textContent = fmtCurrency(b.projected);
+        document.getElementById("cmpBVal3").textContent = fmtCurrency(b.invested);
+        document.getElementById("cmpBVal4").textContent = fmtCurrency(bGains);
+
+        document.getElementById("timelineTitle").textContent = "Scenario scorecard";
+        document.getElementById("timelineMeta").textContent = "Side-by-side outcome view for your chosen assumptions.";
+        document.getElementById("miniMood").textContent = better;
+        document.getElementById("miniInsight").textContent = `Gap ${fmtShort(Math.abs(winnerGap))}`;
+      }
+    }
+
+    function setTopMetrics(projected, gains, cagr){
+      document.getElementById("topProjected").textContent = fmtShort(projected);
+      document.getElementById("topGains").textContent = fmtShort(gains);
+      document.getElementById("topCagr").textContent = fmtPercent(cagr);
+    }
+
+    function setWealthArea({title, pill, value, invested, gains, multiple, narrative, mood, power}){
+      document.getElementById("wealthTitle").textContent = title;
+      document.getElementById("wealthPill").textContent = pill;
+      document.getElementById("wealthNumber").textContent = fmtCurrency(value);
+      document.getElementById("statInvested").textContent = fmtCurrency(invested);
+      document.getElementById("statGains").textContent = fmtCurrency(gains);
+      document.getElementById("statMultiple").textContent = multiple.toFixed(2) + "x";
+      document.getElementById("wealthNarrative").textContent = narrative;
+      document.getElementById("miniMood").textContent = mood;
+      document.getElementById("miniInsight").textContent = power;
+    }
+
+    function setInsights(t1, x1, t2, x2, t3, x3){
+      document.getElementById("insight1Title").textContent = t1;
+      document.getElementById("insight1Text").textContent = x1;
+      document.getElementById("insight2Title").textContent = t2;
+      document.getElementById("insight2Text").textContent = x2;
+      document.getElementById("insight3Title").textContent = t3;
+      document.getElementById("insight3Text").textContent = x3;
+    }
+
+    function setTimeline(title, meta, milestones){
+      document.getElementById("timelineTitle").textContent = title;
+      document.getElementById("timelineMeta").textContent = meta;
+      const grid = document.getElementById("timelineGrid");
+      grid.innerHTML = milestones.map(m => `
+        <div class="milestone">
+          <div class="m-year">Year ${m.year}</div>
+          <div class="m-amount">${fmtShort(m.value)}</div>
+          <div class="m-note">${m.note}</div>
+        </div>
+      `).join("");
+    }
+
+    function setChart(labels, datasets, title, meta){
+      document.getElementById("chartTitle").textContent = title;
+      document.getElementById("chartMeta").textContent = meta;
+
+      const legendHtml = datasets.map(ds => `
+        <div class="legend-item">
+          <span class="dot" style="background:${ds.color}"></span>${ds.label}
+        </div>
+      `).join("");
+      document.getElementById("chartLegend").innerHTML = legendHtml;
+
+      if(chart) chart.destroy();
+
+      const ctx = document.getElementById("wealthChart").getContext("2d");
+      const gradient = ctx.createLinearGradient(0,0,0,360);
+      gradient.addColorStop(0, "rgba(0,212,255,.28)");
+      gradient.addColorStop(.55, "rgba(79,163,255,.12)");
+      gradient.addColorStop(1, "rgba(79,163,255,0)");
+
+      chart = new Chart(ctx, {
+        type:"line",
+        data:{
+          labels,
+          datasets: datasets.map((ds, idx) => ({
+            label: ds.label,
+            data: ds.data,
+            borderColor: ds.color,
+            backgroundColor: idx === 0 ? gradient : "transparent",
+            fill: !!ds.fill,
+            borderWidth: idx === 0 ? 3 : 2.2,
+            pointRadius: idx === 0 ? 2.2 : 0,
+            pointHoverRadius: 5,
+            pointBorderWidth: 1.5,
+            pointBackgroundColor: ds.color,
+            pointBorderColor: "#08111f",
+            tension:.38
+          }))
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          interaction:{mode:"index", intersect:false},
+          plugins:{
+            legend:{display:false},
+            tooltip:{
+              backgroundColor:"rgba(7,12,28,.96)",
+              borderColor:"rgba(255,255,255,.08)",
+              borderWidth:1,
+              titleColor:"#fff",
+              bodyColor:"#dce6ff",
+              padding:12,
+              displayColors:true,
+              callbacks:{
+                label:(ctx)=>`${ctx.dataset.label}: ${fmtCurrency(ctx.raw)}`
+              }
+            }
+          },
+          scales:{
+            x:{
+              grid:{display:false},
+              ticks:{color:"rgba(220,230,255,.55)", font:{size:12}}
+            },
+            y:{
+              beginAtZero:true,
+              grid:{color:"rgba(255,255,255,.06)"},
+              ticks:{
+                color:"rgba(220,230,255,.55)",
+                font:{size:12},
+                callback:(value)=>fmtShort(value)
+              }
+            }
+          }
+        }
+      });
+    }
+
+    const ids = [
+      "sipMonthly","sipReturn","sipYears",
+      "lumpAmount","lumpReturn","lumpYears",
+      "stepMonthly","stepIncrease","stepReturn","stepYears",
+      "cmpAMonthly","cmpAReturn","cmpBMonthly","cmpBReturn","cmpYears"
+    ];
+
+    ids.forEach(id => document.getElementById(id).addEventListener("input", updateAll));
+
+    setDisplayMode("sip");
+  </script>
 </body>
 </html>
