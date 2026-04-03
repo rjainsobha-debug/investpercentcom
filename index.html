@@ -1,288 +1,734 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>InvestPercent — Financial Universe</title>
+  <title>investpercent.com — India's Most Comprehensive Financial Calculator Platform</title>
+  <meta
+    name="description"
+    content="500+ free financial calculators — SIP, Income Tax, EMI, Retirement, FIRE, Crypto, Business tools and more. No login. Instant results."
+  />
+  <meta
+    name="keywords"
+    content="financial calculators india, sip calculator, income tax calculator, emi calculator, retirement calculator, fire calculator, forex calculator, domain valuation"
+  />
+  <meta name="author" content="investpercent.com" />
+  <meta name="robots" content="index, follow" />
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="canonical" href="https://investpercent.com/" />
 
-<style>
-body{
-margin:0;
-font-family:Inter;
-background:#0a0e1a;
-color:#fff;
-}
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="investpercent.com — India's Most Comprehensive Financial Calculator Platform" />
+  <meta
+    property="og:description"
+    content="500+ free financial calculators — SIP, Income Tax, EMI, Retirement, FIRE, Crypto, Business tools and more. No login. Instant results."
+  />
+  <meta property="og:url" content="https://investpercent.com/" />
+  <meta property="og:image" content="https://investpercent.com/assets/og-image.jpg" />
 
-header{
-display:flex;
-justify-content:space-between;
-padding:15px;
-background:#0f1628;
-position:sticky;
-top:0;
-}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="investpercent.com — India's Most Comprehensive Financial Calculator Platform" />
+  <meta
+    name="twitter:description"
+    content="500+ free financial calculators — SIP, Income Tax, EMI, Retirement, FIRE, Crypto, Business tools and more. No login. Instant results."
+  />
+  <meta name="twitter:image" content="https://investpercent.com/assets/og-image.jpg" />
 
-.logo{
-font-weight:800;
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-input{
-padding:10px;
-border-radius:10px;
-border:none;
-background:#141d35;
-color:white;
-width:100%;
-margin-top:10px;
-}
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/home.css" />
+  <link rel="stylesheet" href="/css/calculator.css" />
 
-button{
-padding:10px;
-margin-top:10px;
-background:#00d4ff;
-border:none;
-border-radius:10px;
-font-weight:700;
-cursor:pointer;
-}
-
-.container{padding:20px}
-
-.card{
-background:#0f1628;
-padding:20px;
-margin-top:20px;
-border-radius:15px;
-}
-
-.result{margin-top:10px;color:#00e676}
-
-.favorite{
-cursor:pointer;
-float:right;
-}
-</style>
-
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "investpercent.com",
+      "url": "https://investpercent.com/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://investpercent.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
 </head>
-
 <body>
+  <div id="ip-header"></div>
 
-<header>
-<div class="logo">invest%</div>
-<input id="search" placeholder="Search tools...">
-</header>
+  <main>
+    <!-- HERO SECTION -->
+    <section class="ip-hero-section">
+      <canvas class="ip-hero-particles" data-particle-canvas></canvas>
 
-<div class="container" id="app"></div>
+      <div class="ip-container">
+        <div class="ip-hero-content">
+          <div class="ip-hero-badge ip-badge">
+            🇮🇳 India's Most Comprehensive Finance Platform
+          </div>
 
-<script>
+          <h1 class="ip-hero-title">
+            Your Complete <br />
+            <span class="gradient-text">Financial Universe</span>
+          </h1>
 
-/* ================= ENGINE ================= */
+          <p class="ip-hero-subtitle">
+            500+ free tools. Zero sign-up. Infinite clarity.
+          </p>
 
-const calculators = [
+          <div class="ip-hero-pills">
+            <a href="/pages/investment.html" class="ip-badge">📊 Invest</a>
+            <a href="/pages/tax.html" class="ip-badge">🧾 Tax</a>
+            <a href="/pages/loans.html" class="ip-badge">🏠 Property</a>
+            <a href="/pages/retirement.html" class="ip-badge">💰 Retire</a>
+            <a href="/pages/global.html" class="ip-badge">🌍 Global</a>
+            <a href="/pages/crypto.html" class="ip-badge">₿ Crypto</a>
+          </div>
 
-{
-name:"SIP Calculator",
-id:"sip",
-html:`
-<input id="sipAmount" placeholder="Monthly Investment">
-<input id="sipRate" placeholder="Return %">
-<input id="sipYears" placeholder="Years">
-<button onclick="calcSIP()">Calculate</button>
-<canvas id="sipChart"></canvas>
-<div id="sipResult" class="result"></div>
-`
-},
+          <div class="ip-hero-actions">
+            <a href="#all-categories" class="ip-btn-primary">Explore All Tools →</a>
+            <a href="#quick-calculators" class="ip-btn-outline">Most Popular ↓</a>
+          </div>
+        </div>
 
-{
-name:"FD Calculator",
-id:"fd",
-html:`
-<input id="fdAmount" placeholder="Amount">
-<input id="fdRate" placeholder="Rate %">
-<input id="fdYears" placeholder="Years">
-<button onclick="calcFD()">Calculate</button>
-<div id="fdResult" class="result"></div>
-`
-},
+        <div class="ip-scroll-indicator">
+          <a href="#stats-bar" aria-label="Scroll down">
+            <span class="ip-scroll-mouse">
+              <span class="ip-scroll-dot"></span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
 
-{
-name:"EMI Calculator",
-id:"emi",
-html:`
-<input id="loanAmount" placeholder="Loan Amount">
-<input id="loanRate" placeholder="Rate %">
-<input id="loanYears" placeholder="Years">
-<button onclick="calcEMI()">Calculate</button>
-<div id="emiResult" class="result"></div>
-`
-},
+    <!-- STATS BAR -->
+    <section class="ip-stats-bar" id="stats-bar">
+      <div class="ip-container">
+        <div class="ip-stats-grid">
+          <div class="ip-stat-card ip-card">
+            <div class="ip-stat-number" data-counter="40" data-suffix="+">0</div>
+            <div class="ip-stat-label">Tools</div>
+          </div>
 
-{
-name:"Tax Calculator",
-id:"tax",
-html:`
-<input id="income" placeholder="Annual Income">
-<button onclick="calcTax()">Calculate</button>
-<div id="taxResult" class="result"></div>
-`
-},
+          <div class="ip-stat-card ip-card">
+            <div class="ip-stat-number" data-counter="10" data-suffix="+">0</div>
+            <div class="ip-stat-label">Categories</div>
+          </div>
 
-{
-name:"Inflation Calculator",
-id:"inflation",
-html:`
-<input id="infAmount" placeholder="Current Amount">
-<input id="infRate" placeholder="Inflation %">
-<input id="infYears" placeholder="Years">
-<button onclick="calcInflation()">Calculate</button>
-<div id="infResult" class="result"></div>
-`
-},
+          <div class="ip-stat-card ip-card">
+            <div class="ip-stat-number" data-counter="50" data-suffix="+">0</div>
+            <div class="ip-stat-label">Countries</div>
+          </div>
 
-{
-name:"Net Worth Calculator",
-id:"networth",
-html:`
-<input id="assets" placeholder="Total Assets">
-<input id="liabilities" placeholder="Total Liabilities">
-<button onclick="calcNet()">Calculate</button>
-<div id="netResult" class="result"></div>
-`
-}
+          <div class="ip-stat-card ip-card">
+            <div class="ip-stat-number" data-counter="100" data-suffix="%">0</div>
+            <div class="ip-stat-label">Free</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-];
+    <!-- QUICK CALCULATORS -->
+    <section class="ip-home-section ip-quick-calcs-section" id="quick-calculators">
+      <div class="ip-container">
+        <div class="ip-section-head">
+          <span class="ip-badge">Most Popular</span>
+          <h2>Get Instant Answers — No Sign-up Needed</h2>
+          <p>Try the most used tools right here on the homepage.</p>
+        </div>
 
-/* ================= RENDER ================= */
+        <div class="ip-card ip-quick-calcs-card">
+          <div class="ip-tab-buttons">
+            <button class="ip-tab-btn is-active" data-tab-trigger data-tab-group="quick-tools" data-tab-target="quick-sip">
+              SIP Calculator
+            </button>
+            <button class="ip-tab-btn" data-tab-trigger data-tab-group="quick-tools" data-tab-target="quick-emi">
+              EMI Calculator
+            </button>
+            <button class="ip-tab-btn" data-tab-trigger data-tab-group="quick-tools" data-tab-target="quick-tax">
+              Tax Saver
+            </button>
+          </div>
 
-function render(){
+          <!-- QUICK SIP -->
+          <div class="ip-tab-panel is-active" data-tab-panel="quick-sip" data-tab-group="quick-tools">
+            <div class="calculator-container">
+              <div class="calculator-inputs">
+                <div>
+                  <label for="quickSipAmount" class="ip-label">Monthly Investment (₹)</label>
+                  <input id="quickSipAmount" class="ip-input" type="number" value="5000" min="500" step="500" />
+                </div>
 
-let app=document.getElementById("app");
-app.innerHTML="";
+                <div>
+                  <label for="quickSipReturn" class="ip-label">Expected Return (%)</label>
+                  <input id="quickSipReturn" class="ip-input" type="number" value="12" min="1" max="30" step="0.1" />
+                </div>
 
-calculators.forEach(c=>{
+                <div>
+                  <label for="quickSipYears" class="ip-label">Years</label>
+                  <input id="quickSipYears" class="ip-input" type="number" value="10" min="1" max="40" step="1" />
+                </div>
 
-let fav = isFav(c.id) ? "⭐" : "☆";
+                <button class="ip-btn-primary" type="button" id="quickSipCalculate">Calculate SIP</button>
+              </div>
 
-app.innerHTML+=`
-<div class="card">
-<h3>${c.name} <span class="favorite" onclick="toggleFav('${c.id}')">${fav}</span></h3>
-${c.html}
-</div>
-`;
+              <div class="calculator-results">
+                <div class="ip-result-grid">
+                  <div class="ip-result-cell">
+                    <div class="ip-result-value" id="quickSipInvested">₹6,00,000</div>
+                    <div class="ip-result-label">Total Invested</div>
+                  </div>
+                  <div class="ip-result-cell">
+                    <div class="ip-result-value" id="quickSipReturns">₹5,61,695</div>
+                    <div class="ip-result-label">Estimated Returns</div>
+                  </div>
+                  <div class="ip-result-cell">
+                    <div class="ip-result-value" id="quickSipMaturity">₹11,61,695</div>
+                    <div class="ip-result-label">Maturity Value</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-});
+          <!-- QUICK EMI -->
+          <div class="ip-tab-panel" data-tab-panel="quick-emi" data-tab-group="quick-tools">
+            <div class="calculator-container">
+              <div class="calculator-inputs">
+                <div>
+                  <label for="quickEmiLoan" class="ip-label">Loan Amount (₹)</label>
+                  <input id="quickEmiLoan" class="ip-input" type="number" value="2500000" min="100000" step="50000" />
+                </div>
 
-}
+                <div>
+                  <label for="quickEmiRate" class="ip-label">Interest Rate (%)</label>
+                  <input id="quickEmiRate" class="ip-input" type="number" value="8.5" min="1" max="20" step="0.1" />
+                </div>
 
-render();
+                <div>
+                  <label for="quickEmiYears" class="ip-label">Tenure (Years)</label>
+                  <input id="quickEmiYears" class="ip-input" type="number" value="20" min="1" max="30" step="1" />
+                </div>
 
-/* ================= FAVORITES ================= */
+                <button class="ip-btn-primary" type="button" id="quickEmiCalculate">Calculate EMI</button>
+              </div>
 
-function toggleFav(id){
+              <div class="calculator-results">
+                <div class="ip-result-grid">
+                  <div class="ip-result-cell">
+                    <div class="ip-result-value" id="quickEmiMonthly">₹21,696</div>
+                    <div class="ip-result-label">Monthly EMI</div>
+                  </div>
+                  <div class="ip-result-cell">
+                    <div class="ip-result-value" id="quickEmiInterest">₹27,07,090</div>
+                    <div class="ip-result-label">Total Interest</div>
+                  </div>
+                  <div class="ip-result-cell">
+                    <div class="ip-result-value" id="quickEmiTotal">₹52,07,090</div>
+                    <div class="ip-result-label">Total Payable</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-let favs=JSON.parse(localStorage.getItem("fav")||"[]");
+          <!-- QUICK TAX -->
+          <div class="ip-tab-panel" data-tab-panel="quick-tax" data-tab-group="quick-tools">
+            <div class="calculator-container">
+              <div class="calculator-inputs">
+                <div>
+                  <label for="quickTaxSalary" class="ip-label">Annual Salary (₹)</label>
+                  <input id="quickTaxSalary" class="ip-input" type="number" value="1200000" min="300000" step="50000" />
+                </div>
 
-if(favs.includes(id)){
-favs=favs.filter(f=>f!=id);
-}else{
-favs.push(id);
-}
+                <div>
+                  <label for="quickTaxDeduction" class="ip-label">Old Regime Deductions (₹)</label>
+                  <input id="quickTaxDeduction" class="ip-input" type="number" value="200000" min="0" step="10000" />
+                </div>
 
-localStorage.setItem("fav",JSON.stringify(favs));
-render();
-}
+                <button class="ip-btn-primary" type="button" id="quickTaxCalculate">Compare Tax</button>
+              </div>
 
-function isFav(id){
-let favs=JSON.parse(localStorage.getItem("fav")||"[]");
-return favs.includes(id);
-}
+              <div class="calculator-results">
+                <div class="ip-result-grid">
+                  <div class="ip-result-cell">
+                    <div class="ip-result-value" id="quickTaxOld">₹85,800</div>
+                    <div class="ip-result-label">Old Regime Tax</div>
+                  </div>
+                  <div class="ip-result-cell">
+                    <div class="ip-result-value" id="quickTaxNew">₹93,600</div>
+                    <div class="ip-result-label">New Regime Tax</div>
+                  </div>
+                  <div class="ip-result-cell">
+                    <div class="ip-result-value" id="quickTaxWinner">Old Saves ₹7,800</div>
+                    <div class="ip-result-label">Better Option</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-/* ================= CALCULATIONS ================= */
+    <!-- ALL CATEGORIES GRID -->
+    <section class="ip-home-section" id="all-categories">
+      <div class="ip-container">
+        <div class="ip-section-head">
+          <span class="ip-badge">Categories</span>
+          <h2>Choose Your Financial Tool Category</h2>
+          <p>Explore focused pages with calculators, insights, and direct action paths.</p>
+        </div>
 
-function calcSIP(){
+        <div class="ip-category-grid">
+          <!-- CARD 1 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">📈</div>
+            <h3>Investment Tools</h3>
+            <p>SIP, CAGR, MF, PPF, NPS and more</p>
+            <span class="ip-badge">8 Calculators inside</span>
+            <ul>
+              <li>SIP Calculator</li>
+              <li>Lump Sum</li>
+              <li>CAGR</li>
+            </ul>
+            <a href="/pages/investment.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-let P=+sipAmount.value;
-let r=+sipRate.value/100/12;
-let n=+sipYears.value*12;
+          <!-- CARD 2 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">🧾</div>
+            <h3>Tax Calculators</h3>
+            <p>Old vs New regime, Capital Gains, GST and more</p>
+            <span class="ip-badge">7 Calculators inside</span>
+            <ul>
+              <li>Salary Tax</li>
+              <li>Capital Gains</li>
+              <li>GST</li>
+            </ul>
+            <a href="/pages/tax.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-let M=P*((Math.pow(1+r,n)-1)/r)*(1+r);
+          <!-- CARD 3 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">🏠</div>
+            <h3>Loan & EMI</h3>
+            <p>Home Loan, Car, Personal, Education EMIs</p>
+            <span class="ip-badge">6 Calculators inside</span>
+            <ul>
+              <li>Home Loan EMI</li>
+              <li>Debt Payoff</li>
+              <li>Loan vs Rent</li>
+            </ul>
+            <a href="/pages/loans.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-sipResult.innerHTML="₹ "+Math.round(M);
-}
+          <!-- CARD 4 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">🐷</div>
+            <h3>Savings & FD</h3>
+            <p>FD, RD, Sukanya Samriddhi and comparisons</p>
+            <span class="ip-badge">5 Calculators inside</span>
+            <ul>
+              <li>FD Calculator</li>
+              <li>RD Calculator</li>
+              <li>SSY</li>
+            </ul>
+            <a href="/pages/savings.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-function calcFD(){
+          <!-- CARD 5 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">🌴</div>
+            <h3>Retirement Planning</h3>
+            <p>Retirement corpus, FIRE, pension planning</p>
+            <span class="ip-badge">4 Calculators inside</span>
+            <ul>
+              <li>Retirement Corpus</li>
+              <li>FIRE Calculator</li>
+              <li>NPS Pension</li>
+            </ul>
+            <a href="/pages/retirement.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-let P=+fdAmount.value;
-let r=+fdRate.value/100;
-let t=+fdYears.value;
+          <!-- CARD 6 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">👛</div>
+            <h3>Personal Finance</h3>
+            <p>Salary, Net Worth, Budget, Financial Health</p>
+            <span class="ip-badge">6 Calculators inside</span>
+            <ul>
+              <li>In-Hand Salary</li>
+              <li>Net Worth</li>
+              <li>Budget Planner</li>
+            </ul>
+            <a href="/pages/personal.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-let A=P*Math.pow(1+r,t);
+          <!-- CARD 7 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">🌍</div>
+            <h3>Global Tools</h3>
+            <p>Currency, PPP, Remittance, Global Inflation</p>
+            <span class="ip-badge">5 Calculators inside</span>
+            <ul>
+              <li>Currency Converter</li>
+              <li>PPP Calculator</li>
+              <li>Remittance Cost</li>
+            </ul>
+            <a href="/pages/global.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-fdResult.innerHTML="₹ "+Math.round(A);
-}
+          <!-- CARD 8 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">📊</div>
+            <h3>Stock Market</h3>
+            <p>Stock returns, P/E, Portfolio, Screener</p>
+            <span class="ip-badge">5 Calculators inside</span>
+            <ul>
+              <li>Stock Return</li>
+              <li>P/E Ratio</li>
+              <li>Brokerage Compare</li>
+            </ul>
+            <a href="/pages/stocks.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-function calcEMI(){
+          <!-- CARD 9 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">₿</div>
+            <h3>Crypto & Assets</h3>
+            <p>Crypto P/L, DCA, Tax, vs Gold comparison</p>
+            <span class="ip-badge">4 Calculators inside</span>
+            <ul>
+              <li>Crypto P/L</li>
+              <li>Bitcoin DCA</li>
+              <li>Crypto Tax India</li>
+            </ul>
+            <a href="/pages/crypto.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-let P=+loanAmount.value;
-let r=+loanRate.value/100/12;
-let n=+loanYears.value*12;
+          <!-- CARD 10 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">💼</div>
+            <h3>Business Tools</h3>
+            <p>Break-Even, ROI, GST Invoice, Valuation</p>
+            <span class="ip-badge">6 Calculators inside</span>
+            <ul>
+              <li>Break-Even</li>
+              <li>Invoice Generator</li>
+              <li>Startup Valuation</li>
+            </ul>
+            <a href="/pages/business.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-let emi=(P*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+          <!-- CARD 11 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">🛡️</div>
+            <h3>Insurance & Life</h3>
+            <p>Term cover, Health premium, Child planning</p>
+            <span class="ip-badge">4 Calculators inside</span>
+            <ul>
+              <li>Term Insurance</li>
+              <li>Health Estimator</li>
+              <li>Education Cost</li>
+            </ul>
+            <a href="/pages/insurance.html" class="ip-btn-outline">Explore →</a>
+          </article>
 
-emiResult.innerHTML="₹ "+Math.round(emi);
-}
+          <!-- CARD 12 -->
+          <article class="ip-category-card ip-card">
+            <div class="ip-category-icon">🔗</div>
+            <h3>Digital Assets</h3>
+            <p>Domain valuation, digital business tools</p>
+            <span class="ip-badge">3 Calculators inside</span>
+            <ul>
+              <li>Domain Value Estimator</li>
+              <li>Online Business ROI</li>
+              <li>Digital Asset Tools</li>
+            </ul>
+            <a href="/pages/digital.html" class="ip-btn-outline">Explore →</a>
+          </article>
+        </div>
+      </div>
+    </section>
 
-function calcTax(){
+    <!-- ECOSYSTEM SHOWCASE -->
+    <section class="ip-home-section ip-ecosystem-showcase">
+      <div class="ip-container">
+        <div class="ip-section-head">
+          <span class="ip-badge">Partner Network</span>
+          <h2>One Platform. Six Powerful Partners.</h2>
+          <p>Use invest% for clarity. Use partner brands for action.</p>
+        </div>
 
-let inc=+income.value;
+        <div class="ip-partner-grid">
+          <a href="https://justinvesting.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
+            <div class="ip-partner-icon">📈</div>
+            <h3>justinvesting.in</h3>
+            <p>Mutual funds, stocks, SIPs, insurance, and portfolio support.</p>
+            <span>Explore →</span>
+          </a>
 
-let tax=inc<=300000?0:
-inc<=700000?(inc-300000)*0.05:
-inc<=1000000?20000+(inc-700000)*0.1:
-inc<=1200000?50000+(inc-1000000)*0.15:
-inc<=1500000?80000+(inc-1200000)*0.2:
-140000+(inc-1500000)*0.3;
+          <a href="https://absolutemoney.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
+            <div class="ip-partner-icon">👑</div>
+            <h3>absolutemoney.in</h3>
+            <p>Wealth management, legacy planning, and HNI strategy.</p>
+            <span>Explore →</span>
+          </a>
 
-taxResult.innerHTML="₹ "+Math.round(tax);
-}
+          <a href="https://justproperty.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
+            <div class="ip-partner-icon">🏡</div>
+            <h3>justproperty.in</h3>
+            <p>Property search, real estate insights, and buying support.</p>
+            <span>Explore →</span>
+          </a>
 
-function calcInflation(){
+          <a href="https://goglobal.forex" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
+            <div class="ip-partner-icon">🌍</div>
+            <h3>goglobal.forex</h3>
+            <p>Forex, travel money, remittance, and global transfer tools.</p>
+            <span>Explore →</span>
+          </a>
 
-let P=+infAmount.value;
-let r=+infRate.value/100;
-let t=+infYears.value;
+          <a href="https://microventure.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
+            <div class="ip-partner-icon">⚡</div>
+            <h3>microventure.in</h3>
+            <p>Side hustles, small business ideas, and startup support.</p>
+            <span>Explore →</span>
+          </a>
 
-let A=P*Math.pow(1+r,t);
+          <a href="https://domaindcl.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
+            <div class="ip-partner-icon">🔗</div>
+            <h3>domaindcl.in</h3>
+            <p>Domain names, digital assets, and online brand setup.</p>
+            <span>Explore →</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
-infResult.innerHTML="Future Value: ₹"+Math.round(A);
-}
+    <!-- HOW IT WORKS -->
+    <section class="ip-home-section">
+      <div class="ip-container">
+        <div class="ip-section-head">
+          <span class="ip-badge">How It Works</span>
+          <h2>Simple, Fast, and Built for Action</h2>
+          <p>No sign-up. No clutter. Just the numbers you need.</p>
+        </div>
 
-function calcNet(){
+        <div class="ip-steps-grid">
+          <div class="ip-card ip-step-card">
+            <div class="ip-step-number">01</div>
+            <h3>Choose a Calculator</h3>
+            <p>Pick from investment, tax, loan, global, business, or digital tools.</p>
+          </div>
 
-let a=+assets.value;
-let l=+liabilities.value;
+          <div class="ip-card ip-step-card">
+            <div class="ip-step-number">02</div>
+            <h3>Enter Your Numbers</h3>
+            <p>Use intuitive inputs, sliders, and instant calculations on any device.</p>
+          </div>
 
-netResult.innerHTML="Net Worth: ₹"+(a-l);
-}
+          <div class="ip-card ip-step-card">
+            <div class="ip-step-number">03</div>
+            <h3>Get Clarity + Next Steps</h3>
+            <p>See results instantly and move naturally to the right ecosystem partner.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-/* ================= SEARCH ================= */
+    <!-- TESTIMONIALS -->
+    <section class="ip-home-section ip-testimonials-section">
+      <div class="ip-container">
+        <div class="ip-section-head">
+          <span class="ip-badge">Testimonials</span>
+          <h2>What Users Say</h2>
+          <p>Real clarity, real action, real mobile-friendly experience.</p>
+        </div>
 
-document.getElementById("search").addEventListener("keyup",function(){
+        <div class="ip-testimonial-grid">
+          <article class="ip-card ip-testimonial-card">
+            <div class="ip-testimonial-avatar">RM</div>
+            <p class="ip-testimonial-text">
+              “Used the SIP calculator — realized I was under-investing by ₹5,000/month.
+              Course-corrected immediately.”
+            </p>
+            <div class="ip-testimonial-meta">
+              <strong>Rahul M.</strong>
+              <span>Bangalore</span>
+            </div>
+          </article>
 
-let val=this.value.toLowerCase();
+          <article class="ip-card ip-testimonial-card">
+            <div class="ip-testimonial-avatar">PS</div>
+            <p class="ip-testimonial-text">
+              “The Old vs New regime comparator saved my client ₹42,000 in tax.”
+            </p>
+            <div class="ip-testimonial-meta">
+              <strong>Priya S.</strong>
+              <span>CA, Mumbai</span>
+            </div>
+          </article>
 
-document.querySelectorAll(".card").forEach(card=>{
-card.style.display=card.innerText.toLowerCase().includes(val)?"block":"none";
-});
+          <article class="ip-card ip-testimonial-card">
+            <div class="ip-testimonial-avatar">AK</div>
+            <p class="ip-testimonial-text">
+              “Finally a finance site that works perfectly on my phone.”
+            </p>
+            <div class="ip-testimonial-meta">
+              <strong>Ahmed K.</strong>
+              <span>Dubai</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
 
-});
+  <div id="ip-footer"></div>
 
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/charts.js"></script>
+  <script src="/js/global.js"></script>
 
+  <script>
+    (function () {
+      const U = window.IPUtils;
+
+      function formatINR(value) {
+        return U.formatINR(value, 0);
+      }
+
+      function calcSIP(monthly, annualRate, years) {
+        const r = annualRate / 12 / 100;
+        const n = years * 12;
+        const invested = monthly * n;
+        const maturity = monthly * (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
+        const returns = maturity - invested;
+        return { invested, maturity, returns };
+      }
+
+      function calcEMI(principal, annualRate, years) {
+        const r = annualRate / 12 / 100;
+        const n = years * 12;
+        const emi = principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+        const total = emi * n;
+        const interest = total - principal;
+        return { emi, total, interest };
+      }
+
+      function calculateOldRegimeTax(income, deductions) {
+        const taxable = Math.max(income - 50000 - deductions, 0);
+        let tax = 0;
+
+        if (taxable <= 250000) tax = 0;
+        else if (taxable <= 500000) tax = (taxable - 250000) * 0.05;
+        else if (taxable <= 1000000) tax = 12500 + (taxable - 500000) * 0.2;
+        else tax = 112500 + (taxable - 1000000) * 0.3;
+
+        if (taxable <= 500000) tax = 0;
+
+        tax += tax * 0.04;
+        return tax;
+      }
+
+      function calculateNewRegimeTax(income) {
+        const taxable = Math.max(income - 75000, 0);
+        let tax = 0;
+
+        if (taxable <= 300000) tax = 0;
+        else if (taxable <= 700000) tax = (taxable - 300000) * 0.05;
+        else if (taxable <= 1000000) tax = 20000 + (taxable - 700000) * 0.1;
+        else if (taxable <= 1200000) tax = 50000 + (taxable - 1000000) * 0.15;
+        else if (taxable <= 1500000) tax = 80000 + (taxable - 1200000) * 0.2;
+        else tax = 140000 + (taxable - 1500000) * 0.3;
+
+        if (taxable <= 700000) tax = 0;
+
+        tax += tax * 0.04;
+        return tax;
+      }
+
+      function bindQuickSIP() {
+        const btn = document.getElementById("quickSipCalculate");
+        if (!btn) return;
+
+        function run() {
+          const monthly = U.toNumber(document.getElementById("quickSipAmount").value);
+          const annualRate = U.toNumber(document.getElementById("quickSipReturn").value);
+          const years = U.toNumber(document.getElementById("quickSipYears").value);
+
+          const result = calcSIP(monthly, annualRate, years);
+
+          document.getElementById("quickSipInvested").textContent = formatINR(result.invested);
+          document.getElementById("quickSipReturns").textContent = formatINR(result.returns);
+          document.getElementById("quickSipMaturity").textContent = formatINR(result.maturity);
+        }
+
+        btn.addEventListener("click", run);
+        run();
+      }
+
+      function bindQuickEMI() {
+        const btn = document.getElementById("quickEmiCalculate");
+        if (!btn) return;
+
+        function run() {
+          const loan = U.toNumber(document.getElementById("quickEmiLoan").value);
+          const rate = U.toNumber(document.getElementById("quickEmiRate").value);
+          const years = U.toNumber(document.getElementById("quickEmiYears").value);
+
+          const result = calcEMI(loan, rate, years);
+
+          document.getElementById("quickEmiMonthly").textContent = formatINR(result.emi);
+          document.getElementById("quickEmiInterest").textContent = formatINR(result.interest);
+          document.getElementById("quickEmiTotal").textContent = formatINR(result.total);
+        }
+
+        btn.addEventListener("click", run);
+        run();
+      }
+
+      function bindQuickTax() {
+        const btn = document.getElementById("quickTaxCalculate");
+        if (!btn) return;
+
+        function run() {
+          const salary = U.toNumber(document.getElementById("quickTaxSalary").value);
+          const deductions = U.toNumber(document.getElementById("quickTaxDeduction").value);
+
+          const oldTax = calculateOldRegimeTax(salary, deductions);
+          const newTax = calculateNewRegimeTax(salary);
+
+          document.getElementById("quickTaxOld").textContent = formatINR(oldTax);
+          document.getElementById("quickTaxNew").textContent = formatINR(newTax);
+
+          const diff = Math.abs(oldTax - newTax);
+          const winner =
+            oldTax < newTax
+              ? `Old Saves ${formatINR(diff)}`
+              : newTax < oldTax
+              ? `New Saves ${formatINR(diff)}`
+              : "Both Equal";
+
+          document.getElementById("quickTaxWinner").textContent = winner;
+        }
+
+        btn.addEventListener("click", run);
+        run();
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        bindQuickSIP();
+        bindQuickEMI();
+        bindQuickTax();
+      });
+    })();
+  </script>
 </body>
 </html>
