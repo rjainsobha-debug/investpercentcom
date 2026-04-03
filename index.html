@@ -1,115 +1,135 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>InvestPercent</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InvestPercent</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--bg:#041424;
+--card:#0b2d4d;
+--accent:#32c7ff;
+--text:#fff;
+--muted:#9bbbdc;
+--radius:20px;
+}
+
+body{
+margin:0;
+font-family:Inter;
+background:linear-gradient(120deg,#041424,#0b2d4d);
+color:var(--text);
+}
+
+.container{max-width:1200px;margin:auto;padding:20px}
+
+/* NAV */
+.nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 0;
+}
+.logo{font-size:24px;font-weight:800}
+.nav a{margin:0 10px;color:#cde6ff;text-decoration:none}
+
+/* HERO */
+.hero{
+padding:80px 0;
+text-align:center;
+}
+.hero h1{
+font-size:48px;
+margin-bottom:10px;
+}
+.hero p{color:var(--muted);}
+
+.btn{
+background:linear-gradient(135deg,#32c7ff,#56b8ff);
+padding:14px 25px;
+border-radius:12px;
+color:#00111f;
+font-weight:700;
+border:none;
+cursor:pointer;
+}
+
+/* CARDS */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+margin-top:40px;
+}
+.card{
+background:var(--card);
+padding:20px;
+border-radius:var(--radius);
+transition:.3s;
+}
+.card:hover{transform:translateY(-5px)}
+.card h3{margin-bottom:10px}
+
+/* FOOTER */
+.footer{
+text-align:center;
+margin-top:50px;
+color:#a7c5ea;
+}
+</style>
 </head>
+
 <body>
 
-<div class="top-ticker">
-  <div class="ticker-row">
-    <div class="ticker-chip">NIFTY 50 <b id="tickNifty">Loading...</b></div>
-    <div class="ticker-chip">SENSEX <b id="tickSensex">Loading...</b></div>
-    <div class="ticker-chip">USD/INR <b id="tickUsdInr">Loading...</b></div>
-    <div class="ticker-chip">GOLD/10g <b id="tickGold10g">Loading...</b></div>
-    <div class="ticker-chip">SILVER/kg <b id="tickSilverKg">Loading...</b></div>
-  </div>
+<div class="container nav">
+<div class="logo">Invest%</div>
+<div>
+<a href="index.html">Home</a>
+<a href="investments.html">Investments</a>
+<a href="property.html">Property</a>
+<a href="tax.html">Tax</a>
+<a href="forex.html">Forex</a>
 </div>
-<div class="navbar">
-  <div class="container nav-inner">
-    <a href="index.html" class="brand">
-      <span class="brand-badge">IP</span>
-      <span>InvestPercent</span>
-    </a>
-    <div class="nav-links">
-      <a class="active" href="index.html">Home</a>
-      <a class="" href="investments.html">Investments</a>
-      <a class="" href="property.html">Property</a>
-      <a class="" href="tax.html">Tax</a>
-      <a class="" href="wealth.html">Wealth</a>
-      <a class="" href="forex.html">Forex</a>
-    </div>
-  </div>
 </div>
 
-
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-card hero-copy">
-      <span class="kicker">Premium platform • calculators • live rates</span>
-      <h1>India’s smartest financial planning and rates engine</h1>
-      <p>Explore investments, property, tax, wealth, and forex with premium calculators, real-time lead capture, and backend-controlled live settings.</p>
-      <div class="hero-actions">
-        <button class="btn" onclick="openPopup('investment')">Start Planning</button>
-        <a class="btn btn-outline" href="market.html">View live market panel</a>
-      </div>
-      <div class="banner-bar">
-        <div id="dynamicBanner" class="banner">Trusted by investors, property buyers and forex seekers across India.</div>
-      </div>
-    </div>
-    <div class="hero-card metric-grid">
-      <div class="metric"><div class="label">Forex desk</div><div class="value">10+</div><div class="sub">Currencies supported</div></div>
-      <div class="metric"><div class="label">Planning tools</div><div class="value">12</div><div class="sub">Across 5 categories</div></div>
-      <div class="metric"><div class="label">Lead engine</div><div class="value">Live</div><div class="sub">Firestore connected</div></div>
-      <div class="metric"><div class="label">Backend control</div><div class="value">Private</div><div class="sub">Hidden admin dashboard</div></div>
-    </div>
-  </div>
+<section class="hero container">
+<h1>Calculate Your Financial Future</h1>
+<p>All financial tools in one place — Investments, Tax, Property, Forex</p>
+<button class="btn" onclick="location.href='investments.html'">Start Now</button>
 </section>
 
-<section class="section">
-  <div class="container section-title">
-    <div><h2>Explore categories</h2><p>Each category now has multiple calculators and stronger layout.</p></div>
-  </div>
-  <div class="container card-grid">
-    <a class="feature-card" href="investments.html"><div class="icon">💰</div><h3>Investments</h3><p>SIP, lumpsum, CAGR and goal-led planning.</p><div class="cta">Open investment tools →</div></a>
-    <a class="feature-card" href="property.html"><div class="icon">🏠</div><h3>Property</h3><p>EMI, affordability and appreciation calculators.</p><div class="cta">Open property tools →</div></a>
-    <a class="feature-card" href="tax.html"><div class="icon">🧾</div><h3>Tax</h3><p>Income tax, HRA and 80C estimates.</p><div class="cta">Open tax tools →</div></a>
-    <a class="feature-card" href="wealth.html"><div class="icon">📈</div><h3>Wealth</h3><p>Retirement, education and insurance planning.</p><div class="cta">Open wealth tools →</div></a>
-    <a class="feature-card" href="forex.html"><div class="icon">🌍</div><h3>Forex</h3><p>Multi-currency rate calculator with backend margin control.</p><div class="cta">Open forex tools →</div></a>
-    <a class="feature-card" href="market.html"><div class="icon">📊</div><h3>Market</h3><p>Live rates dashboard for forex, gold and silver.</p><div class="cta">Open market page →</div></a>
-    <a class="feature-card" href="travel.html"><div class="icon">✈️</div><h3>Travel</h3><p>Estimate one-person trip budget by country and travel style.</p><div class="cta">Open travel estimator →</div></a>
-  </div>
+<section class="container">
+<div class="grid">
+
+<a href="investments.html" class="card">
+<h3>💰 Investments</h3>
+<p>SIP, CAGR, Lumpsum calculators</p>
+</a>
+
+<a href="property.html" class="card">
+<h3>🏠 Property</h3>
+<p>EMI & affordability tools</p>
+</a>
+
+<a href="tax.html" class="card">
+<h3>🧾 Tax</h3>
+<p>Income tax & deductions</p>
+</a>
+
+<a href="forex.html" class="card">
+<h3>🌍 Forex</h3>
+<p>Currency & exchange tools</p>
+</a>
+
+</div>
 </section>
 
-
-<div id="leadPopup" class="login-overlay hidden" style="z-index:90;">
-  <div class="login-box">
-    <h2>Get Free Expert Help</h2>
-    <p>Enter your details and continue to WhatsApp.</p>
-    <input id="leadName" placeholder="Your Name">
-    <input id="leadMobile" placeholder="Mobile Number" style="margin-top:12px">
-    <input id="leadCategory" type="hidden" value="investment">
-    <div class="actions">
-      <button class="btn" onclick="submitLead()">Continue</button>
-      <button class="btn btn-outline" onclick="closePopup()">Cancel</button>
-    </div>
-  </div>
+<div class="footer">
+© 2026 InvestPercent — Your Financial Universe
 </div>
-<a class="float-cta" href="javascript:void(0)" onclick="openPopup('investment')">💬</a>
-
-  <div class="footer">InvestPercent • Premium platform with calculators, live APIs and admin settings</div>
-  <script type="module" src="js/site.js"></script>
-
-
-<script>
-(function(){
-  async function loadTicker(){
-    try{
-      const r = await fetch("https://open.er-api.com/v6/latest/USD");
-      const d = await r.json();
-      if(d && d.rates){
-        const usdInr = d.rates.INR || 0;
-        document.getElementById("tickUsdInr").textContent = usdInr ? usdInr.toFixed(2) : "-";
-      }
-    }catch(e){}
-    document.getElementById("tickNifty").textContent = "24,850";
-    document.getElementById("tickSensex").textContent = "81,240";
-  }
-  loadTicker();
-})();
-</script>
 
 </body>
 </html>
