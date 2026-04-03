@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Finance Tools | investpercent</title>
+
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/calculator.css">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {background:#0f172a;color:#fff;font-family:Inter, sans-serif;}
+.container{max-width:1200px;margin:auto;padding:20px;}
+.card{background:#1e293b;padding:20px;border-radius:14px;margin-bottom:20px;}
+input,select{width:100%;padding:10px;border-radius:8px;border:none;margin:6px 0;background:#0f172a;color:#fff;}
+h2{margin-bottom:10px;}
+.gold{color:#ffd700;font-size:28px;font-weight:700;}
+.btn{background:#22c55e;padding:10px 14px;border:none;border-radius:8px;color:#fff;cursor:pointer;}
+.sidebar{position:sticky;top:20px;}
+.progress{height:8px;background:#334155;border-radius:6px;margin-bottom:20px;}
+.progress-bar{height:8px;background:#22c55e;width:0%;border-radius:6px;}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💰 Personal Finance Tools</h1>
+<p>Understand your money. Control your future.</p>
+
+<!-- PARTNER BANNER -->
+<div class="card" style="border-left:4px solid #ffd700;background:linear-gradient(135deg,#ffd70022,#ff6b3522);">
+💰 Your salary, your budget, your wealth — plan it all at absolutemoney.in →
+</div>
+
+<!-- ================= SALARY CALCULATOR ================= -->
+<div class="card" id="salary">
+<h2>In-Hand Salary Calculator</h2>
+
+<label>Annual CTC ₹</label>
+<input type="number" id="ctc" value="1000000">
+
+<label>Basic %</label>
+<input type="range" id="basicPercent" min="30" max="60" value="40">
+
+<label>HRA % of Basic</label>
+<input type="range" id="hraPercent" min="40" max="50" value="50">
+
+<label>State</label>
+<select id="state">
+<option value="200">Maharashtra</option>
+<option value="200">Karnataka</option>
+<option value="200">West Bengal</option>
+<option value="208">Tamil Nadu</option>
+<option value="0">Other</option>
+</select>
+
+<label>Health Insurance ₹/month</label>
+<input type="number" id="insurance" value="0">
+
+<button class="btn" onclick="calcSalary()">Calculate</button>
+
+<div id="salaryResult"></div>
+<canvas id="salaryChart"></canvas>
+</div>
+
+<!-- ================= NET WORTH ================= -->
+<div class="card" id="net-worth">
+<h2>Net Worth Calculator</h2>
+
+<label>Cash ₹</label>
+<input type="number" id="cash">
+
+<label>Investments ₹</label>
+<input type="number" id="investments">
+
+<label>Property ₹</label>
+<input type="number" id="property">
+
+<label>Loans ₹</label>
+<input type="number" id="loans">
+
+<button class="btn" onclick="calcNetWorth()">Calculate</button>
+
+<div id="nwResult"></div>
+<canvas id="nwChart"></canvas>
+</div>
+
+<!-- ================= BUDGET ================= -->
+<div class="card" id="budget">
+<h2>Budget Planner</h2>
+
+<label>Monthly Income ₹</label>
+<input type="number" id="income">
+
+<label>Needs ₹</label>
+<input type="number" id="needs">
+
+<label>Wants ₹</label>
+<input type="number" id="wants">
+
+<label>Savings ₹</label>
+<input type="number" id="savings">
+
+<button class="btn" onclick="calcBudget()">Analyze</button>
+
+<div id="budgetResult"></div>
+<canvas id="budgetChart"></canvas>
+</div>
+
+<!-- ================= FINANCIAL HEALTH ================= -->
+<div class="card" id="financial-health">
+<h2>Financial Health Score</h2>
+
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<div id="quiz"></div>
+
+<button class="btn" onclick="nextQ()">Next</button>
+
+<div id="scoreResult"></div>
+<canvas id="radarChart"></canvas>
+
+</div>
+
+</div>
+
+<script>
+
+/* ================= SALARY ================= */
+function calcSalary(){
+let ctc = +document.getElementById('ctc').value;
+let basicP = +document.getElementById('basicPercent').value/100;
+let hraP = +document.getElementById('hraPercent').value/100;
+
+let basic = ctc*basicP/12;
+let hra = basic*hraP;
+let pf = basic*0.12;
+let tax = ctc*0.1/12;
+
+let net = basic + hra - pf - tax;
+
+document.getElementById('salaryResult').innerHTML =
+`<p>Basic: ₹${basic.toFixed()}</p>
+<p>HRA: ₹${hra.toFixed()}</p>
+<p>PF: ₹${pf.toFixed()}</p>
+<p class="gold">Take Home: ₹${net.toFixed()}</p>`;
+
+new Chart(document.getElementById('salaryChart'),{
+type:'doughnut',
+data:{labels:['Basic','HRA'],datasets:[{data:[basic,hra]}]}
+});
+}
+
+/* ================= NET WORTH ================= */
+function calcNetWorth(){
+let assets = (+cash.value)+(+investments.value)+(+property.value);
+let liabilities = (+loans.value);
+let nw = assets - liabilities;
+
+document.getElementById('nwResult').innerHTML =
+`<p>Total Assets: ₹${assets}</p>
+<p>Total Liabilities: ₹${liabilities}</p>
+<p class="gold">Net Worth: ₹${nw}</p>`;
+
+new Chart(document.getElementById('nwChart'),{
+type:'bar',
+data:{labels:['Assets','Liabilities'],datasets:[{data:[assets,liabilities]}]}
+});
+}
+
+/* ================= BUDGET ================= */
+function calcBudget(){
+let i = +income.value;
+let n = +needs.value;
+let w = +wants.value;
+let s = +savings.value;
+
+let score = 100 - Math.abs(n - i*0.5);
+
+document.getElementById('budgetResult').innerHTML =
+`<p>Score: ${score.toFixed()}</p>`;
+
+new Chart(document.getElementById('budgetChart'),{
+type:'doughnut',
+data:{labels:['Needs','Wants','Savings'],datasets:[{data:[n,w,s]}]}
+});
+}
+
+/* ================= QUIZ ================= */
+let questions=[
+["Emergency fund?",[0,5,15,25]],
+["Savings rate?",[0,5,15,20,25]],
+["Debt?",[0,5,10,15,20]]
+];
+
+let q=0,score=0;
+
+function showQ(){
+document.getElementById('quiz').innerHTML =
+`<p>${questions[q][0]}</p>
+<input type="number" id="ans">`;
+document.getElementById('progressBar').style.width=(q/10*100)+"%";
+}
+showQ();
+
+function nextQ(){
+let val = +document.getElementById('ans').value;
+score += val;
+q++;
+if(q<questions.length){showQ();}
+else{
+let finalScore = (score/175)*100;
+document.getElementById('scoreResult').innerHTML =
+`<h3 class="gold">Score: ${finalScore.toFixed()}</h3>`;
+
+new Chart(document.getElementById('radarChart'),{
+type:'radar',
+data:{labels:['Emergency','Savings','Debt'],
+datasets:[{data:[50,60,70]}]}
+});
+}
+}
+
+</script>
+
+</body>
+</html>
