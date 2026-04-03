@@ -1,141 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Investments</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-
 <style>
-body{
-margin:0;
-font-family:Inter;
-background:#041424;
-color:#fff;
-}
-
+body{background:#041424;color:#fff;font-family:Inter}
 .container{max-width:1100px;margin:auto;padding:20px}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:20px;
-}
-
-.card{
-background:#0b2d4d;
-padding:20px;
-border-radius:20px;
-}
-
-input{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:none;
-margin-top:8px;
-background:#061427;
-color:white;
-}
-
-button{
-margin-top:15px;
-padding:12px;
-width:100%;
-border:none;
-border-radius:10px;
-background:#32c7ff;
-font-weight:700;
-cursor:pointer;
-}
-
-.result{
-margin-top:15px;
-font-size:20px;
-font-weight:700;
-}
+.card{background:#0b2d4d;padding:20px;border-radius:20px;margin-top:20px}
+input{width:100%;padding:10px;margin-top:10px;border-radius:10px;border:none}
+button{margin-top:10px;padding:10px;width:100%;background:#32c7ff;border:none}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-<h1>Investment Calculators</h1>
+<h1>SIP Calculator</h1>
 
-<div class="grid">
-
-<!-- SIP -->
 <div class="card">
-<h3>SIP Calculator</h3>
-
-<input id="sipAmount" placeholder="Monthly Investment">
-<input id="sipRate" placeholder="Return %">
-<input id="sipYears" placeholder="Years">
-
-<button onclick="calcSIP()">Calculate</button>
-
-<div id="sipResult" class="result"></div>
-</div>
-
-<!-- Lumpsum -->
-<div class="card">
-<h3>Lumpsum</h3>
-
-<input id="lumpAmount" placeholder="Investment">
-<input id="lumpRate" placeholder="Return %">
-<input id="lumpYears" placeholder="Years">
-
-<button onclick="calcLump()">Calculate</button>
-
-<div id="lumpResult" class="result"></div>
-</div>
-
-<!-- CAGR -->
-<div class="card">
-<h3>CAGR</h3>
-
-<input id="start" placeholder="Start value">
-<input id="end" placeholder="End value">
+<input id="amount" placeholder="Monthly Investment">
+<input id="rate" placeholder="Return %">
 <input id="years" placeholder="Years">
 
-<button onclick="calcCAGR()">Calculate</button>
+<button onclick="calc()">Calculate</button>
 
-<div id="cagrResult" class="result"></div>
+<canvas id="chart"></canvas>
+<div id="result"></div>
 </div>
 
-</div>
 </div>
 
 <script>
-function calcSIP(){
-let P = +document.getElementById("sipAmount").value;
-let r = +document.getElementById("sipRate").value/100/12;
-let n = +document.getElementById("sipYears").value*12;
+function calc(){
+let P = +amount.value;
+let r = +rate.value/100/12;
+let n = +years.value*12;
 
-let M = P * ((Math.pow(1+r,n)-1)/r)*(1+r);
+let M = P*((Math.pow(1+r,n)-1)/r)*(1+r);
 
-document.getElementById("sipResult").innerText = "₹ " + Math.round(M);
+result.innerHTML="Future Value: ₹"+Math.round(M);
+
+let data=[];
+let labels=[];
+
+for(let i=1;i<=n;i++){
+let val=P*((Math.pow(1+r,i)-1)/r)*(1+r);
+data.push(val);
+labels.push(i);
 }
 
-function calcLump(){
-let P = +document.getElementById("lumpAmount").value;
-let r = +document.getElementById("lumpRate").value/100;
-let t = +document.getElementById("lumpYears").value;
-
-let A = P * Math.pow((1+r),t);
-
-document.getElementById("lumpResult").innerText = "₹ " + Math.round(A);
-}
-
-function calcCAGR(){
-let start = +document.getElementById("start").value;
-let end = +document.getElementById("end").value;
-let years = +document.getElementById("years").value;
-
-let cagr = Math.pow(end/start,1/years)-1;
-
-document.getElementById("cagrResult").innerText = (cagr*100).toFixed(2)+"%";
+new Chart(document.getElementById("chart"),{
+type:'line',
+data:{labels:labels,datasets:[{data:data}]}
+});
 }
 </script>
 
