@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Savings & FD Calculators | InvestPercent</title>
+
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/calculator.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+<style>
+.sidebar {
+  position: sticky;
+  top: 100px;
+}
+.anchor-link {
+  display:block;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:8px;
+  cursor:pointer;
+}
+.anchor-link:hover { background:#1e293b; }
+.highlight { color:#00e676; font-weight:600; }
+.badge { padding:4px 8px; border-radius:6px; font-size:12px; }
+.green { background:#00e67622; color:#00e676; }
+.cyan { background:#00d4ff22; color:#00d4ff; }
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <p>🏦 Home > Savings & FD Tools</p>
+  <h1>Savings & Fixed Deposit Calculators</h1>
+  <p>Safe, guaranteed returns — calculate exactly what you will earn.</p>
+</section>
+
+<!-- TOP BANNER -->
+<div class="card" style="border-left:4px solid #00e676; background:linear-gradient(135deg,#00e67622,#00d4ff22)">
+📈 Safe savings are just the start. Explore higher-yield options — 
+<b>justinvesting.in →</b>
+</div>
+
+<div class="container grid grid-3">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="card">
+    <h3>Quick Navigation</h3>
+    <a class="anchor-link" href="#fd">FD Calculator</a>
+    <a class="anchor-link" href="#rd">RD Calculator</a>
+    <a class="anchor-link" href="#ssy">SSY Calculator</a>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="grid grid-2" style="grid-column: span 2;">
+
+<!-- ================= FD ================= -->
+<div id="fd" class="card">
+<h2>FD Calculator</h2>
+
+<label>Principal ₹</label>
+<input type="range" id="fd_p" min="1000" max="50000000" value="100000">
+<input type="number" id="fd_p_val" value="100000">
+
+<label>Interest %</label>
+<input type="range" id="fd_r" min="3" max="10" step="0.05" value="7">
+<input type="number" id="fd_r_val" value="7">
+
+<label>Years</label>
+<input type="number" id="fd_y" value="1">
+
+<label>Months</label>
+<input type="number" id="fd_m" value="0">
+
+<p id="fd_total_months"></p>
+
+<label>Compounding</label>
+<select id="fd_c">
+<option value="simple">Simple</option>
+<option value="monthly">Monthly</option>
+<option value="quarterly">Quarterly</option>
+<option value="half">Half-Yearly</option>
+<option value="annual">Annual</option>
+</select>
+
+<label>Senior Citizen</label>
+<input type="checkbox" id="fd_senior">
+
+<label>Tax?</label>
+<input type="checkbox" id="fd_tax">
+
+<select id="fd_tax_rate">
+<option value="0">0%</option>
+<option value="5">5%</option>
+<option value="20">20%</option>
+<option value="30">30%</option>
+</select>
+
+<button onclick="calcFD()">Calculate</button>
+
+<h3 id="fd_result"></h3>
+<canvas id="fd_chart"></canvas>
+</div>
+
+<!-- ================= RD ================= -->
+<div id="rd" class="card">
+<h2>RD Calculator</h2>
+
+<label>Monthly ₹</label>
+<input type="range" id="rd_m" min="100" max="500000" value="5000">
+
+<label>Interest %</label>
+<input type="range" id="rd_r" min="4" max="9" value="6.5">
+
+<label>Months</label>
+<input type="range" id="rd_t" min="6" max="120" value="24">
+
+<button onclick="calcRD()">Calculate</button>
+
+<h3 id="rd_result"></h3>
+<canvas id="rd_chart"></canvas>
+</div>
+
+<!-- ================= SSY ================= -->
+<div id="ssy" class="card">
+<h2>Sukanya Samriddhi Yojana</h2>
+
+<label>Girl Age</label>
+<input type="range" id="ssy_age" min="0" max="10" value="3">
+
+<label>Annual Deposit</label>
+<input type="range" id="ssy_amt" min="250" max="150000" value="50000">
+
+<button onclick="calcSSY()">Calculate</button>
+
+<h3 id="ssy_result"></h3>
+<canvas id="ssy_chart"></canvas>
+</div>
+
+</div>
+</div>
+
+<!-- RELATED -->
+<div class="container">
+<h3>Related</h3>
+<a href="investment.html">Investment Calculators</a> |
+<a href="retirement.html">Retirement Planning</a> |
+<a href="tax.html">Tax Calculators</a>
+</div>
+
+<!-- FOOTER -->
+<div id="footer"></div>
+
+<script src="../js/global.js"></script>
+
+<script>
+
+// ================= FD =================
+function calcFD(){
+let P = +fd_p.value;
+let r = +fd_r.value;
+let y = +fd_y.value;
+let m = +fd_m.value;
+let months = y*12 + m;
+
+if(fd_senior.checked) r+=0.5;
+
+let A;
+
+switch(fd_c.value){
+case "simple":
+A = P*(1 + r*y/100);
+break;
+case "monthly":
+A = P*Math.pow(1+r/1200,months);
+break;
+case "quarterly":
+A = P*Math.pow(1+r/400,months/3);
+break;
+case "half":
+A = P*Math.pow(1+r/200,months/6);
+break;
+case "annual":
+A = P*Math.pow(1+r/100,months/12);
+break;
+}
+
+let interest = A-P;
+
+let taxRate = fd_tax.checked ? +fd_tax_rate.value : 0;
+let postInterest = interest*(1-taxRate/100);
+let postA = P + postInterest;
+
+fd_result.innerHTML =
+`Maturity ₹${A.toFixed(0)} | Interest ₹${interest.toFixed(0)} | Post-tax ₹${postA.toFixed(0)}`;
+
+}
+
+// ================= RD =================
+function calcRD(){
+let R = +rd_m.value;
+let r = +rd_r.value/1200;
+let n = +rd_t.value;
+
+let corpus=0;
+
+for(let i=0;i<n;i++){
+corpus=(corpus+R)*(1+r);
+}
+
+let invested = R*n;
+
+rd_result.innerHTML =
+`Maturity ₹${corpus.toFixed(0)} | Gain ₹${(corpus-invested).toFixed(0)}`;
+}
+
+// ================= SSY =================
+function calcSSY(){
+
+let age = +ssy_age.value;
+let amt = +ssy_amt.value;
+let r = 0.082;
+
+let corpus=0;
+let data=[];
+
+for(let i=age;i<=21;i++){
+
+if(i < age+15){
+corpus = (corpus+amt)*(1+r);
+}else{
+corpus = corpus*(1+r);
+}
+
+data.push(corpus);
+}
+
+ssy_result.innerHTML =
+`Maturity ₹${corpus.toFixed(0)} (Tax Free)`;
+
+new Chart(ssy_chart,{
+type:'line',
+data:{labels:data.map((_,i)=>i), datasets:[{data:data}]}
+});
+}
+
+</script>
+
+</body>
+</html>
