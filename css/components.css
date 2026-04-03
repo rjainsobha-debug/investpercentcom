@@ -1,31 +1,5 @@
-.calc-card {
-  border-radius: 24px;
-  background: rgba(17,24,39,0.95);
-  border: 1px solid rgba(255,255,255,0.08);
-  padding: 20px;
-  margin-bottom: 24px;
-}
+/* ================= NAVBAR ================= */
 
-.calc-header h2 {
-  margin-bottom: 10px;
-}
-
-.calc-body input {
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.03);
-  color: white;
-}
-
-.calc-body label {
-  font-size: 13px;
-  margin-bottom: 4px;
-  display: block;
-  color: #93a4bd;
-}
 .site-header {
   position: sticky;
   top: 0;
@@ -44,6 +18,27 @@
   align-items: center;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  font-size: 20px;
+}
+
+.brand-title {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.brand-sub {
+  color: #93a4bd;
+  font-size: 12px;
+}
+
 .top-nav {
   display: flex;
   gap: 10px;
@@ -55,26 +50,95 @@
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.07);
   background: rgba(255,255,255,0.03);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
 }
+
+.top-nav a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.top-nav a.active {
+  background: linear-gradient(135deg,#00d09c,#38bdf8);
+  color: black;
+}
+
+/* ================= DROPDOWN ================= */
 
 .dropdown {
   position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown span {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+  color: #ffffff;
 }
 
 .dropdown-menu {
   position: absolute;
   top: 120%;
   left: 0;
-  display: none;
   background: #0d1728;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
   padding: 10px;
+  display: none;
+  min-width: 180px;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 8px 10px;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.dropdown-menu a:hover {
+  background: rgba(255,255,255,0.08);
 }
 
 .dropdown:hover .dropdown-menu {
   display: block;
 }
+
+/* ================= CALCULATOR UI ================= */
+
+.calc-card {
+  border-radius: 24px;
+  background: rgba(17,24,39,0.95);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.calc-header h2 {
+  margin-bottom: 10px;
+}
+
+.calc-body label {
+  font-size: 13px;
+  margin-bottom: 4px;
+  display: block;
+  color: #93a4bd;
+}
+
+.calc-body input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: white;
+}
+
 .calc-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -94,6 +158,8 @@
   margin-bottom: 12px;
 }
 
+/* ================= BUTTONS ================= */
+
 .btn {
   padding: 12px 18px;
   border-radius: 12px;
@@ -107,6 +173,8 @@
   font-weight: bold;
 }
 
+/* ================= SIDEBAR ================= */
+
 .sidebar {
   padding-top: 10px;
 }
@@ -117,6 +185,8 @@
   color: #00d09c;
   text-decoration: none;
 }
+
+/* ================= PROGRESS ================= */
 
 .progress-bar {
   height: 12px;
@@ -132,42 +202,14 @@
   background: linear-gradient(135deg,#00d09c,#38bdf8);
 }
 
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 900px){
   .calc-grid {
     grid-template-columns: 1fr;
   }
-}
-.dropdown {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-}
 
-.dropdown span {
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 120%;
-  left: 0;
-  background: #0d1728;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px;
-  display: none;
-  min-width: 180px;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 8px 10px;
-  color: white;
-  text-decoration: none;
-}
-
-.dropdown:hover .dropdown-menu {
-  display: block;
+  .top-nav {
+    flex-wrap: wrap;
+  }
 }
