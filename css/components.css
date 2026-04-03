@@ -137,3 +137,15 @@
     grid-template-columns: 1fr;
   }
 }
+.side-card {
+  background: rgba(255,255,255,0.04);
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.side-card a {
+  display: block;
+  margin: 8px 0;
+  color: #00d09c;
+  text-decoration: none;
+}
