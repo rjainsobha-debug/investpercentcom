@@ -1,111 +1,142 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Investments - InvestPercent</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investments</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:Inter;
+background:#041424;
+color:#fff;
+}
+
+.container{max-width:1100px;margin:auto;padding:20px}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.card{
+background:#0b2d4d;
+padding:20px;
+border-radius:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+border-radius:10px;
+border:none;
+margin-top:8px;
+background:#061427;
+color:white;
+}
+
+button{
+margin-top:15px;
+padding:12px;
+width:100%;
+border:none;
+border-radius:10px;
+background:#32c7ff;
+font-weight:700;
+cursor:pointer;
+}
+
+.result{
+margin-top:15px;
+font-size:20px;
+font-weight:700;
+}
+</style>
 </head>
+
 <body>
 
-<div class="top-ticker">
-  <div class="ticker-row">
-    <div class="ticker-chip">NIFTY 50 <b id="tickNifty">Loading...</b></div>
-    <div class="ticker-chip">SENSEX <b id="tickSensex">Loading...</b></div>
-    <div class="ticker-chip">USD/INR <b id="tickUsdInr">Loading...</b></div>
-    <div class="ticker-chip">GOLD/10g <b id="tickGold10g">Loading...</b></div>
-    <div class="ticker-chip">SILVER/kg <b id="tickSilverKg">Loading...</b></div>
-  </div>
-</div>
-<div class="navbar">
-  <div class="container nav-inner">
-    <a href="index.html" class="brand">
-      <span class="brand-badge">IP</span>
-      <span>InvestPercent</span>
-    </a>
-    <div class="nav-links">
-      <a class="" href="index.html">Home</a>
-      <a class="active" href="investments.html">Investments</a>
-      <a class="" href="property.html">Property</a>
-      <a class="" href="tax.html">Tax</a>
-      <a class="" href="wealth.html">Wealth</a>
-      <a class="" href="forex.html">Forex</a>
-    </div>
-  </div>
+<div class="container">
+<h1>Investment Calculators</h1>
+
+<div class="grid">
+
+<!-- SIP -->
+<div class="card">
+<h3>SIP Calculator</h3>
+
+<input id="sipAmount" placeholder="Monthly Investment">
+<input id="sipRate" placeholder="Return %">
+<input id="sipYears" placeholder="Years">
+
+<button onclick="calcSIP()">Calculate</button>
+
+<div id="sipResult" class="result"></div>
 </div>
 
+<!-- Lumpsum -->
+<div class="card">
+<h3>Lumpsum</h3>
 
-<section class="page-hero container">
-  <span class="kicker">Investments</span>
-  <h1>Investment calculators</h1>
-  <p>Use multiple calculators to plan SIP growth, lumpsum returns, and CAGR in one place.</p>
-</section>
+<input id="lumpAmount" placeholder="Investment">
+<input id="lumpRate" placeholder="Return %">
+<input id="lumpYears" placeholder="Years">
 
-<section class="container three-col">
-  <div class="panel">
-    <h2>SIP Calculator</h2>
-    <label>Monthly Investment</label><input id="sipMonthly" placeholder="10000" type="number">
-    <label style="margin-top:12px">Expected Return (%)</label><input id="sipRate" placeholder="12" type="number">
-    <label style="margin-top:12px">Years</label><input id="sipYears" placeholder="15" type="number">
-    <div class="actions"><button class="btn" onclick="calculateSIP()">Calculate SIP</button><button class="btn btn-outline" onclick="openPopup('investment')">Talk to advisor</button></div>
-    <div id="sipOutWrap" class="result hidden"><div class="title">Projected value</div><div id="sipOut" class="big">₹ 0</div></div>
-  </div>
+<button onclick="calcLump()">Calculate</button>
 
-  <div class="panel">
-    <h2>Lumpsum Calculator</h2>
-    <label>Investment Amount</label><input id="lumpAmount" placeholder="500000" type="number">
-    <label style="margin-top:12px">Expected Return (%)</label><input id="lumpRate" placeholder="12" type="number">
-    <label style="margin-top:12px">Years</label><input id="lumpYears" placeholder="10" type="number">
-    <div class="actions"><button class="btn" onclick="calculateLumpsum()">Calculate Lumpsum</button></div>
-    <div id="lumpOutWrap" class="result hidden"><div class="title">Projected value</div><div id="lumpOut" class="big">₹ 0</div></div>
-  </div>
-
-  <div class="panel">
-    <h2>CAGR Calculator</h2>
-    <label>Start Value</label><input id="cagrStart" placeholder="100000" type="number">
-    <label style="margin-top:12px">End Value</label><input id="cagrEnd" placeholder="180000" type="number">
-    <label style="margin-top:12px">Years</label><input id="cagrYears" placeholder="3" type="number">
-    <div class="actions"><button class="btn" onclick="calculateCAGR()">Calculate CAGR</button></div>
-    <div id="cagrOutWrap" class="result hidden"><div class="title">Annualized return</div><div id="cagrOut" class="big">0%</div></div>
-  </div>
-</section>
-
-
-<div id="leadPopup" class="login-overlay hidden" style="z-index:90;">
-  <div class="login-box">
-    <h2>Get Free Expert Help</h2>
-    <p>Enter your details and continue to WhatsApp.</p>
-    <input id="leadName" placeholder="Your Name">
-    <input id="leadMobile" placeholder="Mobile Number" style="margin-top:12px">
-    <input id="leadCategory" type="hidden" value="investment">
-    <div class="actions">
-      <button class="btn" onclick="submitLead()">Continue</button>
-      <button class="btn btn-outline" onclick="closePopup()">Cancel</button>
-    </div>
-  </div>
+<div id="lumpResult" class="result"></div>
 </div>
-<a class="float-cta" href="javascript:void(0)" onclick="openPopup('investment')">💬</a>
 
-  <div class="footer">InvestPercent • Premium platform with calculators, live APIs and admin settings</div>
-  <script type="module" src="js/site.js"></script>
+<!-- CAGR -->
+<div class="card">
+<h3>CAGR</h3>
 
+<input id="start" placeholder="Start value">
+<input id="end" placeholder="End value">
+<input id="years" placeholder="Years">
+
+<button onclick="calcCAGR()">Calculate</button>
+
+<div id="cagrResult" class="result"></div>
+</div>
+
+</div>
+</div>
 
 <script>
-(function(){
-  async function loadTicker(){
-    try{
-      const r = await fetch("https://open.er-api.com/v6/latest/USD");
-      const d = await r.json();
-      if(d && d.rates){
-        const usdInr = d.rates.INR || 0;
-        document.getElementById("tickUsdInr").textContent = usdInr ? usdInr.toFixed(2) : "-";
-      }
-    }catch(e){}
-    document.getElementById("tickNifty").textContent = "24,850";
-    document.getElementById("tickSensex").textContent = "81,240";
-  }
-  loadTicker();
-})();
+function calcSIP(){
+let P = +document.getElementById("sipAmount").value;
+let r = +document.getElementById("sipRate").value/100/12;
+let n = +document.getElementById("sipYears").value*12;
+
+let M = P * ((Math.pow(1+r,n)-1)/r)*(1+r);
+
+document.getElementById("sipResult").innerText = "₹ " + Math.round(M);
+}
+
+function calcLump(){
+let P = +document.getElementById("lumpAmount").value;
+let r = +document.getElementById("lumpRate").value/100;
+let t = +document.getElementById("lumpYears").value;
+
+let A = P * Math.pow((1+r),t);
+
+document.getElementById("lumpResult").innerText = "₹ " + Math.round(A);
+}
+
+function calcCAGR(){
+let start = +document.getElementById("start").value;
+let end = +document.getElementById("end").value;
+let years = +document.getElementById("years").value;
+
+let cagr = Math.pow(end/start,1/years)-1;
+
+document.getElementById("cagrResult").innerText = (cagr*100).toFixed(2)+"%";
+}
 </script>
 
 </body>
