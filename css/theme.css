@@ -1,13 +1,13 @@
 :root {
-  --bg: #050c18;
-  --card: rgba(255,255,255,0.04);
-  --glass: rgba(255,255,255,0.06);
+  --bg: #0b1220;
+  --card: #111827;
+  --card-2: #1f2937;
 
   --text: #ffffff;
-  --muted: #9fb3d9;
+  --muted: #9ca3af;
 
-  --accent: #00f5a0;
-  --accent2: #00d9ff;
+  --accent: #22c55e;
+  --accent2: #38bdf8;
 
   --border: rgba(255,255,255,0.08);
 
@@ -17,6 +17,6 @@
 body {
   margin: 0;
   font-family: system-ui;
-  background: radial-gradient(circle at top,#0b1f3a,#050c18);
+  background: #0b1220;
   color: var(--text);
 }
