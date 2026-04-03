@@ -1,329 +1,859 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>investpercent.com — Your Complete Financial Universe</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvestPercent — Unified Financial Platform</title>
+  <meta name="description" content="InvestPercent is your complete financial universe with premium dashboards for investment, loans, tax, savings, retirement, personal finance, global finance, stocks, crypto, business, insurance, play, learning hub and digital tools." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#060915;
+      --bg2:#0b1224;
+      --panel:#0f1830;
+      --panel2:#121e3c;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.14);
+      --text:#f7fbff;
+      --muted:#9da9c6;
+      --soft:#7e8aa9;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --orange:#ff9951;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
+      --hero:
+        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
+        linear-gradient(180deg,#070c18 0%,#091224 100%);
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
 
-<style>
-:root{
---bg:#0a0e1a;
---card:#0f1628;
---accent:#00d4ff;
---accent2:#7b61ff;
---text:#fff;
---muted:#9aa4c7;
-}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
+      z-index:0;
+    }
 
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:'Inter',sans-serif;
-background:var(--bg);
-color:var(--text);
-overflow-x:hidden;
-}
+    a{text-decoration:none;color:inherit}
+    button{font:inherit}
 
-/* NAVBAR */
-nav{
-position:fixed;
-top:0;
-width:100%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px 40px;
-background:rgba(10,14,26,0.7);
-backdrop-filter:blur(12px);
-z-index:1000;
-}
+    .page{position:relative;z-index:1;max-width:1460px;margin:0 auto;padding:18px 18px 42px}
 
-.logo{
-font-family:'Poppins';
-font-size:22px;
-font-weight:700;
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
+    .nav{
+      position:sticky;top:0;z-index:30;
+      display:flex;justify-content:space-between;align-items:center;gap:18px;
+      padding:16px 20px;margin-bottom:18px;
+      border:1px solid var(--line);border-radius:22px;
+      background:rgba(6,10,24,.72);backdrop-filter:blur(18px);
+      box-shadow:var(--shadow2);
+    }
 
-.nav-links{
-display:flex;
-gap:25px;
-}
+    .brand{display:flex;align-items:center;gap:14px;cursor:pointer}
+    .brand-mark{
+      width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+      background:var(--grad);color:#07101e;font-weight:800;box-shadow:0 10px 24px rgba(79,163,255,.22)
+    }
+    .brand-name{font-family:Poppins,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.03em}
+    .brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
-.nav-links a{
-color:var(--muted);
-text-decoration:none;
-font-size:14px;
-transition:.3s;
-}
+    .nav-links{
+      display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;
+      max-width:1040px;
+    }
+    .nav-links a{
+      padding:11px 13px;border-radius:12px;color:var(--muted);font-weight:700;
+      transition:.2s ease;border:1px solid transparent;font-size:14px;
+    }
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.04);border-color:var(--line)}
+    .nav-links a.active{color:#08111f;background:var(--grad)}
 
-.nav-links a:hover{
-color:var(--accent);
-}
+    .hero{
+      background:var(--hero);
+      border:1px solid var(--line);
+      border-radius:34px;
+      padding:34px 28px 26px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      margin-bottom:18px;
+    }
 
-/* HERO */
-.hero{
-height:90vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding-top:80px;
-background:linear-gradient(120deg,#0a0e1a,#1a0533,#0a1628);
-background-size:300% 300%;
-animation:bgMove 10s infinite alternate;
-}
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto -110px -110px auto;
+      width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);
+      pointer-events:none;
+    }
 
-@keyframes bgMove{
-0%{background-position:0% 50%}
-100%{background-position:100% 50%}
-}
+    .hero-top{
+      display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;
+      margin-bottom:22px;
+    }
 
-.hero h1{
-font-size:48px;
-font-family:'Poppins';
-margin-bottom:20px;
-}
+    .hero h1{
+      margin:0;
+      font-family:Poppins,sans-serif;
+      font-size:clamp(38px,6vw,78px);
+      line-height:1.02;
+      letter-spacing:-.055em;
+      text-align:center;
+      max-width:1080px;
+      margin-inline:auto;
+    }
 
-.hero p{
-color:var(--muted);
-margin-bottom:30px;
-}
+    .hero h1 .grad{
+      background:var(--grad);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
 
-.hero-buttons{
-display:flex;
-gap:15px;
-}
+    .hero-copy{
+      width:100%;
+      text-align:center;
+    }
 
-.btn{
-padding:14px 28px;
-border-radius:12px;
-border:none;
-cursor:pointer;
-font-weight:600;
-}
+    .hero-copy p{
+      margin:16px auto 0;
+      color:var(--muted);
+      font-size:20px;
+      line-height:1.55;
+      max-width:930px;
+    }
 
-.btn-primary{
-background:linear-gradient(90deg,#00d4ff,#7b61ff);
-color:#000;
-}
+    .hero-actions{
+      display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px;
+    }
 
-.btn-secondary{
-border:1px solid var(--accent);
-color:var(--accent);
-background:transparent;
-}
+    .btn{
+      border:none;cursor:pointer;border-radius:16px;padding:15px 22px;font-weight:800;transition:.2s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
 
-/* GRID */
-.section{
-padding:80px 40px;
-}
+    .trust-strip{
+      display:flex;justify-content:center;gap:18px;flex-wrap:wrap;
+      color:var(--muted);font-weight:600;margin-top:26px;font-size:16px;
+    }
 
-.section h2{
-font-family:'Poppins';
-margin-bottom:30px;
-}
+    .kpis{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-top:26px;
+    }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-}
+    .kpi-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      min-height:110px;
+      position:relative;
+      overflow:hidden;
+    }
 
-.card{
-background:rgba(255,255,255,0.04);
-padding:25px;
-border-radius:16px;
-transition:.3s;
-cursor:pointer;
-border:1px solid rgba(255,255,255,0.05);
-}
+    .kpi-card::before{
+      content:"";
+      position:absolute;top:-20%;right:-10%;width:170px;height:170px;
+      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);
+    }
 
-.card:hover{
-transform:translateY(-5px);
-border-color:var(--accent);
-}
+    .kpi-label{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      margin-bottom:10px;
+    }
 
-.card i{
-font-size:20px;
-margin-bottom:10px;
-color:var(--accent);
-}
+    .kpi-value{
+      font-size:clamp(26px,3vw,42px);
+      font-weight:800;
+      letter-spacing:-.04em;
+      line-height:1;
+    }
 
-/* ECOSYSTEM */
-.ecosystem{
-background:linear-gradient(135deg,#0f1628,#141d35);
-padding:60px 40px;
-text-align:center;
-}
+    .kpi-value.cyan{color:var(--cyan)}
+    .kpi-value.green{color:var(--green)}
+    .kpi-value.gold{color:var(--gold)}
+    .kpi-value.orange{color:var(--orange)}
 
-.eco-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-margin-top:30px;
-}
+    .kpi-sub{
+      margin-top:8px;
+      color:var(--soft);
+      font-size:14px;
+    }
 
-.eco-card{
-padding:25px;
-border-radius:14px;
-background:rgba(255,255,255,0.04);
-cursor:pointer;
-transition:.3s;
-}
+    .section{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:18px;
+    }
 
-.eco-card:hover{
-transform:scale(1.05);
-background:rgba(255,255,255,0.08);
-}
+    .section-head{
+      display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;
+      margin-bottom:18px;
+    }
 
-/* FOOTER */
-footer{
-padding:40px;
-text-align:center;
-color:var(--muted);
-border-top:1px solid rgba(255,255,255,0.05);
-}
+    .section-title{
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:-.04em;
+      margin:0;
+      font-family:Poppins,sans-serif;
+    }
 
-@media(max-width:768px){
-.hero h1{font-size:32px}
-nav{padding:15px}
-.nav-links{display:none}
-}
-</style>
+    .section-sub{
+      color:var(--muted);
+      margin-top:8px;
+      font-size:15px;
+      line-height:1.6;
+      max-width:780px;
+    }
+
+    .section-link{
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      color:var(--text);
+      background:rgba(255,255,255,.04);
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .card-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:14px;
+    }
+
+    .tool-card{
+      display:block;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      min-height:170px;
+      transition:.22s ease;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .tool-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -60px -60px auto;
+      width:150px;height:150px;border-radius:50%;
+      background:radial-gradient(circle, rgba(79,163,255,.14), transparent 60%);
+      opacity:.7;
+    }
+
+    .tool-card:hover{
+      transform:translateY(-4px);
+      border-color:var(--line2);
+      box-shadow:0 18px 40px rgba(0,0,0,.26);
+    }
+
+    .tool-icon{
+      width:48px;height:48px;border-radius:16px;
+      display:grid;place-items:center;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      font-size:24px;
+      margin-bottom:18px;
+    }
+
+    .tool-card h3{
+      margin:0 0 8px;
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.04em;
+      font-family:Poppins,sans-serif;
+    }
+
+    .tool-card p{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:15px;
+    }
+
+    .tool-meta{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      color:#dce5ff;font-size:13px;font-weight:700;
+    }
+
+    .tool-arrow{
+      color:var(--cyan);
+      font-size:18px;
+      font-weight:800;
+    }
+
+    .core-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+
+    .core-card{
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      padding:18px;
+      min-height:230px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .core-card::before{
+      content:"";
+      position:absolute;
+      inset:auto -70px -70px auto;
+      width:180px;height:180px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.16), transparent 62%);
+    }
+
+    .core-tag{
+      display:inline-flex;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
+    .core-card h3{
+      margin:14px 0 8px;
+      font-size:28px;
+      font-family:Poppins,sans-serif;
+      letter-spacing:-.04em;
+    }
+
+    .core-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .core-points{
+      margin:18px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:10px;
+    }
+
+    .core-points li{
+      color:#dbe6ff;
+      font-size:14px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+    }
+
+    .ecosystem-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+
+    .eco-card{
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      min-height:190px;
+    }
+
+    .eco-card h3{
+      margin:0 0 10px;
+      font-size:22px;
+      font-family:Poppins,sans-serif;
+      letter-spacing:-.04em;
+    }
+
+    .eco-card p{
+      margin:0 0 16px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .eco-cta{
+      display:inline-flex;
+      padding:10px 13px;
+      border-radius:12px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      color:#fff;
+      font-weight:700;
+      font-size:13px;
+    }
+
+    .highlight-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr;
+      gap:14px;
+    }
+
+    .highlight-main, .highlight-side{
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      padding:18px;
+      min-height:220px;
+    }
+
+    .highlight-main h3, .highlight-side h3{
+      margin:0 0 10px;
+      font-size:26px;
+      font-family:Poppins,sans-serif;
+      letter-spacing:-.04em;
+    }
+
+    .highlight-main p, .highlight-side p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .mini-pill-row{
+      display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;
+    }
+
+    .mini-pill{
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:#dce5ff;
+      font-weight:700;
+      font-size:13px;
+    }
+
+    .footer{
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      box-shadow:var(--shadow);
+      padding:24px;
+      display:grid;
+      grid-template-columns:1.3fr 1fr;
+      gap:20px;
+    }
+
+    .footer h3{
+      margin:0 0 10px;
+      font-size:28px;
+      font-family:Poppins,sans-serif;
+      letter-spacing:-.04em;
+    }
+
+    .footer p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+      max-width:720px;
+    }
+
+    .footer-links{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+    }
+
+    .footer-links a{
+      padding:12px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      color:#dce5ff;
+      font-weight:700;
+      font-size:14px;
+    }
+
+    @media(max-width:1280px){
+      .card-grid{grid-template-columns:repeat(4,1fr)}
+      .ecosystem-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:1100px){
+      .kpis{grid-template-columns:repeat(2,1fr)}
+      .core-grid,.highlight-grid,.footer{grid-template-columns:1fr}
+      .card-grid{grid-template-columns:repeat(3,1fr)}
+    }
+
+    @media(max-width:760px){
+      .page{padding:12px 12px 28px}
+      .nav{padding:14px}
+      .hero{padding:22px 18px}
+      .hero-copy p{font-size:16px}
+      .kpis,.card-grid,.core-grid,.ecosystem-grid,.highlight-grid,.footer,.footer-links{grid-template-columns:1fr}
+      .section{padding:18px}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page">
+    <nav class="nav">
+      <div class="brand" onclick="location.href='index.html'">
+        <div class="brand-mark">%</div>
+        <div class="brand-name">Invest<span>Percent</span></div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="investment.html">Investment</a>
+        <a href="loan.html">Loan</a>
+        <a href="tax.html">Tax</a>
+        <a href="savings.html">Savings</a>
+        <a href="retirement.html">Retirement</a>
+        <a href="personal.html">Personal Finance</a>
+        <a href="global.html">Global Finance</a>
+        <a href="stocks.html">Stock Market</a>
+        <a href="crypto.html">Crypto</a>
+        <a href="business.html">Business Startup</a>
+        <a href="insurance.html">Insurance</a>
+        <a href="play.html">Play</a>
+        <a href="learn.html">Learn</a>
+        <a href="digital.html">Digital</a>
+      </div>
+    </nav>
 
-<nav>
-<div class="logo">invest%</div>
-<div class="nav-links">
-<a href="#">Invest</a>
-<a href="#">Tax</a>
-<a href="#">Loan</a>
-<a href="#">Retirement</a>
-<a href="#">Global</a>
-</div>
-</nav>
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>India’s Smartest <span class="grad">Financial Platform</span></h1>
+          <p>Plan. Calculate. Decide. Grow. One premium ecosystem for investments, loans, tax, savings, retirement, stocks, crypto, insurance, learning and digital tools.</p>
+          <div class="hero-actions">
+            <button class="btn primary" onclick="location.href='investment.html'">Start Planning</button>
+            <button class="btn secondary" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">Explore All Pages</button>
+          </div>
+          <div class="trust-strip">
+            <span>Trusted by serious planners</span>
+            <span>•</span>
+            <span>Platform-style dashboards</span>
+            <span>•</span>
+            <span>Built for decisions, not just calculations</span>
+          </div>
+        </div>
+      </div>
 
-<section class="hero">
-<h1>Your Complete Financial Universe</h1>
-<p>Calculate. Compare. Grow.</p>
-<div class="hero-buttons">
-<button class="btn btn-primary">Explore Tools</button>
-<button class="btn btn-secondary">Popular Tools</button>
-</div>
-</section>
+      <div class="kpis">
+        <div class="kpi-card">
+          <div class="kpi-label">Live platform map</div>
+          <div class="kpi-value cyan">15 Pages</div>
+          <div class="kpi-sub">Unified financial ecosystem</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Core dashboards</div>
+          <div class="kpi-value green">3 Live</div>
+          <div class="kpi-sub">Investment, Loan, Tax</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Target experience</div>
+          <div class="kpi-value gold">Premium</div>
+          <div class="kpi-sub">Same shell on every page</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Conversion engine</div>
+          <div class="kpi-value orange">Multi-site</div>
+          <div class="kpi-sub">Invest, property, forex and more</div>
+        </div>
+      </div>
+    </section>
 
-<section class="section">
-<h2>Explore Categories</h2>
-<div class="grid">
+    <section class="section" id="categories">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Explore the full platform</h2>
+          <div class="section-sub">This homepage follows the attached clean hero style, but the rest of the page behaves like a premium product platform. Every section below is a future or current pillar page inside the same design family.</div>
+        </div>
+        <a class="section-link" href="learn.html">Open Learning Hub</a>
+      </div>
 
-<div class="card" onclick="go('investment.html')">
-<i class="fa-solid fa-chart-line"></i>
-<h3>Investment</h3>
-<p>SIP, CAGR, MF</p>
-</div>
+      <div class="card-grid">
+        <a class="tool-card" href="investment.html">
+          <div class="tool-icon">💰</div>
+          <h3>Investment</h3>
+          <p>SIP, lump sum, CAGR, SWP, PPF, NPS and long-term wealth dashboards.</p>
+          <div class="tool-meta"><span>Core live page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="card" onclick="go('tax.html')">
-<i class="fa-solid fa-receipt"></i>
-<h3>Tax</h3>
-</div>
+        <a class="tool-card" href="loan.html">
+          <div class="tool-icon">🏠</div>
+          <h3>Loan</h3>
+          <p>Home, car, personal, prepayment and rent-vs-buy decision tools.</p>
+          <div class="tool-meta"><span>Core live page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="card" onclick="go('loan.html')">
-<i class="fa-solid fa-landmark"></i>
-<h3>Loan</h3>
-</div>
+        <a class="tool-card" href="tax.html">
+          <div class="tool-icon">🧾</div>
+          <h3>Tax</h3>
+          <p>Income tax, salary in-hand, HRA, 80C and gains planning dashboards.</p>
+          <div class="tool-meta"><span>Core live page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="card" onclick="go('retirement.html')">
-<i class="fa-solid fa-hourglass"></i>
-<h3>Retirement</h3>
-</div>
+        <a class="tool-card" href="savings.html">
+          <div class="tool-icon">🏦</div>
+          <h3>Savings</h3>
+          <p>FD, RD, emergency fund, cash ladder and safe-return style planning tools.</p>
+          <div class="tool-meta"><span>Next page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="card" onclick="go('personal.html')">
-<i class="fa-solid fa-user"></i>
-<h3>Personal Finance</h3>
-</div>
+        <a class="tool-card" href="retirement.html">
+          <div class="tool-icon">🪙</div>
+          <h3>Retirement</h3>
+          <p>Retirement corpus, FIRE, pension drawdown and passive-income planning.</p>
+          <div class="tool-meta"><span>Next page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="card" onclick="go('global.html')">
-<i class="fa-solid fa-globe"></i>
-<h3>Global Tools</h3>
-</div>
+        <a class="tool-card" href="personal.html">
+          <div class="tool-icon">👤</div>
+          <h3>Personal Finance</h3>
+          <p>Budgeting, net worth, inflation, salary growth and life-money planning.</p>
+          <div class="tool-meta"><span>Planning page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="card" onclick="go('stock.html')">
-<i class="fa-solid fa-chart-pie"></i>
-<h3>Stocks</h3>
-</div>
+        <a class="tool-card" href="global.html">
+          <div class="tool-icon">🌍</div>
+          <h3>Global Finance</h3>
+          <p>Currency conversion, forex context, international money comparisons and PPP.</p>
+          <div class="tool-meta"><span>Global tools</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="card" onclick="go('crypto.html')">
-<i class="fa-brands fa-bitcoin"></i>
-<h3>Crypto</h3>
-</div>
+        <a class="tool-card" href="stocks.html">
+          <div class="tool-icon">📈</div>
+          <h3>Stock Market</h3>
+          <p>Returns, valuation, portfolio concentration and brokerage planning tools.</p>
+          <div class="tool-meta"><span>Market page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="card" onclick="go('business.html')">
-<i class="fa-solid fa-briefcase"></i>
-<h3>Business</h3>
-</div>
+        <a class="tool-card" href="crypto.html">
+          <div class="tool-icon">₿</div>
+          <h3>Crypto</h3>
+          <p>DCA, profit-loss, tax estimation and crypto-vs-traditional asset comparisons.</p>
+          <div class="tool-meta"><span>Alt asset page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="card" onclick="go('insurance.html')">
-<i class="fa-solid fa-shield"></i>
-<h3>Insurance</h3>
-</div>
+        <a class="tool-card" href="business.html">
+          <div class="tool-icon">🚀</div>
+          <h3>Business Startup</h3>
+          <p>Break-even, ROI, profit margin, runway and founder decision tools.</p>
+          <div class="tool-meta"><span>Builder page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-</div>
-</section>
+        <a class="tool-card" href="insurance.html">
+          <div class="tool-icon">🛡️</div>
+          <h3>Insurance</h3>
+          <p>Life, health and general insurance need analysis with cover recommendations.</p>
+          <div class="tool-meta"><span>Protection page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<section class="ecosystem">
-<h2>Your Financial Journey Starts Here</h2>
+        <a class="tool-card" href="play.html">
+          <div class="tool-icon">🎮</div>
+          <h3>Play</h3>
+          <p>Interactive, engaging, gamified tools to keep users exploring the platform.</p>
+          <div class="tool-meta"><span>Engagement page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="eco-grid">
+        <a class="tool-card" href="learn.html">
+          <div class="tool-icon">📚</div>
+          <h3>Learning Hub</h3>
+          <p>Guides, explainers, frameworks and SEO-driven knowledge architecture.</p>
+          <div class="tool-meta"><span>Content engine</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="eco-card" onclick="redirect('https://justinvesting.in')">
-<h3>Invest</h3>
-<p>Mutual Funds & Insurance</p>
-</div>
+        <a class="tool-card" href="digital.html">
+          <div class="tool-icon">💻</div>
+          <h3>Digital</h3>
+          <p>Online tools, digital calculators, product experiments and platform utilities.</p>
+          <div class="tool-meta"><span>Utility page</span><span class="tool-arrow">→</span></div>
+        </a>
 
-<div class="eco-card" onclick="redirect('https://justproperty.in')">
-<h3>Buy Property</h3>
-</div>
+        <a class="tool-card" href="index.html">
+          <div class="tool-icon">✨</div>
+          <h3>Platform Home</h3>
+          <p>The central routing page connecting every dashboard, category and ecosystem CTA.</p>
+          <div class="tool-meta"><span>Master hub</span><span class="tool-arrow">→</span></div>
+        </a>
+      </div>
+    </section>
 
-<div class="eco-card" onclick="redirect('https://goglobal.forex')">
-<h3>Forex & Travel</h3>
-</div>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Core dashboards already define the system</h2>
+          <div class="section-sub">These are the foundation pages that establish the premium shell, KPI cards, control cockpit, insight engine, charts and milestone blocks for the entire product.</div>
+        </div>
+      </div>
 
-<div class="eco-card" onclick="redirect('https://absolutemoney.in')">
-<h3>Wealth Management</h3>
-</div>
+      <div class="core-grid">
+        <div class="core-card">
+          <div class="core-tag">Live Now</div>
+          <h3>Investment OS</h3>
+          <p>The benchmark page. This is where the premium shell first clicked and became the design master for the entire platform.</p>
+          <ul class="core-points">
+            <li>SIP, Lump Sum, Step-Up SIP, SWP, CAGR and India scheme planning</li>
+            <li>Big wealth number + narrative + milestone cards</li>
+            <li>Best page to copy for future sections</li>
+          </ul>
+        </div>
 
-<div class="eco-card" onclick="redirect('https://microventure.in')">
-<h3>Start Business</h3>
-</div>
+        <div class="core-card">
+          <div class="core-tag">Live Now</div>
+          <h3>Loan Dashboard</h3>
+          <p>A product-level borrowing cockpit with EMI-led output, repayment visuals and property conversion potential.</p>
+          <ul class="core-points">
+            <li>Home, car, personal, prepayment and rent-vs-buy</li>
+            <li>EMI as hero metric, interest burden in supporting cards</li>
+            <li>Direct funnel into justproperty.in</li>
+          </ul>
+        </div>
 
-<div class="eco-card" onclick="redirect('https://domainresale.in')">
-<h3>Domains</h3>
-</div>
+        <div class="core-card">
+          <div class="core-tag">Live Now</div>
+          <h3>Tax Dashboard</h3>
+          <p>Tax payable and post-tax outcome shown together in a premium shell without dropping the product experience.</p>
+          <ul class="core-points">
+            <li>Income tax, salary, HRA, 80C and capital gains</li>
+            <li>Big number + in-hand secondary view</li>
+            <li>Works as planning layer, not just a flat calculator</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-</div>
-</section>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Ecosystem bridge</h2>
+          <div class="section-sub">InvestPercent is not a single page. It is the top-layer decision platform that routes qualified users to the right conversion destination at the right moment.</div>
+        </div>
+      </div>
 
-<footer>
-<p>© 2026 investpercent.com — Built for the World</p>
-</footer>
+      <div class="ecosystem-grid">
+        <div class="eco-card">
+          <h3>justinvesting.in</h3>
+          <p>All investment, mutual fund, wealth and insurance-driven actions can flow here after the user has used calculators and built conviction.</p>
+          <a class="eco-cta" href="investment.html">Feed from Investment →</a>
+        </div>
 
-<script>
-function go(page){
-window.location.href = page;
-}
+        <div class="eco-card">
+          <h3>justproperty.in</h3>
+          <p>Loan tools, EMI planning and property affordability journeys should naturally hand off to this conversion layer.</p>
+          <a class="eco-cta" href="loan.html">Feed from Loan →</a>
+        </div>
 
-function redirect(url){
-window.open(url, '_blank');
-}
-</script>
+        <div class="eco-card">
+          <h3>goglobal.forex</h3>
+          <p>Global money, forex, travel and international spend journeys can route into the forex ecosystem later.</p>
+          <a class="eco-cta" href="global.html">Feed from Global →</a>
+        </div>
 
+        <div class="eco-card">
+          <h3>Play + Learn</h3>
+          <p>These pages are retention engines. One keeps users engaged, the other builds SEO, trust and time-on-site.</p>
+          <a class="eco-cta" href="learn.html">Open Learning Hub →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Retention layers: Play, Learn and Digital</h2>
+          <div class="section-sub">These are not “extra pages”. They are the pages that turn the platform from utility into habit.</div>
+        </div>
+      </div>
+
+      <div class="highlight-grid">
+        <div class="highlight-main">
+          <h3>Play makes finance sticky</h3>
+          <p>Micro-games, comparison widgets, challenge calculators, wealth quizzes and prediction simulators can keep users exploring for longer. This is your engagement moat.</p>
+          <div class="mini-pill-row">
+            <span class="mini-pill">Wealth Challenges</span>
+            <span class="mini-pill">Retirement Games</span>
+            <span class="mini-pill">Savings Streaks</span>
+            <span class="mini-pill">Quiz Tools</span>
+          </div>
+        </div>
+
+        <div class="highlight-side">
+          <h3>Learn builds trust</h3>
+          <p>Explainers, long-form guides, comparisons and planning frameworks create authority and search visibility.</p>
+          <div class="mini-pill-row">
+            <span class="mini-pill">SEO</span>
+            <span class="mini-pill">Authority</span>
+          </div>
+        </div>
+
+        <div class="highlight-side">
+          <h3>Digital expands utility</h3>
+          <p>Broader calculators and online tools help you grow beyond finance without losing the premium shell.</p>
+          <div class="mini-pill-row">
+            <span class="mini-pill">Utility</span>
+            <span class="mini-pill">Scale</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer">
+      <div>
+        <h3>One platform. Multiple decision engines.</h3>
+        <p>InvestPercent should feel like a serious financial operating system from the very first click. This homepage uses the attached clean-hero influence, but the body structure is intentionally platform-grade so every next page can inherit the same depth, confidence and conversion readiness.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="investment.html">Open Investment</a>
+        <a href="loan.html">Open Loan</a>
+        <a href="tax.html">Open Tax</a>
+        <a href="learn.html">Open Learn</a>
+        <a href="play.html">Open Play</a>
+        <a href="digital.html">Open Digital</a>
+      </div>
+    </section>
+  </div>
 </body>
 </html>
