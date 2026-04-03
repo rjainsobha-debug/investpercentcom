@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/theme.css">
+<link rel="stylesheet" href="../css/components.css">
 </head>
 
 <body>
@@ -15,7 +15,32 @@ loadComponent("header", "../components/header.html");
 </script>
 
 <div class="page-shell">
-  <h1>Investment Page</h1>
+
+<section class="hero">
+  <h1>Stock Tools</h1>
+</section>
+
+<div class="layout">
+
+<aside class="sidebar">
+  <a href="#sip">SIP</a>
+</aside>
+
+<main class="main">
+
+<section class="calc-card" id="sip">
+<h2>SIP Calculator</h2>
+
+<input placeholder="Monthly Investment">
+<input placeholder="Years">
+
+<button class="btn-primary">Calculate</button>
+
+</section>
+
+</main>
+
+</div>
 </div>
 
 </body>
