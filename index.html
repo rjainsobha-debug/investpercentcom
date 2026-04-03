@@ -3,732 +3,1393 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvestPercent | Your Complete Financial Universe</title>
+  <meta name="description" content="InvestPercent is your complete financial universe. Calculate, compare, and grow with premium tools for investments, loans, savings, retirement, tax, and personal finance." />
 
-  <title>investpercent.com — India's Most Comprehensive Financial Calculator Platform</title>
-  <meta
-    name="description"
-    content="500+ free financial calculators — SIP, Income Tax, EMI, Retirement, FIRE, Crypto, Business tools and more. No login. Instant results."
-  />
-  <meta
-    name="keywords"
-    content="financial calculators india, sip calculator, income tax calculator, emi calculator, retirement calculator, fire calculator, forex calculator, domain valuation"
-  />
-  <meta name="author" content="investpercent.com" />
-  <meta name="robots" content="index, follow" />
-
-  <link rel="canonical" href="https://investpercent.com/" />
-
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="investpercent.com — India's Most Comprehensive Financial Calculator Platform" />
-  <meta
-    property="og:description"
-    content="500+ free financial calculators — SIP, Income Tax, EMI, Retirement, FIRE, Crypto, Business tools and more. No login. Instant results."
-  />
-  <meta property="og:url" content="https://investpercent.com/" />
-  <meta property="og:image" content="https://investpercent.com/assets/og-image.jpg" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="investpercent.com — India's Most Comprehensive Financial Calculator Platform" />
-  <meta
-    name="twitter:description"
-    content="500+ free financial calculators — SIP, Income Tax, EMI, Retirement, FIRE, Crypto, Business tools and more. No login. Instant results."
-  />
-  <meta name="twitter:image" content="https://investpercent.com/assets/og-image.jpg" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <link rel="stylesheet" href="/css/global.css" />
-  <link rel="stylesheet" href="/css/home.css" />
-  <link rel="stylesheet" href="/css/calculator.css" />
-
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "investpercent.com",
-      "url": "https://investpercent.com/",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://investpercent.com/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-  </script>
-</head>
-<body>
-  <div id="ip-header"></div>
-
-  <main>
-    <!-- HERO SECTION -->
-    <section class="ip-hero-section">
-      <canvas class="ip-hero-particles" data-particle-canvas></canvas>
-
-      <div class="ip-container">
-        <div class="ip-hero-content">
-          <div class="ip-hero-badge ip-badge">
-            🇮🇳 India's Most Comprehensive Finance Platform
-          </div>
-
-          <h1 class="ip-hero-title">
-            Your Complete <br />
-            <span class="gradient-text">Financial Universe</span>
-          </h1>
-
-          <p class="ip-hero-subtitle">
-            500+ free tools. Zero sign-up. Infinite clarity.
-          </p>
-
-          <div class="ip-hero-pills">
-            <a href="/pages/investment.html" class="ip-badge">📊 Invest</a>
-            <a href="/pages/tax.html" class="ip-badge">🧾 Tax</a>
-            <a href="/pages/loans.html" class="ip-badge">🏠 Property</a>
-            <a href="/pages/retirement.html" class="ip-badge">💰 Retire</a>
-            <a href="/pages/global.html" class="ip-badge">🌍 Global</a>
-            <a href="/pages/crypto.html" class="ip-badge">₿ Crypto</a>
-          </div>
-
-          <div class="ip-hero-actions">
-            <a href="#all-categories" class="ip-btn-primary">Explore All Tools →</a>
-            <a href="#quick-calculators" class="ip-btn-outline">Most Popular ↓</a>
-          </div>
-        </div>
-
-        <div class="ip-scroll-indicator">
-          <a href="#stats-bar" aria-label="Scroll down">
-            <span class="ip-scroll-mouse">
-              <span class="ip-scroll-dot"></span>
-            </span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- STATS BAR -->
-    <section class="ip-stats-bar" id="stats-bar">
-      <div class="ip-container">
-        <div class="ip-stats-grid">
-          <div class="ip-stat-card ip-card">
-            <div class="ip-stat-number" data-counter="40" data-suffix="+">0</div>
-            <div class="ip-stat-label">Tools</div>
-          </div>
-
-          <div class="ip-stat-card ip-card">
-            <div class="ip-stat-number" data-counter="10" data-suffix="+">0</div>
-            <div class="ip-stat-label">Categories</div>
-          </div>
-
-          <div class="ip-stat-card ip-card">
-            <div class="ip-stat-number" data-counter="50" data-suffix="+">0</div>
-            <div class="ip-stat-label">Countries</div>
-          </div>
-
-          <div class="ip-stat-card ip-card">
-            <div class="ip-stat-number" data-counter="100" data-suffix="%">0</div>
-            <div class="ip-stat-label">Free</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- QUICK CALCULATORS -->
-    <section class="ip-home-section ip-quick-calcs-section" id="quick-calculators">
-      <div class="ip-container">
-        <div class="ip-section-head">
-          <span class="ip-badge">Most Popular</span>
-          <h2>Get Instant Answers — No Sign-up Needed</h2>
-          <p>Try the most used tools right here on the homepage.</p>
-        </div>
-
-        <div class="ip-card ip-quick-calcs-card">
-          <div class="ip-tab-buttons">
-            <button class="ip-tab-btn is-active" data-tab-trigger data-tab-group="quick-tools" data-tab-target="quick-sip">
-              SIP Calculator
-            </button>
-            <button class="ip-tab-btn" data-tab-trigger data-tab-group="quick-tools" data-tab-target="quick-emi">
-              EMI Calculator
-            </button>
-            <button class="ip-tab-btn" data-tab-trigger data-tab-group="quick-tools" data-tab-target="quick-tax">
-              Tax Saver
-            </button>
-          </div>
-
-          <!-- QUICK SIP -->
-          <div class="ip-tab-panel is-active" data-tab-panel="quick-sip" data-tab-group="quick-tools">
-            <div class="calculator-container">
-              <div class="calculator-inputs">
-                <div>
-                  <label for="quickSipAmount" class="ip-label">Monthly Investment (₹)</label>
-                  <input id="quickSipAmount" class="ip-input" type="number" value="5000" min="500" step="500" />
-                </div>
-
-                <div>
-                  <label for="quickSipReturn" class="ip-label">Expected Return (%)</label>
-                  <input id="quickSipReturn" class="ip-input" type="number" value="12" min="1" max="30" step="0.1" />
-                </div>
-
-                <div>
-                  <label for="quickSipYears" class="ip-label">Years</label>
-                  <input id="quickSipYears" class="ip-input" type="number" value="10" min="1" max="40" step="1" />
-                </div>
-
-                <button class="ip-btn-primary" type="button" id="quickSipCalculate">Calculate SIP</button>
-              </div>
-
-              <div class="calculator-results">
-                <div class="ip-result-grid">
-                  <div class="ip-result-cell">
-                    <div class="ip-result-value" id="quickSipInvested">₹6,00,000</div>
-                    <div class="ip-result-label">Total Invested</div>
-                  </div>
-                  <div class="ip-result-cell">
-                    <div class="ip-result-value" id="quickSipReturns">₹5,61,695</div>
-                    <div class="ip-result-label">Estimated Returns</div>
-                  </div>
-                  <div class="ip-result-cell">
-                    <div class="ip-result-value" id="quickSipMaturity">₹11,61,695</div>
-                    <div class="ip-result-label">Maturity Value</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- QUICK EMI -->
-          <div class="ip-tab-panel" data-tab-panel="quick-emi" data-tab-group="quick-tools">
-            <div class="calculator-container">
-              <div class="calculator-inputs">
-                <div>
-                  <label for="quickEmiLoan" class="ip-label">Loan Amount (₹)</label>
-                  <input id="quickEmiLoan" class="ip-input" type="number" value="2500000" min="100000" step="50000" />
-                </div>
-
-                <div>
-                  <label for="quickEmiRate" class="ip-label">Interest Rate (%)</label>
-                  <input id="quickEmiRate" class="ip-input" type="number" value="8.5" min="1" max="20" step="0.1" />
-                </div>
-
-                <div>
-                  <label for="quickEmiYears" class="ip-label">Tenure (Years)</label>
-                  <input id="quickEmiYears" class="ip-input" type="number" value="20" min="1" max="30" step="1" />
-                </div>
-
-                <button class="ip-btn-primary" type="button" id="quickEmiCalculate">Calculate EMI</button>
-              </div>
-
-              <div class="calculator-results">
-                <div class="ip-result-grid">
-                  <div class="ip-result-cell">
-                    <div class="ip-result-value" id="quickEmiMonthly">₹21,696</div>
-                    <div class="ip-result-label">Monthly EMI</div>
-                  </div>
-                  <div class="ip-result-cell">
-                    <div class="ip-result-value" id="quickEmiInterest">₹27,07,090</div>
-                    <div class="ip-result-label">Total Interest</div>
-                  </div>
-                  <div class="ip-result-cell">
-                    <div class="ip-result-value" id="quickEmiTotal">₹52,07,090</div>
-                    <div class="ip-result-label">Total Payable</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- QUICK TAX -->
-          <div class="ip-tab-panel" data-tab-panel="quick-tax" data-tab-group="quick-tools">
-            <div class="calculator-container">
-              <div class="calculator-inputs">
-                <div>
-                  <label for="quickTaxSalary" class="ip-label">Annual Salary (₹)</label>
-                  <input id="quickTaxSalary" class="ip-input" type="number" value="1200000" min="300000" step="50000" />
-                </div>
-
-                <div>
-                  <label for="quickTaxDeduction" class="ip-label">Old Regime Deductions (₹)</label>
-                  <input id="quickTaxDeduction" class="ip-input" type="number" value="200000" min="0" step="10000" />
-                </div>
-
-                <button class="ip-btn-primary" type="button" id="quickTaxCalculate">Compare Tax</button>
-              </div>
-
-              <div class="calculator-results">
-                <div class="ip-result-grid">
-                  <div class="ip-result-cell">
-                    <div class="ip-result-value" id="quickTaxOld">₹85,800</div>
-                    <div class="ip-result-label">Old Regime Tax</div>
-                  </div>
-                  <div class="ip-result-cell">
-                    <div class="ip-result-value" id="quickTaxNew">₹93,600</div>
-                    <div class="ip-result-label">New Regime Tax</div>
-                  </div>
-                  <div class="ip-result-cell">
-                    <div class="ip-result-value" id="quickTaxWinner">Old Saves ₹7,800</div>
-                    <div class="ip-result-label">Better Option</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ALL CATEGORIES GRID -->
-    <section class="ip-home-section" id="all-categories">
-      <div class="ip-container">
-        <div class="ip-section-head">
-          <span class="ip-badge">Categories</span>
-          <h2>Choose Your Financial Tool Category</h2>
-          <p>Explore focused pages with calculators, insights, and direct action paths.</p>
-        </div>
-
-        <div class="ip-category-grid">
-          <!-- CARD 1 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">📈</div>
-            <h3>Investment Tools</h3>
-            <p>SIP, CAGR, MF, PPF, NPS and more</p>
-            <span class="ip-badge">8 Calculators inside</span>
-            <ul>
-              <li>SIP Calculator</li>
-              <li>Lump Sum</li>
-              <li>CAGR</li>
-            </ul>
-            <a href="/pages/investment.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 2 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">🧾</div>
-            <h3>Tax Calculators</h3>
-            <p>Old vs New regime, Capital Gains, GST and more</p>
-            <span class="ip-badge">7 Calculators inside</span>
-            <ul>
-              <li>Salary Tax</li>
-              <li>Capital Gains</li>
-              <li>GST</li>
-            </ul>
-            <a href="/pages/tax.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 3 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">🏠</div>
-            <h3>Loan & EMI</h3>
-            <p>Home Loan, Car, Personal, Education EMIs</p>
-            <span class="ip-badge">6 Calculators inside</span>
-            <ul>
-              <li>Home Loan EMI</li>
-              <li>Debt Payoff</li>
-              <li>Loan vs Rent</li>
-            </ul>
-            <a href="/pages/loans.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 4 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">🐷</div>
-            <h3>Savings & FD</h3>
-            <p>FD, RD, Sukanya Samriddhi and comparisons</p>
-            <span class="ip-badge">5 Calculators inside</span>
-            <ul>
-              <li>FD Calculator</li>
-              <li>RD Calculator</li>
-              <li>SSY</li>
-            </ul>
-            <a href="/pages/savings.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 5 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">🌴</div>
-            <h3>Retirement Planning</h3>
-            <p>Retirement corpus, FIRE, pension planning</p>
-            <span class="ip-badge">4 Calculators inside</span>
-            <ul>
-              <li>Retirement Corpus</li>
-              <li>FIRE Calculator</li>
-              <li>NPS Pension</li>
-            </ul>
-            <a href="/pages/retirement.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 6 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">👛</div>
-            <h3>Personal Finance</h3>
-            <p>Salary, Net Worth, Budget, Financial Health</p>
-            <span class="ip-badge">6 Calculators inside</span>
-            <ul>
-              <li>In-Hand Salary</li>
-              <li>Net Worth</li>
-              <li>Budget Planner</li>
-            </ul>
-            <a href="/pages/personal.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 7 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">🌍</div>
-            <h3>Global Tools</h3>
-            <p>Currency, PPP, Remittance, Global Inflation</p>
-            <span class="ip-badge">5 Calculators inside</span>
-            <ul>
-              <li>Currency Converter</li>
-              <li>PPP Calculator</li>
-              <li>Remittance Cost</li>
-            </ul>
-            <a href="/pages/global.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 8 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">📊</div>
-            <h3>Stock Market</h3>
-            <p>Stock returns, P/E, Portfolio, Screener</p>
-            <span class="ip-badge">5 Calculators inside</span>
-            <ul>
-              <li>Stock Return</li>
-              <li>P/E Ratio</li>
-              <li>Brokerage Compare</li>
-            </ul>
-            <a href="/pages/stocks.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 9 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">₿</div>
-            <h3>Crypto & Assets</h3>
-            <p>Crypto P/L, DCA, Tax, vs Gold comparison</p>
-            <span class="ip-badge">4 Calculators inside</span>
-            <ul>
-              <li>Crypto P/L</li>
-              <li>Bitcoin DCA</li>
-              <li>Crypto Tax India</li>
-            </ul>
-            <a href="/pages/crypto.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 10 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">💼</div>
-            <h3>Business Tools</h3>
-            <p>Break-Even, ROI, GST Invoice, Valuation</p>
-            <span class="ip-badge">6 Calculators inside</span>
-            <ul>
-              <li>Break-Even</li>
-              <li>Invoice Generator</li>
-              <li>Startup Valuation</li>
-            </ul>
-            <a href="/pages/business.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 11 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">🛡️</div>
-            <h3>Insurance & Life</h3>
-            <p>Term cover, Health premium, Child planning</p>
-            <span class="ip-badge">4 Calculators inside</span>
-            <ul>
-              <li>Term Insurance</li>
-              <li>Health Estimator</li>
-              <li>Education Cost</li>
-            </ul>
-            <a href="/pages/insurance.html" class="ip-btn-outline">Explore →</a>
-          </article>
-
-          <!-- CARD 12 -->
-          <article class="ip-category-card ip-card">
-            <div class="ip-category-icon">🔗</div>
-            <h3>Digital Assets</h3>
-            <p>Domain valuation, digital business tools</p>
-            <span class="ip-badge">3 Calculators inside</span>
-            <ul>
-              <li>Domain Value Estimator</li>
-              <li>Online Business ROI</li>
-              <li>Digital Asset Tools</li>
-            </ul>
-            <a href="/pages/digital.html" class="ip-btn-outline">Explore →</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ECOSYSTEM SHOWCASE -->
-    <section class="ip-home-section ip-ecosystem-showcase">
-      <div class="ip-container">
-        <div class="ip-section-head">
-          <span class="ip-badge">Partner Network</span>
-          <h2>One Platform. Six Powerful Partners.</h2>
-          <p>Use invest% for clarity. Use partner brands for action.</p>
-        </div>
-
-        <div class="ip-partner-grid">
-          <a href="https://justinvesting.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
-            <div class="ip-partner-icon">📈</div>
-            <h3>justinvesting.in</h3>
-            <p>Mutual funds, stocks, SIPs, insurance, and portfolio support.</p>
-            <span>Explore →</span>
-          </a>
-
-          <a href="https://absolutemoney.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
-            <div class="ip-partner-icon">👑</div>
-            <h3>absolutemoney.in</h3>
-            <p>Wealth management, legacy planning, and HNI strategy.</p>
-            <span>Explore →</span>
-          </a>
-
-          <a href="https://justproperty.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
-            <div class="ip-partner-icon">🏡</div>
-            <h3>justproperty.in</h3>
-            <p>Property search, real estate insights, and buying support.</p>
-            <span>Explore →</span>
-          </a>
-
-          <a href="https://goglobal.forex" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
-            <div class="ip-partner-icon">🌍</div>
-            <h3>goglobal.forex</h3>
-            <p>Forex, travel money, remittance, and global transfer tools.</p>
-            <span>Explore →</span>
-          </a>
-
-          <a href="https://microventure.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
-            <div class="ip-partner-icon">⚡</div>
-            <h3>microventure.in</h3>
-            <p>Side hustles, small business ideas, and startup support.</p>
-            <span>Explore →</span>
-          </a>
-
-          <a href="https://domaindcl.in" target="_blank" rel="noopener noreferrer" class="ip-card ip-partner-card">
-            <div class="ip-partner-icon">🔗</div>
-            <h3>domaindcl.in</h3>
-            <p>Domain names, digital assets, and online brand setup.</p>
-            <span>Explore →</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section class="ip-home-section">
-      <div class="ip-container">
-        <div class="ip-section-head">
-          <span class="ip-badge">How It Works</span>
-          <h2>Simple, Fast, and Built for Action</h2>
-          <p>No sign-up. No clutter. Just the numbers you need.</p>
-        </div>
-
-        <div class="ip-steps-grid">
-          <div class="ip-card ip-step-card">
-            <div class="ip-step-number">01</div>
-            <h3>Choose a Calculator</h3>
-            <p>Pick from investment, tax, loan, global, business, or digital tools.</p>
-          </div>
-
-          <div class="ip-card ip-step-card">
-            <div class="ip-step-number">02</div>
-            <h3>Enter Your Numbers</h3>
-            <p>Use intuitive inputs, sliders, and instant calculations on any device.</p>
-          </div>
-
-          <div class="ip-card ip-step-card">
-            <div class="ip-step-number">03</div>
-            <h3>Get Clarity + Next Steps</h3>
-            <p>See results instantly and move naturally to the right ecosystem partner.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TESTIMONIALS -->
-    <section class="ip-home-section ip-testimonials-section">
-      <div class="ip-container">
-        <div class="ip-section-head">
-          <span class="ip-badge">Testimonials</span>
-          <h2>What Users Say</h2>
-          <p>Real clarity, real action, real mobile-friendly experience.</p>
-        </div>
-
-        <div class="ip-testimonial-grid">
-          <article class="ip-card ip-testimonial-card">
-            <div class="ip-testimonial-avatar">RM</div>
-            <p class="ip-testimonial-text">
-              “Used the SIP calculator — realized I was under-investing by ₹5,000/month.
-              Course-corrected immediately.”
-            </p>
-            <div class="ip-testimonial-meta">
-              <strong>Rahul M.</strong>
-              <span>Bangalore</span>
-            </div>
-          </article>
-
-          <article class="ip-card ip-testimonial-card">
-            <div class="ip-testimonial-avatar">PS</div>
-            <p class="ip-testimonial-text">
-              “The Old vs New regime comparator saved my client ₹42,000 in tax.”
-            </p>
-            <div class="ip-testimonial-meta">
-              <strong>Priya S.</strong>
-              <span>CA, Mumbai</span>
-            </div>
-          </article>
-
-          <article class="ip-card ip-testimonial-card">
-            <div class="ip-testimonial-avatar">AK</div>
-            <p class="ip-testimonial-text">
-              “Finally a finance site that works perfectly on my phone.”
-            </p>
-            <div class="ip-testimonial-meta">
-              <strong>Ahmed K.</strong>
-              <span>Dubai</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div id="ip-footer"></div>
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/calculator.css" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="/js/utils.js"></script>
-  <script src="/js/charts.js"></script>
-  <script src="/js/global.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1728;
+      --panel: rgba(17, 26, 43, 0.82);
+      --panel-2: rgba(15, 23, 38, 0.95);
+      --card: rgba(17, 24, 39, 0.96);
+      --muted: #93a4bd;
+      --text: #ebf3ff;
+      --white: #ffffff;
+      --line: rgba(255, 255, 255, 0.08);
+      --line-2: rgba(255, 255, 255, 0.12);
+      --accent: #00d09c;
+      --accent-2: #00b386;
+      --cyan: #38bdf8;
+      --purple: #8b5cf6;
+      --orange: #ff6b35;
+      --gold: #ffd700;
+      --pink: #ff5d73;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+      --max: 1380px;
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0, 208, 156, 0.12), transparent 22%),
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.1), transparent 18%),
+        radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.10), transparent 18%),
+        linear-gradient(180deg, #07101d 0%, #091423 42%, #08111f 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page-shell {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 20px 20px 60px;
+    }
+
+    /* NAV */
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: rgba(6, 12, 21, 0.55);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(0,208,156,0.18), rgba(56,189,248,0.18));
+      border: 1px solid rgba(255,255,255,0.10);
+      font-size: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-size: 1.02rem;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-copy p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.03);
+      color: #dce8f7;
+      font-weight: 700;
+      font-size: 0.92rem;
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: rgba(0,208,156,0.12);
+      border-color: rgba(0,208,156,0.28);
+      color: #d9fff4;
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+      color: #05261e !important;
+      border: none !important;
+      box-shadow: 0 10px 24px rgba(0,208,156,0.22);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(0, 208, 156, 0.12), rgba(56, 189, 248, 0.08) 35%, rgba(139, 92, 246, 0.10)),
+        rgba(10, 17, 30, 0.92);
+      box-shadow: var(--shadow);
+      padding: 34px 32px 30px;
+      margin-top: 18px;
+      margin-bottom: 24px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -100px;
+      top: -100px;
+      background: radial-gradient(circle, rgba(0,208,156,0.16), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      left: -100px;
+      bottom: -120px;
+      background: radial-gradient(circle, rgba(56,189,248,0.10), transparent 65%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #dffaf3;
+      font-size: 0.83rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .hero-copy h2 {
+      margin: 0 0 14px;
+      font-size: clamp(2.35rem, 5vw, 4.5rem);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      max-width: 760px;
+    }
+
+    .hero-copy .highlight {
+      background: linear-gradient(135deg, #d7fff4, #8de7ff, #e6d8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      max-width: 700px;
+      color: #abc0d8;
+      font-size: 1.04rem;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-weight: 800;
+      font-size: 0.96rem;
+      transition: 0.2s ease;
+      border: 1px solid var(--line);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #05261e;
+      border: none;
+      box-shadow: 0 10px 24px rgba(0,208,156,0.24);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(0,208,156,0.28);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      color: var(--white);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hero-card-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .glass-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 18px;
+      backdrop-filter: blur(16px);
+    }
+
+    .hero-mini-card h3,
+    .hero-feature-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .hero-mini-card p,
+    .hero-feature-card p {
+      margin: 0;
+      color: #b8cae0;
+      line-height: 1.65;
+      font-size: 0.92rem;
+    }
+
+    .hero-feature-card {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .metric {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px 18px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+
+    .metric .value {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #f5fbff;
+    }
+
+    /* SECTION */
+    .section {
+      margin-top: 22px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .section-head h3 {
+      margin: 0 0 6px;
+      font-size: clamp(1.45rem, 2vw, 2.15rem);
+      letter-spacing: -0.03em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 720px;
+      line-height: 1.7;
+    }
+
+    .section-label {
+      color: #9acdbf;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* CATEGORY GRID */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .category-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01)),
+        var(--card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      transition: 0.22s ease;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .category-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0,208,156,0.22);
+    }
+
+    .category-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -50px -50px auto;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 65%);
+      pointer-events: none;
+    }
+
+    .category-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .category-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .category-badge {
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: #e5f2ff;
+      white-space: nowrap;
+    }
+
+    .category-card h4 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .category-card p {
+      margin: 0;
+      color: #b6c9de;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .category-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .mini-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      border-radius: 999px;
+      padding: 10px 13px;
+      color: #edf6ff;
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .category-main-link {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #d8fff5;
+    }
+
+    .investment-accent { border-color: rgba(0,208,156,0.18); }
+    .loan-accent { border-color: rgba(255,107,53,0.20); }
+    .savings-accent { border-color: rgba(56,189,248,0.20); }
+    .retirement-accent { border-color: rgba(139,92,246,0.20); }
+    .tax-accent { border-color: rgba(255,215,0,0.20); }
+    .finance-accent { border-color: rgba(255,93,115,0.20); }
+
+    /* PLATFORM STRIP */
+    .platform-strip {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .platform-item {
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .platform-item h4 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .platform-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.9rem;
+    }
+
+    /* JOURNEY */
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .journey-card {
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .journey-step {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,208,156,0.14);
+      color: var(--accent);
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .journey-card h4 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .journey-card p {
+      margin: 0;
+      color: #b8cae0;
+      line-height: 1.65;
+      font-size: 0.92rem;
+    }
+
+    /* QUICK TOOL */
+    .quick-tool-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+    }
+
+    .tool-panel {
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)),
+        var(--card);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .tool-panel h4 {
+      margin: 0 0 8px;
+      font-size: 1.18rem;
+    }
+
+    .tool-panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .input-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .field {
+      display: grid;
+      gap: 10px;
+    }
+
+    .field-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-size: 0.95rem;
+      color: #edf4ff;
+      font-weight: 600;
+    }
+
+    .value-pill {
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: #f7fbff;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      appearance: none;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(0,208,156,0.85), rgba(56,189,248,0.85));
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--accent);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.22);
+      cursor: pointer;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .result-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .result-box .label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+
+    .result-box .value {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #f7fbff;
+      line-height: 1.25;
+    }
+
+    .chart-card {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      padding: 14px;
+    }
+
+    .chart-wrap {
+      min-height: 280px;
+      position: relative;
+    }
+
+    /* ECOSYSTEM */
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .ecosystem-card {
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+      padding: 20px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .ecosystem-card h4 {
+      margin: 0 0 8px;
+      font-size: 1.02rem;
+    }
+
+    .ecosystem-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.92rem;
+    }
+
+    .ecosystem-card a {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #ecf8ff;
+    }
+
+    /* CTA */
+    .mega-cta {
+      margin-top: 24px;
+      border-radius: 28px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(0,208,156,0.13), rgba(56,189,248,0.07), rgba(139,92,246,0.10)),
+        rgba(15, 23, 38, 0.94);
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .mega-cta h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 2.4vw, 2.4rem);
+      letter-spacing: -0.03em;
+    }
+
+    .mega-cta p {
+      margin: 0;
+      color: #b2c5dd;
+      line-height: 1.8;
+      max-width: 780px;
+    }
+
+    /* FOOTER */
+    .footer {
+      margin-top: 26px;
+      padding: 24px 0 6px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: #a7bbd2;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #d7e6f6;
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 1180px) {
+      .hero-grid,
+      .quick-tool-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-grid,
+      .journey-grid,
+      .ecosystem-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .platform-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 820px) {
+      .nav {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .page-shell {
+        padding: 16px 14px 50px;
+      }
+
+      .hero {
+        padding: 22px 18px;
+      }
+
+      .category-grid,
+      .journey-grid,
+      .ecosystem-grid,
+      .platform-strip,
+      .metric-grid,
+      .result-grid,
+      .hero-feature-card {
+        grid-template-columns: 1fr;
+      }
+
+      .mega-cta {
+        padding: 22px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-wrap">
+    <nav class="nav">
+      <a href="./index.html" class="brand">
+        <span class="brand-mark">📊</span>
+        <span class="brand-copy">
+          <h1>InvestPercent</h1>
+          <p>Your Complete Financial Universe</p>
+        </span>
+      </a>
+
+      <div class="nav-links">
+        <a href="./index.html" class="active">Home</a>
+        <a href="./pages/investment.html">Investment</a>
+        <a href="./pages/loans.html">Loans</a>
+        <a href="./pages/savings.html">Savings</a>
+        <a href="./pages/retirement.html">Retirement</a>
+        <a href="./pages/tax.html">Tax</a>
+        <a href="./pages/personal-finance.html">Finance</a>
+        <a href="https://justinvesting.in" target="_blank" rel="noopener" class="nav-cta">Talk to Advisor</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="page-shell">
+    <section class="hero">
+      <div class="eyebrow">
+        <i class="fa-solid fa-sparkles"></i>
+        Premium Financial Tools Platform
+      </div>
+
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h2>
+            Calculate. Compare.
+            <span class="highlight">Grow.</span>
+          </h2>
+          <p>
+            InvestPercent is built to become the front door to your entire financial life.
+            From SIP planning and retirement projections to loans, tax, and savings tools,
+            this platform helps users understand money better and then take action through
+            the right partner journey.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#categories" class="btn btn-primary">
+              <i class="fa-solid fa-grid-2"></i>
+              Explore All Categories
+            </a>
+            <a href="./pages/investment.html" class="btn btn-secondary">
+              <i class="fa-solid fa-chart-line"></i>
+              Start with Investment Tools
+            </a>
+          </div>
+
+          <div class="metric-grid">
+            <div class="metric">
+              <div class="label">Platform Positioning</div>
+              <div class="value">Finance-first ecosystem</div>
+            </div>
+            <div class="metric">
+              <div class="label">User Promise</div>
+              <div class="value">Simple tools, smarter choices</div>
+            </div>
+            <div class="metric">
+              <div class="label">Action Layer</div>
+              <div class="value">Advisor-led conversion</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card-stack">
+          <div class="glass-card hero-mini-card">
+            <h3>What makes this homepage work</h3>
+            <p>
+              It is not just a brochure. It routes users clearly into the correct category,
+              calculator page, and external conversion funnel.
+            </p>
+          </div>
+
+          <div class="glass-card hero-feature-card">
+            <div>
+              <h3>Invest</h3>
+              <p>SIP, lump sum, goals, SWP, long-term wealth planning.</p>
+            </div>
+            <div>
+              <h3>Borrow</h3>
+              <p>Loan EMI, payoff strategy, cost comparison, debt cleanup.</p>
+            </div>
+            <div>
+              <h3>Protect</h3>
+              <p>Insurance and financial planning journeys linked outward.</p>
+            </div>
+            <div>
+              <h3>Optimize</h3>
+              <p>Tax, savings, retirement, and personal finance guidance.</p>
+            </div>
+          </div>
+
+          <div class="glass-card hero-mini-card">
+            <h3>Conversion logic</h3>
+            <p>
+              Calculator usage builds trust. Trust leads to advisor conversations.
+              Advisor conversations drive product sales across your ecosystem.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="categories">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Core calculator categories</div>
+          <h3>Navigate the platform by financial need</h3>
+          <p>
+            Each category below is linked properly to its dedicated page so the homepage acts like a clean routing layer, not a cluttered landing page.
+          </p>
+        </div>
+      </div>
+
+      <div class="category-grid">
+        <a href="./pages/investment.html" class="category-card investment-accent">
+          <div>
+            <div class="category-top">
+              <div class="category-icon">📈</div>
+              <div class="category-badge">Growth</div>
+            </div>
+            <h4>Investment Tools</h4>
+            <p>
+              Explore SIP calculators, lump sum growth, goal-based investing, and SWP planning for long-term wealth creation.
+            </p>
+            <div class="category-links">
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> SIP</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Lump Sum</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Goals</span>
+            </div>
+          </div>
+          <span class="category-main-link">Open Investment Page <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <a href="./pages/loans.html" class="category-card loan-accent">
+          <div>
+            <div class="category-top">
+              <div class="category-icon">🏦</div>
+              <div class="category-badge">Borrowing</div>
+            </div>
+            <h4>Loan & EMI Tools</h4>
+            <p>
+              Understand EMI, total interest, amortization, prepayment impact, and debt payoff strategy before you sign any loan.
+            </p>
+            <div class="category-links">
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Home Loan</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Personal Loan</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Debt Payoff</span>
+            </div>
+          </div>
+          <span class="category-main-link">Open Loan Page <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <a href="./pages/savings.html" class="category-card savings-accent">
+          <div>
+            <div class="category-top">
+              <div class="category-icon">💰</div>
+              <div class="category-badge">Stability</div>
+            </div>
+            <h4>Savings & FD Tools</h4>
+            <p>
+              Compare fixed deposits, recurring savings, emergency reserves, and short-term parked money strategies.
+            </p>
+            <div class="category-links">
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> FD</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> RD</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Emergency Fund</span>
+            </div>
+          </div>
+          <span class="category-main-link">Open Savings Page <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <a href="./pages/retirement.html" class="category-card retirement-accent">
+          <div>
+            <div class="category-top">
+              <div class="category-icon">🌴</div>
+              <div class="category-badge">Future</div>
+            </div>
+            <h4>Retirement Planning</h4>
+            <p>
+              Project retirement corpus, inflation-adjusted income needs, monthly withdrawals, and long-horizon planning gaps.
+            </p>
+            <div class="category-links">
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Corpus</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Inflation</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Income Planning</span>
+            </div>
+          </div>
+          <span class="category-main-link">Open Retirement Page <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <a href="./pages/tax.html" class="category-card tax-accent">
+          <div>
+            <div class="category-top">
+              <div class="category-icon">🧾</div>
+              <div class="category-badge">Compliance</div>
+            </div>
+            <h4>Tax Calculators</h4>
+            <p>
+              Help salaried users, business owners, professionals, and families estimate tax and compare planning options.
+            </p>
+            <div class="category-links">
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Salary Tax</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Old vs New</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Planning</span>
+            </div>
+          </div>
+          <span class="category-main-link">Open Tax Page <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <a href="./pages/personal-finance.html" class="category-card finance-accent">
+          <div>
+            <div class="category-top">
+              <div class="category-icon">📘</div>
+              <div class="category-badge">Control</div>
+            </div>
+            <h4>Personal Finance Tools</h4>
+            <p>
+              Budgeting, expense planning, emergency buffers, lifestyle affordability, and real-world money management calculators.
+            </p>
+            <div class="category-links">
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Budgeting</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Expenses</span>
+              <span class="mini-link"><i class="fa-solid fa-circle-check"></i> Affordability</span>
+            </div>
+          </div>
+          <span class="category-main-link">Open Finance Page <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="platform-strip">
+        <div class="platform-item">
+          <h4>One ecosystem</h4>
+          <p>Every category should feel like part of one premium product, not random disconnected pages.</p>
+        </div>
+        <div class="platform-item">
+          <h4>Clear navigation</h4>
+          <p>Users should always know what to click next, whether they came for calculators or advice.</p>
+        </div>
+        <div class="platform-item">
+          <h4>Conversion ready</h4>
+          <p>Each page can route to the right website, advisor form, or product funnel at the right moment.</p>
+        </div>
+        <div class="platform-item">
+          <h4>Built for depth</h4>
+          <p>The homepage is ready to scale as you add more tools, categories, and linked domains.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Suggested user journey</div>
+          <h3>How users should move through the platform</h3>
+          <p>
+            The front page should reduce confusion and push users into the right next action as fast as possible.
+          </p>
+        </div>
+      </div>
+
+      <div class="journey-grid">
+        <div class="journey-card">
+          <div class="journey-step">1</div>
+          <h4>Arrive on homepage</h4>
+          <p>User lands on a clean premium platform and immediately understands that the site solves multiple financial needs.</p>
+        </div>
+        <div class="journey-card">
+          <div class="journey-step">2</div>
+          <h4>Pick a category</h4>
+          <p>User chooses investment, loans, savings, retirement, tax, or finance based on current need.</p>
+        </div>
+        <div class="journey-card">
+          <div class="journey-step">3</div>
+          <h4>Use calculators</h4>
+          <p>Tools build trust by showing a real number, projection, comparison, or plan.</p>
+        </div>
+        <div class="journey-card">
+          <div class="journey-step">4</div>
+          <h4>Move to advisor CTA</h4>
+          <p>After value is created, users are guided toward justinvesting.in, justproperty.in, or other linked funnels.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Quick preview tool</div>
+          <h3>Let the homepage do real work</h3>
+          <p>
+            Instead of being only a static front page, add a small interactive SIP preview here so users start engaging instantly.
+          </p>
+        </div>
+      </div>
+
+      <div class="quick-tool-grid">
+        <div class="tool-panel">
+          <h4>Homepage SIP Preview</h4>
+          <p>
+            This quick tool gives users a taste of the platform. For deeper planning, they can move to the full investment page.
+          </p>
+
+          <div class="input-grid">
+            <div class="field">
+              <div class="field-header">
+                <label for="home_sip_amount">Monthly SIP ₹</label>
+                <span class="value-pill" id="home_sip_amount_display"></span>
+              </div>
+              <input type="range" id="home_sip_amount" min="500" max="100000" step="500" value="10000" />
+            </div>
+
+            <div class="field">
+              <div class="field-header">
+                <label for="home_sip_return">Expected Annual Return %</label>
+                <span class="value-pill" id="home_sip_return_display"></span>
+              </div>
+              <input type="range" id="home_sip_return" min="1" max="20" step="0.1" value="12" />
+            </div>
+
+            <div class="field">
+              <div class="field-header">
+                <label for="home_sip_years">Investment Period (Years)</label>
+                <span class="value-pill" id="home_sip_years_display"></span>
+              </div>
+              <input type="range" id="home_sip_years" min="1" max="35" step="1" value="15" />
+            </div>
+
+            <div class="hero-actions" style="margin-top:4px;">
+              <a href="./pages/investment.html" class="btn btn-primary">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                Open Full Investment Page
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-panel">
+          <h4>Projected wealth snapshot</h4>
+          <p>
+            Small monthly decisions become serious wealth when time and compounding are allowed to work.
+          </p>
+
+          <div class="result-grid" id="home_sip_results"></div>
+
+          <div class="chart-card">
+            <div class="chart-wrap">
+              <canvas id="home_sip_chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Connected ecosystem</div>
+          <h3>Link the homepage to your wider domain network</h3>
+          <p>
+            This lets InvestPercent act as the main top-of-funnel brand while partner domains handle specialist conversion journeys.
+          </p>
+        </div>
+      </div>
+
+      <div class="ecosystem-grid">
+        <div class="ecosystem-card">
+          <div>
+            <h4>justinvesting.in</h4>
+            <p>Best for mutual funds, insurance, financial advice, and investor conversations after tool usage.</p>
+          </div>
+          <a href="https://justinvesting.in" target="_blank" rel="noopener">
+            Open Advisor Platform <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="ecosystem-card">
+          <div>
+            <h4>justproperty.in</h4>
+            <p>Best for property-focused leads after users test home loan affordability and budget-related tools.</p>
+          </div>
+          <a href="https://justproperty.in" target="_blank" rel="noopener">
+            Open Property Platform <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="ecosystem-card">
+          <div>
+            <h4>absolutemoney.in</h4>
+            <p>Best for premium finance education, wealth journeys, and higher-intent financial positioning.</p>
+          </div>
+          <a href="https://absolutemoney.in" target="_blank" rel="noopener">
+            Open Wealth Platform <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="ecosystem-card">
+          <div>
+            <h4>goglobal.forex</h4>
+            <p>Best for travel insurance, forex, and international travel-linked monetization flows.</p>
+          </div>
+          <a href="https://goglobal.forex" target="_blank" rel="noopener">
+            Open Travel & Forex <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mega-cta">
+      <div>
+        <h3>Start with tools. Convert with trust.</h3>
+        <p>
+          That should be the operating logic of the homepage. Let users discover value instantly, then send them into the right deep page or advisor path based on their intent.
+        </p>
+      </div>
+
+      <div class="hero-actions" style="margin-top:0;">
+        <a href="./pages/investment.html" class="btn btn-primary">
+          <i class="fa-solid fa-chart-line"></i>
+          Explore Investment Tools
+        </a>
+        <a href="./pages/loans.html" class="btn btn-secondary">
+          <i class="fa-solid fa-building-columns"></i>
+          Explore Loan Tools
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <strong>InvestPercent</strong><br />
+        <span>Your Complete Financial Universe</span>
+      </div>
+
+      <div class="footer-links">
+        <a href="./index.html">Home</a>
+        <a href="./pages/investment.html">Investment</a>
+        <a href="./pages/loans.html">Loans</a>
+        <a href="./pages/savings.html">Savings</a>
+        <a href="./pages/retirement.html">Retirement</a>
+        <a href="./pages/tax.html">Tax</a>
+        <a href="./pages/personal-finance.html">Finance</a>
+      </div>
+    </footer>
+  </div>
 
   <script>
-    (function () {
-      const U = window.IPUtils;
+    const fmtCurrency = (num) => {
+      const value = Number(num || 0);
+      return new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0
+      }).format(value);
+    };
 
-      function formatINR(value) {
-        return U.formatINR(value, 0);
-      }
+    function futureValueSIP(monthly, annualReturn, years) {
+      const r = annualReturn / 12 / 100;
+      const n = years * 12;
+      if (r === 0) return monthly * n;
+      return monthly * ((((Math.pow(1 + r, n) - 1) / r)) * (1 + r));
+    }
 
-      function calcSIP(monthly, annualRate, years) {
-        const r = annualRate / 12 / 100;
-        const n = years * 12;
-        const invested = monthly * n;
-        const maturity = monthly * (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
-        const returns = maturity - invested;
-        return { invested, maturity, returns };
-      }
+    const sipAmount = document.getElementById("home_sip_amount");
+    const sipReturn = document.getElementById("home_sip_return");
+    const sipYears = document.getElementById("home_sip_years");
+    const sipAmountDisplay = document.getElementById("home_sip_amount_display");
+    const sipReturnDisplay = document.getElementById("home_sip_return_display");
+    const sipYearsDisplay = document.getElementById("home_sip_years_display");
+    const sipResults = document.getElementById("home_sip_results");
 
-      function calcEMI(principal, annualRate, years) {
-        const r = annualRate / 12 / 100;
-        const n = years * 12;
-        const emi = principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
-        const total = emi * n;
-        const interest = total - principal;
-        return { emi, total, interest };
-      }
+    let homeSipChart = null;
 
-      function calculateOldRegimeTax(income, deductions) {
-        const taxable = Math.max(income - 50000 - deductions, 0);
-        let tax = 0;
+    function renderHomeSipPreview() {
+      sipAmountDisplay.textContent = fmtCurrency(sipAmount.value);
+      sipReturnDisplay.textContent = `${Number(sipReturn.value).toFixed(1)}%`;
+      sipYearsDisplay.textContent = `${sipYears.value} years`;
 
-        if (taxable <= 250000) tax = 0;
-        else if (taxable <= 500000) tax = (taxable - 250000) * 0.05;
-        else if (taxable <= 1000000) tax = 12500 + (taxable - 500000) * 0.2;
-        else tax = 112500 + (taxable - 1000000) * 0.3;
+      const monthly = Number(sipAmount.value);
+      const annual = Number(sipReturn.value);
+      const years = Number(sipYears.value);
 
-        if (taxable <= 500000) tax = 0;
+      const invested = monthly * years * 12;
+      const futureValue = futureValueSIP(monthly, annual, years);
+      const wealthCreated = futureValue - invested;
 
-        tax += tax * 0.04;
-        return tax;
-      }
+      sipResults.innerHTML = `
+        <div class="result-box">
+          <div class="label">Invested Amount</div>
+          <div class="value">${fmtCurrency(invested)}</div>
+        </div>
+        <div class="result-box">
+          <div class="label">Estimated Value</div>
+          <div class="value">${fmtCurrency(futureValue)}</div>
+        </div>
+        <div class="result-box">
+          <div class="label">Wealth Created</div>
+          <div class="value">${fmtCurrency(wealthCreated)}</div>
+        </div>
+        <div class="result-box">
+          <div class="label">Monthly SIP</div>
+          <div class="value">${fmtCurrency(monthly)}</div>
+        </div>
+      `;
 
-      function calculateNewRegimeTax(income) {
-        const taxable = Math.max(income - 75000, 0);
-        let tax = 0;
+      const ctx = document.getElementById("home_sip_chart").getContext("2d");
+      if (homeSipChart) homeSipChart.destroy();
 
-        if (taxable <= 300000) tax = 0;
-        else if (taxable <= 700000) tax = (taxable - 300000) * 0.05;
-        else if (taxable <= 1000000) tax = 20000 + (taxable - 700000) * 0.1;
-        else if (taxable <= 1200000) tax = 50000 + (taxable - 1000000) * 0.15;
-        else if (taxable <= 1500000) tax = 80000 + (taxable - 1200000) * 0.2;
-        else tax = 140000 + (taxable - 1500000) * 0.3;
-
-        if (taxable <= 700000) tax = 0;
-
-        tax += tax * 0.04;
-        return tax;
-      }
-
-      function bindQuickSIP() {
-        const btn = document.getElementById("quickSipCalculate");
-        if (!btn) return;
-
-        function run() {
-          const monthly = U.toNumber(document.getElementById("quickSipAmount").value);
-          const annualRate = U.toNumber(document.getElementById("quickSipReturn").value);
-          const years = U.toNumber(document.getElementById("quickSipYears").value);
-
-          const result = calcSIP(monthly, annualRate, years);
-
-          document.getElementById("quickSipInvested").textContent = formatINR(result.invested);
-          document.getElementById("quickSipReturns").textContent = formatINR(result.returns);
-          document.getElementById("quickSipMaturity").textContent = formatINR(result.maturity);
+      homeSipChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["Invested Amount", "Wealth Created"],
+          datasets: [{
+            data: [invested, wealthCreated],
+            backgroundColor: ["#38bdf8", "#00d09c"],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: "#dbe8f7"
+              }
+            }
+          }
         }
-
-        btn.addEventListener("click", run);
-        run();
-      }
-
-      function bindQuickEMI() {
-        const btn = document.getElementById("quickEmiCalculate");
-        if (!btn) return;
-
-        function run() {
-          const loan = U.toNumber(document.getElementById("quickEmiLoan").value);
-          const rate = U.toNumber(document.getElementById("quickEmiRate").value);
-          const years = U.toNumber(document.getElementById("quickEmiYears").value);
-
-          const result = calcEMI(loan, rate, years);
-
-          document.getElementById("quickEmiMonthly").textContent = formatINR(result.emi);
-          document.getElementById("quickEmiInterest").textContent = formatINR(result.interest);
-          document.getElementById("quickEmiTotal").textContent = formatINR(result.total);
-        }
-
-        btn.addEventListener("click", run);
-        run();
-      }
-
-      function bindQuickTax() {
-        const btn = document.getElementById("quickTaxCalculate");
-        if (!btn) return;
-
-        function run() {
-          const salary = U.toNumber(document.getElementById("quickTaxSalary").value);
-          const deductions = U.toNumber(document.getElementById("quickTaxDeduction").value);
-
-          const oldTax = calculateOldRegimeTax(salary, deductions);
-          const newTax = calculateNewRegimeTax(salary);
-
-          document.getElementById("quickTaxOld").textContent = formatINR(oldTax);
-          document.getElementById("quickTaxNew").textContent = formatINR(newTax);
-
-          const diff = Math.abs(oldTax - newTax);
-          const winner =
-            oldTax < newTax
-              ? `Old Saves ${formatINR(diff)}`
-              : newTax < oldTax
-              ? `New Saves ${formatINR(diff)}`
-              : "Both Equal";
-
-          document.getElementById("quickTaxWinner").textContent = winner;
-        }
-
-        btn.addEventListener("click", run);
-        run();
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        bindQuickSIP();
-        bindQuickEMI();
-        bindQuickTax();
       });
-    })();
+    }
+
+    [sipAmount, sipReturn, sipYears].forEach(el => {
+      el.addEventListener("input", renderHomeSipPreview);
+    });
+
+    renderHomeSipPreview();
   </script>
 </body>
 </html>
