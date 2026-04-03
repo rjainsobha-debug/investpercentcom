@@ -1,0 +1,51 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  background: rgba(6,12,21,0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.nav-shell {
+  max-width: var(--max);
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 20px;
+}
+
+.top-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.top-nav a {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #111827;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.calc-card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
