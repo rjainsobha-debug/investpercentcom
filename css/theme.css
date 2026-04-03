@@ -1,13 +1,13 @@
 :root {
-  --bg: #070f1a;
-  --card: #0f172a;
-  --card-light: #111c33;
+  --bg: #050c18;
+  --card: rgba(255,255,255,0.04);
+  --glass: rgba(255,255,255,0.06);
 
   --text: #ffffff;
-  --muted: #8ea2c0;
+  --muted: #9fb3d9;
 
-  --accent: #00d09c;
-  --accent2: #38bdf8;
+  --accent: #00f5a0;
+  --accent2: #00d9ff;
 
   --border: rgba(255,255,255,0.08);
 
@@ -17,19 +17,6 @@
 body {
   margin: 0;
   font-family: system-ui;
-  background: radial-gradient(circle at top,#0b1f3a,#070f1a);
+  background: radial-gradient(circle at top,#0b1f3a,#050c18);
   color: var(--text);
-}
-
-.page-shell {
-  max-width: var(--max);
-  margin: auto;
-  padding: 20px;
-}
-
-.hero {
-  padding: 50px;
-  border-radius: 24px;
-  background: linear-gradient(135deg,#0b2a2f,#0c1f3f);
-  margin-bottom: 30px;
 }
