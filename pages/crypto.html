@@ -1,195 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crypto Calculators Elite | InvestPercent</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-body{margin:0;font-family:Inter;background:#0b0f1a;color:#fff;}
-.container{max-width:1200px;margin:auto;padding:20px;}
-.card{background:#12182b;border-radius:16px;padding:25px;margin:25px 0;}
-input,select{width:100%;padding:10px;margin:6px 0;border:none;border-radius:8px;background:#1c2338;color:#fff;}
-button{background:#ff6b35;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;}
-.result{background:#1c2338;padding:15px;border-radius:10px;margin-top:10px;}
-.green{color:#00e676;} .red{color:#ff5252;}
-.warning{background:linear-gradient(135deg,#ff4d4d,#ff6b35);padding:20px;border-radius:12px;}
-.flex{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-</style>
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/components.css">
 </head>
 
 <body>
-<div class="container">
 
-<h1>₿ Crypto Calculators (Elite)</h1>
+<div id="header"></div>
 
-<div class="warning">
-⚠️ Crypto is highly volatile & taxed at 31.2% in India. Losses cannot offset gains.
-</div>
-
-<!-- ===================== CALC 1 ===================== -->
-<div class="card">
-<h2>Crypto Profit + Tax Engine</h2>
-
-<div class="flex">
-<input id="buy" placeholder="Buy Price ₹">
-<input id="qty" placeholder="Quantity">
-<input id="sell" placeholder="Sell Price ₹ (optional)">
-<input id="fee" placeholder="Fees ₹">
-</div>
-
-<label><input type="checkbox" id="unsold"> Not Sold Yet (Unrealized)</label>
-
-<button onclick="calcPL()">Calculate</button>
-
-<div id="plRes" class="result"></div>
-<canvas id="plChart"></canvas>
-</div>
-
-<!-- ===================== CALC 2 ===================== -->
-<div class="card">
-<h2>Bitcoin vs Nifty vs FD (DCA)</h2>
-
-<div class="flex">
-<input id="monthly" placeholder="Monthly ₹">
-<input id="years" placeholder="Years">
-</div>
-
-<button onclick="calcDCA()">Compare</button>
-
-<div id="dcaRes" class="result"></div>
-
-<label><input type="checkbox" id="logToggle"> Log Scale</label>
-<canvas id="dcaChart"></canvas>
-</div>
-
-<!-- ===================== CALC 3 ===================== -->
-<div class="card">
-<h2>Asset Comparison (Post-Tax)</h2>
-
-<div class="flex">
-<input id="amt" placeholder="Investment ₹">
-<input id="yrs" placeholder="Years">
-</div>
-
-<button onclick="compare()">Compare</button>
-
-<div id="cmpRes" class="result"></div>
-</div>
-
-</div>
-
+<script src="../js/main.js"></script>
 <script>
-
-// ================= CALC 1 =================
-function calcPL(){
-let buy=+buy.value;
-let qty=+qty.value;
-let sellVal=+sell.value;
-let feeVal=+fee.value||0;
-let unsold=document.getElementById("unsold").checked;
-
-let cost=(buy*qty)+feeVal;
-
-if(unsold){
-let unreal=(sellVal*qty)-cost;
-let tax=unreal>0?unreal*0.312:0;
-let breakeven=cost/(qty*(1-0.312));
-
-plRes.innerHTML=`
-Unrealized P/L: ₹${unreal.toFixed(0)}<br>
-If sold, Tax: ₹${tax.toFixed(0)}<br>
-Break-even Price: ₹${breakeven.toFixed(0)}
-`;
-return;
-}
-
-let sellTotal=(sellVal*qty)-feeVal;
-let profit=sellTotal-cost;
-
-let tax=profit>0?profit*0.312:0;
-let tds=sellTotal>50000?sellTotal*0.01:0;
-let net=profit-tax;
-
-plRes.innerHTML=`
-Gross P/L: <span class="${profit>=0?'green':'red'}">₹${profit.toFixed(0)}</span><br>
-Tax: ₹${tax.toFixed(0)}<br>
-TDS: ₹${tds.toFixed(0)}<br>
-Net Profit: ₹${net.toFixed(0)}
-`;
-
-new Chart(plChart,{
-type:'bar',
-data:{
-labels:["Buy","Sell","Tax","Net"],
-datasets:[{data:[cost,sellTotal,tax,net]}]
-}
-});
-}
-
-// ================= CALC 2 =================
-function calcDCA(){
-let m=+monthly.value;
-let y=+years.value;
-
-let btc=[],nifty=[],fd=[];
-let b=0,n=0,f=0;
-
-for(let i=0;i<y*12;i++){
-b=(b+m)*(1+0.60/12);
-n=(n+m)*(1+0.12/12);
-f=(f+m)*(1+0.07/12);
-
-btc.push(b);nifty.push(n);fd.push(f);
-}
-
-dcaRes.innerHTML=`
-Bitcoin: ₹${b.toFixed(0)}<br>
-Nifty: ₹${n.toFixed(0)}<br>
-FD: ₹${f.toFixed(0)}
-`;
-
-new Chart(dcaChart,{
-type:'line',
-data:{
-labels:btc.map((_,i)=>i+1),
-datasets:[
-{label:"Bitcoin",data:btc},
-{label:"Nifty",data:nifty},
-{label:"FD",data:fd}
-]
-},
-options:{
-scales:{
-y:{type:logToggle.checked?'logarithmic':'linear'}
-}
-}
-});
-}
-
-// ================= CALC 3 =================
-function compare(){
-let amt=+amt.value;
-let y=+yrs.value;
-
-let btc=amt*Math.pow(1.6,y);
-let nifty=amt*Math.pow(1.12,y);
-let fd=amt*Math.pow(1.07,y);
-
-let btcTax=(btc-amt)*0.312;
-let niftyTax=(nifty-amt)*0.125;
-
-cmpRes.innerHTML=`
-Bitcoin Post-Tax: ₹${(btc-btcTax).toFixed(0)}<br>
-Nifty Post-Tax: ₹${(nifty-niftyTax).toFixed(0)}<br>
-FD (Slab assumed 30%): ₹${(fd-(fd-amt)*0.3).toFixed(0)}
-`;
-}
-
+loadComponent("header", "../components/header.html");
 </script>
+
+<div class="page-shell">
+  <h1>Investment Page</h1>
+</div>
 
 </body>
 </html>
