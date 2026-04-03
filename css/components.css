@@ -43,10 +43,19 @@
   border-radius: 16px;
 }
 
+.side-card h4 {
+  margin-bottom: 10px;
+}
+
 .side-card a {
   display: block;
-  margin: 8px 0;
+  padding: 8px;
+  border-radius: 8px;
   color: var(--accent);
+}
+
+.side-card a:hover {
+  background: rgba(255,255,255,0.05);
 }
 
 /* Cards */
@@ -91,8 +100,10 @@ input {
 /* Button */
 
 .btn-primary {
-  padding: 12px;
-  border-radius: 12px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 14px;
   background: linear-gradient(135deg,#00d09c,#22c55e);
   color: #00251a;
   font-weight: 600;
@@ -113,11 +124,16 @@ input {
 
 .result-item {
   flex: 1;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.05);
   border: 1px solid var(--border);
-  padding: 12px;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 14px;
   text-align: center;
+  transition: 0.2s;
+}
+
+.result-item:hover {
+  transform: translateY(-2px);
 }
 
 .result-item span {
@@ -128,13 +144,15 @@ input {
 .result-item.total {
   background: linear-gradient(135deg,var(--accent),var(--accent2));
   color: #00251a;
+  font-weight: bold;
+  box-shadow: 0 10px 30px rgba(0,208,156,0.25);
 }
 
 /* Chart */
 
 .chart-box {
-  max-width: 280px;
-  margin: auto;
+  max-width: 260px;
+  margin: 20px auto 0;
 }
 
 /* Responsive */
