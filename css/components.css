@@ -26,7 +26,55 @@
   display: block;
   color: #93a4bd;
 }
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(6,12,21,0.7);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
 
+.nav-shell {
+  max-width: var(--max);
+  margin: auto;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-nav {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.top-nav a {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  display: none;
+  background: #0d1728;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
 .calc-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
