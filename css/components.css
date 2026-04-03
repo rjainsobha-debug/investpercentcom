@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   background: rgba(6,12,21,0.85);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
 .nav-shell {
@@ -26,30 +26,40 @@
   text-decoration: none;
 }
 
+/* Layout */
+
 .layout {
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 20px;
 }
 
+/* Sidebar */
+
 .sidebar {
-  background: rgba(255,255,255,0.03);
+  background: var(--card-light);
+  border: 1px solid var(--border);
   padding: 16px;
   border-radius: 16px;
 }
 
 .side-card a {
   display: block;
-  margin: 6px 0;
-  color: #00d09c;
+  margin: 8px 0;
+  color: var(--accent);
 }
 
+/* Cards */
+
 .calc-card {
-  background: #111827;
-  padding: 20px;
+  background: linear-gradient(145deg,#0f172a,#0b1425);
+  border: 1px solid var(--border);
+  padding: 24px;
   border-radius: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
+
+/* Grid */
 
 .calc-grid {
   display: grid;
@@ -57,30 +67,38 @@
   gap: 20px;
 }
 
+/* Panels */
+
 .panel {
-  background: rgba(255,255,255,0.04);
+  background: var(--card-light);
+  border: 1px solid var(--border);
   padding: 20px;
   border-radius: 16px;
 }
 
-.calc-body input,
+/* Inputs */
+
 input {
   width: 100%;
   padding: 14px;
   margin-bottom: 14px;
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
   background: rgba(255,255,255,0.04);
   color: white;
 }
 
+/* Button */
+
 .btn-primary {
   padding: 12px;
   border-radius: 12px;
-  background: linear-gradient(135deg,#00d09c,#38bdf8);
-  border: none;
-  font-weight: bold;
+  background: linear-gradient(135deg,#00d09c,#22c55e);
+  color: #00251a;
+  font-weight: 600;
 }
+
+/* Result */
 
 .result-panel {
   display: flex;
@@ -96,6 +114,7 @@ input {
 .result-item {
   flex: 1;
   background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
   padding: 12px;
   border-radius: 12px;
   text-align: center;
@@ -103,18 +122,22 @@ input {
 
 .result-item span {
   font-size: 12px;
-  color: #93a4bd;
+  color: var(--muted);
 }
 
 .result-item.total {
-  background: linear-gradient(135deg,#00d09c,#38bdf8);
-  color: black;
+  background: linear-gradient(135deg,var(--accent),var(--accent2));
+  color: #00251a;
 }
+
+/* Chart */
 
 .chart-box {
   max-width: 280px;
   margin: auto;
 }
+
+/* Responsive */
 
 @media (max-width:900px){
   .layout { grid-template-columns:1fr; }
