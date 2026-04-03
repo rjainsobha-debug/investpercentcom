@@ -22,7 +22,6 @@
       <div class="brand-mark"><i class="fa-solid fa-chart-line"></i></div>
       <div>
         <div class="brand-title">InvestPercent</div>
-        <div class="brand-sub">Your complete financial universe</div>
       </div>
     </a>
 
@@ -30,7 +29,6 @@
       <a href="../index.html">Home</a>
       <a href="./investment.html">Investment</a>
       <a href="./savings.html">Savings</a>
-      <a href="./tax.html">Tax</a>
       <a href="./loans.html">Loans</a>
       <a href="./retirement.html" class="active">Retirement</a>
     </nav>
@@ -56,7 +54,7 @@
 
 <main class="main">
 
-<!-- ================= CORPUS ================= -->
+<!-- CORPUS -->
 <section class="calc-card" id="corpus">
   <div class="calc-header">
     <h2>Retirement Corpus Calculator</h2>
@@ -66,18 +64,31 @@
     <div class="calc-grid">
 
       <div class="panel">
-        <input id="age" value="30" placeholder="Current Age">
-        <input id="retAge" value="60" placeholder="Retirement Age">
-        <input id="expense" value="60000" placeholder="Monthly Expense ₹">
-        <input id="inflation" value="6" placeholder="Inflation %">
-        <input id="return" value="10" placeholder="Return %">
-        <input id="savings" value="500000" placeholder="Current Savings">
+
+        <label>Current Age</label>
+        <input id="age" value="30">
+
+        <label>Retirement Age</label>
+        <input id="retAge" value="60">
+
+        <label>Monthly Expense ₹</label>
+        <input id="expense" value="60000">
+
+        <label>Inflation %</label>
+        <input id="inflation" value="6">
+
+        <label>Return %</label>
+        <input id="return" value="10">
+
+        <label>Current Savings ₹</label>
+        <input id="savings" value="500000">
 
         <button class="btn btn-primary" onclick="calcCorpus()">Calculate</button>
+
       </div>
 
       <div class="panel">
-        <div id="corpus_result" class="result-box"></div>
+        <div id="corpus_result" class="result-box">Results will appear here</div>
         <canvas id="corpus_chart"></canvas>
       </div>
 
@@ -85,7 +96,7 @@
   </div>
 </section>
 
-<!-- ================= FIRE ================= -->
+<!-- FIRE -->
 <section class="calc-card" id="fire">
   <div class="calc-header">
     <h2>FIRE Calculator</h2>
@@ -95,23 +106,36 @@
     <div class="calc-grid">
 
       <div class="panel">
-        <input id="fire_exp" value="60000" placeholder="Monthly Expense">
-        <input id="fire_save" value="500000" placeholder="Savings">
-        <input id="fire_inv" value="30000" placeholder="Monthly Invest">
-        <input id="fire_ret" value="10" placeholder="Return %">
-        <input id="fire_age" value="30" placeholder="Age">
+
+        <label>Monthly Expense</label>
+        <input id="fire_exp" value="60000">
+
+        <label>Current Savings</label>
+        <input id="fire_save" value="500000">
+
+        <label>Monthly Investment</label>
+        <input id="fire_inv" value="30000">
+
+        <label>Return %</label>
+        <input id="fire_ret" value="10">
+
+        <label>Current Age</label>
+        <input id="fire_age" value="30">
 
         <button class="btn btn-primary" onclick="calcFIRE()">Calculate</button>
+
       </div>
 
       <div class="panel">
-        <div id="fire_result" class="result-box"></div>
+
+        <div id="fire_result" class="result-box">Results will appear here</div>
 
         <div class="progress-bar">
           <div id="progress_fill" class="progress-fill"></div>
         </div>
 
         <canvas id="fire_chart"></canvas>
+
       </div>
 
     </div>
@@ -124,52 +148,29 @@
 
 <script>
 
-// ================= CORPUS =================
 function calcCorpus(){
-
-let age=+age.value;
-let ret=+retAge.value;
-let exp=+expense.value;
+let age=+age.value, ret=+retAge.value, exp=+expense.value;
 let inf=+inflation.value/100;
-let r=+return.value/100;
-let sav=+savings.value;
 
 let years=ret-age;
-
 let futureExp=exp*Math.pow(1+inf,years);
 let corpus=futureExp*12*25;
 
-corpus_result.innerHTML = `
-<b>Corpus Needed:</b> ₹${corpus.toFixed(0)}<br>
-<b>Future Expense:</b> ₹${futureExp.toFixed(0)}
-`;
+corpus_result.innerHTML = "Corpus Needed ₹"+corpus.toFixed(0);
 
-new Chart(document.getElementById("corpus_chart"),{
+new Chart(corpus_chart,{
 type:"line",
-data:{
-labels:[age,ret],
-datasets:[{
-label:"Corpus Growth",
-data:[sav,corpus],
-borderColor:"#00d09c"
-}]
-}
+data:{labels:[age,ret],datasets:[{data:[exp,corpus]}]}
 });
 }
 
-// ================= FIRE =================
 function calcFIRE(){
-
-let exp=+fire_exp.value;
-let save=+fire_save.value;
-let inv=+fire_inv.value;
-let r=+fire_ret.value/100;
+let exp=+fire_exp.value, save=+fire_save.value;
+let inv=+fire_inv.value, r=+fire_ret.value/100;
 let age=+fire_age.value;
 
 let fireNumber=exp*12*25;
-
-let years=0;
-let corpus=save;
+let years=0, corpus=save;
 
 while(corpus<fireNumber){
  corpus=corpus*(1+r)+inv*12;
@@ -177,26 +178,13 @@ while(corpus<fireNumber){
  if(years>60) break;
 }
 
-let progress=(save/fireNumber)*100;
+fire_result.innerHTML = `FIRE ₹${fireNumber}<br>Years ${years}<br>Age ${age+years}`;
 
-fire_result.innerHTML = `
-<b>FIRE Number:</b> ₹${fireNumber.toFixed(0)}<br>
-<b>Years:</b> ${years}<br>
-<b>Age:</b> ${age+years}
-`;
+progress_fill.style.width = (save/fireNumber*100)+"%";
 
-document.getElementById("progress_fill").style.width = progress+"%";
-
-new Chart(document.getElementById("fire_chart"),{
+new Chart(fire_chart,{
 type:"line",
-data:{
-labels:["Start","FIRE"],
-datasets:[{
-label:"Wealth",
-data:[save,fireNumber],
-borderColor:"#38bdf8"
-}]
-}
+data:{labels:["Now","FIRE"],datasets:[{data:[save,fireNumber]}]}
 });
 }
 
