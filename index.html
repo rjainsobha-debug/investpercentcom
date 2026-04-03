@@ -1,63 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>InvestPercent</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
---bg:#041424;
---card:#0b2d4d;
---accent:#32c7ff;
---text:#fff;
---muted:#9bbbdc;
---radius:20px;
-}
-
 body{
 margin:0;
 font-family:Inter;
 background:linear-gradient(120deg,#041424,#0b2d4d);
-color:var(--text);
+color:#fff;
 }
-
 .container{max-width:1200px;margin:auto;padding:20px}
 
-/* NAV */
-.nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 0;
-}
-.logo{font-size:24px;font-weight:800}
-.nav a{margin:0 10px;color:#cde6ff;text-decoration:none}
+.nav{display:flex;justify-content:space-between}
+.logo{font-size:22px;font-weight:800}
 
-/* HERO */
-.hero{
-padding:80px 0;
-text-align:center;
-}
-.hero h1{
-font-size:48px;
-margin-bottom:10px;
-}
-.hero p{color:var(--muted);}
+.hero{text-align:center;padding:80px 20px}
+.hero h1{font-size:48px}
+.hero p{color:#9bbbdc}
 
 .btn{
-background:linear-gradient(135deg,#32c7ff,#56b8ff);
+background:#32c7ff;
 padding:14px 25px;
-border-radius:12px;
-color:#00111f;
+border-radius:10px;
 font-weight:700;
-border:none;
 cursor:pointer;
+border:none;
 }
 
-/* CARDS */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -65,20 +38,12 @@ gap:20px;
 margin-top:40px;
 }
 .card{
-background:var(--card);
-padding:20px;
-border-radius:var(--radius);
+background:#0b2d4d;
+padding:25px;
+border-radius:20px;
 transition:.3s;
 }
 .card:hover{transform:translateY(-5px)}
-.card h3{margin-bottom:10px}
-
-/* FOOTER */
-.footer{
-text-align:center;
-margin-top:50px;
-color:#a7c5ea;
-}
 </style>
 </head>
 
@@ -87,48 +52,22 @@ color:#a7c5ea;
 <div class="container nav">
 <div class="logo">Invest%</div>
 <div>
-<a href="index.html">Home</a>
 <a href="investments.html">Investments</a>
-<a href="property.html">Property</a>
 <a href="tax.html">Tax</a>
-<a href="forex.html">Forex</a>
+<a href="loan.html">Loans</a>
 </div>
 </div>
 
-<section class="hero container">
+<section class="hero">
 <h1>Calculate Your Financial Future</h1>
-<p>All financial tools in one place — Investments, Tax, Property, Forex</p>
+<p>All tools in one place — investments, tax, loans</p>
 <button class="btn" onclick="location.href='investments.html'">Start Now</button>
 </section>
 
-<section class="container">
-<div class="grid">
-
-<a href="investments.html" class="card">
-<h3>💰 Investments</h3>
-<p>SIP, CAGR, Lumpsum calculators</p>
-</a>
-
-<a href="property.html" class="card">
-<h3>🏠 Property</h3>
-<p>EMI & affordability tools</p>
-</a>
-
-<a href="tax.html" class="card">
-<h3>🧾 Tax</h3>
-<p>Income tax & deductions</p>
-</a>
-
-<a href="forex.html" class="card">
-<h3>🌍 Forex</h3>
-<p>Currency & exchange tools</p>
-</a>
-
-</div>
-</section>
-
-<div class="footer">
-© 2026 InvestPercent — Your Financial Universe
+<div class="container grid">
+<a href="investments.html" class="card">💰 Investment Tools</a>
+<a href="tax.html" class="card">🧾 Tax Calculators</a>
+<a href="loan.html" class="card">🏦 Loan Calculators</a>
 </div>
 
 </body>
