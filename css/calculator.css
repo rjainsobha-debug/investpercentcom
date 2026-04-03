@@ -1,0 +1,50 @@
+/* CALCULATOR.CSS — layout for all calculators */
+
+.calculator-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.calculator-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calculator-results {
+  background: var(--bg-secondary);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+}
+
+.ip-result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.ip-result-cell {
+  background: var(--bg-tertiary);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.ip-result-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--accent-cyan);
+}
+
+.ip-result-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .calculator-container {
+    grid-template-columns: 1fr;
+  }
+}
