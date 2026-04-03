@@ -1,877 +1,438 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Investment Calculators | investpercent.com</title>
-  <meta name="description" content="Simple, fast investment calculators for SIP, lumpsum, CAGR, SWP, and PPF." />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Investment</title>
+
   <style>
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      background:#041424;
-      color:#fff;
-      font-family:Inter, Arial, sans-serif;
-    }
-    .container{
-      max-width:1000px;
-      margin:auto;
-      padding:20px;
-    }
-    h1{
-      margin:0 0 8px;
-      font-size:34px;
-      text-align:center;
-    }
-    .subtitle{
-      text-align:center;
-      color:#b8d6ea;
-      margin-bottom:24px;
-      font-size:15px;
-    }
-    .card{
-      background:#0b2d4d;
-      padding:20px;
-      border-radius:20px;
-      margin-bottom:22px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.22);
-    }
-    .card h2{
-      margin:0 0 8px;
-      font-size:24px;
-    }
-    .card p{
-      margin:0 0 16px;
-      color:#b8d6ea;
-      font-size:14px;
-      line-height:1.5;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:14px;
-    }
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:14px;
-    }
-    .field label{
-      display:block;
-      font-size:14px;
-      margin-bottom:6px;
-      color:#dcecf8;
-    }
-    input, select{
-      width:100%;
-      padding:12px;
-      border:none;
-      border-radius:10px;
-      background:#f5fbff;
-      color:#05243e;
-      font-size:15px;
-      outline:none;
-    }
-    button{
-      margin-top:14px;
-      padding:12px;
-      width:100%;
-      background:#32c7ff;
-      color:#041424;
-      border:none;
-      border-radius:10px;
-      font-weight:700;
-      cursor:pointer;
-      font-size:15px;
-    }
-    button:hover{
-      background:#23b6ec;
-    }
-    .btn-secondary{
-      background:#163d63;
-      color:#fff;
-    }
-    .btn-secondary:hover{
-      background:#1e4d79;
-    }
-    .actions{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .actions button{
-      flex:1;
-      min-width:180px;
-    }
-    .result{
-      margin-top:16px;
-      background:#08233b;
-      border-radius:14px;
-      padding:16px;
-    }
-    .result h3{
-      margin:0 0 12px;
-      font-size:18px;
-    }
-    .result-grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:12px;
-    }
-    .result-box{
-      background:#10385d;
-      border-radius:12px;
-      padding:14px;
-    }
-    .result-label{
-      font-size:12px;
-      color:#b8d6ea;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-      margin-bottom:6px;
-    }
-    .result-value{
-      font-size:22px;
-      font-weight:800;
-      line-height:1.2;
-    }
-    .green{color:#64f3a7}
-    .red{color:#ff7a7a}
-    .note{
-      margin-top:12px;
-      color:#b8d6ea;
-      font-size:13px;
-      line-height:1.5;
-    }
-    canvas{
-      margin-top:16px;
-      background:#08233b;
-      border-radius:14px;
-      padding:12px;
-      width:100% !important;
-      max-height:340px;
-    }
-    .top-nav{
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-bottom:22px;
-    }
-    .top-nav a{
-      color:#32c7ff;
-      text-decoration:none;
-      font-size:14px;
-      padding:8px 12px;
-      border:1px solid rgba(50,199,255,.25);
-      border-radius:999px;
-      background:rgba(11,45,77,.55);
-    }
-    .top-nav a:hover{
-      background:#0b2d4d;
-    }
-    .partner{
-      background:#0b2d4d;
-      padding:18px 20px;
-      border-radius:20px;
-      margin-bottom:22px;
-      border-left:4px solid #32c7ff;
-    }
-    .partner strong{
-      display:block;
-      margin-bottom:6px;
-      font-size:17px;
-    }
-    .partner a{
-      color:#32c7ff;
-      text-decoration:none;
-      font-weight:700;
-    }
-    .table-wrap{
-      overflow:auto;
-      margin-top:14px;
-      border-radius:14px;
-    }
-    table{
-      width:100%;
-      border-collapse:collapse;
-      background:#08233b;
-      border-radius:14px;
-      overflow:hidden;
-    }
-    th, td{
-      padding:12px;
-      text-align:left;
-      font-size:14px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-    th{
-      background:#10385d;
-      color:#dff4ff;
-    }
-    .footer-space{height:8px}
-    @media (max-width:768px){
-      .grid,.grid-3,.result-grid{
-        grid-template-columns:1fr;
-      }
-      h1{
-        font-size:28px;
-      }
-      .result-value{
-        font-size:20px;
-      }
+    body{background:#041424;color:#fff;font-family:Inter,Arial,sans-serif;margin:0}
+    .container{max-width:1000px;margin:auto;padding:20px}
+    .card{background:#0b2d4d;padding:20px;border-radius:20px;margin-bottom:20px}
+    input,select{width:100%;padding:10px;margin-top:10px;border:none;border-radius:10px;box-sizing:border-box}
+    button{margin-top:10px;padding:10px;width:100%;background:#32c7ff;border:none;border-radius:10px;font-weight:700;cursor:pointer}
+    h1{text-align:center;margin:0 0 20px}
+    h2{margin-top:0}
+    .result{margin-top:15px;font-size:18px;font-weight:600;line-height:1.6}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .small{font-size:14px;color:#c7def0;margin-top:10px;line-height:1.5}
+    .summary{background:#08233b;padding:15px;border-radius:14px;margin-top:15px}
+    .summary div{margin-bottom:8px}
+    .summary div:last-child{margin-bottom:0}
+    .green{color:#65f0a1}
+    .red{color:#ff8f8f}
+    canvas{margin-top:15px;background:transparent}
+    @media(max-width:700px){
+      .grid{grid-template-columns:1fr}
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Investment Calculators</h1>
-    <div class="subtitle">Simple, fast calculators in the same clean visual style as your loan page.</div>
 
-    <div class="top-nav">
-      <a href="#sip">SIP</a>
-      <a href="#lumpsum">Lumpsum</a>
-      <a href="#cagr">CAGR</a>
-      <a href="#swp">SWP</a>
-      <a href="#ppf">PPF</a>
+<div class="container">
+  <h1>Investment Calculators</h1>
+
+  <div class="card">
+    <h2>SIP Calculator</h2>
+
+    <div class="grid">
+      <div>
+        <input id="sipAmount" type="number" placeholder="Monthly Investment ₹" value="5000">
+      </div>
+      <div>
+        <input id="sipRate" type="number" placeholder="Expected Return %" value="12">
+      </div>
+      <div>
+        <input id="sipYears" type="number" placeholder="Years" value="10">
+      </div>
+      <div>
+        <input id="sipStepUp" type="number" placeholder="Annual Step-Up % (optional)" value="0">
+      </div>
     </div>
 
-    <div class="partner">
-      <strong>Build wealth with the right strategy.</strong>
-      Explore investments, mutual funds, and planning support at
-      <a href="https://justinvesting.in" target="_blank" rel="noopener noreferrer">justinvesting.in →</a>
-    </div>
+    <button onclick="calcSIP()">Calculate SIP</button>
 
-    <!-- SIP -->
-    <section class="card" id="sip">
-      <h2>SIP Calculator</h2>
-      <p>Estimate the future value of monthly investments with expected annual returns.</p>
-
-      <div class="grid">
-        <div class="field">
-          <label for="sipAmount">Monthly Investment (₹)</label>
-          <input id="sipAmount" type="number" value="5000" min="500" step="500" />
-        </div>
-        <div class="field">
-          <label for="sipRate">Expected Annual Return (%)</label>
-          <input id="sipRate" type="number" value="12" min="1" max="30" step="0.1" />
-        </div>
-        <div class="field">
-          <label for="sipYears">Investment Period (Years)</label>
-          <input id="sipYears" type="number" value="10" min="1" max="50" step="1" />
-        </div>
-        <div class="field">
-          <label for="sipStepup">Annual Step-Up (%)</label>
-          <input id="sipStepup" type="number" value="0" min="0" max="30" step="1" />
-        </div>
-      </div>
-
-      <div class="actions">
-        <button onclick="calcSIP()">Calculate SIP</button>
-        <button class="btn-secondary" onclick="resetSIP()">Reset</button>
-      </div>
-
-      <div class="result" id="sipResult">
-        <h3>SIP Summary</h3>
-        <div class="result-grid">
-          <div class="result-box">
-            <div class="result-label">Total Invested</div>
-            <div class="result-value" id="sipInvested">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Estimated Value</div>
-            <div class="result-value green" id="sipFuture">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Wealth Gained</div>
-            <div class="result-value" id="sipGain">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Absolute Return</div>
-            <div class="result-value" id="sipReturnPct">0%</div>
-          </div>
-        </div>
-        <div class="note">This assumes monthly compounding and a steady rate of return.</div>
-      </div>
-
-      <canvas id="sipChart"></canvas>
-    </section>
-
-    <!-- Lumpsum -->
-    <section class="card" id="lumpsum">
-      <h2>Lumpsum Calculator</h2>
-      <p>Find the future value of a one-time investment over time.</p>
-
-      <div class="grid">
-        <div class="field">
-          <label for="lumpAmount">Investment Amount (₹)</label>
-          <input id="lumpAmount" type="number" value="100000" min="1000" step="1000" />
-        </div>
-        <div class="field">
-          <label for="lumpRate">Expected Annual Return (%)</label>
-          <input id="lumpRate" type="number" value="12" min="1" max="30" step="0.1" />
-        </div>
-        <div class="field">
-          <label for="lumpYears">Investment Period (Years)</label>
-          <input id="lumpYears" type="number" value="10" min="1" max="50" step="1" />
-        </div>
-        <div class="field">
-          <label for="lumpInflation">Inflation for Real Value (%)</label>
-          <input id="lumpInflation" type="number" value="6" min="0" max="15" step="0.1" />
-        </div>
-      </div>
-
-      <div class="actions">
-        <button onclick="calcLumpsum()">Calculate Lumpsum</button>
-        <button class="btn-secondary" onclick="resetLumpsum()">Reset</button>
-      </div>
-
-      <div class="result">
-        <h3>Lumpsum Summary</h3>
-        <div class="result-grid">
-          <div class="result-box">
-            <div class="result-label">Invested Amount</div>
-            <div class="result-value" id="lumpInvested">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Future Value</div>
-            <div class="result-value green" id="lumpFuture">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Gain</div>
-            <div class="result-value" id="lumpGain">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Today's Value (Real)</div>
-            <div class="result-value" id="lumpRealValue">₹0</div>
-          </div>
-        </div>
-      </div>
-
-      <canvas id="lumpChart"></canvas>
-    </section>
-
-    <!-- CAGR -->
-    <section class="card" id="cagr">
-      <h2>CAGR Calculator</h2>
-      <p>Measure annualized return between an initial value and final value.</p>
-
-      <div class="grid">
-        <div class="field">
-          <label for="cagrStart">Initial Value (₹)</label>
-          <input id="cagrStart" type="number" value="100000" min="1" step="1000" />
-        </div>
-        <div class="field">
-          <label for="cagrEnd">Final Value (₹)</label>
-          <input id="cagrEnd" type="number" value="180000" min="1" step="1000" />
-        </div>
-        <div class="field">
-          <label for="cagrYears">Years</label>
-          <input id="cagrYears" type="number" value="5" min="1" max="50" step="0.1" />
-        </div>
-        <div class="field">
-          <label for="cagrCompare">Compare Against FD (%)</label>
-          <input id="cagrCompare" type="number" value="7" min="1" max="15" step="0.1" />
-        </div>
-      </div>
-
-      <div class="actions">
-        <button onclick="calcCAGR()">Calculate CAGR</button>
-        <button class="btn-secondary" onclick="resetCAGR()">Reset</button>
-      </div>
-
-      <div class="result">
-        <h3>CAGR Summary</h3>
-        <div class="result-grid">
-          <div class="result-box">
-            <div class="result-label">CAGR</div>
-            <div class="result-value green" id="cagrValue">0%</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Absolute Return</div>
-            <div class="result-value" id="cagrAbsReturn">0%</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Value if Invested at FD Rate</div>
-            <div class="result-value" id="cagrFdValue">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Outperformance vs FD</div>
-            <div class="result-value" id="cagrOutperformance">₹0</div>
-          </div>
-        </div>
-      </div>
-
-      <canvas id="cagrChart"></canvas>
-    </section>
-
-    <!-- SWP -->
-    <section class="card" id="swp">
-      <h2>SWP Calculator</h2>
-      <p>Estimate how systematic withdrawals affect your investment corpus over time.</p>
-
-      <div class="grid">
-        <div class="field">
-          <label for="swpCorpus">Initial Corpus (₹)</label>
-          <input id="swpCorpus" type="number" value="2000000" min="10000" step="10000" />
-        </div>
-        <div class="field">
-          <label for="swpWithdraw">Monthly Withdrawal (₹)</label>
-          <input id="swpWithdraw" type="number" value="20000" min="1000" step="1000" />
-        </div>
-        <div class="field">
-          <label for="swpRate">Expected Annual Return (%)</label>
-          <input id="swpRate" type="number" value="10" min="1" max="25" step="0.1" />
-        </div>
-        <div class="field">
-          <label for="swpYears">Withdrawal Period (Years)</label>
-          <input id="swpYears" type="number" value="15" min="1" max="50" step="1" />
-        </div>
-      </div>
-
-      <div class="actions">
-        <button onclick="calcSWP()">Calculate SWP</button>
-        <button class="btn-secondary" onclick="resetSWP()">Reset</button>
-      </div>
-
-      <div class="result">
-        <h3>SWP Summary</h3>
-        <div class="result-grid">
-          <div class="result-box">
-            <div class="result-label">Total Withdrawn</div>
-            <div class="result-value" id="swpWithdrawn">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Final Corpus</div>
-            <div class="result-value green" id="swpFinal">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Months Sustained</div>
-            <div class="result-value" id="swpMonths">0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Status</div>
-            <div class="result-value" id="swpStatus">—</div>
-          </div>
-        </div>
-      </div>
-
-      <canvas id="swpChart"></canvas>
-    </section>
-
-    <!-- PPF -->
-    <section class="card" id="ppf">
-      <h2>PPF Calculator</h2>
-      <p>Plan long-term tax-efficient savings with Public Provident Fund assumptions.</p>
-
-      <div class="grid">
-        <div class="field">
-          <label for="ppfAnnual">Annual Contribution (₹)</label>
-          <input id="ppfAnnual" type="number" value="150000" min="500" max="150000" step="500" />
-        </div>
-        <div class="field">
-          <label for="ppfRate">Interest Rate (%)</label>
-          <input id="ppfRate" type="number" value="7.1" min="1" max="15" step="0.1" />
-        </div>
-        <div class="field">
-          <label for="ppfYears">Years</label>
-          <input id="ppfYears" type="number" value="15" min="1" max="30" step="1" />
-        </div>
-        <div class="field">
-          <label for="ppfFrequency">Contribution Frequency</label>
-          <select id="ppfFrequency">
-            <option value="yearly">Yearly</option>
-            <option value="monthly">Monthly</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button onclick="calcPPF()">Calculate PPF</button>
-        <button class="btn-secondary" onclick="resetPPF()">Reset</button>
-      </div>
-
-      <div class="result">
-        <h3>PPF Summary</h3>
-        <div class="result-grid">
-          <div class="result-box">
-            <div class="result-label">Total Invested</div>
-            <div class="result-value" id="ppfInvested">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Maturity Value</div>
-            <div class="result-value green" id="ppfMaturity">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Interest Earned</div>
-            <div class="result-value" id="ppfInterest">₹0</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Lock-in Period</div>
-            <div class="result-value" id="ppfLockin">15 years</div>
-          </div>
-        </div>
-      </div>
-
-      <canvas id="ppfChart"></canvas>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>Opening Balance</th>
-              <th>Contribution</th>
-              <th>Interest</th>
-              <th>Closing Balance</th>
-            </tr>
-          </thead>
-          <tbody id="ppfTableBody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <div class="footer-space"></div>
+    <div id="sipResult" class="result"></div>
+    <canvas id="sipChart"></canvas>
   </div>
 
-  <script>
-    const charts = {};
+  <div class="card">
+    <h2>Lumpsum Calculator</h2>
 
-    function formatINR(num){
-      if (!isFinite(num)) return "₹0";
-      return "₹" + Math.round(num).toLocaleString("en-IN");
+    <div class="grid">
+      <div>
+        <input id="lumpAmount" type="number" placeholder="Investment Amount ₹" value="100000">
+      </div>
+      <div>
+        <input id="lumpRate" type="number" placeholder="Expected Return %" value="12">
+      </div>
+      <div>
+        <input id="lumpYears" type="number" placeholder="Years" value="10">
+      </div>
+      <div>
+        <input id="lumpInflation" type="number" placeholder="Inflation % (optional)" value="6">
+      </div>
+    </div>
+
+    <button onclick="calcLumpsum()">Calculate Lumpsum</button>
+
+    <div id="lumpResult" class="result"></div>
+    <canvas id="lumpChart"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>CAGR Calculator</h2>
+
+    <div class="grid">
+      <div>
+        <input id="cagrStart" type="number" placeholder="Starting Value ₹" value="100000">
+      </div>
+      <div>
+        <input id="cagrEnd" type="number" placeholder="Ending Value ₹" value="180000">
+      </div>
+      <div>
+        <input id="cagrYears" type="number" placeholder="Years" value="5">
+      </div>
+      <div>
+        <input id="cagrExtra" type="number" placeholder="Additional Investment ₹ (optional)" value="0">
+      </div>
+    </div>
+
+    <button onclick="calcCAGR()">Calculate CAGR</button>
+
+    <div id="cagrResult" class="result"></div>
+    <canvas id="cagrChart"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>SWP Calculator</h2>
+
+    <div class="grid">
+      <div>
+        <input id="swpCorpus" type="number" placeholder="Initial Corpus ₹" value="2000000">
+      </div>
+      <div>
+        <input id="swpRate" type="number" placeholder="Expected Return %" value="10">
+      </div>
+      <div>
+        <input id="swpWithdrawal" type="number" placeholder="Monthly Withdrawal ₹" value="20000">
+      </div>
+      <div>
+        <input id="swpYears" type="number" placeholder="Years" value="15">
+      </div>
+    </div>
+
+    <button onclick="calcSWP()">Calculate SWP</button>
+
+    <div id="swpResult" class="result"></div>
+    <canvas id="swpChart"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>PPF Calculator</h2>
+
+    <div class="grid">
+      <div>
+        <input id="ppfYearly" type="number" placeholder="Yearly Investment ₹" value="150000">
+      </div>
+      <div>
+        <input id="ppfRate" type="number" placeholder="Interest Rate %" value="7.1">
+      </div>
+      <div>
+        <input id="ppfYears" type="number" placeholder="Years" value="15">
+      </div>
+      <div>
+        <select id="ppfContributionType">
+          <option value="yearly">Yearly Contribution</option>
+          <option value="monthly">Monthly Equivalent Contribution</option>
+        </select>
+      </div>
+    </div>
+
+    <button onclick="calcPPF()">Calculate PPF</button>
+
+    <div id="ppfResult" class="result"></div>
+    <canvas id="ppfChart"></canvas>
+  </div>
+</div>
+
+<script>
+  let sipChartInstance = null;
+  let lumpChartInstance = null;
+  let cagrChartInstance = null;
+  let swpChartInstance = null;
+  let ppfChartInstance = null;
+
+  function formatINR(num){
+    return "₹" + Math.round(num).toLocaleString("en-IN");
+  }
+
+  function destroyIfExists(chartRef){
+    if(chartRef){
+      chartRef.destroy();
     }
+  }
 
-    function destroyChart(id){
-      if(charts[id]){
-        charts[id].destroy();
+  function calcSIP(){
+    let P = +document.getElementById("sipAmount").value || 0;
+    let annualRate = +document.getElementById("sipRate").value || 0;
+    let years = +document.getElementById("sipYears").value || 0;
+    let stepUp = +document.getElementById("sipStepUp").value || 0;
+
+    let r = annualRate / 100 / 12;
+    let totalMonths = years * 12;
+    let monthlySip = P;
+    let corpus = 0;
+    let invested = 0;
+    let yearlyLabels = [];
+    let yearlyCorpus = [];
+    let yearlyInvested = [];
+
+    for(let m = 1; m <= totalMonths; m++){
+      if(m > 1 && (m - 1) % 12 === 0){
+        monthlySip = monthlySip * (1 + stepUp / 100);
+      }
+      corpus = (corpus + monthlySip) * (1 + r);
+      invested += monthlySip;
+
+      if(m % 12 === 0){
+        yearlyLabels.push("Year " + (m / 12));
+        yearlyCorpus.push(Math.round(corpus));
+        yearlyInvested.push(Math.round(invested));
       }
     }
 
-    function makeChart(id, config){
-      destroyChart(id);
-      charts[id] = new Chart(document.getElementById(id), config);
-    }
+    let gain = corpus - invested;
+    let ret = invested > 0 ? (gain / invested) * 100 : 0;
 
-    function calcSIP(){
-      const monthly = +document.getElementById("sipAmount").value || 0;
-      const annualRate = (+document.getElementById("sipRate").value || 0) / 100;
-      const years = +document.getElementById("sipYears").value || 0;
-      const stepup = (+document.getElementById("sipStepup").value || 0) / 100;
+    document.getElementById("sipResult").innerHTML = `
+      <div class="summary">
+        <div>Total Invested: <strong>${formatINR(invested)}</strong></div>
+        <div>Estimated Value: <strong class="green">${formatINR(corpus)}</strong></div>
+        <div>Estimated Gain: <strong>${formatINR(gain)}</strong></div>
+        <div>Absolute Return: <strong>${ret.toFixed(2)}%</strong></div>
+      </div>
+      <div class="small">This assumes monthly compounding and a fixed expected return. Step-up increases annual SIP contribution at the start of each year.</div>
+    `;
 
-      let corpus = 0;
-      let invested = 0;
-      let currentMonthly = monthly;
-      const monthlyRate = annualRate / 12;
-      const totalMonths = years * 12;
-      const growthSeries = [];
-      const labels = [];
-
-      for(let m = 1; m <= totalMonths; m++){
-        if(m > 1 && (m - 1) % 12 === 0){
-          currentMonthly *= (1 + stepup);
-        }
-        corpus = (corpus + currentMonthly) * (1 + monthlyRate);
-        invested += currentMonthly;
-        if(m % 12 === 0){
-          labels.push("Year " + (m / 12));
-          growthSeries.push(Math.round(corpus));
-        }
+    destroyIfExists(sipChartInstance);
+    sipChartInstance = new Chart(document.getElementById("sipChart"), {
+      type: 'bar',
+      data: {
+        labels: ['Invested', 'Returns'],
+        datasets: [{
+          data: [Math.round(invested), Math.round(gain)],
+          backgroundColor: ['#32c7ff', '#65f0a1']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } }
       }
+    });
+  }
 
-      const gain = corpus - invested;
-      const retPct = invested > 0 ? (gain / invested) * 100 : 0;
+  function calcLumpsum(){
+    let P = +document.getElementById("lumpAmount").value || 0;
+    let rate = (+document.getElementById("lumpRate").value || 0) / 100;
+    let years = +document.getElementById("lumpYears").value || 0;
+    let inflation = (+document.getElementById("lumpInflation").value || 0) / 100;
 
-      document.getElementById("sipInvested").textContent = formatINR(invested);
-      document.getElementById("sipFuture").textContent = formatINR(corpus);
-      document.getElementById("sipGain").textContent = formatINR(gain);
-      document.getElementById("sipReturnPct").textContent = retPct.toFixed(2) + "%";
+    let future = P * Math.pow(1 + rate, years);
+    let gain = future - P;
+    let realValue = future / Math.pow(1 + inflation, years);
 
-      makeChart("sipChart", {
-        type: "bar",
-        data: {
-          labels: ["Invested", "Estimated Value", "Gain"],
-          datasets: [{
-            data: [Math.round(invested), Math.round(corpus), Math.round(gain)],
-            backgroundColor: ["#2c6b97", "#32c7ff", "#64f3a7"]
-          }]
-        },
-        options: {
-          plugins: { legend: { display: false } },
-          responsive: true,
-          scales: { y: { ticks: { color: "#d7efff" }, grid: { color: "rgba(255,255,255,.08)" } },
-                   x: { ticks: { color: "#d7efff" }, grid: { display: false } } }
-        }
-      });
-    }
+    document.getElementById("lumpResult").innerHTML = `
+      <div class="summary">
+        <div>Invested Amount: <strong>${formatINR(P)}</strong></div>
+        <div>Future Value: <strong class="green">${formatINR(future)}</strong></div>
+        <div>Total Gain: <strong>${formatINR(gain)}</strong></div>
+        <div>Inflation-Adjusted Value: <strong>${formatINR(realValue)}</strong></div>
+      </div>
+      <div class="small">Inflation-adjusted value shows approximate present purchasing power of the future amount.</div>
+    `;
 
-    function resetSIP(){
-      sipAmount.value = 5000;
-      sipRate.value = 12;
-      sipYears.value = 10;
-      sipStepup.value = 0;
-      calcSIP();
-    }
-
-    function calcLumpsum(){
-      const amount = +document.getElementById("lumpAmount").value || 0;
-      const rate = (+document.getElementById("lumpRate").value || 0) / 100;
-      const years = +document.getElementById("lumpYears").value || 0;
-      const inflation = (+document.getElementById("lumpInflation").value || 0) / 100;
-
-      const future = amount * Math.pow(1 + rate, years);
-      const gain = future - amount;
-      const realValue = future / Math.pow(1 + inflation, years);
-
-      document.getElementById("lumpInvested").textContent = formatINR(amount);
-      document.getElementById("lumpFuture").textContent = formatINR(future);
-      document.getElementById("lumpGain").textContent = formatINR(gain);
-      document.getElementById("lumpRealValue").textContent = formatINR(realValue);
-
-      makeChart("lumpChart", {
-        type: "pie",
-        data: {
-          labels: ["Invested", "Gain"],
-          datasets: [{
-            data: [Math.round(amount), Math.round(gain)],
-            backgroundColor: ["#2c6b97", "#32c7ff"]
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { labels: { color: "#d7efff" } }
-          }
-        }
-      });
-    }
-
-    function resetLumpsum(){
-      lumpAmount.value = 100000;
-      lumpRate.value = 12;
-      lumpYears.value = 10;
-      lumpInflation.value = 6;
-      calcLumpsum();
-    }
-
-    function calcCAGR(){
-      const start = +document.getElementById("cagrStart").value || 0;
-      const end = +document.getElementById("cagrEnd").value || 0;
-      const years = +document.getElementById("cagrYears").value || 0;
-      const fdRate = (+document.getElementById("cagrCompare").value || 0) / 100;
-
-      const cagr = (start > 0 && end > 0 && years > 0) ? ((Math.pow(end / start, 1 / years) - 1) * 100) : 0;
-      const absReturn = start > 0 ? (((end - start) / start) * 100) : 0;
-      const fdValue = start * Math.pow(1 + fdRate, years);
-      const outperformance = end - fdValue;
-
-      document.getElementById("cagrValue").textContent = cagr.toFixed(2) + "%";
-      document.getElementById("cagrAbsReturn").textContent = absReturn.toFixed(2) + "%";
-      document.getElementById("cagrFdValue").textContent = formatINR(fdValue);
-      document.getElementById("cagrOutperformance").textContent = formatINR(outperformance);
-
-      makeChart("cagrChart", {
-        type: "bar",
-        data: {
-          labels: ["Initial", "Final", "FD Value"],
-          datasets: [{
-            data: [Math.round(start), Math.round(end), Math.round(fdValue)],
-            backgroundColor: ["#2c6b97", "#32c7ff", "#64f3a7"]
-          }]
-        },
-        options: {
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { ticks: { color: "#d7efff" }, grid: { color: "rgba(255,255,255,.08)" } },
-            x: { ticks: { color: "#d7efff" }, grid: { display: false } }
-          }
-        }
-      });
-    }
-
-    function resetCAGR(){
-      cagrStart.value = 100000;
-      cagrEnd.value = 180000;
-      cagrYears.value = 5;
-      cagrCompare.value = 7;
-      calcCAGR();
-    }
-
-    function calcSWP(){
-      const corpusInput = +document.getElementById("swpCorpus").value || 0;
-      const withdrawal = +document.getElementById("swpWithdraw").value || 0;
-      const annualRate = (+document.getElementById("swpRate").value || 0) / 100;
-      const years = +document.getElementById("swpYears").value || 0;
-      const monthlyRate = annualRate / 12;
-      const totalMonths = years * 12;
-
-      let corpus = corpusInput;
-      let totalWithdrawn = 0;
-      let sustainedMonths = 0;
-      const labels = [];
-      const series = [];
-
-      for(let m = 1; m <= totalMonths; m++){
-        corpus = corpus * (1 + monthlyRate);
-        corpus -= withdrawal;
-        if(corpus < 0){
-          corpus = 0;
-          totalWithdrawn += withdrawal;
-          sustainedMonths = m;
-          labels.push("M" + m);
-          series.push(0);
-          break;
-        }
-        totalWithdrawn += withdrawal;
-        sustainedMonths = m;
-        if(m % 12 === 0 || m === totalMonths){
-          labels.push("Year " + (m/12).toFixed(0));
-          series.push(Math.round(corpus));
-        }
+    destroyIfExists(lumpChartInstance);
+    lumpChartInstance = new Chart(document.getElementById("lumpChart"), {
+      type: 'pie',
+      data: {
+        labels: ['Principal', 'Returns'],
+        datasets: [{
+          data: [Math.round(P), Math.round(gain)],
+          backgroundColor: ['#32c7ff', '#65f0a1']
+        }]
+      },
+      options: {
+        responsive: true
       }
+    });
+  }
 
-      const fullySustained = sustainedMonths >= totalMonths;
+  function calcCAGR(){
+    let start = +document.getElementById("cagrStart").value || 0;
+    let end = +document.getElementById("cagrEnd").value || 0;
+    let years = +document.getElementById("cagrYears").value || 0;
+    let extra = +document.getElementById("cagrExtra").value || 0;
 
-      document.getElementById("swpWithdrawn").textContent = formatINR(totalWithdrawn);
-      document.getElementById("swpFinal").textContent = formatINR(corpus);
-      document.getElementById("swpMonths").textContent = sustainedMonths + " months";
-      document.getElementById("swpStatus").textContent = fullySustained ? "Sustained" : "Corpus exhausted early";
-      document.getElementById("swpStatus").className = "result-value " + (fullySustained ? "green" : "red");
+    let effectiveStart = start + extra;
+    let cagr = (effectiveStart > 0 && end > 0 && years > 0) ? ((Math.pow(end / effectiveStart, 1 / years) - 1) * 100) : 0;
+    let absReturn = effectiveStart > 0 ? ((end - effectiveStart) / effectiveStart) * 100 : 0;
 
-      makeChart("swpChart", {
-        type: "line",
-        data: {
-          labels,
-          datasets: [{
-            label: "Corpus Balance",
-            data: series,
-            borderColor: "#32c7ff",
-            backgroundColor: "rgba(50,199,255,.15)",
-            tension: 0.25,
-            fill: true
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { labels: { color: "#d7efff" } }
-          },
-          scales: {
-            y: { ticks: { color: "#d7efff" }, grid: { color: "rgba(255,255,255,.08)" } },
-            x: { ticks: { color: "#d7efff" }, grid: { display: false } }
-          }
-        }
-      });
+    document.getElementById("cagrResult").innerHTML = `
+      <div class="summary">
+        <div>Adjusted Starting Value: <strong>${formatINR(effectiveStart)}</strong></div>
+        <div>Ending Value: <strong class="green">${formatINR(end)}</strong></div>
+        <div>CAGR: <strong>${cagr.toFixed(2)}%</strong></div>
+        <div>Absolute Return: <strong>${absReturn.toFixed(2)}%</strong></div>
+      </div>
+      <div class="small">CAGR smooths total return into an annualized growth rate.</div>
+    `;
+
+    destroyIfExists(cagrChartInstance);
+    cagrChartInstance = new Chart(document.getElementById("cagrChart"), {
+      type: 'bar',
+      data: {
+        labels: ['Start', 'End'],
+        datasets: [{
+          data: [Math.round(effectiveStart), Math.round(end)],
+          backgroundColor: ['#32c7ff', '#65f0a1']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  function calcSWP(){
+    let corpus = +document.getElementById("swpCorpus").value || 0;
+    let annualRate = +document.getElementById("swpRate").value || 0;
+    let monthlyWithdrawal = +document.getElementById("swpWithdrawal").value || 0;
+    let years = +document.getElementById("swpYears").value || 0;
+
+    let monthlyRate = annualRate / 100 / 12;
+    let months = years * 12;
+    let totalWithdrawn = 0;
+    let labels = [];
+    let values = [];
+
+    for(let i = 1; i <= months; i++){
+      corpus = corpus * (1 + monthlyRate);
+      corpus = corpus - monthlyWithdrawal;
+      totalWithdrawn += monthlyWithdrawal;
+      if(corpus < 0){
+        corpus = 0;
+      }
+      if(i % 12 === 0){
+        labels.push("Year " + (i / 12));
+        values.push(Math.round(corpus));
+      }
+      if(corpus === 0){
+        break;
+      }
     }
 
-    function resetSWP(){
-      swpCorpus.value = 2000000;
-      swpWithdraw.value = 20000;
-      swpRate.value = 10;
-      swpYears.value = 15;
-      calcSWP();
-    }
+    let status = corpus > 0 ? "Corpus survives till the end of selected period." : "Corpus gets exhausted within selected period.";
 
-    function calcPPF(){
-      const annual = +document.getElementById("ppfAnnual").value || 0;
-      const rate = (+document.getElementById("ppfRate").value || 0) / 100;
-      const years = +document.getElementById("ppfYears").value || 0;
-      const frequency = document.getElementById("ppfFrequency").value;
+    document.getElementById("swpResult").innerHTML = `
+      <div class="summary">
+        <div>Total Withdrawn: <strong>${formatINR(totalWithdrawn)}</strong></div>
+        <div>Ending Corpus: <strong class="${corpus > 0 ? 'green' : 'red'}">${formatINR(corpus)}</strong></div>
+        <div>Status: <strong>${status}</strong></div>
+      </div>
+      <div class="small">This assumes fixed monthly withdrawal and constant annual return.</div>
+    `;
 
-      let balance = 0;
-      let invested = 0;
-      const rows = [];
-      const labels = [];
-      const values = [];
+    destroyIfExists(swpChartInstance);
+    swpChartInstance = new Chart(document.getElementById("swpChart"), {
+      type: 'line',
+      data: {
+        labels: labels.length ? labels : ['No Data'],
+        datasets: [{
+          label: 'Corpus',
+          data: values.length ? values : [0],
+          borderColor: '#32c7ff',
+          backgroundColor: 'rgba(50,199,255,0.15)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  }
 
+  function calcPPF(){
+    let yearlyInvestment = +document.getElementById("ppfYearly").value || 0;
+    let rate = (+document.getElementById("ppfRate").value || 0) / 100;
+    let years = +document.getElementById("ppfYears").value || 0;
+    let type = document.getElementById("ppfContributionType").value;
+
+    let balance = 0;
+    let totalInvested = 0;
+    let labels = [];
+    let values = [];
+
+    if(type === "yearly"){
       for(let y = 1; y <= years; y++){
-        const opening = balance;
-        let contribution = 0;
-        let interest = 0;
-
-        if(frequency === "yearly"){
-          contribution = annual;
-          invested += contribution;
-          balance += contribution;
-          interest = balance * rate;
-          balance += interest;
-        } else {
-          const monthlyContribution = annual / 12;
-          for(let m = 1; m <= 12; m++){
-            balance += monthlyContribution;
-            invested += monthlyContribution;
-          }
-          contribution = annual;
-          interest = balance * rate;
-          balance += interest;
-        }
-
-        rows.push({
-          year: y,
-          opening,
-          contribution,
-          interest,
-          closing: balance
-        });
-
+        balance = (balance + yearlyInvestment) * (1 + rate);
+        totalInvested += yearlyInvestment;
         labels.push("Year " + y);
         values.push(Math.round(balance));
       }
-
-      const interestEarned = balance - invested;
-
-      document.getElementById("ppfInvested").textContent = formatINR(invested);
-      document.getElementById("ppfMaturity").textContent = formatINR(balance);
-      document.getElementById("ppfInterest").textContent = formatINR(interestEarned);
-      document.getElementById("ppfLockin").textContent = Math.max(15, years) + " years";
-
-      document.getElementById("ppfTableBody").innerHTML = rows.map(r => `
-        <tr>
-          <td>${r.year}</td>
-          <td>${formatINR(r.opening)}</td>
-          <td>${formatINR(r.contribution)}</td>
-          <td>${formatINR(r.interest)}</td>
-          <td>${formatINR(r.closing)}</td>
-        </tr>
-      `).join("");
-
-      makeChart("ppfChart", {
-        type: "line",
-        data: {
-          labels,
-          datasets: [{
-            label: "PPF Value",
-            data: values,
-            borderColor: "#64f3a7",
-            backgroundColor: "rgba(100,243,167,.12)",
-            fill: true,
-            tension: 0.25
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { labels: { color: "#d7efff" } }
-          },
-          scales: {
-            y: { ticks: { color: "#d7efff" }, grid: { color: "rgba(255,255,255,.08)" } },
-            x: { ticks: { color: "#d7efff" }, grid: { display: false } }
-          }
+    } else {
+      let monthlyInvestment = yearlyInvestment / 12;
+      let monthlyRate = rate / 12;
+      for(let y = 1; y <= years; y++){
+        for(let m = 1; m <= 12; m++){
+          balance = (balance + monthlyInvestment) * (1 + monthlyRate);
+          totalInvested += monthlyInvestment;
         }
-      });
+        labels.push("Year " + y);
+        values.push(Math.round(balance));
+      }
     }
 
-    function resetPPF(){
-      ppfAnnual.value = 150000;
-      ppfRate.value = 7.1;
-      ppfYears.value = 15;
-      ppfFrequency.value = "yearly";
-      calcPPF();
-    }
+    let interest = balance - totalInvested;
 
-    calcSIP();
-    calcLumpsum();
-    calcCAGR();
-    calcSWP();
-    calcPPF();
-  </script>
+    document.getElementById("ppfResult").innerHTML = `
+      <div class="summary">
+        <div>Total Invested: <strong>${formatINR(totalInvested)}</strong></div>
+        <div>Maturity Value: <strong class="green">${formatINR(balance)}</strong></div>
+        <div>Total Interest: <strong>${formatINR(interest)}</strong></div>
+      </div>
+      <div class="small">PPF has a 15-year base tenure. This calculator is only for rough estimation.</div>
+    `;
+
+    destroyIfExists(ppfChartInstance);
+    ppfChartInstance = new Chart(document.getElementById("ppfChart"), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'PPF Value',
+          data: values,
+          borderColor: '#65f0a1',
+          backgroundColor: 'rgba(101,240,161,0.15)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  }
+
+  calcSIP();
+  calcLumpsum();
+  calcCAGR();
+  calcSWP();
+  calcPPF();
+</script>
+
 </body>
 </html>
