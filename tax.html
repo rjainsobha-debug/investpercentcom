@@ -2,71 +2,50 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tax Calculator</title>
+<title>Tax</title>
 
 <style>
-body{font-family:Inter;background:#041424;color:#fff;margin:0}
-.container{max-width:1100px;margin:auto;padding:20px}
-.card{background:#0b2d4d;padding:20px;border-radius:20px;margin-top:20px}
-input{width:100%;padding:12px;margin-top:10px;border-radius:10px;border:none;background:#061427;color:white}
-button{margin-top:15px;padding:12px;width:100%;background:#32c7ff;border:none;border-radius:10px;font-weight:700}
-.result{margin-top:15px;font-size:20px}
+body{background:#041424;color:#fff;font-family:Inter}
+.container{max-width:1000px;margin:auto;padding:20px}
+.card{background:#0b2d4d;padding:20px;border-radius:20px}
+input{width:100%;padding:10px;margin-top:10px}
+button{margin-top:10px;padding:10px;width:100%;background:#32c7ff}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-<h1>Income Tax Calculator (FY 24-25)</h1>
+<h1>Tax Calculator</h1>
 
 <div class="card">
-<h3>Enter Income</h3>
-
 <input id="income" placeholder="Annual Income">
 
-<button onclick="calculateTax()">Calculate</button>
+<button onclick="calc()">Calculate</button>
 
-<div id="output" class="result"></div>
+<div id="result"></div>
 </div>
 </div>
 
 <script>
-function calcNew(income){
-let tax=0;
+function calc(){
+let inc=+income.value;
 
-if(income<=300000) tax=0;
-else if(income<=700000) tax=(income-300000)*0.05;
-else if(income<=1000000) tax=20000+(income-700000)*0.1;
-else if(income<=1200000) tax=50000+(income-1000000)*0.15;
-else if(income<=1500000) tax=80000+(income-1200000)*0.2;
-else tax=140000+(income-1500000)*0.3;
+let newTax = inc<=300000?0:
+inc<=700000?(inc-300000)*0.05:
+inc<=1000000?20000+(inc-700000)*0.1:
+inc<=1200000?50000+(inc-1000000)*0.15:
+inc<=1500000?80000+(inc-1200000)*0.2:
+140000+(inc-1500000)*0.3;
 
-return tax*1.04;
-}
+let oldTax = inc<=250000?0:
+inc<=500000?(inc-250000)*0.05:
+inc<=1000000?12500+(inc-500000)*0.2:
+112500+(inc-1000000)*0.3;
 
-function calcOld(income){
-let tax=0;
-
-if(income<=250000) tax=0;
-else if(income<=500000) tax=(income-250000)*0.05;
-else if(income<=1000000) tax=12500+(income-500000)*0.2;
-else tax=112500+(income-1000000)*0.3;
-
-return tax*1.04;
-}
-
-function calculateTax(){
-let income = +document.getElementById("income").value;
-
-let newTax = calcNew(income);
-let oldTax = calcOld(income);
-
-let better = newTax < oldTax ? "NEW REGIME BETTER 🏆" : "OLD REGIME BETTER 🏆";
-
-document.getElementById("output").innerHTML =
-"New Regime: ₹"+Math.round(newTax)+"<br>" +
-"Old Regime: ₹"+Math.round(oldTax)+"<br><br>" +
-"<b>"+better+"</b>";
+result.innerHTML=
+"New: ₹"+Math.round(newTax*1.04)+"<br>"+
+"Old: ₹"+Math.round(oldTax*1.04);
 }
 </script>
 
