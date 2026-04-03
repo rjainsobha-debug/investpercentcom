@@ -31,7 +31,6 @@ loadComponent("header", "../components/header.html");
 <aside class="sidebar">
   <div class="side-card">
     <h4>Calculators</h4>
-
     <a href="#sip">SIP</a>
     <a href="#lumpsum">Lumpsum</a>
     <a href="#goal">Goal</a>
@@ -44,132 +43,63 @@ loadComponent("header", "../components/header.html");
 <!-- MAIN -->
 <main class="main">
 
-<!-- ================= SIP ================= -->
+<!-- SIP -->
 <section class="calc-card" id="sip">
 
-  <div class="calc-header">
-    <h2>SIP Calculator</h2>
-  </div>
+<div class="calc-header">
+  <h2>SIP Calculator</h2>
+</div>
 
-  <div class="calc-grid">
+<div class="calc-grid">
 
-    <!-- LEFT PANEL -->
-    <div class="panel">
+<div class="panel">
 
-      <label>Monthly Investment ₹</label>
-      <input id="sip_amt" value="5000">
+<label>Monthly Investment ₹</label>
+<input id="sip_amt" value="5000">
 
-      <label>Years</label>
-      <input id="sip_years" value="10">
+<label>Years</label>
+<input id="sip_years" value="10">
 
-      <label>Expected Return %</label>
-      <input id="sip_rate" value="12">
+<label>Return %</label>
+<input id="sip_rate" value="12">
 
-      <button class="btn-primary" onclick="calcSIP()">Calculate</button>
-
-    </div>
-
-    <!-- RIGHT PANEL -->
-    <div class="panel">
-
-    <div class="result-panel">
-
-  <!-- RESULT SUMMARY -->
-  <div class="result-summary">
-
-    <div class="result-item">
-      <span>Invested</span>
-      <strong id="sip_invested">₹0</strong>
-    </div>
-
-    <div class="result-item">
-      <span>Returns</span>
-      <strong id="sip_returns">₹0</strong>
-    </div>
-
-    <div class="result-item total">
-      <span>Total Value</span>
-      <strong id="sip_total">₹0</strong>
-    </div>
-
-  </div>
-
-  <!-- CHART -->
-  <div class="chart-box">
-    <canvas id="sip_chart"></canvas>
-  </div>
+<button class="btn-primary" onclick="calcSIP()">Calculate</button>
 
 </div>
 
-    </div>
+<div class="panel">
 
-  </div>
+<div class="result-panel">
 
-</section>
-<!-- ================= LUMPSUM ================= -->
-<section class="calc-card" id="lumpsum">
-<h2>Lumpsum Calculator</h2>
+<div class="result-summary">
 
-<input id="lump_amt" value="100000">
-<input id="lump_years" value="10">
-<input id="lump_rate" value="12">
+<div class="result-item">
+<span>Invested</span>
+<strong id="sip_invested">₹0</strong>
+</div>
 
-<button class="btn-primary" onclick="calcLump()">Calculate</button>
+<div class="result-item">
+<span>Returns</span>
+<strong id="sip_returns">₹0</strong>
+</div>
 
-<div id="lump_result"></div>
-<canvas id="lump_chart"></canvas>
-</section>
+<div class="result-item total">
+<span>Total</span>
+<strong id="sip_total">₹0</strong>
+</div>
 
-<!-- ================= GOAL ================= -->
-<section class="calc-card" id="goal">
-<h2>Goal Planner</h2>
+</div>
 
-<input id="goal_amt" value="1000000">
-<input id="goal_years" value="10">
-<input id="goal_rate" value="12">
+<div class="chart-box">
+<canvas id="sip_chart"></canvas>
+</div>
 
-<button class="btn-primary" onclick="calcGoal()">Calculate</button>
+</div>
 
-<div id="goal_result"></div>
-</section>
+</div>
 
-<!-- ================= STEP UP ================= -->
-<section class="calc-card" id="stepup">
-<h2>Step-up SIP</h2>
+</div>
 
-<input id="step_amt" value="5000">
-<input id="step_inc" value="10">
-<input id="step_years" value="10">
-<input id="step_rate" value="12">
-
-<button onclick="calcStep()">Calculate</button>
-
-<div id="step_result"></div>
-</section>
-
-<!-- ================= RETIREMENT ================= -->
-<section class="calc-card" id="retirement">
-<h2>Quick Retirement</h2>
-
-<input id="ret_exp" value="50000">
-<input id="ret_years" value="25">
-
-<button onclick="calcRet()">Calculate</button>
-
-<div id="ret_result"></div>
-</section>
-
-<!-- ================= INFLATION ================= -->
-<section class="calc-card" id="inflation">
-<h2>Inflation Impact</h2>
-
-<input id="inf_amt" value="50000">
-<input id="inf_years" value="10">
-<input id="inf_rate" value="6">
-
-<button onclick="calcInf()">Calculate</button>
-
-<div id="inf_result"></div>
 </section>
 
 </main>
@@ -178,63 +108,34 @@ loadComponent("header", "../components/header.html");
 
 <script>
 
-// SIP
+let sipChart;
+
 function calcSIP(){
-let P=+sip_amt.value,r=+sip_rate.value/1200,n=+sip_years.value*12;
+let P=+sip_amt.value;
+let r=+sip_rate.value/1200;
+let n=+sip_years.value*12;
+
 let FV=P*((Math.pow(1+r,n)-1)/r)*(1+r);
-sip_result.innerHTML="₹"+FV.toFixed(0);
 
-new Chart(sip_chart,{
+let invested=P*n;
+let returns=FV-invested;
+
+sip_invested.innerHTML="₹"+invested.toFixed(0);
+sip_returns.innerHTML="₹"+returns.toFixed(0);
+sip_total.innerHTML="₹"+FV.toFixed(0);
+
+if(sipChart) sipChart.destroy();
+
+sipChart=new Chart(sip_chart,{
 type:"doughnut",
-data:{labels:["Invested","Returns"],datasets:[{data:[P*n,FV-(P*n)]}]}
+data:{
+labels:["Invested","Returns"],
+datasets:[{
+data:[invested,returns],
+backgroundColor:["#38bdf8","#00d09c"]
+}]
+}
 });
-}
-
-// Lumpsum
-function calcLump(){
-let P=+lump_amt.value,r=+lump_rate.value/100,t=+lump_years.value;
-let FV=P*Math.pow(1+r,t);
-lump_result.innerHTML="₹"+FV.toFixed(0);
-
-new Chart(lump_chart,{
-type:"line",
-data:{labels:[0,t],datasets:[{data:[P,FV]}]}
-});
-}
-
-// Goal
-function calcGoal(){
-let FV=+goal_amt.value,r=+goal_rate.value/1200,n=+goal_years.value*12;
-let sip=FV*r/(Math.pow(1+r,n)-1);
-goal_result.innerHTML="Required SIP ₹"+sip.toFixed(0);
-}
-
-// Step Up
-function calcStep(){
-let sip=+step_amt.value,inc=+step_inc.value/100,r=+step_rate.value/100,years=+step_years.value;
-let total=0;
-
-for(let i=1;i<=years;i++){
-  let annual=sip*12*Math.pow(1+r,years-i);
-  total+=annual;
-  sip*=1+inc;
-}
-
-step_result.innerHTML="₹"+total.toFixed(0);
-}
-
-// Retirement
-function calcRet(){
-let exp=+ret_exp.value;
-let corpus=exp*12*25;
-ret_result.innerHTML="Corpus ₹"+corpus.toFixed(0);
-}
-
-// Inflation
-function calcInf(){
-let amt=+inf_amt.value,r=+inf_rate.value/100,t=+inf_years.value;
-let future=amt*Math.pow(1+r,t);
-inf_result.innerHTML="Future Value ₹"+future.toFixed(0);
 }
 
 </script>
