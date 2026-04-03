@@ -108,16 +108,46 @@
 .calc-body label {
   font-size: 13px;
   color: #93a4bd;
+  margin-bottom: 6px;
+  display: block;
 }
+
+/* ================= INPUTS PRO ================= */
 
 .calc-body input {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 12px;
-  border: none;
-  background: rgba(255,255,255,0.05);
-  color: white;
+  backdrop-filter: blur(6px);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.04);
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 500;
+
+  transition: all 0.25s ease;
+}
+
+/* Placeholder */
+.calc-body input::placeholder {
+  color: #7c8aa5;
+}
+
+/* Hover */
+.calc-body input:hover {
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* Focus (MOST IMPORTANT) */
+.calc-body input:focus {
+  outline: none;
+  border-color: #00d09c;
+  box-shadow: 0 0 0 2px rgba(0,208,156,0.2);
+  background: rgba(255,255,255,0.06);
 }
 
 /* ================= BUTTON ================= */
