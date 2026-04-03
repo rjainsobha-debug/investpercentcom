@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Investment Calculators — SIP, Lump Sum, CAGR, PPF | investpercent.com</title>
+  <meta
+    name="description"
+    content="Use free investment calculators for SIP, lump sum, CAGR, and PPF. Instant results, charts, year-wise tables, and smart next steps on investpercent.com."
+  />
+  <meta
+    name="keywords"
+    content="sip calculator, lumpsum calculator, cagr calculator, ppf calculator, investment calculator india, mutual fund calculator"
+  />
+  <meta name="author" content="investpercent.com" />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="canonical" href="https://investpercent.com/pages/investment.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Investment Calculators — SIP, Lump Sum, CAGR, PPF | investpercent.com" />
+  <meta
+    property="og:description"
+    content="Free investment calculators for SIP, lump sum, CAGR, and PPF with charts, tables, and instant results."
+  />
+  <meta property="og:url" content="https://investpercent.com/pages/investment.html" />
+  <meta property="og:image" content="https://investpercent.com/assets/og-image.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Investment Calculators — SIP, Lump Sum, CAGR, PPF | investpercent.com" />
+  <meta
+    name="twitter:description"
+    content="Free investment calculators for SIP, lump sum, CAGR, and PPF with charts, tables, and instant results."
+  />
+  <meta name="twitter:image" content="https://investpercent.com/assets/og-image.jpg" />
+
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/calculator.css" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <style>
+    .ip-page-shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .ip-sidebar {
+      position: sticky;
+      top: 120px;
+    }
+
+    .ip-sidebar-card {
+      padding: 20px;
+    }
+
+    .ip-sidebar-title {
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .ip-sidebar-nav {
+      display: grid;
+      gap: 10px;
+    }
+
+    .ip-sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-subtle);
+      transition: var(--transition);
+    }
+
+    .ip-sidebar-link:hover,
+    .ip-sidebar-link.is-active {
+      border-color: var(--accent-cyan);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .ip-page-main {
+      min-width: 0;
+    }
+
+    .ip-page-hero {
+      padding: 34px 0 16px;
+    }
+
+    .ip-breadcrumb {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+
+    .ip-breadcrumb a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .ip-breadcrumb a:hover {
+      color: var(--accent-cyan);
+    }
+
+    .ip-page-hero-card {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding: 28px;
+    }
+
+    .ip-page-hero-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      background: linear-gradient(135deg, rgba(0,212,255,0.16), rgba(123,97,255,0.16));
+      border: 1px solid var(--border-active);
+      box-shadow: var(--shadow-glow);
+      flex-shrink: 0;
+    }
+
+    .ip-page-hero-content h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.05;
+    }
+
+    .ip-page-hero-content p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    .ip-page-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .ip-page-meta .ip-badge {
+      font-size: 0.82rem;
+    }
+
+    .ip-invest-banner {
+      margin: 18px 0 28px;
+      border-left: 4px solid #00d4ff;
+      background: linear-gradient(135deg, #00d4ff22, #7b61ff22);
+      padding: 18px 22px;
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid rgba(0,212,255,0.15);
+    }
+
+    .ip-invest-banner-text {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .ip-invest-banner a {
+      text-decoration: none;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .ip-calculator-block {
+      margin-bottom: 28px;
+      scroll-margin-top: 110px;
+    }
+
+    .ip-calc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .ip-calc-title-wrap {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      min-width: 0;
+    }
+
+    .ip-calc-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      background: rgba(0,212,255,0.12);
+      border: 1px solid rgba(0,212,255,0.18);
+      color: var(--accent-cyan);
+      flex-shrink: 0;
+    }
+
+    .ip-calc-title-wrap h2 {
+      margin: 0 0 6px;
+      font-size: 1.5rem;
+    }
+
+    .ip-calc-title-wrap p {
+      margin: 0;
+      color: var(--text-secondary);
+    }
+
+    .ip-fav-btn {
+      flex-shrink: 0;
+      min-width: auto;
+      padding: 12px 16px;
+    }
+
+    .ip-input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .ip-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .ip-field-full {
+      grid-column: 1 / -1;
+    }
+
+    .ip-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .ip-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .ip-inline-output {
+      font-size: 0.88rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    .ip-range-wrap {
+      display: grid;
+      gap: 10px;
+    }
+
+    .ip-radio-group,
+    .ip-chip-group,
+    .ip-toggle-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .ip-radio-pill {
+      position: relative;
+    }
+
+    .ip-radio-pill input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .ip-radio-pill span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255,255,255,0.02);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+    }
+
+    .ip-radio-pill input:checked + span {
+      color: var(--text-primary);
+      border-color: var(--accent-cyan);
+      box-shadow: var(--shadow-glow);
+      background: rgba(0,212,255,0.1);
+    }
+
+    .ip-toggle {
+      position: relative;
+      width: 58px;
+      height: 32px;
+      display: inline-block;
+    }
+
+    .ip-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .ip-toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .ip-toggle-slider::before {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      left: 4px;
+      top: 3px;
+      border-radius: 50%;
+      background: #fff;
+      transition: var(--transition);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+    }
+
+    .ip-toggle input:checked + .ip-toggle-slider {
+      background: linear-gradient(135deg, rgba(0,212,255,0.45), rgba(123,97,255,0.45));
+      border-color: rgba(0,212,255,0.35);
+    }
+
+    .ip-toggle input:checked + .ip-toggle-slider::before {
+      transform: translateX(26px);
+    }
+
+    .ip-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .ip-results-panel {
+      min-height: 100%;
+      display: grid;
+      gap: 18px;
+    }
+
+    .ip-result-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ip-result-cell {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .ip-result-value {
+      font-size: clamp(1.1rem, 2vw, 1.6rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.1;
+      word-break: break-word;
+    }
+
+    .ip-result-label {
+      color: var(--text-secondary);
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .ip-results-panel.slideInRight {
+      animation: slideInRight 0.4s ease both;
+    }
+
+    .ip-chart-card {
+      height: 320px;
+      padding: 18px;
+    }
+
+    .ip-chart-card canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .ip-collapsible-table {
+      display: grid;
+      gap: 12px;
+    }
+
+    .ip-table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .ip-collapse-trigger {
+      justify-self: start;
+    }
+
+    .ip-tip-box {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(123,97,255,0.08));
+      border: 1px solid rgba(0,212,255,0.16);
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+    }
+
+    .partner-cta-box {
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1.5px solid rgba(0,212,255,0.2);
+      background: linear-gradient(135deg, rgba(0,212,255,0.08), transparent);
+    }
+
+    .partner-logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.6rem;
+      background: rgba(0,212,255,0.12);
+      flex-shrink: 0;
+    }
+
+    .partner-info {
+      display: grid;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .partner-tagline {
+      margin: 0;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .partner-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: start;
+      padding: 14px 24px;
+      border-radius: var(--radius-md);
+      font-weight: 800;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(0,212,255,0.25);
+    }
+
+    .partner-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(0,212,255,0.32);
+      filter: brightness(1.06);
+    }
+
+    .ip-inline-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .ip-related-section {
+      margin-top: 10px;
+      padding-bottom: 12px;
+    }
+
+    .ip-related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .ip-related-card {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .ip-related-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+    }
+
+    .ip-related-card p {
+      margin: 0 0 14px;
+      color: var(--text-secondary);
+    }
+
+    .ip-related-link {
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    .ip-hidden {
+      display: none !important;
+    }
+
+    .ip-cagr-tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .ip-cagr-tab {
+      min-width: 180px;
+    }
+
+    .ip-cagr-panel {
+      display: none;
+    }
+
+    .ip-cagr-panel.is-active {
+      display: block;
+    }
+
+    @media (max-width: 1199px) {
+      .ip-page-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .ip-sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .ip-page-hero-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .ip-invest-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .ip-input-grid,
+      .ip-related-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ip-result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ip-chart-card {
+        height: 220px;
+      }
+
+      .partner-cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="ip-header"></div>
+
+  <main class="ip-page-main-wrap">
+    <section class="ip-page-hero">
+      <div class="ip-container">
+        <div class="ip-breadcrumb">
+          <a href="/index.html">Home</a> &gt; <span>Investment Calculators</span>
+        </div>
+
+        <div class="ip-page-hero-card ip-card">
+          <div class="ip-page-hero-icon">📈</div>
+          <div class="ip-page-hero-content">
+            <h1>Investment Calculators</h1>
+            <p>SIP, Lump Sum, CAGR, PPF and more</p>
+            <div class="ip-page-meta">
+              <span class="ip-badge">4 Calculators</span>
+              <span class="ip-badge">Updated 2026</span>
+              <span class="ip-badge">No Login Required</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ip-invest-banner">
+          <div class="ip-invest-banner-text">
+            💼 Want to invest smarter? Get expert guidance on justinvesting.in →
+          </div>
+          <a href="https://justinvesting.in" target="_blank" rel="noopener noreferrer">
+            Visit justinvesting.in
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="ip-page-content">
+      <div class="ip-container">
+        <div class="ip-page-shell">
+          <aside class="ip-sidebar">
+            <div class="ip-sidebar-card ip-card">
+              <div class="ip-sidebar-title">On this page</div>
+              <nav class="ip-sidebar-nav">
+                <a class="ip-sidebar-link" href="#sip" data-calc-nav-link>
+                  <i class="fa-solid fa-coins"></i>
+                  <span>SIP Calculator</span>
+                </a>
+                <a class="ip-sidebar-link" href="#lumpsum" data-calc-nav-link>
+                  <i class="fa-solid fa-sack-dollar"></i>
+                  <span>Lump Sum Calculator</span>
+                </a>
+                <a class="ip-sidebar-link" href="#cagr" data-calc-nav-link>
+                  <i class="fa-solid fa-chart-simple"></i>
+                  <span>CAGR Calculator</span>
+                </a>
+                <a class="ip-sidebar-link" href="#ppf" data-calc-nav-link>
+                  <i class="fa-solid fa-shield-heart"></i>
+                  <span>PPF Calculator</span>
+                </a>
+              </nav>
+            </div>
+          </aside>
+
+          <div class="ip-page-main">
+            <!-- SIP CALCULATOR -->
+            <section class="ip-calculator-block" id="sip">
+              <div class="ip-card">
+                <div class="ip-calc-header">
+                  <div class="ip-calc-title-wrap">
+                    <div class="ip-calc-icon"><i class="fa-solid fa-coins"></i></div>
+                    <div>
+                      <h2>SIP Calculator</h2>
+                      <p>Estimate your monthly SIP growth with or without annual step-up.</p>
+                    </div>
+                  </div>
+
+                  <button
+                    class="ip-btn-outline ip-fav-btn"
+                    type="button"
+                    data-favorite-id="sip"
+                    aria-pressed="false"
+                  >
+                    ⭐ Save
+                  </button>
+                </div>
+
+                <div class="calculator-container">
+                  <div class="calculator-inputs">
+                    <div class="ip-input-grid">
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="sipMonthly">Monthly Investment ₹</label>
+                          <span class="ip-inline-output" id="sipMonthlyOutput">₹5,000</span>
+                        </div>
+                        <input class="ip-input" id="sipMonthly" type="number" min="500" max="100000" step="500" value="5000" />
+                        <input class="ip-range" id="sipMonthlyRange" type="range" min="500" max="100000" step="500" value="5000" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="sipReturn">Expected Annual Return %</label>
+                          <span class="ip-inline-output" id="sipReturnOutput">12%</span>
+                        </div>
+                        <input class="ip-input" id="sipReturn" type="number" min="4" max="30" step="0.1" value="12" />
+                        <input class="ip-range" id="sipReturnRange" type="range" min="4" max="30" step="0.1" value="12" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="sipYears">Investment Duration in Years</label>
+                          <span class="ip-inline-output" id="sipYearsOutput">10 Years</span>
+                        </div>
+                        <input class="ip-input" id="sipYears" type="number" min="1" max="40" step="1" value="10" />
+                        <input class="ip-range" id="sipYearsRange" type="range" min="1" max="40" step="1" value="10" />
+                      </div>
+
+                      <div class="ip-field ip-field-full">
+                        <div class="ip-toggle-row">
+                          <label class="ip-label" for="sipStepUpToggle">Include Annual Step-Up?</label>
+                          <label class="ip-toggle">
+                            <input id="sipStepUpToggle" type="checkbox" />
+                            <span class="ip-toggle-slider"></span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="ip-field ip-field-full ip-hidden" id="sipStepUpField">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="sipStepUp">Annual Step-Up %</label>
+                          <span class="ip-inline-output" id="sipStepUpOutput">10%</span>
+                        </div>
+                        <input class="ip-input" id="sipStepUp" type="number" min="1" max="25" step="1" value="10" />
+                        <input class="ip-range" id="sipStepUpRange" type="range" min="1" max="25" step="1" value="10" />
+                      </div>
+                    </div>
+
+                    <div class="ip-actions-row">
+                      <button class="ip-btn-primary" type="button" id="sipCalculate">Calculate SIP</button>
+                      <button class="ip-btn-outline" type="button" id="sipReset">Reset</button>
+                    </div>
+                  </div>
+
+                  <div class="calculator-results">
+                    <div class="ip-results-panel" id="sipResultsPanel">
+                      <div class="ip-result-grid">
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Total Amount Invested</div>
+                          <div class="ip-result-value" id="sipInvested">₹0</div>
+                        </div>
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Estimated Returns</div>
+                          <div class="ip-result-value" id="sipReturns">₹0</div>
+                        </div>
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Total Maturity Value</div>
+                          <div class="ip-result-value" id="sipMaturity">₹0</div>
+                        </div>
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Wealth Ratio</div>
+                          <div class="ip-result-value" id="sipRatio">0.0x times</div>
+                        </div>
+                      </div>
+
+                      <div class="ip-card ip-chart-card">
+                        <canvas id="sipChart"></canvas>
+                      </div>
+
+                      <div class="ip-collapsible-table">
+                        <div class="ip-table-wrap">
+                          <table class="ip-table">
+                            <thead>
+                              <tr>
+                                <th>Year</th>
+                                <th>SIP Amount That Year</th>
+                                <th>Cumulative Invested</th>
+                                <th>Year-End Corpus</th>
+                              </tr>
+                            </thead>
+                            <tbody id="sipTableBody"></tbody>
+                          </table>
+                        </div>
+                        <button class="ip-btn-outline ip-collapse-trigger" type="button" id="sipShowAll">Show All</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ip-tip-box">
+                  💡 Starting your SIP 5 years earlier can nearly double your final corpus due to the power of compounding.
+                </div>
+
+                <div class="partner-cta-box" style="border-color:#00d4ff;">
+                  <span class="partner-logo">📈</span>
+                  <div class="partner-info">
+                    <p class="partner-tagline">Ready to start your SIP? Open a free account on justinvesting.in</p>
+                    <a
+                      href="https://justinvesting.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="partner-cta-btn"
+                      style="background:#00d4ff;color:#000;"
+                    >
+                      Start Investing Now →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- LUMPSUM CALCULATOR -->
+            <section class="ip-calculator-block" id="lumpsum">
+              <div class="ip-card">
+                <div class="ip-calc-header">
+                  <div class="ip-calc-title-wrap">
+                    <div class="ip-calc-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    <div>
+                      <h2>Lump Sum Calculator</h2>
+                      <p>Project the future value of a one-time investment with different compounding frequencies.</p>
+                    </div>
+                  </div>
+
+                  <button
+                    class="ip-btn-outline ip-fav-btn"
+                    type="button"
+                    data-favorite-id="lumpsum"
+                    aria-pressed="false"
+                  >
+                    ⭐ Save
+                  </button>
+                </div>
+
+                <div class="calculator-container">
+                  <div class="calculator-inputs">
+                    <div class="ip-input-grid">
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="lumpsumAmount">Investment Amount ₹</label>
+                          <span class="ip-inline-output" id="lumpsumAmountOutput">₹1,00,000</span>
+                        </div>
+                        <input class="ip-input" id="lumpsumAmount" type="number" min="1000" max="10000000" step="1000" value="100000" />
+                        <input class="ip-range" id="lumpsumAmountRange" type="range" min="1000" max="10000000" step="1000" value="100000" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="lumpsumReturn">Expected Annual Return %</label>
+                          <span class="ip-inline-output" id="lumpsumReturnOutput">12%</span>
+                        </div>
+                        <input class="ip-input" id="lumpsumReturn" type="number" min="4" max="30" step="0.1" value="12" />
+                        <input class="ip-range" id="lumpsumReturnRange" type="range" min="4" max="30" step="0.1" value="12" />
+                      </div>
+
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="lumpsumYears">Duration in Years</label>
+                          <span class="ip-inline-output" id="lumpsumYearsOutput">10 Years</span>
+                        </div>
+                        <input class="ip-input" id="lumpsumYears" type="number" min="1" max="40" step="1" value="10" />
+                        <input class="ip-range" id="lumpsumYearsRange" type="range" min="1" max="40" step="1" value="10" />
+                      </div>
+
+                      <div class="ip-field ip-field-full">
+                        <label class="ip-label">Compounding Frequency</label>
+                        <div class="ip-radio-group">
+                          <label class="ip-radio-pill">
+                            <input type="radio" name="lumpsumFrequency" value="12" checked />
+                            <span>Monthly</span>
+                          </label>
+                          <label class="ip-radio-pill">
+                            <input type="radio" name="lumpsumFrequency" value="4" />
+                            <span>Quarterly</span>
+                          </label>
+                          <label class="ip-radio-pill">
+                            <input type="radio" name="lumpsumFrequency" value="2" />
+                            <span>Semi-Annual</span>
+                          </label>
+                          <label class="ip-radio-pill">
+                            <input type="radio" name="lumpsumFrequency" value="1" />
+                            <span>Annual</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ip-actions-row">
+                      <button class="ip-btn-primary" type="button" id="lumpsumCalculate">Calculate Returns</button>
+                      <button class="ip-btn-outline" type="button" id="lumpsumReset">Reset</button>
+                    </div>
+                  </div>
+
+                  <div class="calculator-results">
+                    <div class="ip-results-panel" id="lumpsumResultsPanel">
+                      <div class="ip-result-grid">
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Maturity Amount</div>
+                          <div class="ip-result-value" id="lumpsumMaturity">₹0</div>
+                        </div>
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Total Gain</div>
+                          <div class="ip-result-value" id="lumpsumGain">₹0</div>
+                        </div>
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Absolute Return %</div>
+                          <div class="ip-result-value" id="lumpsumAbsReturn">0%</div>
+                        </div>
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Effective CAGR %</div>
+                          <div class="ip-result-value" id="lumpsumCagr">0%</div>
+                        </div>
+                      </div>
+
+                      <div class="ip-card ip-chart-card">
+                        <canvas id="lumpsumChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ip-tip-box">
+                  💡 Quarterly compounding adds roughly 0.09% extra returns annually compared to annual compounding on the same rate.
+                </div>
+
+                <div class="partner-cta-box" style="border-color:#00d4ff;">
+                  <span class="partner-logo">📈</span>
+                  <div class="partner-info">
+                    <p class="partner-tagline">Got a lump sum? Put it to work. Talk to an advisor on justinvesting.in →</p>
+                    <a
+                      href="https://justinvesting.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="partner-cta-btn"
+                      style="background:#00d4ff;color:#000;"
+                    >
+                      Start Investing Now →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- CAGR CALCULATOR -->
+            <section class="ip-calculator-block" id="cagr">
+              <div class="ip-card">
+                <div class="ip-calc-header">
+                  <div class="ip-calc-title-wrap">
+                    <div class="ip-calc-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                    <div>
+                      <h2>CAGR Calculator</h2>
+                      <p>Measure annualized growth rate or project future value based on expected CAGR.</p>
+                    </div>
+                  </div>
+
+                  <button
+                    class="ip-btn-outline ip-fav-btn"
+                    type="button"
+                    data-favorite-id="cagr"
+                    aria-pressed="false"
+                  >
+                    ⭐ Save
+                  </button>
+                </div>
+
+                <div class="ip-cagr-tabs">
+                  <button
+                    class="ip-btn-outline ip-cagr-tab is-active"
+                    type="button"
+                    data-cagr-tab="modeA"
+                  >
+                    Calculate CAGR
+                  </button>
+                  <button
+                    class="ip-btn-outline ip-cagr-tab"
+                    type="button"
+                    data-cagr-tab="modeB"
+                  >
+                    Calculate Future Value
+                  </button>
+                </div>
+
+                <div class="ip-cagr-panel is-active" id="cagrPanelA">
+                  <div class="calculator-container">
+                    <div class="calculator-inputs">
+                      <div class="ip-input-grid">
+                        <div class="ip-field">
+                          <label class="ip-label" for="cagrInitial">Initial Investment Value ₹</label>
+                          <input class="ip-input" id="cagrInitial" type="number" min="1" step="1000" value="100000" />
+                        </div>
+
+                        <div class="ip-field">
+                          <label class="ip-label" for="cagrFinal">Final Value ₹</label>
+                          <input class="ip-input" id="cagrFinal" type="number" min="1" step="1000" value="180000" />
+                        </div>
+
+                        <div class="ip-field">
+                          <label class="ip-label" for="cagrYearsA">Number of Years</label>
+                          <input class="ip-input" id="cagrYearsA" type="number" min="1" max="50" step="1" value="5" />
+                        </div>
+                      </div>
+
+                      <div class="ip-actions-row">
+                        <button class="ip-btn-primary" type="button" id="cagrCalculateA">Calculate CAGR</button>
+                        <button class="ip-btn-outline" type="button" id="cagrResetA">Reset</button>
+                      </div>
+                    </div>
+
+                    <div class="calculator-results">
+                      <div class="ip-results-panel" id="cagrResultsPanelA">
+                        <div class="ip-result-grid">
+                          <div class="ip-result-cell">
+                            <div class="ip-result-label">CAGR %</div>
+                            <div class="ip-result-value" id="cagrPercent">0%</div>
+                          </div>
+                          <div class="ip-result-cell">
+                            <div class="ip-result-label">Absolute Return %</div>
+                            <div class="ip-result-value" id="cagrAbsolute">0%</div>
+                          </div>
+                          <div class="ip-result-cell">
+                            <div class="ip-result-label">Total Gain ₹</div>
+                            <div class="ip-result-value" id="cagrGain">₹0</div>
+                          </div>
+                        </div>
+
+                        <div class="ip-card ip-chart-card">
+                          <canvas id="cagrChart"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ip-cagr-panel" id="cagrPanelB">
+                  <div class="calculator-container">
+                    <div class="calculator-inputs">
+                      <div class="ip-input-grid">
+                        <div class="ip-field">
+                          <label class="ip-label" for="fvCurrent">Current Value / Investment Amount ₹</label>
+                          <input class="ip-input" id="fvCurrent" type="number" min="1" step="1000" value="100000" />
+                        </div>
+
+                        <div class="ip-field">
+                          <label class="ip-label" for="fvCagr">Expected CAGR %</label>
+                          <input class="ip-input" id="fvCagr" type="number" min="0.1" step="0.1" value="12" />
+                        </div>
+
+                        <div class="ip-field">
+                          <label class="ip-label" for="fvYears">Number of Years</label>
+                          <input class="ip-input" id="fvYears" type="number" min="1" max="50" step="1" value="10" />
+                        </div>
+                      </div>
+
+                      <div class="ip-actions-row">
+                        <button class="ip-btn-primary" type="button" id="cagrCalculateB">Calculate Future Value</button>
+                        <button class="ip-btn-outline" type="button" id="cagrResetB">Reset</button>
+                      </div>
+                    </div>
+
+                    <div class="calculator-results">
+                      <div class="ip-results-panel" id="cagrResultsPanelB">
+                        <div class="ip-result-grid">
+                          <div class="ip-result-cell">
+                            <div class="ip-result-label">Future Value ₹</div>
+                            <div class="ip-result-value" id="fvValue">₹0</div>
+                          </div>
+                          <div class="ip-result-cell">
+                            <div class="ip-result-label">Total Gain ₹</div>
+                            <div class="ip-result-value" id="fvGain">₹0</div>
+                          </div>
+                          <div class="ip-result-cell">
+                            <div class="ip-result-label">Growth Multiplier</div>
+                            <div class="ip-result-value" id="fvMultiplier">0.0x times</div>
+                          </div>
+                        </div>
+
+                        <div class="ip-card ip-chart-card">
+                          <canvas id="fvChart"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ip-tip-box">
+                  💡 Nifty 50 has delivered approximately 13% CAGR over the last 20 years. Use this to benchmark your investment performance.
+                </div>
+
+                <div class="partner-cta-box" style="border-color:#00d4ff;">
+                  <span class="partner-logo">📈</span>
+                  <div class="partner-info">
+                    <p class="partner-tagline">Compare your returns with top mutual funds — justinvesting.in →</p>
+                    <a
+                      href="https://justinvesting.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="partner-cta-btn"
+                      style="background:#00d4ff;color:#000;"
+                    >
+                      Start Investing Now →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- PPF CALCULATOR -->
+            <section class="ip-calculator-block" id="ppf">
+              <div class="ip-card">
+                <div class="ip-calc-header">
+                  <div class="ip-calc-title-wrap">
+                    <div class="ip-calc-icon"><i class="fa-solid fa-shield-heart"></i></div>
+                    <div>
+                      <h2>PPF Calculator</h2>
+                      <p>Estimate tax-free PPF maturity value using the current 7.1% annual interest rate.</p>
+                    </div>
+                  </div>
+
+                  <button
+                    class="ip-btn-outline ip-fav-btn"
+                    type="button"
+                    data-favorite-id="ppf"
+                    aria-pressed="false"
+                  >
+                    ⭐ Save
+                  </button>
+                </div>
+
+                <div class="calculator-container">
+                  <div class="calculator-inputs">
+                    <div class="ip-input-grid">
+                      <div class="ip-field">
+                        <div class="ip-label-row">
+                          <label class="ip-label" for="ppfAnnual">Annual Investment ₹</label>
+                          <span class="ip-inline-output" id="ppfAnnualOutput">₹50,000</span>
+                        </div>
+                        <input class="ip-input" id="ppfAnnual" type="number" min="500" max="150000" step="500" value="50000" />
+                        <input class="ip-range" id="ppfAnnualRange" type="range" min="500" max="150000" step="500" value="50000" />
+                      </div>
+
+                      <div class="ip-field ip-field-full">
+                        <label class="ip-label">Duration</label>
+                        <div class="ip-radio-group">
+                          <label class="ip-radio-pill">
+                            <input type="radio" name="ppfDuration" value="15" checked />
+                            <span>15 Years</span>
+                          </label>
+                          <label class="ip-radio-pill">
+                            <input type="radio" name="ppfDuration" value="20" />
+                            <span>20 Years</span>
+                          </label>
+                          <label class="ip-radio-pill">
+                            <input type="radio" name="ppfDuration" value="25" />
+                            <span>25 Years</span>
+                          </label>
+                        </div>
+
+                        <div class="ip-inline-badges">
+                          <span class="ip-badge">7.1% p.a. compounded annually</span>
+                          <span class="ip-badge">Partial Withdrawal eligible after Year 7</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ip-actions-row">
+                      <button class="ip-btn-primary" type="button" id="ppfCalculate">Calculate PPF</button>
+                      <button class="ip-btn-outline" type="button" id="ppfReset">Reset</button>
+                    </div>
+                  </div>
+
+                  <div class="calculator-results">
+                    <div class="ip-results-panel" id="ppfResultsPanel">
+                      <div class="ip-result-grid">
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Total Amount Invested</div>
+                          <div class="ip-result-value" id="ppfInvested">₹0</div>
+                        </div>
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Total Interest Earned</div>
+                          <div class="ip-result-value" id="ppfInterest">₹0</div>
+                        </div>
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Maturity Amount</div>
+                          <div class="ip-result-value" id="ppfMaturity">₹0</div>
+                        </div>
+                        <div class="ip-result-cell">
+                          <div class="ip-result-label">Indicative Tax Saved</div>
+                          <div class="ip-result-value" id="ppfTaxSaved">₹0</div>
+                        </div>
+                      </div>
+
+                      <div class="ip-inline-badges">
+                        <span class="ip-badge">🟢 EEE — Completely Tax Free</span>
+                      </div>
+
+                      <div class="ip-card ip-chart-card">
+                        <canvas id="ppfChart"></canvas>
+                      </div>
+
+                      <div class="ip-collapsible-table">
+                        <div class="ip-table-wrap">
+                          <table class="ip-table">
+                            <thead>
+                              <tr>
+                                <th>Year</th>
+                                <th>Annual Deposit</th>
+                                <th>Interest Earned That Year</th>
+                                <th>Closing Balance</th>
+                              </tr>
+                            </thead>
+                            <tbody id="ppfTableBody"></tbody>
+                          </table>
+                        </div>
+                        <button class="ip-btn-outline ip-collapse-trigger" type="button" id="ppfShowAll">Show All</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ip-tip-box">
+                  💡 PPF is one of the safest EEE instruments in India. ₹1.5L invested every year for 25 years grows to over ₹1.03 crore completely tax-free.
+                </div>
+
+                <div class="partner-cta-box" style="border-color:#00d4ff;">
+                  <span class="partner-logo">📈</span>
+                  <div class="partner-info">
+                    <p class="partner-tagline">Combine PPF with ELSS for maximum tax saving — justinvesting.in →</p>
+                    <a
+                      href="https://justinvesting.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="partner-cta-btn"
+                      style="background:#00d4ff;color:#000;"
+                    >
+                      Start Investing Now →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 
+              IP:ADD_CALCULATOR
+              FUTURE CALCULATORS — Paste new calculator HTML blocks below this line:
+              
+              Planned additions:
+              - NPS Calculator (id="nps")
+              - Step-Up SIP Standalone (id="step-up-sip")  
+              - Gold vs SGB vs Gold ETF (id="gold")
+              - Mutual Fund Returns Calculator (id="mutual-fund")
+              - EPF Calculator (id="epf")
+              - Dividend Reinvestment / DRIP (id="drip")
+              - SWP Calculator (id="swp")
+            -->
+
+            <section class="ip-related-section">
+              <div class="ip-section-head">
+                <span class="ip-badge">Related Pages</span>
+                <h2>You might also like</h2>
+                <p>Explore connected financial planning tools across the platform.</p>
+              </div>
+
+              <div class="ip-related-grid">
+                <a href="/pages/tax.html" class="ip-card ip-related-card">
+                  <h3>Tax Calculators</h3>
+                  <p>Compare regimes, estimate capital gains, and calculate GST quickly.</p>
+                  <span class="ip-related-link">Explore Tax →</span>
+                </a>
+
+                <a href="/pages/retirement.html" class="ip-card ip-related-card">
+                  <h3>Retirement Planning</h3>
+                  <p>See how much corpus you need and plan your FIRE journey with confidence.</p>
+                  <span class="ip-related-link">Explore Retirement →</span>
+                </a>
+
+                <a href="/pages/savings.html" class="ip-card ip-related-card">
+                  <h3>Savings &amp; FD</h3>
+                  <p>Compare fixed income options like FD, RD, and other long-term savings tools.</p>
+                  <span class="ip-related-link">Explore Savings →</span>
+                </a>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="ip-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/charts.js"></script>
+  <script src="/js/global.js"></script>
+
+  <script>
+    (function () {
+      const U = window.IPUtils;
+      const C = window.IPCharts;
+
+      function syncPair(numberInput, rangeInput, outputEl, formatter) {
+        function updateFrom(source) {
+          let value = U.toNumber(source.value);
+
+          const min = U.toNumber(numberInput.min || rangeInput.min || 0);
+          const max = U.toNumber(numberInput.max || rangeInput.max || value);
+
+          value = U.clamp(value, min, max);
+
+          numberInput.value = value;
+          rangeInput.value = value;
+          outputEl.textContent = formatter(value);
+        }
+
+        numberInput.addEventListener("input", () => updateFrom(numberInput));
+        rangeInput.addEventListener("input", () => updateFrom(rangeInput));
+        updateFrom(numberInput);
+      }
+
+      function formatYears(value) {
+        return `${U.formatNumber(value)} ${value === 1 ? "Year" : "Years"}`;
+      }
+
+      function animateMoney(el, value) {
+        if (!el) return;
+        U.animateCounter(el, 0, value, 900, "₹");
+      }
+
+      function animatePlain(el, value, suffix = "") {
+        if (!el) return;
+        U.animateCounter(el, 0, value, 900, "", suffix);
+      }
+
+      function setSlideIn(panel) {
+        if (!panel) return;
+        panel.classList.remove("slideInRight");
+        void panel.offsetWidth;
+        panel.classList.add("slideInRight");
+      }
+
+      function buildRows(tableBody, rows, renderRow, showAllBtn, initialRows = 5) {
+        let expanded = false;
+
+        function render() {
+          const visibleRows = expanded ? rows : rows.slice(0, initialRows);
+          tableBody.innerHTML = visibleRows.map(renderRow).join("");
+          if (rows.length <= initialRows) {
+            showAllBtn.classList.add("ip-hidden");
+          } else {
+            showAllBtn.classList.remove("ip-hidden");
+            showAllBtn.textContent = expanded ? "Show Less" : "Show All";
+          }
+        }
+
+        showAllBtn.onclick = function () {
+          expanded = !expanded;
+          render();
+        };
+
+        render();
+      }
+
+      function sipStandardMonthlyValue(monthly, annualRate, totalMonths) {
+        const r = annualRate / 12 / 100;
+        if (r === 0) return monthly * totalMonths;
+        return monthly * (((Math.pow(1 + r, totalMonths) - 1) / r) * (1 + r));
+      }
+
+      function calculateSipData(monthly, annualRate, years, stepUpEnabled, stepUpRate) {
+        const monthlyRate = annualRate / 12 / 100;
+        let corpus = 0;
+        let cumulativeInvested = 0;
+        let currentMonthly = monthly;
+        const rows = [];
+        const labels = [];
+        const investedSeries = [];
+        const returnsSeries = [];
+
+        for (let year = 1; year <= years; year += 1) {
+          const yearlyInvestment = currentMonthly * 12;
+          cumulativeInvested += yearlyInvestment;
+
+          for (let month = 1; month <= 12; month += 1) {
+            corpus = (corpus + currentMonthly) * (1 + monthlyRate);
+          }
+
+          rows.push({
+            year,
+            sipAmountThatYear: yearlyInvestment,
+            cumulativeInvested,
+            corpus
+          });
+
+          labels.push(`Year ${year}`);
+          investedSeries.push(Math.round(cumulativeInvested));
+          returnsSeries.push(Math.round(corpus - cumulativeInvested));
+
+          if (stepUpEnabled) {
+            currentMonthly *= (1 + stepUpRate / 100);
+          }
+        }
+
+        return {
+          rows,
+          totalInvested: cumulativeInvested,
+          maturity: corpus,
+          returns: corpus - cumulativeInvested,
+          ratio: cumulativeInvested ? corpus / cumulativeInvested : 0,
+          labels,
+          investedSeries,
+          returnsSeries
+        };
+      }
+
+      function renderSip() {
+        const monthly = U.toNumber(document.getElementById("sipMonthly").value);
+        const annualRate = U.toNumber(document.getElementById("sipReturn").value);
+        const years = U.toNumber(document.getElementById("sipYears").value);
+        const stepUpEnabled = document.getElementById("sipStepUpToggle").checked;
+        const stepUpRate = U.toNumber(document.getElementById("sipStepUp").value);
+
+        const data = calculateSipData(monthly, annualRate, years, stepUpEnabled, stepUpRate);
+
+        animateMoney(document.getElementById("sipInvested"), data.totalInvested);
+        animateMoney(document.getElementById("sipReturns"), data.returns);
+        animateMoney(document.getElementById("sipMaturity"), data.maturity);
+        document.getElementById("sipRatio").textContent = `${data.ratio.toFixed(1)}x times`;
+
+        setSlideIn(document.getElementById("sipResultsPanel"));
+
+        C.createStackedBar(
+          "sipChart",
+          data.labels,
+          [
+            {
+              label: "Invested Amount",
+              data: data.investedSeries,
+              backgroundColor: C.CHART_COLORS.cyan.fill,
+              borderColor: C.CHART_COLORS.cyan.border,
+              borderWidth: 1.5
+            },
+            {
+              label: "Returns",
+              data: data.returnsSeries,
+              backgroundColor: C.CHART_COLORS.purple.fill,
+              borderColor: C.CHART_COLORS.purple.border,
+              borderWidth: 1.5
+            }
+          ],
+          {
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (ctx) {
+                    return `${ctx.dataset.label}: ₹${new Intl.NumberFormat("en-IN").format(ctx.parsed.y)}`;
+                  }
+                }
+              }
+            }
+          }
+        );
+
+        buildRows(
+          document.getElementById("sipTableBody"),
+          data.rows,
+          (row) => `
+            <tr>
+              <td>Year ${row.year}</td>
+              <td>${U.formatINR(row.sipAmountThatYear)}</td>
+              <td>${U.formatINR(row.cumulativeInvested)}</td>
+              <td>${U.formatINR(row.corpus)}</td>
+            </tr>
+          `,
+          document.getElementById("sipShowAll"),
+          5
+        );
+      }
+
+      function resetSip() {
+        document.getElementById("sipMonthly").value = 5000;
+        document.getElementById("sipMonthlyRange").value = 5000;
+        document.getElementById("sipReturn").value = 12;
+        document.getElementById("sipReturnRange").value = 12;
+        document.getElementById("sipYears").value = 10;
+        document.getElementById("sipYearsRange").value = 10;
+        document.getElementById("sipStepUpToggle").checked = false;
+        document.getElementById("sipStepUp").value = 10;
+        document.getElementById("sipStepUpRange").value = 10;
+        document.getElementById("sipStepUpField").classList.add("ip-hidden");
+        updateStaticOutputs();
+        renderSip();
+      }
+
+      function getLumpsumFrequency() {
+        const selected = document.querySelector('input[name="lumpsumFrequency"]:checked');
+        return U.toNumber(selected ? selected.value : 12);
+      }
+
+      function calculateLumpsum(principal, annualRate, years, frequency) {
+        const perPeriodRate = annualRate / 100 / frequency;
+        const periods = years * frequency;
+        const maturity = principal * Math.pow(1 + perPeriodRate, periods);
+        const gain = maturity - principal;
+        const absoluteReturn = principal ? (gain / principal) * 100 : 0;
+        const effectiveCagr = principal > 0 ? ((Math.pow(maturity / principal, 1 / years) - 1) * 100) : 0;
+
+        const labels = [];
+        const values = [];
+
+        for (let year = 0; year <= years; year += 1) {
+          const yearValue = principal * Math.pow(1 + perPeriodRate, year * frequency);
+          labels.push(`Year ${year}`);
+          values.push(Math.round(yearValue));
+        }
+
+        return {
+          maturity,
+          gain,
+          absoluteReturn,
+          effectiveCagr,
+          labels,
+          values
+        };
+      }
+
+      function renderLumpsum() {
+        const principal = U.toNumber(document.getElementById("lumpsumAmount").value);
+        const annualRate = U.toNumber(document.getElementById("lumpsumReturn").value);
+        const years = U.toNumber(document.getElementById("lumpsumYears").value);
+        const frequency = getLumpsumFrequency();
+
+        const data = calculateLumpsum(principal, annualRate, years, frequency);
+
+        animateMoney(document.getElementById("lumpsumMaturity"), data.maturity);
+        animateMoney(document.getElementById("lumpsumGain"), data.gain);
+        document.getElementById("lumpsumAbsReturn").textContent = `${data.absoluteReturn.toFixed(1)}%`;
+        document.getElementById("lumpsumCagr").textContent = `${data.effectiveCagr.toFixed(2)}%`;
+
+        setSlideIn(document.getElementById("lumpsumResultsPanel"));
+
+        C.createLineChart(
+          "lumpsumChart",
+          data.labels,
+          [
+            {
+              label: "Corpus Value",
+              data: data.values,
+              borderColor: C.CHART_COLORS.cyan.border,
+              backgroundColor: "rgba(0,212,255,0.10)",
+              fill: true
+            }
+          ]
+        );
+      }
+
+      function resetLumpsum() {
+        document.getElementById("lumpsumAmount").value = 100000;
+        document.getElementById("lumpsumAmountRange").value = 100000;
+        document.getElementById("lumpsumReturn").value = 12;
+        document.getElementById("lumpsumReturnRange").value = 12;
+        document.getElementById("lumpsumYears").value = 10;
+        document.getElementById("lumpsumYearsRange").value = 10;
+        document.querySelector('input[name="lumpsumFrequency"][value="12"]').checked = true;
+        updateStaticOutputs();
+        renderLumpsum();
+      }
+
+      function calculateCagr(initial, finalValue, years) {
+        const cagr = (Math.pow(finalValue / initial, 1 / years) - 1) * 100;
+        const absolute = ((finalValue - initial) / initial) * 100;
+        const gain = finalValue - initial;
+
+        const labels = [];
+        const values = [];
+
+        for (let year = 0; year <= years; year += 1) {
+          labels.push(`Year ${year}`);
+          values.push(Math.round(initial * Math.pow(1 + cagr / 100, year)));
+        }
+
+        return { cagr, absolute, gain, labels, values };
+      }
+
+      function renderCagrModeA() {
+        const initial = U.toNumber(document.getElementById("cagrInitial").value);
+        const finalValue = U.toNumber(document.getElementById("cagrFinal").value);
+        const years = U.toNumber(document.getElementById("cagrYearsA").value);
+
+        if (initial <= 0 || finalValue <= 0 || years <= 0) return;
+
+        const data = calculateCagr(initial, finalValue, years);
+
+        document.getElementById("cagrPercent").textContent = `${data.cagr.toFixed(2)}%`;
+        document.getElementById("cagrAbsolute").textContent = `${data.absolute.toFixed(1)}%`;
+        animateMoney(document.getElementById("cagrGain"), data.gain);
+
+        setSlideIn(document.getElementById("cagrResultsPanelA"));
+
+        C.createBarChart(
+          "cagrChart",
+          data.labels,
+          data.values,
+          C.CHART_COLORS.purple,
+          { label: "Value" }
+        );
+      }
+
+      function calculateFutureValue(pv, cagr, years) {
+        const fv = pv * Math.pow(1 + cagr / 100, years);
+        const gain = fv - pv;
+        const multiplier = pv ? fv / pv : 0;
+
+        const labels = [];
+        const values = [];
+
+        for (let year = 0; year <= years; year += 1) {
+          labels.push(`Year ${year}`);
+          values.push(Math.round(pv * Math.pow(1 + cagr / 100, year)));
+        }
+
+        return { fv, gain, multiplier, labels, values };
+      }
+
+      function renderCagrModeB() {
+        const pv = U.toNumber(document.getElementById("fvCurrent").value);
+        const cagr = U.toNumber(document.getElementById("fvCagr").value);
+        const years = U.toNumber(document.getElementById("fvYears").value);
+
+        if (pv <= 0 || years <= 0) return;
+
+        const data = calculateFutureValue(pv, cagr, years);
+
+        animateMoney(document.getElementById("fvValue"), data.fv);
+        animateMoney(document.getElementById("fvGain"), data.gain);
+        document.getElementById("fvMultiplier").textContent = `${data.multiplier.toFixed(1)}x times`;
+
+        setSlideIn(document.getElementById("cagrResultsPanelB"));
+
+        C.createBarChart(
+          "fvChart",
+          data.labels,
+          data.values,
+          C.CHART_COLORS.green,
+          { label: "Future Value" }
+        );
+      }
+
+      function resetCagrA() {
+        document.getElementById("cagrInitial").value = 100000;
+        document.getElementById("cagrFinal").value = 180000;
+        document.getElementById("cagrYearsA").value = 5;
+        renderCagrModeA();
+      }
+
+      function resetCagrB() {
+        document.getElementById("fvCurrent").value = 100000;
+        document.getElementById("fvCagr").value = 12;
+        document.getElementById("fvYears").value = 10;
+        renderCagrModeB();
+      }
+
+      function setCagrTab(mode) {
+        const btns = document.querySelectorAll("[data-cagr-tab]");
+        btns.forEach((btn) => {
+          btn.classList.toggle("is-active", btn.getAttribute("data-cagr-tab") === mode);
+          btn.classList.toggle("ip-btn-primary", btn.getAttribute("data-cagr-tab") === mode);
+          btn.classList.toggle("ip-btn-outline", btn.getAttribute("data-cagr-tab") !== mode);
+        });
+
+        document.getElementById("cagrPanelA").classList.toggle("is-active", mode === "modeA");
+        document.getElementById("cagrPanelB").classList.toggle("is-active", mode === "modeB");
+      }
+
+      function calculatePpf(annualDeposit, years) {
+        const rate = 0.071;
+        let balance = 0;
+        let totalInvested = 0;
+        const rows = [];
+        const labels = [];
+        const investedSeries = [];
+        const corpusSeries = [];
+
+        for (let year = 1; year <= years; year += 1) {
+          const openingPlusDeposit = balance + annualDeposit;
+          const interest = openingPlusDeposit * rate;
+          balance = openingPlusDeposit + interest;
+          totalInvested += annualDeposit;
+
+          rows.push({
+            year,
+            deposit: annualDeposit,
+            interest,
+            balance
+          });
+
+          labels.push(`Year ${year}`);
+          investedSeries.push(totalInvested);
+          corpusSeries.push(Math.round(balance));
+        }
+
+        const interestEarned = balance - totalInvested;
+        const taxSaved = totalInvested * 0.30;
+
+        return {
+          rows,
+          totalInvested,
+          interestEarned,
+          balance,
+          taxSaved,
+          labels,
+          investedSeries,
+          corpusSeries
+        };
+      }
+
+      function renderPpf() {
+        const annualDeposit = U.toNumber(document.getElementById("ppfAnnual").value);
+        const durationInput = document.querySelector('input[name="ppfDuration"]:checked');
+        const years = U.toNumber(durationInput ? durationInput.value : 15);
+
+        const data = calculatePpf(annualDeposit, years);
+
+        animateMoney(document.getElementById("ppfInvested"), data.totalInvested);
+        animateMoney(document.getElementById("ppfInterest"), data.interestEarned);
+        animateMoney(document.getElementById("ppfMaturity"), data.balance);
+        animateMoney(document.getElementById("ppfTaxSaved"), data.taxSaved);
+
+        setSlideIn(document.getElementById("ppfResultsPanel"));
+
+        C.createComparisonChart(
+          "ppfChart",
+          data.labels,
+          [
+            {
+              label: "Invested",
+              data: data.investedSeries,
+              backgroundColor: C.CHART_COLORS.cyan.fill,
+              borderColor: C.CHART_COLORS.cyan.border
+            },
+            {
+              label: "Corpus",
+              data: data.corpusSeries,
+              backgroundColor: C.CHART_COLORS.green.fill,
+              borderColor: C.CHART_COLORS.green.border
+            }
+          ]
+        );
+
+        buildRows(
+          document.getElementById("ppfTableBody"),
+          data.rows,
+          (row) => `
+            <tr>
+              <td>Year ${row.year}</td>
+              <td>${U.formatINR(row.deposit)}</td>
+              <td>${U.formatINR(row.interest)}</td>
+              <td>${U.formatINR(row.balance)}</td>
+            </tr>
+          `,
+          document.getElementById("ppfShowAll"),
+          5
+        );
+      }
+
+      function resetPpf() {
+        document.getElementById("ppfAnnual").value = 50000;
+        document.getElementById("ppfAnnualRange").value = 50000;
+        document.querySelector('input[name="ppfDuration"][value="15"]').checked = true;
+        updateStaticOutputs();
+        renderPpf();
+      }
+
+      function updateStaticOutputs() {
+        document.getElementById("sipMonthlyOutput").textContent = U.formatINR(document.getElementById("sipMonthly").value);
+        document.getElementById("sipReturnOutput").textContent = `${U.toNumber(document.getElementById("sipReturn").value).toFixed(1).replace(/\.0$/, "")}%`;
+        document.getElementById("sipYearsOutput").textContent = formatYears(U.toNumber(document.getElementById("sipYears").value));
+        document.getElementById("sipStepUpOutput").textContent = `${U.toNumber(document.getElementById("sipStepUp").value)}%`;
+
+        document.getElementById("lumpsumAmountOutput").textContent = U.formatINR(document.getElementById("lumpsumAmount").value);
+        document.getElementById("lumpsumReturnOutput").textContent = `${U.toNumber(document.getElementById("lumpsumReturn").value).toFixed(1).replace(/\.0$/, "")}%`;
+        document.getElementById("lumpsumYearsOutput").textContent = formatYears(U.toNumber(document.getElementById("lumpsumYears").value));
+
+        document.getElementById("ppfAnnualOutput").textContent = U.formatINR(document.getElementById("ppfAnnual").value);
+      }
+
+      function bindControls() {
+        syncPair(
+          document.getElementById("sipMonthly"),
+          document.getElementById("sipMonthlyRange"),
+          document.getElementById("sipMonthlyOutput"),
+          (v) => U.formatINR(v)
+        );
+
+        syncPair(
+          document.getElementById("sipReturn"),
+          document.getElementById("sipReturnRange"),
+          document.getElementById("sipReturnOutput"),
+          (v) => `${U.toNumber(v).toFixed(1).replace(/\.0$/, "")}%`
+        );
+
+        syncPair(
+          document.getElementById("sipYears"),
+          document.getElementById("sipYearsRange"),
+          document.getElementById("sipYearsOutput"),
+          (v) => formatYears(v)
+        );
+
+        syncPair(
+          document.getElementById("sipStepUp"),
+          document.getElementById("sipStepUpRange"),
+          document.getElementById("sipStepUpOutput"),
+          (v) => `${v}%`
+        );
+
+        syncPair(
+          document.getElementById("lumpsumAmount"),
+          document.getElementById("lumpsumAmountRange"),
+          document.getElementById("lumpsumAmountOutput"),
+          (v) => U.formatINR(v)
+        );
+
+        syncPair(
+          document.getElementById("lumpsumReturn"),
+          document.getElementById("lumpsumReturnRange"),
+          document.getElementById("lumpsumReturnOutput"),
+          (v) => `${U.toNumber(v).toFixed(1).replace(/\.0$/, "")}%`
+        );
+
+        syncPair(
+          document.getElementById("lumpsumYears"),
+          document.getElementById("lumpsumYearsRange"),
+          document.getElementById("lumpsumYearsOutput"),
+          (v) => formatYears(v)
+        );
+
+        syncPair(
+          document.getElementById("ppfAnnual"),
+          document.getElementById("ppfAnnualRange"),
+          document.getElementById("ppfAnnualOutput"),
+          (v) => U.formatINR(v)
+        );
+
+        document.getElementById("sipStepUpToggle").addEventListener("change", function () {
+          document.getElementById("sipStepUpField").classList.toggle("ip-hidden", !this.checked);
+          renderSip();
+        });
+
+        document.getElementById("sipCalculate").addEventListener("click", renderSip);
+        document.getElementById("sipReset").addEventListener("click", resetSip);
+
+        document.getElementById("lumpsumCalculate").addEventListener("click", renderLumpsum);
+        document.getElementById("lumpsumReset").addEventListener("click", resetLumpsum);
+        document.querySelectorAll('input[name="lumpsumFrequency"]').forEach((input) => {
+          input.addEventListener("change", renderLumpsum);
+        });
+
+        document.getElementById("cagrCalculateA").addEventListener("click", renderCagrModeA);
+        document.getElementById("cagrResetA").addEventListener("click", resetCagrA);
+        document.getElementById("cagrCalculateB").addEventListener("click", renderCagrModeB);
+        document.getElementById("cagrResetB").addEventListener("click", resetCagrB);
+
+        document.querySelectorAll("[data-cagr-tab]").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            setCagrTab(this.getAttribute("data-cagr-tab"));
+          });
+        });
+
+        document.getElementById("ppfCalculate").addEventListener("click", renderPpf);
+        document.getElementById("ppfReset").addEventListener("click", resetPpf);
+        document.querySelectorAll('input[name="ppfDuration"]').forEach((input) => {
+          input.addEventListener("change", renderPpf);
+        });
+      }
+
+      function initSidebarHighlight() {
+        const sections = Array.from(document.querySelectorAll(".ip-calculator-block"));
+        const links = Array.from(document.querySelectorAll(".ip-sidebar-link"));
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const id = `#${entry.target.id}`;
+            links.forEach((link) => {
+              link.classList.toggle("is-active", link.getAttribute("href") === id);
+            });
+          });
+        }, { threshold: 0.35 });
+
+        sections.forEach((section) => observer.observe(section));
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        bindControls();
+        initSidebarHighlight();
+        updateStaticOutputs();
+
+        renderSip();
+        renderLumpsum();
+        renderCagrModeA();
+        renderCagrModeB();
+        renderPpf();
+      });
+    })();
+  </script>
+</body>
+</html>
