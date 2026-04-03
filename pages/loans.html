@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan & EMI Calculators | InvestPercent</title>
+
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/calculator.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body {font-family: Arial; background:#0b0f1a; color:#fff;}
+.container {display:flex;}
+.sidebar {width:220px; padding:20px; position:sticky; top:0;}
+.sidebar a {display:block; margin:10px 0; color:#aaa; text-decoration:none;}
+.content {flex:1; padding:20px;}
+.card {background:#121826; padding:20px; margin-bottom:40px; border-radius:12px;}
+input, button {margin:5px;}
+.result {margin-top:15px;}
+.cta {padding:15px; margin-top:20px; border-radius:8px;}
+</style>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>🏦 Loan & EMI Calculators</h1>
+<p>Know your EMI before you sign</p>
+
+<div class="cta" style="border-left:4px solid #ff6b35; background:linear-gradient(135deg,#ff6b3522,transparent);">
+🏠 Planning to buy property? Get expert help — justproperty.in →
+</div>
+
+<!-- ================= HOME LOAN ================= -->
+<div class="card" id="home-loan">
+<h2>Home Loan EMI Calculator</h2>
+
+<input type="range" id="hl_amount" min="100000" max="100000000" value="3000000">
+<input type="range" id="hl_rate" min="6" max="20" step="0.05" value="8.5">
+<input type="range" id="hl_years" min="1" max="30" value="20">
+<input type="number" id="hl_fee" value="0.5">
+
+<div>
+<button onclick="setRate(8.5)">SBI</button>
+<button onclick="setRate(8.7)">HDFC</button>
+<button onclick="setRate(8.75)">ICICI</button>
+</div>
+
+<button onclick="calcHomeLoan()">Calculate</button>
+
+<div class="result" id="hl_result"></div>
+<canvas id="hl_chart"></canvas>
+
+<button onclick="downloadCSV()">Download CSV</button>
+<div id="hl_table"></div>
+
+<div class="cta" style="border-left:4px solid #ff6b35;">
+🏠 Find your dream home — justproperty.in →
+</div>
+</div>
+
+<!-- ================= PERSONAL LOAN ================= -->
+<div class="card" id="personal-loan">
+<h2>Personal Loan EMI</h2>
+
+<input type="range" id="pl_amount" min="10000" max="5000000" value="500000">
+<input type="range" id="pl_rate" min="10" max="36" value="14">
+<input type="range" id="pl_months" min="3" max="84" value="36">
+<input type="number" id="pl_fee" value="0">
+
+<input type="number" id="pl_extra" value="0">
+
+<button onclick="calcPL()">Calculate</button>
+
+<div id="pl_result"></div>
+<canvas id="pl_chart"></canvas>
+
+<div class="cta">
+Build emergency fund — justinvesting.in →
+</div>
+</div>
+
+<!-- ================= DEBT PLANNER ================= -->
+<div class="card" id="debt-payoff">
+<h2>Debt Payoff Planner</h2>
+
+<div id="debts"></div>
+<button onclick="addDebt()">Add Debt</button>
+
+<input type="number" id="extra_pay" value="5000">
+
+<select id="strategy">
+<option value="avalanche">Avalanche</option>
+<option value="snowball">Snowball</option>
+</select>
+
+<button onclick="calcDebt()">Calculate</button>
+
+<div id="debt_result"></div>
+
+<div class="cta" style="border-left:4px solid #ffd700;">
+👑 Build wealth — absolutemoney.in →
+</div>
+</div>
+
+</div>
+
+<script>
+
+// ================= EMI FORMULA =================
+function emi(P,r,n){
+r=r/12/100;
+return P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+}
+
+// ================= HOME LOAN =================
+let hlSchedule=[];
+
+function setRate(r){
+document.getElementById("hl_rate").value=r;
+}
+
+function calcHomeLoan(){
+let P=+hl_amount.value;
+let r=+hl_rate.value;
+let n=hl_years.value*12;
+
+let EMI=emi(P,r,n);
+let balance=P;
+
+hlSchedule=[];
+let totalInterest=0;
+
+for(let i=1;i<=n;i++){
+let interest=balance*(r/12/100);
+let principal=EMI-interest;
+balance-=principal;
+
+hlSchedule.push([i,balance+principal,EMI,principal,interest,balance]);
+totalInterest+=interest;
+}
+
+let total=EMI*n;
+let fee=P*(hl_fee.value/100);
+
+hl_result.innerHTML=
+`EMI ₹${EMI.toFixed(0)}<br>
+Interest ₹${totalInterest.toFixed(0)}<br>
+Total ₹${total.toFixed(0)}<br>
+Fee ₹${fee.toFixed(0)}`;
+
+renderChart("hl_chart",[P,totalInterest]);
+renderTable();
+}
+
+function renderChart(id,data){
+new Chart(document.getElementById(id),{
+type:"pie",
+data:{labels:["Principal","Interest"],
+datasets:[{data:data}]}
+});
+}
+
+function renderTable(){
+let html="<table>";
+hlSchedule.slice(0,12).forEach(r=>{
+html+=`<tr><td>${r[0]}</td><td>${r[1].toFixed(0)}</td></tr>`;
+});
+html+="</table>";
+hl_table.innerHTML=html;
+}
+
+function downloadCSV(){
+let csv="Month,Opening,EMI,Principal,Interest,Closing\n";
+hlSchedule.forEach(r=>csv+=r.join(",")+"\n");
+
+let blob=new Blob([csv]);
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="schedule.csv";
+a.click();
+}
+
+// ================= PERSONAL LOAN =================
+function calcPL(){
+let P=pl_amount.value;
+let r=pl_rate.value;
+let n=pl_months.value;
+
+let EMI=emi(P,r,n);
+
+let total=EMI*n;
+let interest=total-P;
+
+let EAR=(Math.pow(1+(r/12/100),12)-1)*100;
+
+pl_result.innerHTML=
+`EMI ₹${EMI.toFixed(0)}<br>
+Interest ₹${interest.toFixed(0)}<br>
+EAR ${EAR.toFixed(2)}%`;
+
+}
+
+// ================= DEBT =================
+let debtCount=0;
+
+function addDebt(){
+if(debtCount>=6) return;
+let div=document.createElement("div");
+div.innerHTML=`
+<input placeholder="Name">
+<input type="number" placeholder="Balance">
+<input type="number" placeholder="Rate">
+<input type="number" placeholder="Min Payment">`;
+debts.appendChild(div);
+debtCount++;
+}
+
+function calcDebt(){
+let rows=debts.children;
+let debtsArr=[];
+
+for(let r of rows){
+let inputs=r.querySelectorAll("input");
+debtsArr.push({
+name:inputs[0].value,
+bal:+inputs[1].value,
+rate:+inputs[2].value,
+min:+inputs[3].value
+});
+}
+
+let extra=+extra_pay.value;
+let months=0,interest=0;
+
+while(months<360 && debtsArr.some(d=>d.bal>0)){
+months++;
+
+debtsArr.forEach(d=>{
+if(d.bal>0){
+let i=d.bal*(d.rate/12/100);
+d.bal+=i;
+interest+=i;
+d.bal-=d.min;
+}
+});
+
+let target=debtsArr.filter(d=>d.bal>0)
+.sort((a,b)=>strategy.value==="avalanche"?b.rate-a.rate:a.bal-b.bal)[0];
+
+if(target) target.bal-=extra;
+}
+
+debt_result.innerHTML=
+`Months ${months}<br>Interest ₹${interest.toFixed(0)}`;
+}
+
+</script>
+
+</body>
+</html>
