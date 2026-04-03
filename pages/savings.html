@@ -1,165 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Savings Calculators | InvestPercent</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-<link rel="stylesheet" href="../css/theme.css">
-<link rel="stylesheet" href="../css/components.css">
-
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/components.css">
 </head>
 
 <body>
 
-<header class="site-header">
-  <div class="nav-shell">
-    <a href="../index.html" class="brand">
-      <div class="brand-mark"><i class="fa-solid fa-chart-line"></i></div>
-      <div>
-        <div class="brand-title">InvestPercent</div>
-        <div class="brand-sub">Your complete financial universe</div>
-      </div>
-    </a>
+<div id="header"></div>
 
-    <nav class="top-nav">
-      <a href="../index.html">Home</a>
-      <a href="./investment.html">Investment</a>
-      <a href="./savings.html" class="active">Savings</a>
-      <a href="./tax.html">Tax</a>
-      <a href="./loans.html">Loans</a>
-      <a href="./retirement.html">Retirement</a>
-      <a href="./personal.html">Finance</a>
-      <a href="./crypto.html">Crypto</a>
-    </nav>
-  </div>
-</header>
+<script src="../js/main.js"></script>
+<script>
+loadComponent("header", "../components/header.html");
+</script>
 
 <div class="page-shell">
-
-<section class="hero">
-  <h1>Savings & FD Calculators</h1>
-  <p>Safe returns, predictable growth — compare FD, RD, and government schemes.</p>
-</section>
-
-<div class="layout">
-
-<aside class="sidebar">
-  <div class="side-card">
-    <div class="side-title">Jump</div>
-    <a class="anchor-link" href="#fd">FD</a>
-    <a class="anchor-link" href="#rd">RD</a>
-    <a class="anchor-link" href="#ssy">SSY</a>
-  </div>
-</aside>
-
-<main class="main">
-
-<!-- FD -->
-<section class="calc-card" id="fd">
-  <div class="calc-header">
-    <h2>FD Calculator</h2>
-  </div>
-
-  <div class="calc-body">
-    <div class="calc-grid">
-
-      <div class="panel">
-        <input id="fd_p" type="number" value="100000" placeholder="Amount ₹">
-        <input id="fd_r" type="number" value="7" placeholder="Rate %">
-        <input id="fd_y" type="number" value="5" placeholder="Years">
-
-        <button class="btn btn-primary" onclick="calcFD()">Calculate</button>
-      </div>
-
-      <div class="panel">
-        <div id="fd_result" class="result-box"></div>
-        <canvas id="fd_chart"></canvas>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- RD -->
-<section class="calc-card" id="rd">
-  <div class="calc-header">
-    <h2>RD Calculator</h2>
-  </div>
-
-  <div class="calc-body">
-    <div class="calc-grid">
-
-      <div class="panel">
-        <input id="rd_amt" value="5000">
-        <input id="rd_rate" value="6.5">
-        <input id="rd_months" value="36">
-
-        <button class="btn btn-primary" onclick="calcRD()">Calculate</button>
-      </div>
-
-      <div class="panel">
-        <div id="rd_result" class="result-box"></div>
-        <canvas id="rd_chart"></canvas>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- SSY -->
-<section class="calc-card" id="ssy">
-  <div class="calc-header">
-    <h2>SSY Calculator</h2>
-  </div>
-
-  <div class="calc-body">
-    <div class="calc-grid">
-
-      <div class="panel">
-        <input id="ssy_age" value="3">
-        <input id="ssy_amt" value="50000">
-
-        <button class="btn btn-primary" onclick="calcSSY()">Calculate</button>
-      </div>
-
-      <div class="panel">
-        <div id="ssy_result" class="result-box"></div>
-        <canvas id="ssy_chart"></canvas>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-</main>
+  <h1>Investment Page</h1>
 </div>
-</div>
-
-<script>
-function calcFD(){
-let P=+fd_p.value,r=+fd_r.value,t=+fd_y.value;
-let A=P*Math.pow(1+r/100,t);
-fd_result.innerHTML="Maturity ₹"+A.toFixed(0);
-}
-
-function calcRD(){
-let R=+rd_amt.value,r=+rd_rate.value/1200,n=+rd_months.value;
-let corpus=0;
-for(let i=0;i<n;i++) corpus=(corpus+R)*(1+r);
-rd_result.innerHTML="₹"+corpus.toFixed(0);
-}
-
-function calcSSY(){
-let amt=+ssy_amt.value;
-let corpus=0;
-for(let i=0;i<21;i++) corpus=(corpus+amt)*1.082;
-ssy_result.innerHTML="₹"+corpus.toFixed(0);
-}
-</script>
 
 </body>
 </html>
