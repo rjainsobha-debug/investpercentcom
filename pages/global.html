@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Finance Tools | InvestPercent</title>
+
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/calculator.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1728;
+      --panel: rgba(17, 26, 43, 0.82);
+      --panel-2: rgba(15, 23, 38, 0.95);
+      --card: rgba(17, 24, 39, 0.96);
+      --muted: #93a4bd;
+      --text: #ebf3ff;
+      --white: #ffffff;
+      --line: rgba(255, 255, 255, 0.08);
+      --line-2: rgba(255, 255, 255, 0.12);
+      --accent: #7b61ff;
+      --accent-2: #00d4ff;
+      --green: #00d09c;
+      --green-2: #00b386;
+      --cyan: #38bdf8;
+      --purple: #8b5cf6;
+      --orange: #ff6b35;
+      --gold: #ffd700;
+      --danger: #ff5d73;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --max: 1380px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(123, 97, 255, 0.14), transparent 22%),
+        radial-gradient(circle at top right, rgba(0, 212, 255, 0.1), transparent 18%),
+        radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.10), transparent 18%),
+        linear-gradient(180deg, #07101d 0%, #091423 40%, #08111f 100%);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page-shell {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        linear-gradient(135deg, rgba(123, 97, 255, 0.14), rgba(0, 212, 255, 0.08) 35%, rgba(139, 92, 246, 0.10)),
+        rgba(10, 17, 30, 0.92);
+      box-shadow: var(--shadow);
+      padding: 26px 28px;
+      margin-bottom: 22px;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: auto -80px -80px auto;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle, rgba(123, 97, 255, 0.22), transparent 65%);
+      pointer-events: none;
+    }
+
+    .world-map {
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: -1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 500'%3E%3Cpath d='M92 219l33-19 36 8 35 26 15 29-20 13-36 7-31-20-30-28zM286 162l40-28 53 8 24 38-13 36-48 9-46-18-21-20zM438 132l46-12 39 15 17 35-21 20-52 3-27-24zM603 135l37-16 75 9 38 22 5 38-34 20-60 3-44-13-24-29zM782 173l42-16 52 8 35 19 10 32-25 21-58 8-45-12-24-23zM950 184l42-13 38 14 22 28-10 30-47 16-35-11-20-31zM884 307l42-19 41 14 18 32-12 29-37 15-34-8-19-30zM647 289l30-11 35 10 15 25-14 28-33 12-31-8-16-28zM318 296l31-10 30 8 18 23-12 24-33 10-27-6-17-24z' fill='none' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .breadcrumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #b7c7dc;
+      font-size: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .hero-title-wrap {
+      max-width: 760px;
+    }
+
+    .hero-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(123, 97, 255, 0.18), rgba(0, 212, 255, 0.18));
+      border: 1px solid rgba(255,255,255,0.10);
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #a9bdd7;
+      font-size: 1.02rem;
+      line-height: 1.7;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(140px, 1fr));
+      gap: 12px;
+      min-width: 300px;
+      max-width: 460px;
+      width: 100%;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px 16px;
+      backdrop-filter: blur(16px);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: #f2f7ff;
+    }
+
+    .partner-banner {
+      margin: 20px 0 28px;
+      border-left: 4px solid var(--accent);
+      border-radius: 18px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, #7b61ff22, #00d4ff22);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-right: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .partner-banner strong {
+      font-size: 1rem;
+    }
+
+    .partner-banner a {
+      color: #dbf5ff;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .side-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .side-title {
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #98acc8;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .anchor-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .anchor-link {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      padding: 13px 14px;
+      transition: 0.2s ease;
+    }
+
+    .anchor-link:hover {
+      transform: translateY(-1px);
+      border-color: rgba(123, 97, 255, 0.4);
+      background: rgba(123, 97, 255, 0.10);
+    }
+
+    .anchor-link .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      flex: 0 0 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(123, 97, 255, 0.14);
+      color: #dcd6ff;
+      font-weight: 800;
+      font-size: 13px;
+      margin-top: 1px;
+    }
+
+    .anchor-link h4 {
+      margin: 0 0 4px;
+      font-size: 0.97rem;
+      color: #f1f7ff;
+    }
+
+    .anchor-link p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.83rem;
+      line-height: 1.45;
+    }
+
+    .related-links {
+      display: grid;
+      gap: 10px;
+    }
+
+    .related-links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: #dbe8f7;
+    }
+
+    .main {
+      display: grid;
+      gap: 22px;
+    }
+
+    .calc-card {
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)),
+        var(--card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .calc-header {
+      padding: 24px 24px 14px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    }
+
+    .calc-topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(123, 97, 255, 0.12);
+      border: 1px solid rgba(123, 97, 255, 0.20);
+      color: #ddd7ff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .calc-header h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.35rem, 2vw, 2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .calc-header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .calc-body {
+      padding: 22px 24px 24px;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .section-title {
+      font-size: 0.88rem;
+      color: #b2c5dd;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin: 0 0 14px;
+      font-weight: 700;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 10px;
+    }
+
+    .field-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-size: 0.95rem;
+      color: #edf4ff;
+      font-weight: 600;
+    }
+
+    .value-pill {
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: #f7fbff;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      appearance: none;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(123,97,255,0.85), rgba(0,212,255,0.85));
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--accent);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.22);
+      cursor: pointer;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    select {
+      width: 100%;
+      border: 1px solid var(--line-2);
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 0.98rem;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    select option {
+      color: #111827;
+    }
+
+    input[type="number"]:focus,
+    input[type="text"]:focus,
+    select:focus {
+      border-color: rgba(123,97,255,0.5);
+      box-shadow: 0 0 0 4px rgba(123,97,255,0.08);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      border: 1px solid var(--line);
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      border: none;
+      box-shadow: 0 10px 24px rgba(123,97,255,0.22);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(123,97,255,0.28);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .result-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .result-box .label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+
+    .result-box .value {
+      font-size: clamp(1.06rem, 1.5vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #f7fbff;
+      line-height: 1.25;
+    }
+
+    .result-box .sub {
+      margin-top: 6px;
+      color: #b8cae0;
+      font-size: 0.82rem;
+    }
+
+    .note-box {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(123, 97, 255, 0.10);
+      border: 1px solid rgba(123, 97, 255, 0.18);
+      color: #e3ddff;
+      line-height: 1.6;
+    }
+
+    .chart-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 14px;
+      background: rgba(255,255,255,0.03);
+      height: 100%;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-height: 300px;
+    }
+
+    .chart-wrap.tall {
+      min-height: 360px;
+    }
+
+    .table-shell {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.025);
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th, td {
+      padding: 13px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-align: left;
+      font-size: 0.92rem;
+      vertical-align: middle;
+    }
+
+    th {
+      background: rgba(255,255,255,0.04);
+      color: #f5f9ff;
+      font-size: 0.84rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    td {
+      color: #dbe8f7;
+    }
+
+    tbody tr:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .small-muted {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-top: 8px;
+    }
+
+    .cta-card {
+      margin-top: 18px;
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-card.global {
+      border-color: rgba(123,97,255,0.28);
+      background: linear-gradient(135deg, rgba(123,97,255,0.16), rgba(0,212,255,0.10));
+    }
+
+    .cta-copy {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .cta-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex: 0 0 46px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .cta-copy h4 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+    }
+
+    .cta-copy p {
+      margin: 0;
+      color: #d2dfef;
+      line-height: 1.55;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-weight: 800;
+      white-space: nowrap;
+      background: linear-gradient(135deg, #7b61ff, #00d4ff);
+      color: #ffffff;
+    }
+
+    .convert-shell {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .convert-box {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(255,255,255,0.035);
+    }
+
+    .convert-box .box-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .big-input {
+      width: 100%;
+      border: 1px solid var(--line-2);
+      background: rgba(255,255,255,0.04);
+      color: var(--white);
+      border-radius: 18px;
+      padding: 16px 16px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      outline: none;
+      transition: 0.2s ease;
+      margin-bottom: 12px;
+    }
+
+    .big-input:focus {
+      border-color: rgba(123,97,255,0.5);
+      box-shadow: 0 0 0 4px rgba(123,97,255,0.08);
+    }
+
+    .swap-btn {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      border: 1px solid rgba(123,97,255,0.26);
+      background: linear-gradient(135deg, rgba(123,97,255,0.16), rgba(0,212,255,0.14));
+      color: white;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+    }
+
+    .swap-btn:hover {
+      transform: rotate(180deg) scale(1.03);
+    }
+
+    .rate-strip {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: #dce9f7;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    .quick-pairs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .pair-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: #ecf4ff;
+      border-radius: 999px;
+      padding: 10px 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .pair-btn:hover {
+      background: rgba(123,97,255,0.10);
+      border-color: rgba(123,97,255,0.28);
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .mini-box {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      padding: 14px;
+    }
+
+    .mini-box .label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .mini-box .value {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .best-row {
+      background: rgba(0, 208, 156, 0.08) !important;
+    }
+
+    .best-row td {
+      color: #e8fff8;
+    }
+
+    .fastest-row {
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge.best {
+      background: rgba(0,208,156,0.14);
+      color: #b7fff0;
+      border: 1px solid rgba(0,208,156,0.24);
+    }
+
+    .badge.fast {
+      background: rgba(56,189,248,0.14);
+      color: #d5f4ff;
+      border: 1px solid rgba(56,189,248,0.24);
+    }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+      .calc-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .convert-shell {
+        grid-template-columns: 1fr;
+      }
+      .swap-btn {
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .hero-stats,
+      .result-grid,
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-shell {
+        padding: 18px 14px 50px;
+      }
+
+      .hero,
+      .calc-header,
+      .calc-body {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <section class="hero">
+      <div class="world-map"></div>
+
+      <div class="breadcrumb">
+        <span>Home</span>
+        <i class="fa-solid fa-angle-right"></i>
+        <span>Global Finance Tools</span>
+      </div>
+
+      <div class="hero-top">
+        <div class="hero-title-wrap">
+          <div class="hero-icon">🌍</div>
+          <h1>Global Finance Tools</h1>
+          <p>Think beyond borders. Your money in a global context.</p>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-label">Calculators</div>
+            <div class="stat-value">2 global tools</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Use cases</div>
+            <div class="stat-value">Forex • Remittance</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Best for</div>
+            <div class="stat-value">Travel, transfers & investing</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="partner-banner">
+      <strong>🌍 Best forex rates for travel, transfers & investments — goglobal.forex →</strong>
+      <a href="https://goglobal.forex" target="_blank" rel="noopener">Check goglobal.forex <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+    </div>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="side-card">
+          <div class="side-title">Jump to calculator</div>
+          <div class="anchor-list">
+            <a class="anchor-link" href="#currency">
+              <span class="num">1</span>
+              <div>
+                <h4>Currency Converter</h4>
+                <p>Compare currencies instantly with quick tables and popular pairs.</p>
+              </div>
+            </a>
+
+            <a class="anchor-link" href="#remittance">
+              <span class="num">2</span>
+              <div>
+                <h4>Remittance Cost Calculator</h4>
+                <p>See how much the recipient actually gets across providers.</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <div class="side-title">Related pages</div>
+          <div class="related-links">
+            <a href="../pages/investment.html">Investment Calculators <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="../pages/business.html">Business Tools <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="../pages/personal-finance.html">Personal Finance <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <div class="side-title">Quick note</div>
+          <div class="small-muted">
+            Cross-border finance is rarely about fees alone. Exchange markup quietly changes what the other person actually receives.
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <!-- CURRENCY CONVERTER -->
+        <section class="calc-card" id="currency">
+          <div class="calc-header">
+            <div class="calc-topline">
+              <span class="chip"><i class="fa-solid fa-money-bill-transfer"></i> Calculator 1</span>
+              <span class="small-muted">Best for travel, forex planning, investing abroad, and quick rate checks</span>
+            </div>
+            <h2>Currency Converter</h2>
+            <p>Convert currencies instantly with a clean two-way converter. Type on either side, swap pairs in one click, and review quick conversions for commonly used amounts.</p>
+          </div>
+
+          <div class="calc-body">
+            <div class="panel">
+              <div class="section-title">Live-style converter</div>
+
+              <div class="convert-shell">
+                <div class="convert-box">
+                  <div class="box-label">From</div>
+                  <input type="number" class="big-input" id="currency_from_amount" value="1000" min="0" step="0.01" />
+                  <select id="currency_from"></select>
+                </div>
+
+                <button class="swap-btn" type="button" id="currency_swap" aria-label="Swap currencies">↔️</button>
+
+                <div class="convert-box">
+                  <div class="box-label">To</div>
+                  <input type="number" class="big-input" id="currency_to_amount" value="" min="0" step="0.01" />
+                  <select id="currency_to"></select>
+                </div>
+              </div>
+
+              <div class="rate-strip" id="currency_rate_display"></div>
+
+              <div class="quick-pairs">
+                <button class="pair-btn" data-from="USD" data-to="INR">USD↔INR</button>
+                <button class="pair-btn" data-from="EUR" data-to="INR">EUR↔INR</button>
+                <button class="pair-btn" data-from="GBP" data-to="INR">GBP↔INR</button>
+                <button class="pair-btn" data-from="AED" data-to="INR">AED↔INR</button>
+                <button class="pair-btn" data-from="SGD" data-to="INR">SGD↔INR</button>
+                <button class="pair-btn" data-from="USD" data-to="EUR">USD↔EUR</button>
+              </div>
+
+              <div class="note-box">
+                ⚠️ Rates shown are indicative as of early 2025. For live interbank rates and best forex deals, visit goglobal.forex
+              </div>
+            </div>
+
+            <div class="table-shell">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Amount</th>
+                      <th>Converted Value</th>
+                    </tr>
+                  </thead>
+                  <tbody id="currency_quick_table"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="cta-card global">
+              <div class="cta-copy">
+                <div class="cta-logo">🌍</div>
+                <div>
+                  <h4>Get live forex rates and send money internationally at the best prices.</h4>
+                  <p>Compare smarter and move money better with goglobal.forex.</p>
+                </div>
+              </div>
+              <a class="cta-btn" href="https://goglobal.forex" target="_blank" rel="noopener">
+                Get Best Forex Rates — goglobal.forex →
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- REMITTANCE -->
+        <section class="calc-card" id="remittance">
+          <div class="calc-header">
+            <div class="calc-topline">
+              <span class="chip"><i class="fa-solid fa-globe"></i> Calculator 2</span>
+              <span class="small-muted">Best for outward remittance, tuition, family support, and overseas transfers</span>
+            </div>
+            <h2>Remittance Cost Calculator</h2>
+            <p>Compare how fees and exchange markups change what the recipient actually gets. This is where “cheap” services often turn out to be expensive.</p>
+          </div>
+
+          <div class="calc-body">
+            <div class="calc-grid">
+              <div class="panel">
+                <div class="section-title">Transfer inputs</div>
+
+                <div class="form-grid">
+                  <div class="field">
+                    <div class="field-header">
+                      <label for="remit_amount_slider">Send Amount ₹</label>
+                      <span class="value-pill" id="remit_amount_display"></span>
+                    </div>
+                    <input type="range" id="remit_amount_slider" min="1000" max="5000000" step="1000" value="50000" />
+                    <input type="number" id="remit_amount" min="1000" max="5000000" step="1000" value="50000" />
+                  </div>
+
+                  <div class="field">
+                    <div class="field-header">
+                      <label>Sending From</label>
+                    </div>
+                    <input type="text" value="🇮🇳 India" readonly />
+                  </div>
+
+                  <div class="field">
+                    <div class="field-header">
+                      <label for="remit_destination">Sending To</label>
+                    </div>
+                    <select id="remit_destination"></select>
+                  </div>
+                </div>
+
+                <div class="mini-grid" id="remit_summary_boxes">
+                  <div class="mini-box">
+                    <div class="label">Mid Market Rate</div>
+                    <div class="value" id="remit_mid_rate">—</div>
+                  </div>
+                  <div class="mini-box">
+                    <div class="label">Top Recipient Outcome</div>
+                    <div class="value" id="remit_best_gets">—</div>
+                  </div>
+                  <div class="mini-box">
+                    <div class="label">Fastest Option</div>
+                    <div class="value" id="remit_fastest">—</div>
+                  </div>
+                </div>
+
+                <div class="note-box">
+                  💡 Wise is typically cheapest for most corridors. Bank transfers have low fees but poor exchange rates.
+                </div>
+
+                <div class="small-muted" style="margin-top:12px;">
+                  Rates are indicative. Always check current rates before transacting.
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="section-title">Recipient comparison</div>
+                <div class="chart-card">
+                  <div class="chart-wrap tall">
+                    <canvas id="remit_chart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-shell">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Provider</th>
+                      <th>Fee ₹</th>
+                      <th>Exchange Rate</th>
+                      <th>Recipient Gets</th>
+                      <th>Total Cost ₹</th>
+                      <th>Speed</th>
+                    </tr>
+                  </thead>
+                  <tbody id="remit_table_body"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="cta-card global">
+              <div class="cta-copy">
+                <div class="cta-logo">🌍</div>
+                <div>
+                  <h4>Beat these rates with goglobal.forex</h4>
+                  <p>Specialized in India’s best outward remittance.</p>
+                </div>
+              </div>
+              <a class="cta-btn" href="https://goglobal.forex" target="_blank" rel="noopener">
+                Send Money Abroad — goglobal.forex →
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!--
+          IP:ADD_CALCULATOR
+          FUTURE CALCULATORS — Add below this line:
+          - PPP (Purchasing Power Parity) Calculator (id="ppp")
+          - Global Inflation Tracker Table (id="global-inflation")
+          - USD vs INR Investment Comparator (id="usd-inr-compare")
+          - NRI Tax Status Calculator (id="nri-tax")
+          - Cost of Living City Comparator — Global (id="col-global")
+          - Salary Comparison Across Countries (id="salary-compare")
+        -->
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const RATES_VS_INR = {
+      USD:83.42, EUR:90.15, GBP:105.80, JPY:0.556, AED:22.71, SGD:61.85,
+      AUD:53.20, CAD:61.10, CHF:93.40, CNY:11.52, SAR:22.23, MYR:17.68,
+      THB:2.32, HKD:10.67, NZD:48.90, ZAR:4.48, MXN:4.85, BRL:16.85,
+      KRW:0.0622, IDR:0.00524, TRY:2.61, SEK:7.92, NOK:7.80, DKK:12.05,
+      PLN:20.75, CZK:3.65, HUF:0.222, RUB:0.916, PKR:0.299, BDT:0.759,
+      LKR:0.259, NPR:0.623, VND:0.00329, PHP:1.46, TWD:2.60, KWD:271.20,
+      BHD:220.95, OMR:216.70, QAR:22.90, ILS:22.35, EGP:1.73, NGN:0.0554,
+      KES:0.644, GHS:5.45, MAD:8.28, TZS:0.0321, UGX:0.0223, ZMW:2.98,
+      INR:1.00
+    };
+
+    const CURRENCY_NAMES = {
+      USD:"🇺🇸 US Dollar",
+      EUR:"🇪🇺 Euro",
+      GBP:"🇬🇧 British Pound",
+      JPY:"🇯🇵 Japanese Yen",
+      AED:"🇦🇪 UAE Dirham",
+      SGD:"🇸🇬 Singapore Dollar",
+      AUD:"🇦🇺 Australian Dollar",
+      CAD:"🇨🇦 Canadian Dollar",
+      CHF:"🇨🇭 Swiss Franc",
+      CNY:"🇨🇳 Chinese Yuan",
+      SAR:"🇸🇦 Saudi Riyal",
+      MYR:"🇲🇾 Malaysian Ringgit",
+      THB:"🇹🇭 Thai Baht",
+      HKD:"🇭🇰 Hong Kong Dollar",
+      NZD:"🇳🇿 New Zealand Dollar",
+      ZAR:"🇿🇦 South African Rand",
+      MXN:"🇲🇽 Mexican Peso",
+      BRL:"🇧🇷 Brazilian Real",
+      KRW:"🇰🇷 South Korean Won",
+      IDR:"🇮🇩 Indonesian Rupiah",
+      TRY:"🇹🇷 Turkish Lira",
+      SEK:"🇸🇪 Swedish Krona",
+      NOK:"🇳🇴 Norwegian Krone",
+      DKK:"🇩🇰 Danish Krone",
+      PLN:"🇵🇱 Polish Zloty",
+      CZK:"🇨🇿 Czech Koruna",
+      HUF:"🇭🇺 Hungarian Forint",
+      RUB:"🇷🇺 Russian Ruble",
+      PKR:"🇵🇰 Pakistani Rupee",
+      BDT:"🇧🇩 Bangladeshi Taka",
+      LKR:"🇱🇰 Sri Lankan Rupee",
+      NPR:"🇳🇵 Nepalese Rupee",
+      VND:"🇻🇳 Vietnamese Dong",
+      PHP:"🇵🇭 Philippine Peso",
+      TWD:"🇹🇼 New Taiwan Dollar",
+      KWD:"🇰🇼 Kuwaiti Dinar",
+      BHD:"🇧🇭 Bahraini Dinar",
+      OMR:"🇴🇲 Omani Rial",
+      QAR:"🇶🇦 Qatari Riyal",
+      ILS:"🇮🇱 Israeli Shekel",
+      EGP:"🇪🇬 Egyptian Pound",
+      NGN:"🇳🇬 Nigerian Naira",
+      KES:"🇰🇪 Kenyan Shilling",
+      GHS:"🇬🇭 Ghanaian Cedi",
+      MAD:"🇲🇦 Moroccan Dirham",
+      TZS:"🇹🇿 Tanzanian Shilling",
+      UGX:"🇺🇬 Ugandan Shilling",
+      ZMW:"🇿🇲 Zambian Kwacha",
+      INR:"🇮🇳 Indian Rupee"
+    };
+
+    const COUNTRY_TO_CURRENCY = {
+      USA: "USD",
+      UK: "GBP",
+      Australia: "AUD",
+      Canada: "CAD",
+      Singapore: "SGD",
+      UAE: "AED",
+      "Saudi Arabia": "SAR",
+      Germany: "EUR",
+      Netherlands: "EUR",
+      "New Zealand": "NZD",
+      Japan: "JPY",
+      "Hong Kong": "HKD",
+      Malaysia: "MYR",
+      Bangladesh: "BDT",
+      Pakistan: "PKR",
+      Nepal: "NPR",
+      "Sri Lanka": "LKR",
+      Kenya: "KES",
+      Nigeria: "NGN",
+      "South Africa": "ZAR"
+    };
+
+    const DESTINATIONS = [
+      { country: "USA", label: "🇺🇸 USA" },
+      { country: "UK", label: "🇬🇧 UK" },
+      { country: "Australia", label: "🇦🇺 Australia" },
+      { country: "Canada", label: "🇨🇦 Canada" },
+      { country: "Singapore", label: "🇸🇬 Singapore" },
+      { country: "UAE", label: "🇦🇪 UAE" },
+      { country: "Saudi Arabia", label: "🇸🇦 Saudi Arabia" },
+      { country: "Germany", label: "🇩🇪 Germany" },
+      { country: "Netherlands", label: "🇳🇱 Netherlands" },
+      { country: "New Zealand", label: "🇳🇿 New Zealand" },
+      { country: "Japan", label: "🇯🇵 Japan" },
+      { country: "Hong Kong", label: "🇭🇰 Hong Kong" },
+      { country: "Malaysia", label: "🇲🇾 Malaysia" },
+      { country: "Bangladesh", label: "🇧🇩 Bangladesh" },
+      { country: "Pakistan", label: "🇵🇰 Pakistan" },
+      { country: "Nepal", label: "🇳🇵 Nepal" },
+      { country: "Sri Lanka", label: "🇱🇰 Sri Lanka" },
+      { country: "Kenya", label: "🇰🇪 Kenya" },
+      { country: "Nigeria", label: "🇳🇬 Nigeria" },
+      { country: "South Africa", label: "🇿🇦 South Africa" }
+    ];
+
+    const PROVIDERS = {
+      "Wise (TransferWise)": {
+        fee_pct: 0.5, min_fee_inr: 150, exchange_markup_pct: 0.35,
+        speed: "1–2 business days", logo: "💚"
+      },
+      "Western Union": {
+        fee_pct: 0, min_fee_inr: 800, exchange_markup_pct: 2.8,
+        speed: "Minutes to days", logo: "🟡"
+      },
+      "PayPal": {
+        fee_pct: 4.0, min_fee_inr: 300, exchange_markup_pct: 3.0,
+        speed: "Instant", logo: "🔵"
+      },
+      "Bank SWIFT Transfer": {
+        fee_pct: 0, min_fee_inr: 1500, exchange_markup_pct: 1.8,
+        speed: "3–5 business days", logo: "🏦"
+      },
+      "Remitly": {
+        fee_pct: 0, min_fee_inr: 0, exchange_markup_pct: 1.0,
+        speed: "0–3 business days", logo: "🟠"
+      },
+      "Google Pay Intl": {
+        fee_pct: 0, min_fee_inr: 0, exchange_markup_pct: 1.2,
+        speed: "Minutes", logo: "🔴"
+      }
+    };
+
+    const formatCurrency = (num, currency = "INR", max = 2) => {
+      return new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency,
+        maximumFractionDigits: max
+      }).format(Number(num || 0));
+    };
+
+    const formatNumber = (num, max = 2) => {
+      return Number(num || 0).toLocaleString("en-IN", {
+        maximumFractionDigits: max,
+        minimumFractionDigits: max === 0 ? 0 : 2
+      });
+    };
+
+    const symbolMap = {
+      USD:"$", EUR:"€", GBP:"£", JPY:"¥", AED:"AED ", SGD:"S$",
+      AUD:"A$", CAD:"C$", CHF:"CHF ", CNY:"¥", SAR:"SAR ",
+      INR:"₹", KWD:"KD ", BHD:"BD ", OMR:"OMR ", QAR:"QAR ",
+      MYR:"RM ", HKD:"HK$", THB:"฿", ZAR:"R ", NZD:"NZ$", PKR:"₨ ",
+      BDT:"৳ ", NPR:"₨ ", LKR:"Rs ", NGN:"₦ ", KES:"KSh ", PHP:"₱ "
+    };
+
+    function currencySymbol(code) {
+      return symbolMap[code] || `${code} `;
+    }
+
+    // Currency converter
+    const fromSelect = document.getElementById("currency_from");
+    const toSelect = document.getElementById("currency_to");
+    const fromAmount = document.getElementById("currency_from_amount");
+    const toAmount = document.getElementById("currency_to_amount");
+    const rateDisplay = document.getElementById("currency_rate_display");
+    const quickTable = document.getElementById("currency_quick_table");
+    let activeInputSide = "left";
+
+    function populateCurrencyDropdowns() {
+      const codes = Object.keys(RATES_VS_INR).sort();
+      codes.forEach(code => {
+        const option1 = document.createElement("option");
+        option1.value = code;
+        option1.textContent = CURRENCY_NAMES[code] || code;
+
+        const option2 = document.createElement("option");
+        option2.value = code;
+        option2.textContent = CURRENCY_NAMES[code] || code;
+
+        fromSelect.appendChild(option1);
+        toSelect.appendChild(option2);
+      });
+
+      fromSelect.value = "USD";
+      toSelect.value = "INR";
+    }
+
+    function convertCurrency(amount, from, to) {
+      if (!RATES_VS_INR[from] || !RATES_VS_INR[to]) return 0;
+      return Number(amount || 0) * (RATES_VS_INR[to] / RATES_VS_INR[from]);
+    }
+
+    function updateRateDisplay() {
+      const from = fromSelect.value;
+      const to = toSelect.value;
+
+      const oneFromTo = convertCurrency(1, from, to);
+      const oneToFrom = convertCurrency(1, to, from);
+
+      rateDisplay.innerHTML = `
+        1 ${from} = ${currencySymbol(to)}${formatNumber(oneFromTo, 4)} |
+        1 ${to} = ${currencySymbol(from)}${formatNumber(oneToFrom, 5)}
+      `;
+    }
+
+    function renderQuickConversionTable() {
+      const from = fromSelect.value;
+      const to = toSelect.value;
+      const amounts = [1, 5, 10, 50, 100, 500, 1000, 10000];
+
+      quickTable.innerHTML = amounts.map(amount => {
+        const converted = convertCurrency(amount, from, to);
+        return `
+          <tr>
+            <td>${amount.toLocaleString("en-IN")} ${from}</td>
+            <td>${currencySymbol(to)}${formatNumber(converted, converted >= 100 ? 2 : 4)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function updateFromToLeft() {
+      const result = convertCurrency(Number(fromAmount.value || 0), fromSelect.value, toSelect.value);
+      toAmount.value = Number.isFinite(result) ? result.toFixed(4).replace(/\.?0+$/, "") : "";
+      updateRateDisplay();
+      renderQuickConversionTable();
+    }
+
+    function updateFromToRight() {
+      const result = convertCurrency(Number(toAmount.value || 0), toSelect.value, fromSelect.value);
+      fromAmount.value = Number.isFinite(result) ? result.toFixed(4).replace(/\.?0+$/, "") : "";
+      updateRateDisplay();
+      renderQuickConversionTable();
+    }
+
+    fromAmount.addEventListener("input", () => {
+      activeInputSide = "left";
+      updateFromToLeft();
+    });
+
+    toAmount.addEventListener("input", () => {
+      activeInputSide = "right";
+      updateFromToRight();
+    });
+
+    fromSelect.addEventListener("change", () => {
+      activeInputSide === "left" ? updateFromToLeft() : updateFromToRight();
+    });
+
+    toSelect.addEventListener("change", () => {
+      activeInputSide === "left" ? updateFromToLeft() : updateFromToRight();
+    });
+
+    document.getElementById("currency_swap").addEventListener("click", () => {
+      const temp = fromSelect.value;
+      fromSelect.value = toSelect.value;
+      toSelect.value = temp;
+
+      const tempAmount = fromAmount.value;
+      fromAmount.value = toAmount.value;
+      toAmount.value = tempAmount;
+
+      activeInputSide = "left";
+      updateFromToLeft();
+    });
+
+    document.querySelectorAll(".pair-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        fromSelect.value = btn.dataset.from;
+        toSelect.value = btn.dataset.to;
+        activeInputSide = "left";
+        updateFromToLeft();
+      });
+    });
+
+    // Remittance
+    const remitAmountSlider = document.getElementById("remit_amount_slider");
+    const remitAmountInput = document.getElementById("remit_amount");
+    const remitAmountDisplay = document.getElementById("remit_amount_display");
+    const remitDestination = document.getElementById("remit_destination");
+    const remitTableBody = document.getElementById("remit_table_body");
+    const remitMidRate = document.getElementById("remit_mid_rate");
+    const remitBestGets = document.getElementById("remit_best_gets");
+    const remitFastest = document.getElementById("remit_fastest");
+    let remitChart = null;
+
+    function populateDestinationDropdown() {
+      DESTINATIONS.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.country;
+        option.textContent = item.label;
+        remitDestination.appendChild(option);
+      });
+      remitDestination.value = "USA";
+    }
+
+    function getDestinationCurrency() {
+      return COUNTRY_TO_CURRENCY[remitDestination.value] || "USD";
+    }
+
+    function calculateProviderResult(providerName, sendAmount, destinationCurrency) {
+      const provider = PROVIDERS[providerName];
+      const mid_rate = RATES_VS_INR[destinationCurrency];
+      const provider_rate = mid_rate * (1 - provider.exchange_markup_pct / 100);
+      const transfer_fee_inr = Math.max(provider.min_fee_inr, sendAmount * provider.fee_pct / 100);
+      const amount_after_fee = sendAmount - transfer_fee_inr;
+      const recipient_gets = amount_after_fee / provider_rate;
+      const total_cost_inr = transfer_fee_inr + (sendAmount * provider.exchange_markup_pct / 100);
+
+      return {
+        name: providerName,
+        logo: provider.logo,
+        fee: transfer_fee_inr,
+        exchange_rate: provider_rate,
+        recipient_gets,
+        total_cost: total_cost_inr,
+        speed: provider.speed
+      };
+    }
+
+    function renderRemittance() {
+      const sendAmount = Number(remitAmountInput.value || 0);
+      remitAmountDisplay.textContent = formatCurrency(sendAmount, "INR", 0);
+      remitAmountSlider.value = sendAmount;
+
+      const destinationCurrency = getDestinationCurrency();
+      const destinationLabel = remitDestination.options[remitDestination.selectedIndex].textContent;
+
+      let results = Object.keys(PROVIDERS).map(name =>
+        calculateProviderResult(name, sendAmount, destinationCurrency)
+      );
+
+      results.sort((a, b) => b.recipient_gets - a.recipient_gets);
+
+      const bestValueName = results[0]?.name || "";
+      const fastestNames = results
+        .filter(r => r.speed.toLowerCase().includes("minutes") || r.speed.toLowerCase() === "instant")
+        .map(r => r.name);
+
+      remitMidRate.textContent = `1 ${destinationCurrency} = ₹${formatNumber(RATES_VS_INR[destinationCurrency], 4)}`;
+      remitBestGets.textContent = `${results[0].logo} ${formatNumber(results[0].recipient_gets, 2)} ${destinationCurrency}`;
+      remitFastest.textContent = fastestNames.length ? fastestNames.map(n => PROVIDERS[n].logo).join(" ") + " Minutes/Instant" : "—";
+
+      remitTableBody.innerHTML = results.map(item => {
+        const bestClass = item.name === bestValueName ? "best-row" : "";
+        const fastClass = fastestNames.includes(item.name) ? "fastest-row" : "";
+        const rowClass = `${bestClass} ${fastClass}`.trim();
+
+        let providerLabel = `${item.logo} ${item.name}`;
+        if (item.name === bestValueName) {
+          providerLabel += ` <span class="badge best">Best Value</span>`;
+        }
+        if (fastestNames.includes(item.name)) {
+          providerLabel += ` <span class="badge fast">Fastest</span>`;
+        }
+
+        return `
+          <tr class="${rowClass}">
+            <td>${providerLabel}</td>
+            <td>${formatCurrency(item.fee, "INR", 0)}</td>
+            <td>₹${formatNumber(item.exchange_rate, 4)} / ${destinationCurrency}</td>
+            <td>${currencySymbol(destinationCurrency)}${formatNumber(item.recipient_gets, 2)} ${destinationCurrency}</td>
+            <td>${formatCurrency(item.total_cost, "INR", 0)}</td>
+            <td>${item.speed}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const chartCtx = document.getElementById("remit_chart").getContext("2d");
+      if (remitChart) remitChart.destroy();
+
+      remitChart = new Chart(chartCtx, {
+        type: "bar",
+        data: {
+          labels: results.map(r => `${r.logo} ${r.name}`),
+          datasets: [{
+            label: `Recipient Gets (${destinationCurrency})`,
+            data: results.map(r => Number(r.recipient_gets.toFixed(2))),
+            backgroundColor: results.map(r => r.name === bestValueName ? "#00d09c" : "#7b61ff"),
+            borderRadius: 10
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: "#dbe8f7" }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "#afc2d8"
+              },
+              grid: {
+                color: "rgba(255,255,255,0.06)"
+              }
+            },
+            y: {
+              ticks: {
+                color: "#afc2d8"
+              },
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    }
+
+    remitAmountSlider.addEventListener("input", () => {
+      remitAmountInput.value = remitAmountSlider.value;
+      renderRemittance();
+    });
+
+    remitAmountInput.addEventListener("input", () => {
+      let value = Number(remitAmountInput.value || 1000);
+      value = Math.max(1000, Math.min(5000000, value));
+      remitAmountInput.value = value;
+      remitAmountSlider.value = value;
+      renderRemittance();
+    });
+
+    remitDestination.addEventListener("change", renderRemittance);
+
+    // Init
+    populateCurrencyDropdowns();
+    populateDestinationDropdown();
+    updateFromToLeft();
+    renderRemittance();
+  </script>
+</body>
+</html>
