@@ -25,119 +25,6 @@ body{
 }
 .container{max-width:1320px;margin:auto;padding:14px}
 
-/* NAV */
-.nav{
-  position:sticky;
-  top:0;
-  z-index:50;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  padding:14px 16px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:rgba(10,15,30,0.82);
-  backdrop-filter:blur(14px);
-  margin-bottom:18px;
-}
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
-}
-.logo-mark{
-  width:38px;height:38px;border-radius:13px;
-  display:grid;place-items:center;
-  background:var(--grad);
-  color:#09111f;
-  font-weight:800;
-  flex:0 0 auto;
-}
-.logo-text{
-  font-family:Poppins,sans-serif;
-  font-size:20px;
-  font-weight:800;
-  line-height:1;
-  white-space:nowrap;
-}
-.logo-text span{
-  background:var(--grad);
-  -webkit-background-clip:text;
-  color:transparent;
-}
-
-.desktop-nav{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-  gap:6px;
-}
-.desktop-nav a{
-  padding:9px 11px;
-  border-radius:10px;
-  color:var(--muted);
-  text-decoration:none;
-  font-size:13px;
-  font-weight:700;
-  white-space:nowrap;
-}
-.desktop-nav a:hover{color:#fff;background:rgba(255,255,255,0.05)}
-.desktop-nav a.active{
-  background:var(--grad);
-  color:#071120;
-}
-
-.mobile-menu-btn{
-  display:none;
-  width:44px;height:44px;
-  border:none;border-radius:12px;
-  background:rgba(255,255,255,0.06);
-  color:#fff;
-  font-size:22px;
-  cursor:pointer;
-}
-
-/* MOBILE DRAWER */
-.mobile-drawer{
-  display:none;
-  margin-bottom:18px;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:linear-gradient(180deg,#091224 0%, #08101f 100%);
-  overflow:hidden;
-}
-.mobile-drawer.open{display:block}
-.mobile-drawer-top{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:18px;
-  border-bottom:1px solid var(--line);
-}
-.mobile-drawer-links{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  padding:16px;
-}
-.mobile-drawer-links a{
-  display:block;
-  padding:14px 14px;
-  border-radius:14px;
-  text-decoration:none;
-  color:#d9e4ff;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.06);
-  font-weight:700;
-  font-size:15px;
-}
-.mobile-drawer-links a.active{
-  background:var(--grad);
-  color:#071120;
-}
-
 /* HERO */
 .hero{
   text-align:center;
@@ -215,140 +102,25 @@ body{
   margin:0 0 8px;
   font-size:25px;
   font-family:Poppins,sans-serif;
-  line-height:1.1;
 }
 .card p{
   margin:0;
   color:var(--muted);
   font-size:14px;
-  line-height:1.6;
-}
-
-/* SECTIONS */
-.section{
-  margin-top:22px;
-  padding:22px;
-  border:1px solid var(--line);
-  border-radius:24px;
-  background:linear-gradient(180deg,#0c1429 0%, #101a34 100%);
-}
-.section h2{
-  margin:0 0 8px;
-  font-size:28px;
-  font-family:Poppins,sans-serif;
-}
-.section p{
-  margin:0;
-  color:var(--muted);
-  line-height:1.65;
-}
-.quick-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-  margin-top:18px;
-}
-.quick{
-  padding:18px;
-  border-radius:18px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,0.03);
-}
-.quick h3{margin:0 0 8px;font-size:22px}
-.quick p{font-size:14px}
-
-.footer{
-  margin-top:22px;
-  padding:26px;
-  border:1px solid var(--line);
-  border-radius:22px;
-  text-align:center;
-  color:var(--muted);
-  background:linear-gradient(180deg,#0c1429 0%, #101a34 100%);
 }
 
 /* RESPONSIVE */
 @media(max-width:1100px){
-  .desktop-nav{display:none}
-  .mobile-menu-btn{display:block}
   .grid{grid-template-columns:repeat(2,1fr)}
-  .quick-grid{grid-template-columns:1fr}
 }
 @media(max-width:640px){
-  .container{padding:10px}
-  .nav{padding:12px 14px;border-radius:16px}
-  .logo-text{font-size:17px}
-  .hero{
-    padding:34px 16px 24px;
-    border-radius:22px;
-  }
-  .hero h1{
-    font-size:40px;
-    line-height:1.08;
-  }
-  .hero p{
-    font-size:15px;
-    margin-top:14px;
-  }
-  .hero-actions{
-    flex-direction:column;
-    align-items:stretch;
-    margin-top:22px;
-  }
-  .btn{
-    width:100%;
-    padding:14px 16px;
-  }
-  .trust{
-    font-size:13px;
-    margin-top:18px;
-  }
-  .grid{grid-template-columns:1fr;gap:12px}
-  .card{
-    min-height:auto;
-    padding:18px;
-  }
-  .card h3{font-size:22px}
-  .section{
-    padding:18px;
-    border-radius:20px;
-  }
-  .section h2{font-size:24px}
-  .mobile-drawer-links{
-    grid-template-columns:1fr;
-    padding:14px;
-  }
+  .grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
 <div class="container">
-
-
-<div id="mobileDrawer" class="mobile-drawer">
-  <div class="mobile-drawer-top">
-    <div class="logo-mark">%</div>
-    <div class="logo-text">Invest<span>Percent</span></div>
-  </div>
-  <div class="mobile-drawer-links">
-    <a href="index.html" class="active">Home</a>
-    <a href="investment.html">Investment</a>
-    <a href="loan.html">Loan</a>
-    <a href="tax.html">Tax</a>
-    <a href="savings.html">Savings</a>
-    <a href="retirement.html">Retirement</a>
-    <a href="personal.html">Personal Finance</a>
-    <a href="global.html">Global Finance</a>
-    <a href="stocks.html">Stock Market</a>
-    <a href="crypto.html">Crypto</a>
-    <a href="business.html">Business Startup</a>
-    <a href="insurance.html">Insurance</a>
-    <a href="play.html">Play</a>
-    <a href="learn.html">Learn</a>
-    <a href="digital.html">Digital</a>
-  </div>
-</div>
 
 <div class="hero">
   <h1>India’s Smartest Financial Platform</h1>
@@ -361,120 +133,35 @@ body{
 </div>
 
 <div id="categories" class="grid">
-  <a class="card" href="investment.html">
-    <div class="card-icon">💰</div>
-    <h3>Investment</h3>
-    <p>SIP, returns, wealth planning and long-term growth tools.</p>
+
+  <!-- EXISTING CARDS -->
+  <a class="card" href="investment.html"><div class="card-icon">💰</div><h3>Investment</h3><p>SIP, returns, wealth planning tools.</p></a>
+  <a class="card" href="loan.html"><div class="card-icon">🏠</div><h3>Loan</h3><p>EMI and repayment tools.</p></a>
+  <a class="card" href="tax.html"><div class="card-icon">🧾</div><h3>Tax</h3><p>Income tax calculators.</p></a>
+  <a class="card" href="savings.html"><div class="card-icon">🏦</div><h3>Savings</h3><p>FD, RD tools.</p></a>
+
+  <a class="card" href="retirement.html"><div class="card-icon">🪙</div><h3>Retirement</h3><p>Future planning tools.</p></a>
+  <a class="card" href="personal.html"><div class="card-icon">👤</div><h3>Personal Finance</h3><p>Budgeting tools.</p></a>
+  <a class="card" href="global.html"><div class="card-icon">🌍</div><h3>Global Finance</h3><p>Forex tools.</p></a>
+  <a class="card" href="stocks.html"><div class="card-icon">📈</div><h3>Stock Market</h3><p>Market tools.</p></a>
+
+  <a class="card" href="crypto.html"><div class="card-icon">₿</div><h3>Crypto</h3><p>Crypto tools.</p></a>
+  <a class="card" href="business.html"><div class="card-icon">🚀</div><h3>Business Startup</h3><p>Startup tools.</p></a>
+  <a class="card" href="insurance.html"><div class="card-icon">🛡️</div><h3>Insurance</h3><p>Insurance tools.</p></a>
+  <a class="card" href="play.html"><div class="card-icon">🎮</div><h3>Play</h3><p>Fun tools.</p></a>
+
+  <a class="card" href="learn.html"><div class="card-icon">📚</div><h3>Learn</h3><p>Financial learning.</p></a>
+  <a class="card" href="digital.html"><div class="card-icon">💻</div><h3>Digital</h3><p>Online utilities.</p></a>
+
+  <!-- ✅ NEW REAL ESTATE -->
+  <a class="card" href="Real-Etate.html">
+    <div class="card-icon">🏢</div>
+    <h3>Real Estate</h3>
+    <p>Property valuation, EMI, ROI and rental yield tools.</p>
   </a>
 
-  <a class="card" href="loan.html">
-    <div class="card-icon">🏠</div>
-    <h3>Loan</h3>
-    <p>EMI, affordability, repayment planning and prepayment tools.</p>
-  </a>
-
-  <a class="card" href="tax.html">
-    <div class="card-icon">🧾</div>
-    <h3>Tax</h3>
-    <p>Income tax, salary in-hand, HRA, deductions and gains.</p>
-  </a>
-
-  <a class="card" href="savings.html">
-    <div class="card-icon">🏦</div>
-    <h3>Savings</h3>
-    <p>FD, RD, safe return calculators and savings planning.</p>
-  </a>
-
-  <a class="card" href="retirement.html">
-    <div class="card-icon">🪙</div>
-    <h3>Retirement</h3>
-    <p>Corpus planning, FIRE tools and future income strategy.</p>
-  </a>
-
-  <a class="card" href="personal.html">
-    <div class="card-icon">👤</div>
-    <h3>Personal Finance</h3>
-    <p>Budgeting, net worth, inflation and daily money planning.</p>
-  </a>
-
-  <a class="card" href="global.html">
-    <div class="card-icon">🌍</div>
-    <h3>Global Finance</h3>
-    <p>Currency, forex, international comparisons and global tools.</p>
-  </a>
-
-  <a class="card" href="stocks.html">
-    <div class="card-icon">📈</div>
-    <h3>Stock Market</h3>
-    <p>Returns, valuation, portfolio and market planning tools.</p>
-  </a>
-
-  <a class="card" href="crypto.html">
-    <div class="card-icon">₿</div>
-    <h3>Crypto</h3>
-    <p>Profit, DCA, tax estimation and digital asset tools.</p>
-  </a>
-
-  <a class="card" href="business.html">
-    <div class="card-icon">🚀</div>
-    <h3>Business Startup</h3>
-    <p>Break-even, ROI, runway and founder decision tools.</p>
-  </a>
-
-  <a class="card" href="insurance.html">
-    <div class="card-icon">🛡️</div>
-    <h3>Insurance</h3>
-    <p>Life, health and general insurance planning calculators.</p>
-  </a>
-
-  <a class="card" href="play.html">
-    <div class="card-icon">🎮</div>
-    <h3>Play</h3>
-    <p>Interactive finance tools, fun challenges and engagement ideas.</p>
-  </a>
-
-  <a class="card" href="learn.html">
-    <div class="card-icon">📚</div>
-    <h3>Learn</h3>
-    <p>Guides, explainers and knowledge-first financial learning.</p>
-  </a>
-
-  <a class="card" href="digital.html">
-    <div class="card-icon">💻</div>
-    <h3>Digital</h3>
-    <p>Online utilities, digital tools and extended product experiments.</p>
-  </a>
-</div>
-
-<div class="section">
-  <h2>Core Dashboards</h2>
-  <p>Investment, Loan and Tax are already built as premium dashboard experiences. The remaining pages will follow the same visual system and product shell.</p>
-  <div class="quick-grid">
-    <div class="quick">
-      <h3>Investment OS</h3>
-      <p>Advanced wealth and scheme calculators in a premium dashboard shell.</p>
-    </div>
-    <div class="quick">
-      <h3>Loan Dashboard</h3>
-      <p>EMI-led planning with repayment, prepayment and buy-vs-rent thinking.</p>
-    </div>
-    <div class="quick">
-      <h3>Tax Dashboard</h3>
-      <p>Tax payable and post-tax outcome shown together in one clean premium system.</p>
-    </div>
-  </div>
-</div>
-
-<div class="footer">
-  InvestPercent — your complete financial toolkit
 </div>
 
 </div>
-
-<script>
-function toggleMenu(){
-  document.getElementById('mobileDrawer').classList.toggle('open');
-}
-</script>
 </body>
 </html>
