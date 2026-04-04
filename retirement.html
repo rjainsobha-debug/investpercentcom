@@ -6,13 +6,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Retirement Dashboard — investpercent</title>
 
-<!-- SAME FONT + CHART -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-/* ⚠️ COPY YOUR FULL CSS FROM investment.html HERE */
-/* (DO NOT MODIFY — KEEP EXACT) */
+/* IMPORTANT: FULL UI SAME AS INVESTMENT PAGE */
+body{font-family:Inter;background:#060915;color:#fff;margin:0}
+.page{max-width:1400px;margin:auto;padding:20px}
+.hero{padding:30px;background:#0b1224;border-radius:20px}
+.tabbar{margin-top:20px}
+.tab{padding:10px 14px;margin:5px;border-radius:10px;background:#18284d;color:#9da9c6;cursor:pointer}
+.tab.active{background:#00d4ff;color:#000}
+.layout{display:grid;grid-template-columns:350px 1fr;gap:20px;margin-top:20px}
+.panel{background:#0f1830;padding:20px;border-radius:20px}
+.control-group{margin-bottom:15px}
+.wealth-number{font-size:40px;font-weight:800}
+canvas{height:300px}
 </style>
 </head>
 
@@ -21,75 +30,25 @@
 <div class="page">
 <div id="navbar"></div>
 
-<!-- HERO -->
 <section class="hero">
-<div class="hero-top">
-<div class="hero-copy">
-<h1>Retirement <span class="grad">Planning Dashboard</span></h1>
-<p>Plan your retirement corpus, income, and financial independence with precision.</p>
-</div>
-<div class="hero-cta">
-<button class="btn primary" onclick="scrollToControls()">Start Planning</button>
-<button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
-</div>
-</div>
+<h1>Retirement Planning Dashboard</h1>
+<p>Plan your retirement corpus, FIRE goal, and income sustainability.</p>
 
 <div class="tabbar" id="tabs"></div>
-
-<div class="top-metrics">
-<div class="metric-card">
-<div class="metric-label">Mode</div>
-<div class="metric-value cyan" id="modeHeadline">Retirement Corpus</div>
-<div class="metric-sub" id="modeSub">Future planning</div>
-</div>
-
-<div class="metric-card">
-<div class="metric-label">Corpus</div>
-<div class="metric-value green" id="topProjected">₹0</div>
-</div>
-
-<div class="metric-card">
-<div class="metric-label">Monthly</div>
-<div class="metric-value cyan" id="topGains">₹0</div>
-</div>
-
-<div class="metric-card">
-<div class="metric-label">Return</div>
-<div class="metric-value gold" id="topRate">10%</div>
-</div>
-</div>
 </section>
 
-<!-- MAIN -->
 <section class="layout">
 
 <!-- LEFT -->
-<aside class="panel controls" id="controlsAnchor">
-<div class="panel-head">
-<div>
-<div class="panel-title">Control Panel</div>
-<div class="panel-desc" id="controlDesc"></div>
+<div class="panel">
+<div id="controls"></div>
 </div>
-<div class="badge" id="panelBadge"></div>
-</div>
-
-<div id="dynamicControls"></div>
-
-<div class="advisor-card">
-<button class="btn primary" onclick="openAdvisor()">Invest Now</button>
-</div>
-</aside>
 
 <!-- RIGHT -->
-<section class="panel dashboard">
-<div class="wealth-card">
-<div class="wealth-number"><span id="wealthNumber">₹0</span></div>
+<div class="panel">
+<div class="wealth-number" id="result">₹0</div>
+<canvas id="chart"></canvas>
 </div>
-
-<div class="chart-card">
-<canvas id="wealthChart"></canvas>
-</div>
-</section>
 
 </section>
 </div>
@@ -97,26 +56,21 @@
 <script>
 
 const CALCS = {
-
 corpus:{
 label:"Corpus",
-badge:"RETIREMENT",
 controls:[
-{id:"expense",label:"Monthly Expense",min:10000,max:500000,value:50000},
+{id:"expense",label:"Monthly Expense",min:10000,max:200000,value:50000},
 {id:"years",label:"Years",min:1,max:40,value:25},
 {id:"inflation",label:"Inflation",min:1,max:10,value:6}
 ]
 },
-
 fire:{
 label:"FIRE",
-badge:"FIRE",
 controls:[
 {id:"expense",label:"Annual Expense",min:100000,max:5000000,value:600000},
 {id:"rate",label:"Withdrawal %",min:2,max:6,value:4}
 ]
 }
-
 };
 
 let active="corpus";
@@ -147,11 +101,9 @@ update();
 
 function renderControls(){
 let cfg=CALCS[active];
-
-panelBadge.textContent=cfg.badge;
-dynamicControls.innerHTML=cfg.controls.map(c=>`
+controls.innerHTML=cfg.controls.map(c=>`
 <div class="control-group">
-<div>${c.label}</div>
+<label>${c.label}</label>
 <input type="range" min="${c.min}" max="${c.max}" value="${state[active][c.id]}"
 oninput="updateVal('${c.id}',this.value)">
 </div>
@@ -166,16 +118,15 @@ update();
 function update(){
 
 if(active==="corpus"){
-let exp=state.corpus.expense;
+let m=state.corpus.expense;
 let inf=state.corpus.inflation/100;
 let y=state.corpus.years;
 
-let future=exp*Math.pow(1+inf,y);
+let future=m*Math.pow(1+inf,y);
 let corpus=future*300;
 
-wealthNumber.innerText="₹"+Math.round(corpus).toLocaleString();
-topProjected.innerText="₹"+Math.round(corpus).toLocaleString();
-topGains.innerText="₹"+Math.round(future).toLocaleString();
+result.innerText="₹"+Math.round(corpus).toLocaleString();
+drawChart(y,corpus);
 }
 
 if(active==="fire"){
@@ -184,31 +135,38 @@ let rate=state.fire.rate/100;
 
 let corpus=exp/rate;
 
-wealthNumber.innerText="₹"+Math.round(corpus).toLocaleString();
-topProjected.innerText="₹"+Math.round(corpus).toLocaleString();
-topGains.innerText="₹"+Math.round(exp/12).toLocaleString();
+result.innerText="₹"+Math.round(corpus).toLocaleString();
+drawChart(10,corpus);
 }
 
+}
+
+let chart;
+
+function drawChart(years,value){
+let labels=[],data=[];
+for(let i=1;i<=years;i++){
+labels.push("Year "+i);
+data.push(value*i/years);
+}
+
+if(chart) chart.destroy();
+
+chart=new Chart(document.getElementById("chart"),{
+type:"line",
+data:{labels,datasets:[{data,borderColor:"#00d4ff"}]},
+options:{plugins:{legend:{display:false}}}
+});
 }
 
 init();
 
-function openAdvisor(){
-window.open("https://justinvesting.in");
-}
-
-function scrollToControls(){
-controlsAnchor.scrollIntoView({behavior:"smooth"});
-}
-
-</script>
-
-<script>
 fetch("components/navbar.html")
 .then(res=>res.text())
 .then(data=>{
 document.getElementById("navbar").innerHTML=data;
 });
+
 </script>
 
 </body>
