@@ -1,5 +1,98 @@
-<!-- ⚠️ SAME HEAD, CSS, STRUCTURE AS INVESTMENT FILE — NOT TOUCHING -->
-<!-- ONLY CALCS + update() logic changed -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="css/navbar.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Retirement Dashboard — investpercent</title>
+
+<!-- SAME FONT + CHART -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* ⚠️ COPY YOUR FULL CSS FROM investment.html HERE */
+/* (DO NOT MODIFY — KEEP EXACT) */
+</style>
+</head>
+
+<body>
+
+<div class="page">
+<div id="navbar"></div>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-top">
+<div class="hero-copy">
+<h1>Retirement <span class="grad">Planning Dashboard</span></h1>
+<p>Plan your retirement corpus, income, and financial independence with precision.</p>
+</div>
+<div class="hero-cta">
+<button class="btn primary" onclick="scrollToControls()">Start Planning</button>
+<button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
+</div>
+</div>
+
+<div class="tabbar" id="tabs"></div>
+
+<div class="top-metrics">
+<div class="metric-card">
+<div class="metric-label">Mode</div>
+<div class="metric-value cyan" id="modeHeadline">Retirement Corpus</div>
+<div class="metric-sub" id="modeSub">Future planning</div>
+</div>
+
+<div class="metric-card">
+<div class="metric-label">Corpus</div>
+<div class="metric-value green" id="topProjected">₹0</div>
+</div>
+
+<div class="metric-card">
+<div class="metric-label">Monthly</div>
+<div class="metric-value cyan" id="topGains">₹0</div>
+</div>
+
+<div class="metric-card">
+<div class="metric-label">Return</div>
+<div class="metric-value gold" id="topRate">10%</div>
+</div>
+</div>
+</section>
+
+<!-- MAIN -->
+<section class="layout">
+
+<!-- LEFT -->
+<aside class="panel controls" id="controlsAnchor">
+<div class="panel-head">
+<div>
+<div class="panel-title">Control Panel</div>
+<div class="panel-desc" id="controlDesc"></div>
+</div>
+<div class="badge" id="panelBadge"></div>
+</div>
+
+<div id="dynamicControls"></div>
+
+<div class="advisor-card">
+<button class="btn primary" onclick="openAdvisor()">Invest Now</button>
+</div>
+</aside>
+
+<!-- RIGHT -->
+<section class="panel dashboard">
+<div class="wealth-card">
+<div class="wealth-number"><span id="wealthNumber">₹0</span></div>
+</div>
+
+<div class="chart-card">
+<canvas id="wealthChart"></canvas>
+</div>
+</section>
+
+</section>
+</div>
 
 <script>
 
@@ -7,250 +100,116 @@ const CALCS = {
 
 corpus:{
 label:"Corpus",
-badge:"RETIREMENT CORE",
-title:"Retirement Corpus Planning",
-sub:"Estimate future expense-adjusted corpus requirement.",
-desc:"Inflation-adjusted retirement planning model.",
-wealthTitle:"Required Retirement Corpus",
-wealthPill:"Future Value",
-
+badge:"RETIREMENT",
 controls:[
-{id:"expense",label:"Monthly Expense",min:10000,max:500000,value:50000,format:"currency"},
-{id:"inflation",label:"Inflation %",min:1,max:10,value:6,format:"percent"},
-{id:"years",label:"Years to Retirement",min:1,max:40,value:25,format:"years"},
-{id:"return",label:"Return %",min:1,max:15,value:10,format:"percent"}
+{id:"expense",label:"Monthly Expense",min:10000,max:500000,value:50000},
+{id:"years",label:"Years",min:1,max:40,value:25},
+{id:"inflation",label:"Inflation",min:1,max:10,value:6}
 ]
 },
 
 fire:{
 label:"FIRE",
-badge:"FIRE MODE",
-title:"Financial Independence (FIRE)",
-sub:"Corpus needed for financial freedom.",
-desc:"Based on safe withdrawal rate.",
-
-wealthTitle:"FIRE Corpus",
-wealthPill:"Independence Goal",
-
+badge:"FIRE",
 controls:[
-{id:"expense",label:"Annual Expense",min:100000,max:5000000,value:600000,format:"currency"},
-{id:"withdrawal",label:"Withdrawal %",min:2,max:6,value:4,format:"percent"}
-]
-},
-
-nps:{
-label:"NPS",
-badge:"NPS MODE",
-title:"NPS Retirement Planning",
-sub:"Build pension corpus over time.",
-desc:"Monthly contribution model.",
-
-wealthTitle:"NPS Corpus",
-wealthPill:"Pension Engine",
-
-controls:[
-{id:"monthly",label:"Monthly Investment",min:1000,max:100000,value:10000,format:"currency"},
-{id:"years",label:"Years",min:1,max:40,value:25,format:"years"},
-{id:"rate",label:"Return %",min:1,max:15,value:10,format:"percent"}
-]
-},
-
-income:{
-label:"Income",
-badge:"POST RETIREMENT",
-title:"Post Retirement Income",
-sub:"How long corpus sustains",
-desc:"SWP style withdrawal model",
-
-wealthTitle:"Corpus Sustainability",
-wealthPill:"Income Phase",
-
-controls:[
-{id:"corpus",label:"Corpus",min:100000,max:50000000,value:10000000,format:"currency"},
-{id:"withdraw",label:"Monthly Withdrawal",min:10000,max:500000,value:50000,format:"currency"},
-{id:"rate",label:"Return %",min:1,max:12,value:8,format:"percent"},
-{id:"years",label:"Years",min:1,max:40,value:25,format:"years"}
-]
-},
-
-annuity:{
-label:"Annuity vs SWP",
-badge:"COMPARISON",
-title:"Annuity vs SWP",
-sub:"Compare income models",
-desc:"Fixed vs market linked income",
-
-wealthTitle:"Income Comparison",
-wealthPill:"Decision Mode",
-
-controls:[
-{id:"corpus",label:"Corpus",min:1000000,max:50000000,value:10000000,format:"currency"}
-]
-},
-
-semi:{
-label:"Semi-FIRE",
-badge:"PARTIAL FIRE",
-title:"Semi Retirement",
-sub:"Partial income model",
-desc:"Part work + part investment",
-
-wealthTitle:"Semi FIRE Corpus",
-wealthPill:"Hybrid Mode",
-
-controls:[
-{id:"expense",label:"Monthly Expense",min:10000,max:200000,value:60000,format:"currency"},
-{id:"income",label:"Other Income",min:0,max:200000,value:20000,format:"currency"},
-{id:"rate",label:"Return %",min:1,max:12,value:8,format:"percent"}
+{id:"expense",label:"Annual Expense",min:100000,max:5000000,value:600000},
+{id:"rate",label:"Withdrawal %",min:2,max:6,value:4}
 ]
 }
 
 };
 
+let active="corpus";
+let state={};
+
+function init(){
+Object.keys(CALCS).forEach(k=>{
+state[k]={};
+CALCS[k].controls.forEach(c=>state[k][c.id]=c.value);
+});
+renderTabs();
+renderControls();
+update();
+}
+
+function renderTabs(){
+tabs.innerHTML=Object.keys(CALCS).map(k=>
+`<button class="tab ${k===active?'active':''}" onclick="switchTab('${k}')">${CALCS[k].label}</button>`
+).join('');
+}
+
+function switchTab(k){
+active=k;
+renderTabs();
+renderControls();
+update();
+}
+
+function renderControls(){
+let cfg=CALCS[active];
+
+panelBadge.textContent=cfg.badge;
+dynamicControls.innerHTML=cfg.controls.map(c=>`
+<div class="control-group">
+<div>${c.label}</div>
+<input type="range" min="${c.min}" max="${c.max}" value="${state[active][c.id]}"
+oninput="updateVal('${c.id}',this.value)">
+</div>
+`).join('');
+}
+
+function updateVal(id,val){
+state[active][id]=Number(val);
+update();
+}
+
 function update(){
 
-const s = state[active];
-
 if(active==="corpus"){
+let exp=state.corpus.expense;
+let inf=state.corpus.inflation/100;
+let y=state.corpus.years;
 
-let monthly = s.expense;
-let inf = s.inflation/100;
-let years = s.years;
+let future=exp*Math.pow(1+inf,y);
+let corpus=future*300;
 
-let futureExpense = monthly * Math.pow(1+inf,years);
-let corpus = futureExpense * 300;
-
-setTop(corpus,futureExpense,s.return);
-
-setWealthArea({
-title:"Required Corpus",
-pill:"Future Value",
-value:corpus,
-narrative:`Future monthly expense becomes ${fmtShort(futureExpense)} requiring ~${fmtShort(corpus)} corpus.`,
-stat1:{label:'Monthly Future Expense', value:fmtCurrency(futureExpense)},
-stat2:{label:'Corpus Needed', value:fmtCurrency(corpus)},
-stat3:{label:'Years', value:years},
-mood:"Planning Phase",
-power:"Inflation Adjusted"
-});
-
-renderChart(
-Array.from({length:years},(_,i)=>"Year "+(i+1)),
-Array.from({length:years},(_,i)=>monthly*Math.pow(1+inf,i+1)),
-"#00d4ff"
-);
+wealthNumber.innerText="₹"+Math.round(corpus).toLocaleString();
+topProjected.innerText="₹"+Math.round(corpus).toLocaleString();
+topGains.innerText="₹"+Math.round(future).toLocaleString();
 }
 
 if(active==="fire"){
+let exp=state.fire.expense;
+let rate=state.fire.rate/100;
 
-let corpus = s.expense / (s.withdrawal/100);
+let corpus=exp/rate;
 
-setTop(corpus,s.expense,s.withdrawal);
-
-setWealthArea({
-title:"FIRE Corpus",
-pill:"Independence",
-value:corpus,
-narrative:`You need ${fmtShort(corpus)} to sustain expenses.`,
-stat1:{label:'Annual Expense', value:fmtCurrency(s.expense)},
-stat2:{label:'Corpus', value:fmtCurrency(corpus)},
-stat3:{label:'Rule', value:"4%"},
-mood:"Freedom Target",
-power:"Passive Income"
-});
+wealthNumber.innerText="₹"+Math.round(corpus).toLocaleString();
+topProjected.innerText="₹"+Math.round(corpus).toLocaleString();
+topGains.innerText="₹"+Math.round(exp/12).toLocaleString();
 }
 
-if(active==="nps"){
-
-let r = s.rate/100;
-let y = s.years;
-
-let corpus = s.monthly*12*((Math.pow(1+r,y)-1)/r);
-
-setTop(corpus,corpus-s.monthly*12*y,s.rate);
-
-setWealthArea({
-title:"NPS Corpus",
-pill:"Pension",
-value:corpus,
-narrative:`Your retirement corpus grows to ${fmtShort(corpus)}.`,
-stat1:{label:'Invested', value:fmtCurrency(s.monthly*12*y)},
-stat2:{label:'Growth', value:fmtCurrency(corpus)},
-stat3:{label:'Years', value:y},
-mood:"Retirement Engine",
-power:"Long Term"
-});
 }
 
-if(active==="income"){
+init();
 
-let corpus=s.corpus;
-let r=s.rate/12/100;
-let withdraw=s.withdraw;
-
-let months=0;
-
-while(corpus>0){
-corpus=corpus*(1+r)-withdraw;
-months++;
-if(months>1000) break;
+function openAdvisor(){
+window.open("https://justinvesting.in");
 }
 
-setTop(corpus,withdraw,s.rate);
-
-setWealthArea({
-title:"Income Sustainability",
-pill:"SWP",
-value:months,
-narrative:`Corpus lasts ${months} months`,
-stat1:{label:'Corpus', value:fmtCurrency(s.corpus)},
-stat2:{label:'Withdrawal', value:fmtCurrency(withdraw)},
-stat3:{label:'Months', value:months},
-mood:"Withdrawal Mode",
-power:"Cashflow"
-});
-}
-
-if(active==="annuity"){
-
-let annuity = s.corpus * 0.06;
-let swp = s.corpus * 0.08;
-
-setTop(s.corpus,annuity,8);
-
-setWealthArea({
-title:"Annuity vs SWP",
-pill:"Compare",
-value:s.corpus,
-narrative:`SWP gives higher returns but riskier.`,
-stat1:{label:'Annuity Income', value:fmtCurrency(annuity/12)},
-stat2:{label:'SWP Income', value:fmtCurrency(swp/12)},
-stat3:{label:'Corpus', value:fmtCurrency(s.corpus)},
-mood:"Decision Time",
-power:"Risk vs Return"
-});
-}
-
-if(active==="semi"){
-
-let net = s.expense - s.income;
-let corpus = net*300;
-
-setTop(corpus,net,s.rate);
-
-setWealthArea({
-title:"Semi FIRE",
-pill:"Hybrid",
-value:corpus,
-narrative:`Partial income reduces required corpus.`,
-stat1:{label:'Net Expense', value:fmtCurrency(net)},
-stat2:{label:'Corpus', value:fmtCurrency(corpus)},
-stat3:{label:'Savings', value:fmtCurrency(s.income)},
-mood:"Flexible Life",
-power:"Freedom Lite"
-});
-}
-
+function scrollToControls(){
+controlsAnchor.scrollIntoView({behavior:"smooth"});
 }
 
 </script>
+
+<script>
+fetch("components/navbar.html")
+.then(res=>res.text())
+.then(data=>{
+document.getElementById("navbar").innerHTML=data;
+});
+</script>
+
+</body>
+</html>
