@@ -77,9 +77,6 @@
     .brand-name{font-family:Poppins,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.03em}
     .brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
-.nav-links::-webkit-scrollbar{
-  display:none;
-}
     .nav-links a{
       padding:11px 14px;border-radius:12px;color:var(--muted);font-weight:700;
       transition:.2s ease;border:1px solid transparent
@@ -229,47 +226,7 @@
       .dash-top{grid-template-columns:1fr}
       .timeline-grid{grid-template-columns:1fr 1fr}
     }
-    @media(max-width:760px){
-      .page{padding:12px 12px 28px}
-      .nav{padding:14px}
-      .hero{padding:18px}
-      .controls,.dashboard{padding:16px}
-      .wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
-      .hero-copy p{font-size:15px}
-      .metric-value{font-size:30px}
-      .wealth-number{font-size:42px}
-
-.nav-row{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.nav-row a{
-  padding:10px 14px;
-  border-radius:12px;
-  color:var(--muted);
-  font-weight:700;
-  transition:.2s ease;
-  border:1px solid transparent;
-}
-
-.nav-row a:hover{
-  color:var(--text);
-  background:rgba(255,255,255,.04);
-  border-color:var(--line);
-}
-
-.nav-row a.active{
-  color:#08111f;
-  background:var(--grad);
-}
-
-.nav-row.sub a{
-  font-size:13px;
-  opacity:.85;
-    }
-@media(max-width:760px){
+   @media(max-width:760px){
   ...
 }
 
