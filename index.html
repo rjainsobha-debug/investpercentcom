@@ -23,9 +23,13 @@ body{
   color:var(--text);
 }
 
-.container{max-width:1400px;margin:auto;padding:14px}
+.container{
+  max-width:1500px;
+  margin:auto;
+  padding:16px;
+}
 
-/* HEADER LOGO */
+/* HEADER */
 .header{
   display:flex;
   align-items:center;
@@ -34,7 +38,7 @@ body{
 }
 
 .logo-mark{
-  width:40px;height:40px;
+  width:42px;height:42px;
   border-radius:14px;
   display:grid;place-items:center;
   background:var(--grad);
@@ -44,7 +48,7 @@ body{
 
 .logo-text{
   font-family:Poppins,sans-serif;
-  font-size:22px;
+  font-size:24px;
   font-weight:800;
 }
 .logo-text span{
@@ -65,7 +69,7 @@ body{
 .hero h1{
   margin:0;
   font-family:Poppins,sans-serif;
-  font-size:clamp(36px,6vw,64px);
+  font-size:clamp(34px,6vw,64px);
   font-weight:800;
 }
 
@@ -80,10 +84,11 @@ body{
   display:flex;
   gap:12px;
   justify-content:center;
+  flex-wrap:wrap;
 }
 
 .btn{
-  padding:12px 18px;
+  padding:12px 20px;
   border-radius:12px;
   border:none;
   font-weight:700;
@@ -92,41 +97,59 @@ body{
 .primary{background:var(--grad);color:#071120}
 .secondary{background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff}
 
-/* GRID — 6 COLUMNS */
+/* GRID (8 x 2) */
 .grid{
   display:grid;
-  grid-template-columns:repeat(6,1fr);
+  grid-template-columns:repeat(8,1fr);
   gap:14px;
-  margin-top:24px;
+  margin-top:26px;
 }
 
 .card{
-  padding:18px;
-  border-radius:20px;
+  padding:16px;
+  border-radius:18px;
   border:1px solid var(--line);
   background:linear-gradient(180deg,#0f1830,#121f3d);
   text-decoration:none;
   color:#fff;
+  transition:.2s ease;
 }
+.card:hover{transform:translateY(-2px)}
 
 .card-icon{
-  width:42px;height:42px;
+  width:38px;height:38px;
   border-radius:12px;
   display:grid;place-items:center;
   background:rgba(255,255,255,0.06);
-  margin-bottom:10px;
+  margin-bottom:8px;
+  font-size:18px;
 }
 
-.card h3{margin:0;font-size:18px}
-.card p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.card h3{
+  margin:0;
+  font-size:15px;
+  font-weight:700;
+}
+
+.card p{
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
 
 /* RESPONSIVE */
-@media(max-width:1100px){
-  .grid{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1200px){
+  .grid{grid-template-columns:repeat(6,1fr)}
 }
+
+@media(max-width:900px){
+  .grid{grid-template-columns:repeat(4,1fr)}
+}
+
 @media(max-width:600px){
-  .grid{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(3,1fr)}  /* 🔥 KEY FIX */
 }
+
 </style>
 </head>
 
@@ -153,19 +176,24 @@ body{
 <!-- GRID -->
 <div id="categories" class="grid">
 
+  <!-- ROW 1 -->
   <a class="card" href="investment.html"><div class="card-icon">💰</div><h3>Investment</h3><p>SIP tools</p></a>
   <a class="card" href="loan.html"><div class="card-icon">🏠</div><h3>Loan</h3><p>EMI tools</p></a>
   <a class="card" href="tax.html"><div class="card-icon">🧾</div><h3>Tax</h3><p>Tax tools</p></a>
   <a class="card" href="savings.html"><div class="card-icon">🏦</div><h3>Savings</h3><p>FD tools</p></a>
   <a class="card" href="retirement.html"><div class="card-icon">🪙</div><h3>Retirement</h3><p>Planning</p></a>
   <a class="card" href="personal.html"><div class="card-icon">👤</div><h3>Personal</h3><p>Budget</p></a>
-
   <a class="card" href="global.html"><div class="card-icon">🌍</div><h3>Global</h3><p>Forex</p></a>
   <a class="card" href="stocks.html"><div class="card-icon">📈</div><h3>Stocks</h3><p>Market</p></a>
+
+  <!-- ROW 2 -->
   <a class="card" href="crypto.html"><div class="card-icon">₿</div><h3>Crypto</h3><p>Assets</p></a>
   <a class="card" href="business.html"><div class="card-icon">🚀</div><h3>Business</h3><p>Startup</p></a>
   <a class="card" href="insurance.html"><div class="card-icon">🛡️</div><h3>Insurance</h3><p>Plans</p></a>
-  <a class="card" href="Real-Etate.html"><div class="card-icon">🏢</div><h3>Real Estate</h3><p>Property tools</p></a>
+  <a class="card" href="play.html"><div class="card-icon">🎮</div><h3>Play</h3><p>Tools</p></a>
+  <a class="card" href="learn.html"><div class="card-icon">📚</div><h3>Learn</h3><p>Guides</p></a>
+  <a class="card" href="digital.html"><div class="card-icon">💻</div><h3>Digital</h3><p>Utilities</p></a>
+  <a class="card" href="Real-Etate.html"><div class="card-icon">🏢</div><h3>Real Estate</h3><p>Property</p></a>
 
 </div>
 
