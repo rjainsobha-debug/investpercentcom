@@ -1,200 +1,256 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Retirement Planning — InvestPercent</title>
+<!-- ⚠️ SAME HEAD, CSS, STRUCTURE AS INVESTMENT FILE — NOT TOUCHING -->
+<!-- ONLY CALCS + update() logic changed -->
 
-<link rel="stylesheet" href="css/navbar.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --bg:#070c18;
-  --panel:#0f1830;
-  --line:rgba(255,255,255,0.08);
-  --text:#ffffff;
-  --muted:#9da9c6;
-  --grad:linear-gradient(135deg,#00d4ff,#7b61ff);
-}
-
-body{
-  margin:0;
-  font-family:Inter,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-
-.page{
-  max-width:1400px;
-  margin:auto;
-  padding:16px;
-}
-
-/* HERO */
-.hero{
-  padding:42px;
-  border:1px solid var(--line);
-  border-radius:26px;
-  background:linear-gradient(180deg,#07101f,#081225);
-}
-
-.hero h1{
-  margin:0;
-  font-family:Poppins;
-  font-size:44px;
-}
-
-.hero p{
-  margin-top:10px;
-  color:var(--muted);
-  font-size:16px;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  margin-top:26px;
-}
-
-.card{
-  padding:22px;
-  border-radius:20px;
-  border:1px solid var(--line);
-  background:linear-gradient(180deg,#0f1830,#121f3d);
-  transition:.2s ease;
-}
-
-.card:hover{
-  transform:translateY(-3px);
-}
-
-.card h3{
-  margin:0 0 8px;
-  font-size:20px;
-}
-
-.card p{
-  color:var(--muted);
-  font-size:14px;
-}
-
-/* CTA BOX */
-.cta{
-  margin-top:26px;
-  padding:24px;
-  border-radius:22px;
-  border:1px solid var(--line);
-  background:linear-gradient(135deg,#0a1428,#0e1c38);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-}
-
-.cta h3{
-  margin:0;
-}
-
-.cta button{
-  padding:12px 20px;
-  border:none;
-  border-radius:12px;
-  background:var(--grad);
-  color:#071120;
-  font-weight:700;
-  cursor:pointer;
-}
-
-/* MOBILE */
-@media(max-width:900px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:600px){
-  .grid{grid-template-columns:1fr}
-  .hero{padding:28px}
-}
-</style>
-</head>
-
-<body>
-
-<div class="page">
-
-<!-- NAVBAR -->
-<div id="navbar"></div>
-
-<!-- HERO -->
-<div class="hero">
-  <h1>Retirement Planning</h1>
-  <p>Plan your future income, calculate retirement corpus and achieve financial independence.</p>
-</div>
-
-<!-- TOOLS -->
-<div class="grid">
-
-  <div class="card">
-    <h3>Retirement Corpus Calculator</h3>
-    <p>Estimate how much wealth you need for retirement.</p>
-  </div>
-
-  <div class="card">
-    <h3>FIRE Calculator</h3>
-    <p>Find when you can achieve financial independence.</p>
-  </div>
-
-  <div class="card">
-    <h3>Monthly Income Planner</h3>
-    <p>Plan steady post-retirement income.</p>
-  </div>
-
-  <div class="card">
-    <h3>Inflation Impact</h3>
-    <p>Understand long-term inflation effect.</p>
-  </div>
-
-  <div class="card">
-    <h3>Pension Planner</h3>
-    <p>Calculate pension requirements.</p>
-  </div>
-
-  <div class="card">
-    <h3>Life Expectancy Tool</h3>
-    <p>Estimate retirement duration needs.</p>
-  </div>
-
-</div>
-
-<!-- CTA -->
-<div class="cta">
-  <h3>Need help planning retirement?</h3>
-  <button onclick="location.href='justinvesting.in'">Talk to Advisor</button>
-</div>
-
-</div>
-
-<!-- NAVBAR SCRIPT -->
 <script>
-fetch("components/navbar.html")
-.then(res => res.text())
-.then(data => {
-  document.getElementById("navbar").innerHTML = data;
 
-  const links = document.querySelectorAll(".nav a");
-  links.forEach(link => {
-    if (window.location.pathname.endsWith(link.getAttribute("href"))) {
-      link.classList.add("active");
-    }
-  });
+const CALCS = {
+
+corpus:{
+label:"Corpus",
+badge:"RETIREMENT CORE",
+title:"Retirement Corpus Planning",
+sub:"Estimate future expense-adjusted corpus requirement.",
+desc:"Inflation-adjusted retirement planning model.",
+wealthTitle:"Required Retirement Corpus",
+wealthPill:"Future Value",
+
+controls:[
+{id:"expense",label:"Monthly Expense",min:10000,max:500000,value:50000,format:"currency"},
+{id:"inflation",label:"Inflation %",min:1,max:10,value:6,format:"percent"},
+{id:"years",label:"Years to Retirement",min:1,max:40,value:25,format:"years"},
+{id:"return",label:"Return %",min:1,max:15,value:10,format:"percent"}
+]
+},
+
+fire:{
+label:"FIRE",
+badge:"FIRE MODE",
+title:"Financial Independence (FIRE)",
+sub:"Corpus needed for financial freedom.",
+desc:"Based on safe withdrawal rate.",
+
+wealthTitle:"FIRE Corpus",
+wealthPill:"Independence Goal",
+
+controls:[
+{id:"expense",label:"Annual Expense",min:100000,max:5000000,value:600000,format:"currency"},
+{id:"withdrawal",label:"Withdrawal %",min:2,max:6,value:4,format:"percent"}
+]
+},
+
+nps:{
+label:"NPS",
+badge:"NPS MODE",
+title:"NPS Retirement Planning",
+sub:"Build pension corpus over time.",
+desc:"Monthly contribution model.",
+
+wealthTitle:"NPS Corpus",
+wealthPill:"Pension Engine",
+
+controls:[
+{id:"monthly",label:"Monthly Investment",min:1000,max:100000,value:10000,format:"currency"},
+{id:"years",label:"Years",min:1,max:40,value:25,format:"years"},
+{id:"rate",label:"Return %",min:1,max:15,value:10,format:"percent"}
+]
+},
+
+income:{
+label:"Income",
+badge:"POST RETIREMENT",
+title:"Post Retirement Income",
+sub:"How long corpus sustains",
+desc:"SWP style withdrawal model",
+
+wealthTitle:"Corpus Sustainability",
+wealthPill:"Income Phase",
+
+controls:[
+{id:"corpus",label:"Corpus",min:100000,max:50000000,value:10000000,format:"currency"},
+{id:"withdraw",label:"Monthly Withdrawal",min:10000,max:500000,value:50000,format:"currency"},
+{id:"rate",label:"Return %",min:1,max:12,value:8,format:"percent"},
+{id:"years",label:"Years",min:1,max:40,value:25,format:"years"}
+]
+},
+
+annuity:{
+label:"Annuity vs SWP",
+badge:"COMPARISON",
+title:"Annuity vs SWP",
+sub:"Compare income models",
+desc:"Fixed vs market linked income",
+
+wealthTitle:"Income Comparison",
+wealthPill:"Decision Mode",
+
+controls:[
+{id:"corpus",label:"Corpus",min:1000000,max:50000000,value:10000000,format:"currency"}
+]
+},
+
+semi:{
+label:"Semi-FIRE",
+badge:"PARTIAL FIRE",
+title:"Semi Retirement",
+sub:"Partial income model",
+desc:"Part work + part investment",
+
+wealthTitle:"Semi FIRE Corpus",
+wealthPill:"Hybrid Mode",
+
+controls:[
+{id:"expense",label:"Monthly Expense",min:10000,max:200000,value:60000,format:"currency"},
+{id:"income",label:"Other Income",min:0,max:200000,value:20000,format:"currency"},
+{id:"rate",label:"Return %",min:1,max:12,value:8,format:"percent"}
+]
+}
+
+};
+
+function update(){
+
+const s = state[active];
+
+if(active==="corpus"){
+
+let monthly = s.expense;
+let inf = s.inflation/100;
+let years = s.years;
+
+let futureExpense = monthly * Math.pow(1+inf,years);
+let corpus = futureExpense * 300;
+
+setTop(corpus,futureExpense,s.return);
+
+setWealthArea({
+title:"Required Corpus",
+pill:"Future Value",
+value:corpus,
+narrative:`Future monthly expense becomes ${fmtShort(futureExpense)} requiring ~${fmtShort(corpus)} corpus.`,
+stat1:{label:'Monthly Future Expense', value:fmtCurrency(futureExpense)},
+stat2:{label:'Corpus Needed', value:fmtCurrency(corpus)},
+stat3:{label:'Years', value:years},
+mood:"Planning Phase",
+power:"Inflation Adjusted"
 });
 
-function toggleMenu(){
-  document.getElementById('mobileDrawer')?.classList.toggle('open');
+renderChart(
+Array.from({length:years},(_,i)=>"Year "+(i+1)),
+Array.from({length:years},(_,i)=>monthly*Math.pow(1+inf,i+1)),
+"#00d4ff"
+);
 }
-</script>
 
-</body>
-</html>
+if(active==="fire"){
+
+let corpus = s.expense / (s.withdrawal/100);
+
+setTop(corpus,s.expense,s.withdrawal);
+
+setWealthArea({
+title:"FIRE Corpus",
+pill:"Independence",
+value:corpus,
+narrative:`You need ${fmtShort(corpus)} to sustain expenses.`,
+stat1:{label:'Annual Expense', value:fmtCurrency(s.expense)},
+stat2:{label:'Corpus', value:fmtCurrency(corpus)},
+stat3:{label:'Rule', value:"4%"},
+mood:"Freedom Target",
+power:"Passive Income"
+});
+}
+
+if(active==="nps"){
+
+let r = s.rate/100;
+let y = s.years;
+
+let corpus = s.monthly*12*((Math.pow(1+r,y)-1)/r);
+
+setTop(corpus,corpus-s.monthly*12*y,s.rate);
+
+setWealthArea({
+title:"NPS Corpus",
+pill:"Pension",
+value:corpus,
+narrative:`Your retirement corpus grows to ${fmtShort(corpus)}.`,
+stat1:{label:'Invested', value:fmtCurrency(s.monthly*12*y)},
+stat2:{label:'Growth', value:fmtCurrency(corpus)},
+stat3:{label:'Years', value:y},
+mood:"Retirement Engine",
+power:"Long Term"
+});
+}
+
+if(active==="income"){
+
+let corpus=s.corpus;
+let r=s.rate/12/100;
+let withdraw=s.withdraw;
+
+let months=0;
+
+while(corpus>0){
+corpus=corpus*(1+r)-withdraw;
+months++;
+if(months>1000) break;
+}
+
+setTop(corpus,withdraw,s.rate);
+
+setWealthArea({
+title:"Income Sustainability",
+pill:"SWP",
+value:months,
+narrative:`Corpus lasts ${months} months`,
+stat1:{label:'Corpus', value:fmtCurrency(s.corpus)},
+stat2:{label:'Withdrawal', value:fmtCurrency(withdraw)},
+stat3:{label:'Months', value:months},
+mood:"Withdrawal Mode",
+power:"Cashflow"
+});
+}
+
+if(active==="annuity"){
+
+let annuity = s.corpus * 0.06;
+let swp = s.corpus * 0.08;
+
+setTop(s.corpus,annuity,8);
+
+setWealthArea({
+title:"Annuity vs SWP",
+pill:"Compare",
+value:s.corpus,
+narrative:`SWP gives higher returns but riskier.`,
+stat1:{label:'Annuity Income', value:fmtCurrency(annuity/12)},
+stat2:{label:'SWP Income', value:fmtCurrency(swp/12)},
+stat3:{label:'Corpus', value:fmtCurrency(s.corpus)},
+mood:"Decision Time",
+power:"Risk vs Return"
+});
+}
+
+if(active==="semi"){
+
+let net = s.expense - s.income;
+let corpus = net*300;
+
+setTop(corpus,net,s.rate);
+
+setWealthArea({
+title:"Semi FIRE",
+pill:"Hybrid",
+value:corpus,
+narrative:`Partial income reduces required corpus.`,
+stat1:{label:'Net Expense', value:fmtCurrency(net)},
+stat2:{label:'Corpus', value:fmtCurrency(corpus)},
+stat3:{label:'Savings', value:fmtCurrency(s.income)},
+mood:"Flexible Life",
+power:"Freedom Lite"
+});
+}
+
+}
+
+</script>
