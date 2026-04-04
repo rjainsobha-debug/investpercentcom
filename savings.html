@@ -1,69 +1,108 @@
+<!-- ULTRA PRO SAVINGS DASHBOARD — INVESTPERCENT -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Savings - InvestPercent</title>
+<title>Savings Dashboard — investpercent</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-body{margin:0;font-family:Inter;background:#060915;color:#fff}
-.container{max-width:1100px;margin:auto;padding:20px}
-.nav{display:flex;justify-content:space-between;padding:16px;border:1px solid rgba(255,255,255,0.08);border-radius:16px;margin-bottom:20px}
-.nav a{margin:0 6px;color:#9da9c6;text-decoration:none;font-size:13px}
-.nav a:hover{color:#fff}
-
-.hero{padding:30px;border-radius:20px;background:linear-gradient(135deg,#0f1b3d,#091224);margin-bottom:20px}
-.hero h1{margin:0;font-size:34px}
-
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-
-.card{padding:20px;border-radius:20px;background:#0f1830;border:1px solid rgba(255,255,255,0.08)}
-input{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none;background:#1b2545;color:#fff}
-
-button{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,#00d4ff,#7b61ff);color:#000;font-weight:bold;cursor:pointer}
-
-.result{margin-top:10px;font-size:18px;color:#00e676}
-
-@media(max-width:700px){
-.grid{grid-template-columns:1fr}
+:root{
+--bg:#060915;
+--panel:#0f1830;
+--panel2:#121e3c;
+--text:#fff;
+--muted:#9da9c6;
+--cyan:#00d4ff;
+--green:#00e676;
+--gold:#ffd76a;
+--grad:linear-gradient(135deg,#00d4ff,#7b61ff);
 }
+
+body{margin:0;font-family:Inter;background:var(--bg);color:var(--text)}
+.page{max-width:1400px;margin:auto;padding:20px}
+
+/* NAV */
+.nav{display:flex;justify-content:space-between;background:#0b1224;padding:15px 20px;border-radius:20px}
+.nav a{color:#9da9c6;text-decoration:none;margin:0 10px}
+.nav a.active{color:#fff}
+
+/* HERO */
+.hero{margin-top:20px;padding:30px;border-radius:25px;background:linear-gradient(135deg,#0b1224,#121e3c)}
+.hero h1{font-size:40px;margin:0}
+.hero p{color:var(--muted)}
+
+.tabbar{display:flex;flex-wrap:wrap;margin-top:15px;gap:10px}
+.tab{padding:10px 15px;border-radius:12px;background:#121e3c;cursor:pointer}
+.tab.active{background:var(--grad);color:#000}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:380px 1fr;gap:20px;margin-top:20px}
+.panel{background:var(--panel);border-radius:25px;padding:20px}
+
+/* VALUE */
+.big{font-size:42px;font-weight:800;color:var(--green)}
+.small{color:var(--muted)}
+
+/* BUTTON */
+.btn{padding:12px 18px;border:none;border-radius:12px;background:var(--grad);cursor:pointer;font-weight:700}
+
+/* GRID */
+.metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+.card{background:var(--panel2);padding:15px;border-radius:15px}
+
 </style>
 </head>
 
 <body>
-<div class="container">
 
+<div class="page">
+
+<!-- NAV -->
 <div class="nav">
-<div><b>InvestPercent</b></div>
+<div><b>investpercent</b></div>
 <div>
 <a href="index.html">Home</a>
 <a href="investment.html">Investment</a>
-<a href="loan.html">Loan</a>
-<a href="tax.html">Tax</a>
-<a href="savings.html">Savings</a>
+<a href="savings.html" class="active">Savings</a>
+<a href="#">Loan</a>
+<a href="#">Tax</a>
 </div>
 </div>
 
+<!-- HERO -->
 <div class="hero">
-<h1>Savings Tools (Interactive)</h1>
+<h1>Savings <span style="background:var(--grad);-webkit-background-clip:text;color:transparent">Command Center</span></h1>
+<p>Compare FD, RD, Government Schemes & Real Returns in one premium dashboard.</p>
+<div class="tabbar" id="tabs"></div>
 </div>
 
-<div class="grid">
+<div class="layout">
 
-<div class="card">
-<h2>FD Calculator</h2>
-<input id="fd_amount" placeholder="Amount ₹">
-<input id="fd_rate" placeholder="Rate %">
-<input id="fd_years" placeholder="Years">
-<button onclick="calcFD()">Calculate</button>
-<div id="fd_result" class="result"></div>
+<!-- CONTROLS -->
+<div class="panel">
+<h3>Controls</h3>
+<div id="controls"></div>
+<button class="btn" onclick="update()">Run Calculation</button>
 </div>
 
-<div class="card">
-<h2>RD Calculator</h2>
-<input id="rd_amount" placeholder="Monthly ₹">
-<input id="rd_rate" placeholder="Rate %">
-<input id="rd_years" placeholder="Years">
-<button onclick="calcRD()">Calculate</button>
-<div id="rd_result" class="result"></div>
+<!-- DASHBOARD -->
+<div class="panel">
+
+<div class="big" id="result">₹0</div>
+<div class="small">Projected Value</div>
+
+<div class="metrics">
+<div class="card">Invested<br><b id="invested"></b></div>
+<div class="card">Returns<br><b id="returns"></b></div>
+<div class="card">Real Value<br><b id="real"></b></div>
+</div>
+
+<canvas id="chart"></canvas>
+
 </div>
 
 </div>
@@ -71,23 +110,164 @@ button{width:100%;padding:12px;border:none;border-radius:10px;background:linear-
 </div>
 
 <script>
-function calcFD(){
-let p=parseFloat(document.getElementById('fd_amount').value);
-let r=parseFloat(document.getElementById('fd_rate').value)/100;
-let t=parseFloat(document.getElementById('fd_years').value);
 
-let maturity=p*Math.pow(1+r,t);
-document.getElementById('fd_result').innerHTML="Maturity: ₹"+Math.round(maturity);
+const CALCS = {
+
+fd:{
+label:"FD",
+inputs:[
+{id:"p",label:"Amount",val:100000},
+{id:"r",label:"Rate %",val:7},
+{id:"y",label:"Years",val:5}
+],
+calc:(s)=>{
+let v=s.p*Math.pow(1+s.r/100,s.y)
+return {value:v,invested:s.p}
+}
+},
+
+rd:{
+label:"RD",
+inputs:[
+{id:"m",label:"Monthly",val:5000},
+{id:"r",label:"Rate %",val:7},
+{id:"y",label:"Years",val:5}
+],
+calc:(s)=>{
+let n=s.y*12
+let r=s.r/100/12
+let v=s.m*((Math.pow(1+r,n)-1)/r)*(1+r)
+return {value:v,invested:s.m*n}
+}
+},
+
+ssy:{
+label:"Sukanya",
+inputs:[
+{id:"a",label:"Yearly",val:50000},
+{id:"r",label:"Rate %",val:8},
+{id:"y",label:"Years",val:21}
+],
+calc:(s)=>{
+let v=0
+for(let i=0;i<s.y;i++) v=(v+s.a)*(1+s.r/100)
+return {value:v,invested:s.a*s.y}
+}
+},
+
+compare:{
+label:"FD vs SIP vs RD",
+inputs:[
+{id:"p",label:"Amount",val:100000},
+{id:"r",label:"Rate %",val:10},
+{id:"y",label:"Years",val:10}
+],
+calc:(s)=>{
+let fd=s.p*Math.pow(1+s.r/100,s.y)
+let sip=10000*((Math.pow(1+s.r/100/12,s.y*12)-1)/(s.r/100/12))
+let rd=5000*((Math.pow(1+s.r/100/12,s.y*12)-1)/(s.r/100/12))
+return {fd,sip,rd}
+}
+},
+
+inflation:{
+label:"Inflation",
+inputs:[
+{id:"p",label:"Amount",val:100000},
+{id:"r",label:"Return %",val:7},
+{id:"i",label:"Inflation %",val:5},
+{id:"y",label:"Years",val:10}
+],
+calc:(s)=>{
+let real=((1+s.r/100)/(1+s.i/100))-1
+let v=s.p*Math.pow(1+real,s.y)
+return {value:v,invested:s.p}
+}
 }
 
-function calcRD(){
-let m=parseFloat(document.getElementById('rd_amount').value);
-let r=parseFloat(document.getElementById('rd_rate').value)/100/12;
-let n=parseFloat(document.getElementById('rd_years').value)*12;
-
-let maturity=m*((Math.pow(1+r,n)-1)/r)*(1+r);
-document.getElementById('rd_result').innerHTML="Maturity: ₹"+Math.round(maturity);
 }
+
+let active="fd"
+let state={}
+let chart
+
+function init(){
+Object.keys(CALCS).forEach(k=>{
+state[k]={}
+CALCS[k].inputs.forEach(i=>state[k][i.id]=i.val)
+})
+renderTabs()
+renderControls()
+update()
+}
+
+function renderTabs(){
+tabs.innerHTML=Object.keys(CALCS).map(k=>`
+<div class="tab ${k==active?'active':''}" onclick="switchTab('${k}')">${CALCS[k].label}</div>
+`).join('')
+}
+
+function switchTab(k){
+active=k
+renderTabs()
+renderControls()
+update()
+}
+
+function renderControls(){
+controls.innerHTML=CALCS[active].inputs.map(i=>`
+<label>${i.label}</label>
+<input type="number" value="${state[active][i.id]}"
+onchange="state['${active}']['${i.id}']=Number(this.value)">
+<br><br>
+`).join('')
+}
+
+function update(){
+
+let res=CALCS[active].calc(state[active])
+
+if(active=="compare"){
+result.innerHTML="FD: ₹"+res.fd.toLocaleString()
+drawCompare(res)
+return
+}
+
+result.innerHTML="₹"+Math.round(res.value).toLocaleString()
+invested.innerHTML="₹"+Math.round(res.invested).toLocaleString()
+returns.innerHTML="₹"+Math.round(res.value-res.invested).toLocaleString()
+real.innerHTML="₹"+Math.round(res.value*0.7).toLocaleString()
+
+drawChart(res.value,res.invested)
+}
+
+function drawChart(v,i){
+if(chart) chart.destroy()
+chart=new Chart(chart,{
+type:'line',
+data:{
+labels:["Start","End"],
+datasets:[
+{label:"Invested",data:[i,i]},
+{label:"Value",data:[i,v]}
+]
+}
+})
+}
+
+function drawCompare(r){
+if(chart) chart.destroy()
+chart=new Chart(chart,{
+type:'bar',
+data:{
+labels:["FD","SIP","RD"],
+datasets:[{data:[r.fd,r.sip,r.rd]}]
+}
+})
+}
+
+init()
+
 </script>
 
 </body>
