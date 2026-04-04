@@ -4,116 +4,127 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>InvestPercent</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --bg:#070c18;
-  --panel:#0f1830;
-  --panel2:#131f3d;
   --line:rgba(255,255,255,0.08);
   --text:#ffffff;
   --muted:#9da9c6;
   --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 45%, #7b61ff 100%);
 }
-*{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Inter,sans-serif;
   background:radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 20%), var(--bg);
   color:var(--text);
 }
-.container{max-width:1320px;margin:auto;padding:14px}
+
+.container{max-width:1400px;margin:auto;padding:14px}
+
+/* HEADER LOGO */
+.header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:18px;
+}
+
+.logo-mark{
+  width:40px;height:40px;
+  border-radius:14px;
+  display:grid;place-items:center;
+  background:var(--grad);
+  color:#071120;
+  font-weight:800;
+}
+
+.logo-text{
+  font-family:Poppins,sans-serif;
+  font-size:22px;
+  font-weight:800;
+}
+.logo-text span{
+  background:var(--grad);
+  -webkit-background-clip:text;
+  color:transparent;
+}
 
 /* HERO */
 .hero{
   text-align:center;
-  padding:62px 22px 34px;
+  padding:60px 20px 34px;
   border:1px solid var(--line);
   border-radius:28px;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(0,212,255,.12), transparent 25%),
-    linear-gradient(180deg,#07101f 0%, #081225 100%);
+  background:linear-gradient(180deg,#07101f 0%, #081225 100%);
 }
+
 .hero h1{
   margin:0;
   font-family:Poppins,sans-serif;
-  font-size:clamp(36px,7vw,72px);
-  line-height:1.02;
+  font-size:clamp(36px,6vw,64px);
   font-weight:800;
-  letter-spacing:-0.05em;
 }
+
 .hero p{
-  max-width:860px;
-  margin:18px auto 0;
+  max-width:800px;
+  margin:16px auto 0;
   color:var(--muted);
-  font-size:clamp(16px,2.5vw,22px);
-  line-height:1.55;
 }
+
 .hero-actions{
+  margin-top:24px;
   display:flex;
   gap:12px;
   justify-content:center;
-  flex-wrap:wrap;
-  margin-top:28px;
 }
+
 .btn{
-  padding:14px 22px;
-  border-radius:14px;
+  padding:12px 18px;
+  border-radius:12px;
   border:none;
-  font-weight:800;
+  font-weight:700;
   cursor:pointer;
 }
 .primary{background:var(--grad);color:#071120}
-.secondary{background:transparent;border:1px solid rgba(255,255,255,0.18);color:#fff}
-.trust{
-  margin-top:24px;
-  color:var(--muted);
-  font-size:15px;
-  line-height:1.7;
-}
+.secondary{background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff}
 
-/* CARDS */
+/* GRID — 6 COLUMNS */
 .grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-top:26px;
+  grid-template-columns:repeat(6,1fr);
+  gap:14px;
+  margin-top:24px;
 }
+
 .card{
-  display:block;
-  padding:20px;
-  border-radius:22px;
+  padding:18px;
+  border-radius:20px;
   border:1px solid var(--line);
-  background:linear-gradient(180deg,#0f1830 0%, #121f3d 100%);
+  background:linear-gradient(180deg,#0f1830,#121f3d);
   text-decoration:none;
   color:#fff;
-  min-height:168px;
 }
-.card:hover{transform:translateY(-2px)}
+
 .card-icon{
-  width:46px;height:46px;border-radius:14px;
+  width:42px;height:42px;
+  border-radius:12px;
   display:grid;place-items:center;
   background:rgba(255,255,255,0.06);
-  font-size:22px;
-  margin-bottom:16px;
+  margin-bottom:10px;
 }
-.card h3{
-  margin:0 0 8px;
-  font-size:25px;
-  font-family:Poppins,sans-serif;
-}
-.card p{
-  margin:0;
-  color:var(--muted);
-  font-size:14px;
-}
+
+.card h3{margin:0;font-size:18px}
+.card p{margin:4px 0 0;color:var(--muted);font-size:13px}
 
 /* RESPONSIVE */
 @media(max-width:1100px){
-  .grid{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:repeat(3,1fr)}
 }
-@media(max-width:640px){
+@media(max-width:600px){
   .grid{grid-template-columns:1fr}
 }
 </style>
@@ -122,43 +133,39 @@ body{
 <body>
 <div class="container">
 
-<div class="hero">
-  <h1>India’s Smartest Financial Platform</h1>
-  <p>Plan. Calculate. Grow your money with powerful financial tools across investment, loans, tax, savings, retirement and more.</p>
-  <div class="hero-actions">
-    <button class="btn primary" onclick="location.href='investment.html'">Start Planning</button>
-    <button class="btn secondary" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">Explore Tools</button>
-  </div>
-  <div class="trust">Premium dashboards • Powerful calculators • Built for better decisions</div>
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-mark">%</div>
+  <div class="logo-text">Invest<span>Percent</span></div>
 </div>
 
+<!-- HERO -->
+<div class="hero">
+  <h1>India’s Smartest Financial Platform</h1>
+  <p>Plan. Calculate. Grow your money with powerful financial tools.</p>
+
+  <div class="hero-actions">
+    <button class="btn primary" onclick="location.href='investment.html'">Start Planning</button>
+    <button class="btn secondary" onclick="document.getElementById('categories').scrollIntoView()">Explore Tools</button>
+  </div>
+</div>
+
+<!-- GRID -->
 <div id="categories" class="grid">
 
-  <!-- EXISTING CARDS -->
-  <a class="card" href="investment.html"><div class="card-icon">💰</div><h3>Investment</h3><p>SIP, returns, wealth planning tools.</p></a>
-  <a class="card" href="loan.html"><div class="card-icon">🏠</div><h3>Loan</h3><p>EMI and repayment tools.</p></a>
-  <a class="card" href="tax.html"><div class="card-icon">🧾</div><h3>Tax</h3><p>Income tax calculators.</p></a>
-  <a class="card" href="savings.html"><div class="card-icon">🏦</div><h3>Savings</h3><p>FD, RD tools.</p></a>
+  <a class="card" href="investment.html"><div class="card-icon">💰</div><h3>Investment</h3><p>SIP tools</p></a>
+  <a class="card" href="loan.html"><div class="card-icon">🏠</div><h3>Loan</h3><p>EMI tools</p></a>
+  <a class="card" href="tax.html"><div class="card-icon">🧾</div><h3>Tax</h3><p>Tax tools</p></a>
+  <a class="card" href="savings.html"><div class="card-icon">🏦</div><h3>Savings</h3><p>FD tools</p></a>
+  <a class="card" href="retirement.html"><div class="card-icon">🪙</div><h3>Retirement</h3><p>Planning</p></a>
+  <a class="card" href="personal.html"><div class="card-icon">👤</div><h3>Personal</h3><p>Budget</p></a>
 
-  <a class="card" href="retirement.html"><div class="card-icon">🪙</div><h3>Retirement</h3><p>Future planning tools.</p></a>
-  <a class="card" href="personal.html"><div class="card-icon">👤</div><h3>Personal Finance</h3><p>Budgeting tools.</p></a>
-  <a class="card" href="global.html"><div class="card-icon">🌍</div><h3>Global Finance</h3><p>Forex tools.</p></a>
-  <a class="card" href="stocks.html"><div class="card-icon">📈</div><h3>Stock Market</h3><p>Market tools.</p></a>
-
-  <a class="card" href="crypto.html"><div class="card-icon">₿</div><h3>Crypto</h3><p>Crypto tools.</p></a>
-  <a class="card" href="business.html"><div class="card-icon">🚀</div><h3>Business Startup</h3><p>Startup tools.</p></a>
-  <a class="card" href="insurance.html"><div class="card-icon">🛡️</div><h3>Insurance</h3><p>Insurance tools.</p></a>
-  <a class="card" href="play.html"><div class="card-icon">🎮</div><h3>Play</h3><p>Fun tools.</p></a>
-
-  <a class="card" href="learn.html"><div class="card-icon">📚</div><h3>Learn</h3><p>Financial learning.</p></a>
-  <a class="card" href="digital.html"><div class="card-icon">💻</div><h3>Digital</h3><p>Online utilities.</p></a>
-
-  <!-- ✅ NEW REAL ESTATE -->
-  <a class="card" href="Real-Etate.html">
-    <div class="card-icon">🏢</div>
-    <h3>Real Estate</h3>
-    <p>Property valuation, EMI, ROI and rental yield tools.</p>
-  </a>
+  <a class="card" href="global.html"><div class="card-icon">🌍</div><h3>Global</h3><p>Forex</p></a>
+  <a class="card" href="stocks.html"><div class="card-icon">📈</div><h3>Stocks</h3><p>Market</p></a>
+  <a class="card" href="crypto.html"><div class="card-icon">₿</div><h3>Crypto</h3><p>Assets</p></a>
+  <a class="card" href="business.html"><div class="card-icon">🚀</div><h3>Business</h3><p>Startup</p></a>
+  <a class="card" href="insurance.html"><div class="card-icon">🛡️</div><h3>Insurance</h3><p>Plans</p></a>
+  <a class="card" href="Real-Etate.html"><div class="card-icon">🏢</div><h3>Real Estate</h3><p>Property tools</p></a>
 
 </div>
 
