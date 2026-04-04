@@ -1,6 +1,180 @@
-.nav { ... }
-.brand { ... }
-.nav-links { ... }
-.nav-row { ... }
-.nav-row.sub { ... }
-.nav-row a { ... }
+/* =========================
+   GLOBAL NAVBAR — INVESTPERCENT
+   ========================= */
+
+.nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+
+  padding:16px 20px;
+  margin-bottom:18px;
+
+  border:1px solid var(--line);
+  border-radius:22px;
+
+  background:rgba(6,10,24,.72);
+  backdrop-filter:blur(18px);
+
+  box-shadow:var(--shadow2);
+}
+
+/* =========================
+   BRAND
+   ========================= */
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.brand-mark{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+
+  background:var(--grad);
+  color:#07101e;
+  font-weight:800;
+
+  box-shadow:0 10px 24px rgba(79,163,255,.22);
+}
+
+.brand-name{
+  font-family:Poppins,sans-serif;
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:-.03em;
+}
+
+.brand-name span{
+  background:var(--grad);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+/* =========================
+   NAV LINKS WRAPPER
+   ========================= */
+
+.nav-links{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+
+  flex:1;
+  min-width:0;
+
+  align-items:flex-end;
+}
+
+/* =========================
+   ROW 1 (MAIN NAV)
+   ========================= */
+
+.nav-row{
+  display:flex;
+  gap:10px;
+
+  flex-wrap:nowrap;
+  overflow-x:auto;
+
+  justify-content:flex-end;
+  width:100%;
+
+  scrollbar-width:none;
+}
+
+.nav-row::-webkit-scrollbar{
+  display:none;
+}
+
+/* =========================
+   ROW 2 (SUB NAV)
+   ========================= */
+
+.nav-row.sub{
+  display:flex;
+  gap:10px;
+
+  flex-wrap:wrap;
+
+  justify-content:flex-end;
+  width:100%;
+}
+
+/* =========================
+   NAV LINKS STYLE
+   ========================= */
+
+.nav-row a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:42px;
+  padding:10px 16px;
+
+  border-radius:12px;
+
+  color:var(--muted);
+  font-weight:700;
+
+  transition:.2s ease;
+
+  border:1px solid transparent;
+
+  white-space:nowrap;
+}
+
+/* Hover */
+
+.nav-row a:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.04);
+  border-color:var(--line);
+}
+
+/* Active */
+
+.nav-row a.active{
+  color:#08111f;
+  background:var(--grad);
+}
+
+/* =========================
+   RESPONSIVE (MOBILE)
+   ========================= */
+
+@media(max-width:760px){
+
+  .nav{
+    flex-direction:column;
+    align-items:flex-start;
+    padding:14px;
+  }
+
+  .nav-links{
+    width:100%;
+    align-items:flex-start;
+  }
+
+  .nav-row{
+    justify-content:flex-start;
+  }
+
+  .nav-row.sub{
+    justify-content:flex-start;
+  }
+}
