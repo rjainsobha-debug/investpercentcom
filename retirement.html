@@ -1,269 +1,246 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <link rel="stylesheet" href="css/navbar.css">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Retirement Dashboard — investpercent</title>
-  <meta name="description" content="Premium retirement planning dashboard with corpus, FIRE, income and pension simulations." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- 🔥 SAME CSS AS INVESTMENT PAGE -->
-  <style>
-  /* ⚠️ IMPORTANT:
-     KEEP YOUR ORIGINAL INVESTMENT CSS HERE.
-     (This ensures 100% identical UI)
-  */
-  </style>
-</head>
-
-<body>
-<div class="page">
-<div id="navbar"></div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-top">
-    <div class="hero-copy">
-      <h1>Retirement <span class="grad">Planning Dashboard</span></h1>
-      <p>Design your financial independence, retirement corpus and income sustainability with precision-grade projections.</p>
-    </div>
-    <div class="hero-cta">
-      <button class="btn primary" onclick="scrollToControls()">Start Planning</button>
-      <button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
-    </div>
-  </div>
-
-  <div class="tabbar" id="tabs"></div>
-
-  <div class="top-metrics">
-    <div class="metric-card">
-      <div class="metric-label">Mode</div>
-      <div class="metric-value cyan" id="modeHeadline">Corpus Planning</div>
-      <div class="metric-sub" id="modeSub">Retirement projection</div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-label">Projected Corpus</div>
-      <div class="metric-value green" id="topProjected">₹0</div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-label">Income / Expense</div>
-      <div class="metric-value cyan" id="topGains">₹0</div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-label">Rate</div>
-      <div class="metric-value gold" id="topRate">10%</div>
-    </div>
-  </div>
-</section>
-
-<!-- MAIN -->
-<section class="layout">
-
-<!-- LEFT PANEL -->
-<aside class="panel controls" id="controlsAnchor">
-  <div class="panel-head">
-    <div>
-      <div class="panel-title">Control Panel</div>
-      <div class="panel-desc" id="controlDesc"></div>
-    </div>
-    <div class="badge" id="panelBadge"></div>
-  </div>
-
-  <div id="dynamicControls"></div>
-
-  <div class="mini-grid">
-    <div class="mini">
-      <div class="k">Status</div>
-      <div class="v" id="miniMood">Planning</div>
-    </div>
-    <div class="mini">
-      <div class="k">Insight</div>
-      <div class="v" id="miniInsight">Inflation Matters</div>
-    </div>
-  </div>
-
-  <div class="advisor-card">
-    <h4>Move from planning to execution</h4>
-    <p>Build your retirement strategy with expert guidance.</p>
-    <div class="advisor-actions">
-      <button class="btn primary" onclick="openAdvisor()">Start with justinvesting.in</button>
-    </div>
-  </div>
-</aside>
-
-<!-- RIGHT PANEL -->
-<section class="panel dashboard">
-
-  <div class="wealth-card">
-    <div class="wealth-title" id="wealthTitle">Retirement Projection</div>
-    <div class="wealth-number"><span class="grad" id="wealthNumber">₹0</span></div>
-    <div class="wealth-sub" id="wealthNarrative"></div>
-  </div>
-
-  <div class="chart-card">
-    <canvas id="wealthChart"></canvas>
-  </div>
-
-</section>
-</section>
-</div>
+<!-- SAME HEAD + CSS AS YOUR INVESTMENT FILE (DO NOT TOUCH) -->
 
 <script>
+
+/* ===============================
+   RETIREMENT ADVANCED ENGINE
+================================ */
 
 const CALCS = {
 
 corpus:{
 label:"Corpus",
-badge:"RETIREMENT",
-desc:"Inflation-adjusted corpus planning",
+badge:"RETIREMENT CORE",
+title:"Retirement Corpus Planning",
+sub:"Future inflation-adjusted lifestyle cost",
+desc:"Estimate how much you actually need to retire comfortably",
+
+wealthTitle:"Required Retirement Corpus",
+wealthPill:"Future Value",
+
 controls:[
-{id:"expense",label:"Monthly Expense",min:10000,max:500000,step:1000,value:50000},
-{id:"inflation",label:"Inflation %",min:1,max:10,step:0.1,value:6},
-{id:"years",label:"Years",min:1,max:40,value:25},
-{id:"rate",label:"Return %",min:1,max:15,value:10}
+{id:"expense",label:"Monthly Expense",min:10000,max:500000,step:1000,value:50000,format:"currency"},
+{id:"inflation",label:"Inflation",min:1,max:10,step:0.1,value:6,format:"percent"},
+{id:"years",label:"Years to Retirement",min:1,max:40,step:1,value:25,format:"years"},
+{id:"return",label:"Return",min:1,max:15,step:0.1,value:10,format:"percent"}
 ]
 },
 
 fire:{
 label:"FIRE",
 badge:"FIRE MODE",
-desc:"Financial independence corpus",
+title:"Financial Independence",
+sub:"Retire early calculation",
+desc:"Based on safe withdrawal rate",
+
+wealthTitle:"FIRE Corpus",
+wealthPill:"Freedom Mode",
+
 controls:[
-{id:"expense",label:"Annual Expense",min:100000,max:5000000,value:600000},
-{id:"withdrawal",label:"Withdrawal %",min:2,max:6,value:4}
+{id:"expense",label:"Annual Expense",min:100000,max:5000000,step:50000,value:600000,format:"currency"},
+{id:"withdrawal",label:"Withdrawal Rate",min:2,max:6,step:0.1,value:4,format:"percent"}
 ]
 },
 
 income:{
 label:"Income",
 badge:"POST RETIREMENT",
-desc:"Corpus sustainability",
+title:"Income Sustainability",
+sub:"How long your corpus lasts",
+desc:"Simulates withdrawal phase",
+
+wealthTitle:"Income Sustainability",
+wealthPill:"Withdrawal Mode",
+
 controls:[
-{id:"corpus",label:"Corpus",min:1000000,max:50000000,value:10000000},
-{id:"withdraw",label:"Monthly Withdrawal",min:10000,max:500000,value:50000},
-{id:"rate",label:"Return %",min:1,max:12,value:8},
-{id:"years",label:"Years",min:1,max:40,value:25}
+{id:"corpus",label:"Corpus",min:1000000,max:50000000,step:100000,value:10000000,format:"currency"},
+{id:"withdraw",label:"Monthly Withdrawal",min:10000,max:500000,step:5000,value:50000,format:"currency"},
+{id:"rate",label:"Return",min:1,max:12,step:0.1,value:8,format:"percent"},
+{id:"years",label:"Years",min:1,max:40,step:1,value:25,format:"years"}
+]
+},
+
+compare:{
+label:"Annuity vs SWP",
+badge:"COMPARISON",
+title:"Income Strategy Comparison",
+sub:"Fixed vs market-linked income",
+desc:"Helps choose safer vs higher income strategy",
+
+wealthTitle:"Income Comparison",
+wealthPill:"Decision Mode",
+
+controls:[
+{id:"corpus",label:"Corpus",min:1000000,max:50000000,step:100000,value:10000000,format:"currency"}
 ]
 }
 
 };
 
-let state={}, active="corpus", chart;
-
-function init(){
-Object.keys(CALCS).forEach(k=>{
-state[k]={};
-CALCS[k].controls.forEach(c=>state[k][c.id]=c.value);
-});
-renderTabs(); renderControls(); update();
-}
-
-function renderTabs(){
-tabs.innerHTML = Object.keys(CALCS).map(k=>
-`<button class="tab ${k===active?'active':''}" onclick="switchTab('${k}')">${CALCS[k].label}</button>`
-).join('');
-}
-
-function switchTab(k){
-active=k;
-renderTabs(); renderControls(); update();
-}
-
-function renderControls(){
-const cfg=CALCS[active];
-panelBadge.textContent=cfg.badge;
-controlDesc.textContent=cfg.desc;
-
-dynamicControls.innerHTML=cfg.controls.map(c=>`
-<div class="control-group">
-<div>${c.label}</div>
-<input type="range" min="${c.min}" max="${c.max}" step="${c.step||1}"
-value="${state[active][c.id]}"
-oninput="updateVal('${c.id}',this.value)">
-</div>`).join('');
-}
-
-function updateVal(id,val){
-state[active][id]=Number(val);
-update();
-}
+/* ===============================
+   UPDATE ENGINE
+================================ */
 
 function update(){
 
+const s = state[active];
+
 if(active==="corpus"){
-let m=state.corpus.expense;
-let inf=state.corpus.inflation/100;
-let y=state.corpus.years;
+
+let m=s.expense;
+let inf=s.inflation/100;
+let y=s.years;
 
 let future=m*Math.pow(1+inf,y);
 let corpus=future*300;
 
-wealthNumber.innerText="₹"+Math.round(corpus).toLocaleString();
-topProjected.innerText="₹"+Math.round(corpus).toLocaleString();
-topGains.innerText="₹"+Math.round(future).toLocaleString();
-topRate.innerText=state.corpus.rate+"%";
+setTop(corpus,future,s.return);
 
-drawChart(y,corpus);
+setWealthArea({
+title:"Retirement Corpus",
+pill:"Future Value",
+value:corpus,
+narrative:`Your ₹${m.toLocaleString()} lifestyle becomes ₹${Math.round(future).toLocaleString()} after ${y} years. You need approx ₹${Math.round(corpus).toLocaleString()} corpus.`,
+stat1:{label:'Today's Expense', value:fmtCurrency(m)},
+stat2:{label:'Future Expense', value:fmtCurrency(future)},
+stat3:{label:'Corpus', value:fmtCurrency(corpus)},
+mood:y>20?"Long Horizon":"Short Horizon",
+power:"Inflation Impact"
+});
+
+/* INSIGHTS */
+setInsights(
+{title:"Inflation is your biggest enemy",text:"Expenses grow exponentially over time"},
+{title:"Corpus requirement is massive",text:"Retirement needs 200-300x monthly expense"},
+{title:"Start early",text:"More time = less burden"}
+);
+
+/* CHART */
+renderChart(
+Array.from({length:y},(_,i)=>"Year "+(i+1)),
+[
+{label:"Expense Growth",data:Array.from({length:y},(_,i)=>m*Math.pow(1+inf,i+1)),color:"#ff607d"},
+{label:"Corpus Target",data:Array.from({length:y},()=>corpus),color:"#00d4ff"}
+]
+);
+
+/* MILESTONES */
+renderMilestones("Retirement Path","Future milestones",
+Array.from({length:4},(_,i)=>{
+let yr=Math.floor((i+1)*y/4);
+let val=m*Math.pow(1+inf,yr);
+return{year:yr,value:val,note:"Lifestyle cost grows"}
+})
+);
+
 }
 
 if(active==="fire"){
-let corpus=state.fire.expense/(state.fire.withdrawal/100);
 
-wealthNumber.innerText="₹"+Math.round(corpus).toLocaleString();
-topProjected.innerText="₹"+Math.round(corpus).toLocaleString();
-topGains.innerText="₹"+Math.round(state.fire.expense/12).toLocaleString();
-topRate.innerText=state.fire.withdrawal+"%";
+let corpus=s.expense/(s.withdrawal/100);
 
-drawChart(10,corpus);
+setTop(corpus,s.expense,s.withdrawal);
+
+setWealthArea({
+title:"FIRE Target",
+pill:"Freedom",
+value:corpus,
+narrative:`With ₹${s.expense.toLocaleString()} yearly expense, you need ₹${Math.round(corpus).toLocaleString()} to retire.`,
+stat1:{label:'Expense',value:fmtCurrency(s.expense)},
+stat2:{label:'Corpus',value:fmtCurrency(corpus)},
+stat3:{label:'Rule',value:"4%"},
+mood:"Freedom Goal",
+power:"Passive Income"
+});
+
+setInsights(
+{title:"4% Rule",text:"Safe withdrawal benchmark"},
+{title:"Lower withdrawal = safer",text:"3% safer than 4%"},
+{title:"Aggressive FIRE risky",text:"Market volatility matters"}
+);
+
+renderChart(
+["Now","Future"],
+[{label:"Corpus",data:[0,corpus],color:"#00d4ff"}]
+);
+
 }
 
 if(active==="income"){
-let corpus=state.income.corpus;
-let r=state.income.rate/12/100;
-let w=state.income.withdraw;
+
+let corpus=s.corpus;
+let r=s.rate/12/100;
+let withdraw=s.withdraw;
 
 let months=0;
-while(corpus>0){ corpus=corpus*(1+r)-w; months++; if(months>1000)break;}
 
-wealthNumber.innerText=months+" Months";
-topProjected.innerText="₹"+Math.round(state.income.corpus).toLocaleString();
-topGains.innerText="₹"+Math.round(w).toLocaleString();
-topRate.innerText=state.income.rate+"%";
-
-drawChart(state.income.years,state.income.corpus);
+while(corpus>0){
+corpus=corpus*(1+r)-withdraw;
+months++;
+if(months>1000)break;
 }
 
-}
+setTop(corpus,withdraw,s.rate);
 
-function drawChart(years,value){
-let labels=[],data=[];
-for(let i=1;i<=years;i++){labels.push("Year "+i);data.push(value*i/years);}
-
-if(chart) chart.destroy();
-chart=new Chart(document.getElementById("wealthChart"),{
-type:"line",
-data:{labels,datasets:[{data,borderColor:"#00d4ff"}]},
-options:{plugins:{legend:{display:false}}}
+setWealthArea({
+title:"Income Sustainability",
+pill:"Withdrawal",
+value:months,
+narrative:`Your corpus lasts ${months} months.`,
+stat1:{label:'Corpus',value:fmtCurrency(s.corpus)},
+stat2:{label:'Withdrawal',value:fmtCurrency(withdraw)},
+stat3:{label:'Months',value:months},
+mood:months>300?"Safe":"Risky",
+power:"Cashflow"
 });
+
+setInsights(
+{title:"Withdrawal rate critical",text:"Higher withdrawal drains faster"},
+{title:"Returns help sustain",text:"Higher return = longer life"},
+{title:"Longevity risk",text:"Outliving money is real"}
+);
+
+renderChart(
+Array.from({length:s.years},(_,i)=>"Year "+(i+1)),
+[{label:"Corpus",data:Array.from({length:s.years},(_,i)=>s.corpus*(1-(i/s.years))),color:"#00d4ff"}]
+);
+
 }
 
-function openAdvisor(){window.open("https://justinvesting.in","_blank");}
-function scrollToControls(){controlsAnchor.scrollIntoView({behavior:"smooth"});}
+if(active==="compare"){
 
-init();
+let ann=s.corpus*0.06;
+let swp=s.corpus*0.08;
 
-fetch("components/navbar.html")
-.then(res=>res.text())
-.then(data=>{document.getElementById("navbar").innerHTML=data;});
+setTop(s.corpus,ann,8);
+
+setWealthArea({
+title:"Annuity vs SWP",
+pill:"Comparison",
+value:s.corpus,
+narrative:"SWP gives higher returns but with market risk.",
+stat1:{label:'Annuity Monthly',value:fmtCurrency(ann/12)},
+stat2:{label:'SWP Monthly',value:fmtCurrency(swp/12)},
+stat3:{label:'Corpus',value:fmtCurrency(s.corpus)},
+mood:"Decision Time",
+power:"Risk vs Return"
+});
+
+setInsights(
+{title:"Annuity = safe",text:"Fixed income, no risk"},
+{title:"SWP = higher income",text:"But market linked"},
+{title:"Diversify",text:"Mix both strategies"}
+);
+
+renderChart(
+["Annuity","SWP"],
+[
+{label:"Income",data:[ann,swp],color:"#00d4ff"}
+]
+);
+
+}
+
+}
 
 </script>
-
-</body>
-</html>
