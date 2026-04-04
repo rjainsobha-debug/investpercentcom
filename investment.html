@@ -61,14 +61,21 @@
     a{text-decoration:none;color:inherit}
     button,input{font:inherit}
     .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:18px 18px 38px}
-    .nav{
-      position:sticky;top:0;z-index:30;  
-      display:flex;justify-content:space-between;align-items:center;gap:18px;
-      padding:16px 20px;margin-bottom:18px;
-      border:1px solid var(--line);border-radius:22px;
-      background:rgba(6,10,24,.72);backdrop-filter:blur(18px);
-      box-shadow:var(--shadow2);
-    }
+  .nav{
+  position:sticky;
+  top:0;
+  z-index:30;
+  display:flex;
+  align-items:center;   /* ✅ FIX ALIGNMENT */
+  gap:20px;
+  padding:16px 20px;
+  margin-bottom:18px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:rgba(6,10,24,.72);
+  backdrop-filter:blur(18px);
+  box-shadow:var(--shadow2);
+}
     .brand{display:flex;align-items:center;gap:14px;cursor:pointer}
     .brand-mark{
       width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
@@ -235,12 +242,6 @@
 }
 /* ✅ ADD HERE (OUTSIDE MEDIA QUERY) */
 
-.nav-links{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
 .nav{
   position:sticky;
   top:0;
@@ -271,14 +272,14 @@
   flex-direction:column;
   gap:6px;
   flex:1;
-  min-width:0;   /* ✅ VERY IMPORTANT (prevents overflow bugs) */
+  min-width:0;
 }
 
 .nav-row{
   display:flex;
-  gap:8px;
-  flex-wrap:nowrap;   /* ✅ STOP WRAPPING */
-  overflow-x:auto;    /* ✅ allow scroll instead */
+  gap:10px;
+  flex-wrap:nowrap;          /* ❗ force single line */
+  overflow-x:auto;           /* ❗ allow scroll */
   scrollbar-width:none;
 }
 
@@ -315,11 +316,16 @@
   flex-wrap:wrap;   /* ✅ ONLY second row wraps */
 }
 
+.nav-row.sub{
+  flex-wrap:nowrap;     /* same as first row */
+  overflow-x:auto;
+}
+
 .nav-row.sub a{
-  min-height:auto;
-  padding:4px 10px;
-  font-size:13px;
-  opacity:.9;
+  min-height:42px;      /* same height */
+  padding:10px 16px;    /* same padding */
+  font-size:14px;       /* same font */
+  opacity:1;            /* full visibility */
 }
 </style>
 </head>
