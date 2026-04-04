@@ -77,10 +77,7 @@
     .brand-name{font-family:Poppins,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.03em}
     .brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
-    .nav-links a{
-      padding:11px 14px;border-radius:12px;color:var(--muted);font-weight:700;
-      transition:.2s ease;border:1px solid transparent
-    }
+   
     .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.04);border-color:var(--line)}
     .nav-links a.active{color:#08111f;background:var(--grad)}
     .nav-links a.coming{opacity:.65;cursor:not-allowed}
@@ -227,15 +224,54 @@
       .timeline-grid{grid-template-columns:1fr 1fr}
     }
    @media(max-width:760px){
-  ...
+  .page{padding:12px 12px 28px}
+  .nav{padding:14px}
+  .hero{padding:18px}
+  .controls,.dashboard{padding:16px}
+  .wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
+  .hero-copy p{font-size:15px}
+  .metric-value{font-size:30px}
+  .wealth-number{font-size:42px}
 }
-
 /* ✅ ADD HERE (OUTSIDE MEDIA QUERY) */
 
 .nav-links{
   display:flex;
   flex-direction:column;
   gap:6px;
+}
+
+.nav{
+  position:sticky;
+  top:0;
+  z-index:30;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:24px;
+  padding:16px 20px;
+  margin-bottom:18px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:rgba(6,10,24,.72);
+  backdrop-filter:blur(18px);
+  box-shadow:var(--shadow2);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+  flex-shrink:0;
+  padding-top:6px;
+}
+
+.nav-links{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  flex:1;
 }
 
 .nav-row{
@@ -245,12 +281,17 @@
 }
 
 .nav-row a{
-  padding:11px 14px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:10px 16px;
   border-radius:12px;
   color:var(--muted);
   font-weight:700;
   transition:.2s ease;
   border:1px solid transparent;
+  white-space:nowrap;
 }
 
 .nav-row a:hover{
@@ -265,10 +306,11 @@
 }
 
 .nav-row.sub a{
+  min-height:auto;
+  padding:0 10px;
   font-size:13px;
-  opacity:.85;
+  opacity:.9;
 }
-
 </style>
 </head>
 <body>
