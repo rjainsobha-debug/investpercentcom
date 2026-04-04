@@ -66,7 +66,8 @@
   top:0;
   z-index:30;
   display:flex;
-  align-items:center;   /* ✅ FIX ALIGNMENT */
+  align-items:center;
+  justify-content:space-between;
   gap:20px;
   padding:16px 20px;
   margin-bottom:18px;
@@ -76,7 +77,14 @@
   backdrop-filter:blur(18px);
   box-shadow:var(--shadow2);
 }
-    .brand{display:flex;align-items:center;gap:14px;cursor:pointer}
+   .brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+  flex-shrink:0;
+  margin-right:24px;
+}
     .brand-mark{
       width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
       background:var(--grad);color:#07101e;font-weight:800;box-shadow:0 10px 24px rgba(79,163,255,.22)
@@ -273,14 +281,17 @@
   gap:6px;
   flex:1;
   min-width:0;
-}
+  align-items:flex-end;
+}  
 
 .nav-row{
   display:flex;
   gap:10px;
-  flex-wrap:nowrap;          /* ❗ force single line */
-  overflow-x:auto;           /* ❗ allow scroll */
+  flex-wrap:nowrap;
+  overflow-x:auto;
   scrollbar-width:none;
+  justify-content:flex-end;
+  width:100%;
 }
 
 .nav-row::-webkit-scrollbar{
