@@ -246,9 +246,8 @@
   top:0;
   z-index:30;
   display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:24px;
+  align-items:center;   /* ✅ CENTER ALIGN (IMPORTANT) */
+  gap:20px;
   padding:16px 20px;
   margin-bottom:18px;
   border:1px solid var(--line);
@@ -272,12 +271,19 @@
   flex-direction:column;
   gap:6px;
   flex:1;
+  min-width:0;   /* ✅ VERY IMPORTANT (prevents overflow bugs) */
 }
 
 .nav-row{
   display:flex;
   gap:8px;
-  flex-wrap:wrap;
+  flex-wrap:nowrap;   /* ✅ STOP WRAPPING */
+  overflow-x:auto;    /* ✅ allow scroll instead */
+  scrollbar-width:none;
+}
+
+.nav-row::-webkit-scrollbar{
+  display:none;
 }
 
 .nav-row a{
@@ -305,9 +311,13 @@
   background:var(--grad);
 }
 
+.nav-row.sub{
+  flex-wrap:wrap;   /* ✅ ONLY second row wraps */
+}
+
 .nav-row.sub a{
   min-height:auto;
-  padding:0 10px;
+  padding:4px 10px;
   font-size:13px;
   opacity:.9;
 }
