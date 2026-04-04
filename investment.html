@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="css/navbar.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Investment Dashboard — investpercent</title>
@@ -228,6 +229,7 @@
 </head>
 <body>
   <div class="page">
+    <div id="navbar"></div>
     <!-- ONLY CHANGE DONE: NAVBAR UPDATED -->
 <!-- EVERYTHING ELSE SAME AS YOUR ORIGINAL FILE -->
 
@@ -992,7 +994,21 @@ ${$('stat3Label').textContent}: ${$('stat3Value').textContent}`;
     renderControls();
     update();
   </script>
+  <script>
+fetch("components/navbar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("navbar").innerHTML = data;
+
+    const links = document.querySelectorAll(".nav a");
+    links.forEach(link => {
+      const href = link.getAttribute("href");
+      if (window.location.pathname.endsWith(href)) {
+        link.classList.add("active");
+      }
+    });
+  });
+</script>
 </body>
 
-<link rel="stylesheet" href="css/navbar.css">
 </html>
