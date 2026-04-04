@@ -76,17 +76,6 @@
     }
     .brand-name{font-family:Poppins,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.03em}
     .brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.nav-links{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  white-space:nowrap;
-  scrollbar-width:none;
-}
-
-.nav-links::-webkit-scrollbar{
-  display:none;
-}
 
 .nav-links::-webkit-scrollbar{
   display:none;
@@ -249,11 +238,6 @@
       .hero-copy p{font-size:15px}
       .metric-value{font-size:30px}
       .wealth-number{font-size:42px}
-.nav-links{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
 
 .nav-row{
   display:flex;
@@ -285,7 +269,50 @@
   font-size:13px;
   opacity:.85;
     }
-  </style>
+@media(max-width:760px){
+  ...
+}
+
+/* ✅ ADD HERE (OUTSIDE MEDIA QUERY) */
+
+.nav-links{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.nav-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.nav-row a{
+  padding:11px 14px;
+  border-radius:12px;
+  color:var(--muted);
+  font-weight:700;
+  transition:.2s ease;
+  border:1px solid transparent;
+}
+
+.nav-row a:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.04);
+  border-color:var(--line);
+}
+
+.nav-row a.active{
+  color:#08111f;
+  background:var(--grad);
+}
+
+.nav-row.sub a{
+  font-size:13px;
+  opacity:.85;
+}
+
+</style>
 </head>
 <body>
   <div class="page">
