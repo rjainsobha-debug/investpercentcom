@@ -1,999 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loan Dashboard — investpercent</title>
-  <meta name="description" content="Premium loan and EMI dashboard with Home Loan, Car Loan, Personal Loan, Prepayment and Loan vs Rent calculators." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    :root{
-      --bg:#060915;
-      --bg2:#0b1224;
-      --panel:#0f1830;
-      --panel2:#121e3c;
-      --soft:#18284d;
-      --line:rgba(255,255,255,.08);
-      --line2:rgba(255,255,255,.13);
-      --text:#f7fbff;
-      --muted:#9da9c6;
-      --cyan:#00d4ff;
-      --blue:#4fa3ff;
-      --violet:#7b61ff;
-      --green:#00e676;
-      --gold:#ffd76a;
-      --red:#ff607d;
-      --orange:#ff9951;
-      --shadow:0 22px 70px rgba(0,0,0,.38);
-      --shadow2:0 12px 34px rgba(0,0,0,.24);
-      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
-      --hero:
-        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
-        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
-        linear-gradient(180deg,#070c18 0%,#091224 100%);
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family:Inter,system-ui,sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
-        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
-        var(--bg);
-      min-height:100vh;
-      overflow-x:hidden;
-    }
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background-image:
-        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-      background-size:34px 34px;
-      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
-      z-index:0;
-    }
-    a{text-decoration:none;color:inherit}
-    button,input{font:inherit}
-    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:18px 18px 38px}
-    .nav{
-      position:sticky;top:0;z-index:30;
-      display:flex;justify-content:space-between;align-items:center;gap:18px;
-      padding:16px 20px;margin-bottom:18px;
-      border:1px solid var(--line);border-radius:22px;
-      background:rgba(6,10,24,.72);backdrop-filter:blur(18px);
-      box-shadow:var(--shadow2);
-    }
-    .brand{display:flex;align-items:center;gap:14px;cursor:pointer}
-    .brand-mark{
-      width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
-      background:var(--grad);color:#07101e;font-weight:800;box-shadow:0 10px 24px rgba(79,163,255,.22)
-    }
-    .brand-name{font-family:Poppins,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.03em}
-    .brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .nav-links{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-    .nav-links a{
-      padding:11px 14px;border-radius:12px;color:var(--muted);font-weight:700;
-      transition:.2s ease;border:1px solid transparent
-    }
-    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.04);border-color:var(--line)}
-    .nav-links a.active{color:#08111f;background:var(--grad)}
-    .nav-links a.coming{opacity:.65;cursor:not-allowed}
-    .hero{
-      background:var(--hero);border:1px solid var(--line);border-radius:32px;padding:28px;
-      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:18px
-    }
-    .hero::after{
-      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
-      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
-      filter:blur(14px);pointer-events:none
-    }
-    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
-    .hero-copy h1{
-      margin:0;font-family:Poppins,sans-serif;font-size:clamp(34px,5vw,58px);
-      line-height:1.02;letter-spacing:-.045em;max-width:840px
-    }
-    .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .hero-copy p{margin:14px 0 0;color:var(--muted);font-size:18px;max-width:760px;line-height:1.6}
-    .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{
-      border:none;cursor:pointer;border-radius:14px;padding:13px 18px;font-weight:800;transition:.2s ease
-    }
-    .btn:hover{transform:translateY(-1px)}
-    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
-    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
-    .tabbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-    .tab{
-      background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
-      padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease
-    }
-    .tab:hover{color:var(--text);border-color:var(--line2)}
-    .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
-    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:14px}
-    .metric-card{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--line);border-radius:22px;padding:18px;min-height:110px;position:relative;overflow:hidden
-    }
-    .metric-card::before{
-      content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
-      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
-    }
-    .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
-    .metric-value{font-size:clamp(28px,3vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1}
-    .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)} .metric-value.red{color:var(--orange)}
-    .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
-    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:18px;margin-top:18px}
-    .panel{
-      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
-      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
-    }
-    .controls{padding:22px;position:relative;overflow:hidden}
-    .controls::after{
-      content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
-      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
-    }
-    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
-    .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
-    .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
-    .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
-    .control-group{
-      margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
-    }
-    .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
-    .control-name{font-size:14px;font-weight:700;color:var(--text)}
-    .control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
-    input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
-    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
-    input[type=range]::-webkit-slider-thumb{
-      appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
-      border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
-    }
-    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
-    input[type=range]::-moz-range-thumb{
-      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
-    }
-    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-    .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
-    .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
-    .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
-    .advisor-card{
-      margin-top:18px;padding:18px;border-radius:20px;
-      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
-      border:1px solid rgba(255,255,255,.1)
-    }
-    .advisor-card h4{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.03em}
-    .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
-    .advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
-    .advisor-actions .btn{flex:1;min-width:150px}
-    .dashboard{padding:18px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:800px}
-    .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
-    .wealth-card,.insight-card,.chart-card,.timeline-card,.table-card{
-      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
-    }
-    .wealth-card{
-      padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:188px;
-      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
-    }
-    .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
-    .wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
-    .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
-    .wealth-number{
-      font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff
-    }
-    .wealth-number .grad{
-      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
-      -webkit-background-clip:text;background-clip:text;color:transparent
-    }
-    .wealth-sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:660px}
-    .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
-    .wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
-    .wealth-stat .s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
-    .wealth-stat .s-value{font-size:24px;font-weight:800;letter-spacing:-.03em}
-    .insight-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:188px}
-    .insight-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
-    .insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
-    .insight-box strong{display:block;font-size:15px;margin-bottom:6px;letter-spacing:-.02em}
-    .insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
-    .chart-card{padding:18px;min-height:390px;display:flex;flex-direction:column}
-    .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
-    .chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
-    .chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
-    .legend{display:flex;gap:12px;flex-wrap:wrap}
-    .legend-item{
-      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;
-      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px
-    }
-    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-    .chart-wrap{position:relative;flex:1;min-height:280px;margin-top:8px}
-    .timeline-card,.table-card{padding:18px}
-    .timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
-    .timeline-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
-    .timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .milestone{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
-    .m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
-    .m-amount{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
-    .m-note{color:#8390b1;font-size:13px;line-height:1.45}
-    .table-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
-    .table-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
-    .amort-wrap{overflow:auto;border-radius:18px;border:1px solid rgba(255,255,255,.06)}
-    table{width:100%;border-collapse:collapse;min-width:560px}
-    th,td{padding:12px 14px;text-align:left}
-    th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:rgba(255,255,255,.04)}
-    td{border-top:1px solid rgba(255,255,255,.05);font-size:14px;color:#e7edff}
-    tr:nth-child(even) td{background:rgba(255,255,255,.02)}
-    .hidden{display:none !important}
-    @media(max-width:1180px){
-      .top-metrics{grid-template-columns:1fr 1fr}
-      .layout{grid-template-columns:1fr}
-      .dashboard{min-height:auto}
-      .dash-top{grid-template-columns:1fr}
-      .timeline-grid{grid-template-columns:1fr 1fr}
-    }
-    @media(max-width:760px){
-      .page{padding:12px 12px 28px}
-      .nav{padding:14px}
-      .hero{padding:18px}
-      .controls,.dashboard{padding:16px}
-      .wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
-      .hero-copy p{font-size:15px}
-      .metric-value{font-size:30px}
-      .wealth-number{font-size:42px}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan Tools — InvestPercent</title>
+
+<link rel="stylesheet" href="css/navbar.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#070c18;
+  --panel:#0f1830;
+  --line:rgba(255,255,255,0.08);
+  --text:#ffffff;
+  --muted:#9da9c6;
+  --grad:linear-gradient(135deg,#00d4ff,#7b61ff);
+}
+
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.page{
+  max-width:1400px;
+  margin:auto;
+  padding:16px;
+}
+
+/* HERO */
+.hero{
+  padding:42px;
+  border:1px solid var(--line);
+  border-radius:26px;
+  background:linear-gradient(180deg,#07101f,#081225);
+}
+
+.hero h1{
+  margin:0;
+  font-family:Poppins;
+  font-size:44px;
+}
+
+.hero p{
+  margin-top:10px;
+  color:var(--muted);
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-top:26px;
+}
+
+.card{
+  padding:22px;
+  border-radius:20px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,#0f1830,#121f3d);
+  transition:.2s ease;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+}
+
+.card h3{
+  margin:0 0 8px;
+  font-size:20px;
+}
+
+.card p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* CTA */
+.cta{
+  margin-top:26px;
+  padding:24px;
+  border-radius:22px;
+  border:1px solid var(--line);
+  background:linear-gradient(135deg,#0a1428,#0e1c38);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+.cta h3{margin:0;}
+
+.cta button{
+  padding:12px 20px;
+  border:none;
+  border-radius:12px;
+  background:var(--grad);
+  color:#071120;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr}
+  .hero{padding:28px}
+}
+</style>
 </head>
+
 <body>
-  <div class="page">
-    <nav class="nav">
-      <div class="brand" onclick="location.href='index.html'">
-        <div class="brand-mark">%</div>
-        <div class="brand-name">invest<span>percent</span></div>
-      </div>
-      <div class="nav-links">
-        <a href="investment.html">Investment</a>
-        <a href="#" class="coming">Tax</a>
-        <a href="loan.html" class="active">Loan</a>
-        <a href="#" class="coming">Retirement</a>
-        <a href="#" class="coming">Global</a>
-      </div>
-    </nav>
 
-    <section class="hero">
-      <div class="hero-top">
-        <div class="hero-copy">
-          <h1>Loan & EMI <span class="grad">Decision Dashboard</span></h1>
-          <p>Model your home loan, car loan, personal loan, prepayment strategy and rent-vs-buy choice inside the same premium shell.</p>
-        </div>
-        <div class="hero-cta">
-          <button class="btn primary" onclick="scrollToControls()">Start Planning</button>
-          <button class="btn secondary" onclick="openProperty()">Talk to Property Advisor</button>
-        </div>
-      </div>
+<div class="page">
 
-      <div class="tabbar" id="tabs"></div>
+<!-- NAVBAR -->
+<div id="navbar"></div>
 
-      <div class="top-metrics">
-        <div class="metric-card">
-          <div class="metric-label">Current mode</div>
-          <div class="metric-value cyan" id="modeHeadline">Home Loan EMI</div>
-          <div class="metric-sub" id="modeSub">Plan your EMI, total interest burden and repayment structure.</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Monthly EMI / Winner</div>
-          <div class="metric-value green" id="topPrimary">₹41,822</div>
-          <div class="metric-sub" id="topPrimarySub">Based on current settings</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Total interest / gap</div>
-          <div class="metric-value red" id="topSecondary">₹50.37 L</div>
-          <div class="metric-sub" id="topSecondarySub">Borrowing cost</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Selected rate</div>
-          <div class="metric-value gold" id="topRate">8.5%</div>
-          <div class="metric-sub">Reference assumption</div>
-        </div>
-      </div>
-    </section>
+<!-- HERO -->
+<div class="hero">
+  <h1>Loan Planning Tools</h1>
+  <p>Calculate EMI, plan repayment and make smarter borrowing decisions.</p>
+</div>
 
-    <section class="layout">
-      <aside class="panel controls" id="controlsAnchor">
-        <div class="panel-head">
-          <div>
-            <div class="panel-title">Control Panel</div>
-            <div class="panel-desc" id="controlDesc">Adjust loan amount, rate, tenure and related assumptions. Your dashboard updates live.</div>
-          </div>
-          <div class="badge" id="panelBadge">HOME LOAN</div>
-        </div>
+<!-- TOOLS -->
+<div class="grid">
 
-        <div id="dynamicControls"></div>
-
-        <div class="mini-grid">
-          <div class="mini">
-            <div class="k">Decision mood</div>
-            <div class="v" id="miniMood">Manageable</div>
-          </div>
-          <div class="mini">
-            <div class="k">Power insight</div>
-            <div class="v" id="miniInsight">Rate Sensitive</div>
-          </div>
-        </div>
-
-        <div class="advisor-card">
-          <h4>Ready to move from numbers to action?</h4>
-          <p>Use this dashboard to compare scenarios, then take the next step with a property or loan conversation.</p>
-          <div class="advisor-actions">
-            <button class="btn primary" onclick="openProperty()">Open justproperty.in</button>
-            <button class="btn secondary" onclick="copySummary()">Copy summary</button>
-          </div>
-        </div>
-      </aside>
-
-      <section class="panel dashboard">
-        <div class="dash-top">
-          <div class="wealth-card">
-            <div>
-              <div class="wealth-head">
-                <div class="wealth-title" id="wealthTitle">Home Loan EMI</div>
-                <div class="pill" id="wealthPill">Live EMI</div>
-              </div>
-              <div class="wealth-number"><span class="grad" id="wealthNumber">₹41,822</span></div>
-              <div class="wealth-sub" id="wealthNarrative">This is your estimated monthly EMI based on the current principal, interest rate and tenure.</div>
-            </div>
-            <div class="wealth-split">
-              <div class="wealth-stat">
-                <div class="s-label" id="stat1Label">Loan amount</div>
-                <div class="s-value" id="stat1Value">₹50,00,000</div>
-              </div>
-              <div class="wealth-stat">
-                <div class="s-label" id="stat2Label">Total interest</div>
-                <div class="s-value" id="stat2Value">₹50,37,251</div>
-              </div>
-              <div class="wealth-stat">
-                <div class="s-label" id="stat3Label">Total payment</div>
-                <div class="s-value" id="stat3Value">₹1,00,37,251</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="insight-card">
-            <div class="insight-title">Decision insights</div>
-            <div class="insight-box"><strong id="insight1Title"></strong><span id="insight1Text"></span></div>
-            <div class="insight-box"><strong id="insight2Title"></strong><span id="insight2Text"></span></div>
-            <div class="insight-box"><strong id="insight3Title"></strong><span id="insight3Text"></span></div>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-head">
-            <div>
-              <div class="chart-title" id="chartTitle">Repayment structure</div>
-              <div class="chart-meta" id="chartMeta">Track how your principal, interest and remaining balance evolve.</div>
-            </div>
-            <div class="legend" id="chartLegend"></div>
-          </div>
-          <div class="chart-wrap">
-            <canvas id="loanChart"></canvas>
-          </div>
-        </div>
-
-        <div class="timeline-card">
-          <div class="timeline-head">
-            <div>
-              <div class="timeline-title" id="timelineTitle">Milestones</div>
-              <div class="chart-meta" id="timelineMeta">Key checkpoints in your repayment journey.</div>
-            </div>
-          </div>
-          <div class="timeline-grid" id="timelineGrid"></div>
-        </div>
-
-        <div class="table-card" id="tableCard">
-          <div class="table-head">
-            <div>
-              <div class="table-title" id="tableTitle">Amortization preview</div>
-              <div class="chart-meta" id="tableMeta">First 12 monthly rows to help you see how EMI splits between principal and interest.</div>
-            </div>
-          </div>
-          <div class="amort-wrap">
-            <table>
-              <thead>
-                <tr id="tableHeaderRow"></tr>
-              </thead>
-              <tbody id="tableBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-    </section>
+  <div class="card">
+    <h3>EMI Calculator</h3>
+    <p>Calculate your monthly loan EMI instantly.</p>
   </div>
 
-  <script>
-    const CALCS = {
-      home: {
-        label:"Home Loan",
-        badge:"HOME LOAN",
-        title:"Home Loan EMI",
-        sub:"Plan your EMI, total interest burden and repayment structure.",
-        desc:"Adjust loan amount, rate, tenure and related assumptions. Your dashboard updates live.",
-        wealthTitle:"Home Loan EMI",
-        wealthPill:"Live EMI",
-        chartTitle:"Repayment structure",
-        chartMeta:"Track how your principal, interest and remaining balance evolve.",
-        timelineTitle:"Milestones",
-        timelineMeta:"Key checkpoints in your repayment journey.",
-        controls:[
-          {id:"loan", label:"Loan amount", min:500000, max:50000000, step:50000, value:5000000, format:"currency"},
-          {id:"rate", label:"Interest rate", min:5, max:16, step:0.1, value:8.5, format:"percent"},
-          {id:"years", label:"Tenure", min:1, max:30, step:1, value:20, format:"years"},
-          {id:"fee", label:"Processing fee", min:0, max:5, step:0.1, value:0.5, format:"percent"}
-        ]
-      },
-      car: {
-        label:"Car Loan",
-        badge:"CAR LOAN",
-        title:"Car Loan EMI",
-        sub:"Estimate EMI and full ownership finance burden for your vehicle purchase.",
-        desc:"Model the loan, down payment and expected cost of financing for your car purchase.",
-        wealthTitle:"Car Loan EMI",
-        wealthPill:"Vehicle Finance",
-        chartTitle:"Car loan cost structure",
-        chartMeta:"See how principal, interest and vehicle contribution shape the total payout.",
-        timelineTitle:"Milestones",
-        timelineMeta:"Key checkpoints in your auto-loan journey.",
-        controls:[
-          {id:"price", label:"On-road price", min:300000, max:5000000, step:10000, value:1200000, format:"currency"},
-          {id:"down", label:"Down payment", min:0, max:3000000, step:10000, value:200000, format:"currency"},
-          {id:"rate", label:"Interest rate", min:5, max:18, step:0.1, value:9.5, format:"percent"},
-          {id:"years", label:"Tenure", min:1, max:7, step:1, value:5, format:"years"}
-        ]
-      },
-      personal: {
-        label:"Personal Loan",
-        badge:"PERSONAL LOAN",
-        title:"Personal Loan EMI",
-        sub:"Fast cash often comes with higher rates. Test affordability before you commit.",
-        desc:"Model principal, rate and tenure to understand the real cost of unsecured borrowing.",
-        wealthTitle:"Personal Loan EMI",
-        wealthPill:"Unsecured Borrowing",
-        chartTitle:"Personal loan burden",
-        chartMeta:"A higher interest environment makes tenure and rate especially important here.",
-        timelineTitle:"Milestones",
-        timelineMeta:"Key checkpoints in your personal-loan journey.",
-        controls:[
-          {id:"loan", label:"Loan amount", min:50000, max:5000000, step:10000, value:800000, format:"currency"},
-          {id:"rate", label:"Interest rate", min:8, max:28, step:0.1, value:14.0, format:"percent"},
-          {id:"years", label:"Tenure", min:1, max:7, step:1, value:4, format:"years"}
-        ]
-      },
-      prepay: {
-        label:"Prepayment",
-        badge:"PREPAYMENT",
-        title:"Prepayment Savings",
-        sub:"See how an extra monthly payment can shorten tenure and reduce total interest.",
-        desc:"Model your existing EMI plus extra prepayment to estimate interest saved and time reduced.",
-        wealthTitle:"Prepayment Impact",
-        wealthPill:"Interest Saver",
-        chartTitle:"Balance reduction path",
-        chartMeta:"Compare standard repayment vs prepayment-assisted balance decline.",
-        timelineTitle:"Milestones",
-        timelineMeta:"Key checkpoints in your prepayment journey.",
-        controls:[
-          {id:"loan", label:"Loan amount", min:500000, max:50000000, step:50000, value:5000000, format:"currency"},
-          {id:"rate", label:"Interest rate", min:5, max:16, step:0.1, value:8.5, format:"percent"},
-          {id:"years", label:"Original tenure", min:1, max:30, step:1, value:20, format:"years"},
-          {id:"extra", label:"Extra monthly prepayment", min:0, max:200000, step:1000, value:10000, format:"currency"}
-        ]
-      },
-      rentbuy: {
-        label:"Loan vs Rent",
-        badge:"BUY VS RENT",
-        title:"Loan vs Rent Comparator",
-        sub:"Compare the monthly load of buying with a home loan versus living on rent.",
-        desc:"Test property price, down payment, loan cost, rent and expected rent escalation side by side.",
-        wealthTitle:"Buy vs Rent Decision",
-        wealthPill:"Housing Choice",
-        chartTitle:"Annual cash outflow comparison",
-        chartMeta:"A side-by-side annual view of buying-related outflow and renting-related outflow.",
-        timelineTitle:"Decision checkpoints",
-        timelineMeta:"Key snapshots comparing cost direction over your selected horizon.",
-        controls:[
-          {id:"price", label:"Property price", min:2000000, max:50000000, step:50000, value:10000000, format:"currency"},
-          {id:"down", label:"Down payment", min:0, max:30000000, step:50000, value:2000000, format:"currency"},
-          {id:"rate", label:"Loan interest rate", min:5, max:16, step:0.1, value:8.5, format:"percent"},
-          {id:"years", label:"Tenure / horizon", min:1, max:30, step:1, value:20, format:"years"},
-          {id:"rent", label:"Current monthly rent", min:5000, max:500000, step:1000, value:30000, format:"currency"},
-          {id:"rentInc", label:"Annual rent increase", min:0, max:15, step:0.5, value:5, format:"percent"}
-        ]
-      }
-    };
+  <div class="card">
+    <h3>Loan Eligibility</h3>
+    <p>Check how much loan you can get.</p>
+  </div>
 
-    let state = {};
-    let active = 'home';
-    let chart;
+  <div class="card">
+    <h3>Interest Calculator</h3>
+    <p>Understand total interest payable.</p>
+  </div>
 
-    const $ = id => document.getElementById(id);
+  <div class="card">
+    <h3>Prepayment Calculator</h3>
+    <p>See how early payments save money.</p>
+  </div>
 
-    function formatValue(v, kind){
-      v = Number(v);
-      if(kind === 'currency') return '₹' + Math.round(v).toLocaleString('en-IN');
-      if(kind === 'percent') return Number(v).toFixed(1).replace('.0','') + '%';
-      if(kind === 'years') return Math.round(v) + ' Years';
-      return v;
+  <div class="card">
+    <h3>Balance Transfer</h3>
+    <p>Evaluate switching loans for savings.</p>
+  </div>
+
+  <div class="card">
+    <h3>Loan vs Rent</h3>
+    <p>Decide buying vs renting smartly.</p>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h3>Want best loan options?</h3>
+  <button onclick="location.href='justinvesting.in'">Talk to Advisor</button>
+</div>
+
+</div>
+
+<!-- NAVBAR SCRIPT -->
+<script>
+fetch("components/navbar.html")
+.then(res => res.text())
+.then(data => {
+  document.getElementById("navbar").innerHTML = data;
+
+  const links = document.querySelectorAll(".nav a");
+  links.forEach(link => {
+    if (window.location.pathname.endsWith(link.getAttribute("href"))) {
+      link.classList.add("active");
     }
-    function fmtCurrency(v){ return '₹' + Math.round(v).toLocaleString('en-IN'); }
-    function fmtShort(v){
-      if (Math.abs(v) >= 10000000) return '₹' + (v/10000000).toFixed(2).replace(/\.00$/,'') + ' Cr';
-      if (Math.abs(v) >= 100000) return '₹' + (v/100000).toFixed(2).replace(/\.00$/,'') + ' L';
-      return fmtCurrency(v);
-    }
+  });
+});
 
-    function initState(){
-      Object.keys(CALCS).forEach(key=>{
-        state[key]={};
-        CALCS[key].controls.forEach(c=> state[key][c.id]=c.value);
-      });
-    }
+function toggleMenu(){
+  document.getElementById('mobileDrawer')?.classList.toggle('open');
+}
+</script>
 
-    function renderTabs(){
-      $('tabs').innerHTML = Object.entries(CALCS).map(([key, cfg]) =>
-        `<button class="tab ${key===active?'active':''}" data-key="${key}">${cfg.label}</button>`
-      ).join('');
-      document.querySelectorAll('.tab').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          active = btn.dataset.key;
-          renderTabs();
-          renderControls();
-          update();
-        });
-      });
-    }
-
-    function renderControls(){
-      const cfg = CALCS[active];
-      $('panelBadge').textContent = cfg.badge;
-      $('controlDesc').textContent = cfg.desc;
-      $('modeHeadline').textContent = cfg.title;
-      $('modeSub').textContent = cfg.sub;
-
-      $('dynamicControls').innerHTML = cfg.controls.map(c=>`
-        <div class="control-group">
-          <div class="control-top">
-            <div class="control-name">${c.label}</div>
-            <div class="control-value" id="view-${c.id}">${formatValue(state[active][c.id], c.format)}</div>
-          </div>
-          <input type="range" id="ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${state[active][c.id]}">
-        </div>
-      `).join('');
-
-      cfg.controls.forEach(c=>{
-        $(`ctrl-${c.id}`).addEventListener('input', e=>{
-          state[active][c.id] = Number(e.target.value);
-          $(`view-${c.id}`).textContent = formatValue(state[active][c.id], c.format);
-          update();
-        });
-      });
-    }
-
-    function emi(principal, annualRate, years){
-      const r = annualRate / 12 / 100;
-      const n = years * 12;
-      if(r === 0) return principal / n;
-      return principal * r * Math.pow(1+r, n) / (Math.pow(1+r, n)-1);
-    }
-
-    function amortization(principal, annualRate, years, extra=0, maxRows=12){
-      const monthlyRate = annualRate / 12 / 100;
-      let balance = principal;
-      let month = 0;
-      const baseEmi = emi(principal, annualRate, years);
-      const pay = baseEmi + extra;
-      let totalInterest = 0;
-      let totalPayment = 0;
-      const rows = [];
-      const labels=[], balSeries=[], principalSeries=[], interestSeries=[];
-      while(balance > 1 && month < 1000){
-        month++;
-        const interest = balance * monthlyRate;
-        let principalPart = pay - interest;
-        if(principalPart > balance) principalPart = balance;
-        const actualPayment = principalPart + interest;
-        balance -= principalPart;
-        totalInterest += interest;
-        totalPayment += actualPayment;
-
-        if(rows.length < maxRows){
-          rows.push({
-            month,
-            emi: actualPayment,
-            principal: principalPart,
-            interest,
-            balance: Math.max(balance,0)
-          });
-        }
-
-        if(month % 12 === 0 || balance <= 1){
-          labels.push('Year ' + Math.ceil(month/12));
-          balSeries.push(Math.max(balance,0));
-          principalSeries.push(principal * (month/(years*12)) > principal ? principal : principal - Math.max(balance,0));
-          interestSeries.push(totalInterest);
-        }
-      }
-      return {
-        baseEmi,
-        labels,
-        balanceSeries: balSeries,
-        principalSeries,
-        interestSeries,
-        rows,
-        totalInterest,
-        totalPayment,
-        months: month
-      };
-    }
-
-    function compareBuyRent(price, down, rate, years, rent, rentInc){
-      const principal = Math.max(price - down, 0);
-      const loan = amortization(principal, rate, years, 0, 12);
-      const emiVal = principal > 0 ? loan.baseEmi : 0;
-      const buyAnnual = [];
-      const rentAnnual = [];
-      const labels = [];
-      let annualRent = rent * 12;
-      let remaining = principal;
-      let totalBuy = down;
-      let totalRent = 0;
-      for(let y=1; y<=years; y++){
-        labels.push('Year ' + y);
-        const yearlyEmi = emiVal * 12;
-        buyAnnual.push(Math.round(yearlyEmi));
-        rentAnnual.push(Math.round(annualRent));
-        totalBuy += yearlyEmi;
-        totalRent += annualRent;
-        annualRent *= (1 + rentInc/100);
-      }
-      return {
-        emi: emiVal,
-        labels,
-        buyAnnual,
-        rentAnnual,
-        totalBuy,
-        totalRent,
-        principal
-      };
-    }
-
-    function buildMilestonesLoan(labels, balances, principalBase){
-      const total = labels.length;
-      const picks = Array.from(new Set([1, Math.max(1,Math.ceil(total*0.33)), Math.max(1,Math.ceil(total*0.66)), total])).slice(0,4);
-      return picks.map(y=>{
-        const idx = y-1;
-        const bal = balances[idx] || 0;
-        const paid = Math.max(principalBase - bal, 0);
-        return {
-          year:y,
-          value:bal,
-          note: bal > 0 ? `${fmtShort(paid)} principal cleared` : `Loan completed`
-        }
-      });
-    }
-
-    function renderMilestones(title, meta, items){
-      $('timelineTitle').textContent = title;
-      $('timelineMeta').textContent = meta;
-      $('timelineGrid').innerHTML = items.map(item=>`
-        <div class="milestone">
-          <div class="m-year">Year ${item.year}</div>
-          <div class="m-amount">${fmtShort(item.value)}</div>
-          <div class="m-note">${item.note}</div>
-        </div>
-      `).join('');
-    }
-
-    function setInsights(a,b,c){
-      $('insight1Title').textContent = a.title; $('insight1Text').textContent = a.text;
-      $('insight2Title').textContent = b.title; $('insight2Text').textContent = b.text;
-      $('insight3Title').textContent = c.title; $('insight3Text').textContent = c.text;
-    }
-
-    function renderChart(labels, series, title, meta){
-      $('chartTitle').textContent = title;
-      $('chartMeta').textContent = meta;
-      $('chartLegend').innerHTML = series.map(s=>`
-        <div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>
-      `).join('');
-
-      const ctx = $('loanChart').getContext('2d');
-      const gradient = ctx.createLinearGradient(0,0,0,360);
-      gradient.addColorStop(0, 'rgba(0,212,255,.26)');
-      gradient.addColorStop(.55, 'rgba(79,163,255,.12)');
-      gradient.addColorStop(1, 'rgba(79,163,255,0)');
-
-      if(chart) chart.destroy();
-      chart = new Chart(ctx, {
-        type:'line',
-        data:{
-          labels,
-          datasets:series.map((s, idx)=>({
-            label:s.label,
-            data:s.data,
-            borderColor:s.color,
-            backgroundColor: idx===0 ? gradient : 'transparent',
-            fill: !!s.fill,
-            borderWidth: idx===0 ? 3 : 2.2,
-            pointRadius: idx===0 ? 2 : 0,
-            pointHoverRadius: 5,
-            pointBackgroundColor: s.color,
-            pointBorderColor: '#08111f',
-            tension:.34
-          }))
-        },
-        options:{
-          responsive:true,
-          maintainAspectRatio:false,
-          interaction:{mode:'index',intersect:false},
-          plugins:{
-            legend:{display:false},
-            tooltip:{
-              backgroundColor:'rgba(7,12,28,.96)',
-              borderColor:'rgba(255,255,255,.08)',
-              borderWidth:1,
-              titleColor:'#fff',
-              bodyColor:'#dce6ff',
-              padding:12,
-              callbacks:{ label:(ctx)=>`${ctx.dataset.label}: ${fmtCurrency(ctx.raw)}` }
-            }
-          },
-          scales:{
-            x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:12}}},
-            y:{
-              beginAtZero:true,
-              grid:{color:'rgba(255,255,255,.06)'},
-              ticks:{color:'rgba(220,230,255,.55)',font:{size:12}, callback:(v)=>fmtShort(v)}
-            }
-          }
-        }
-      });
-    }
-
-    function setWealthArea({title,pill,value,narrative,stat1,stat2,stat3,mood,power}){
-      $('wealthTitle').textContent = title;
-      $('wealthPill').textContent = pill;
-      $('wealthNumber').textContent = fmtCurrency(value);
-      $('wealthNarrative').textContent = narrative;
-      $('stat1Label').textContent = stat1.label; $('stat1Value').textContent = stat1.value;
-      $('stat2Label').textContent = stat2.label; $('stat2Value').textContent = stat2.value;
-      $('stat3Label').textContent = stat3.label; $('stat3Value').textContent = stat3.value;
-      $('miniMood').textContent = mood;
-      $('miniInsight').textContent = power;
-    }
-
-    function setTop(primary, primarySub, secondary, secondarySub, rate){
-      $('topPrimary').textContent = primary;
-      $('topPrimarySub').textContent = primarySub;
-      $('topSecondary').textContent = secondary;
-      $('topSecondarySub').textContent = secondarySub;
-      $('topRate').textContent = formatValue(rate, 'percent');
-    }
-
-    function renderTable(headers, rows){
-      $('tableHeaderRow').innerHTML = headers.map(h=>`<th>${h}</th>`).join('');
-      $('tableBody').innerHTML = rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
-    }
-
-    function update(){
-      const s = state[active];
-      const cfg = CALCS[active];
-      $('panelBadge').textContent = cfg.badge;
-      $('controlDesc').textContent = cfg.desc;
-      $('modeHeadline').textContent = cfg.title;
-      $('modeSub').textContent = cfg.sub;
-
-      if(active === 'home'){
-        const feeAmt = s.loan * s.fee / 100;
-        const a = amortization(s.loan, s.rate, s.years, 0, 12);
-        setTop(fmtCurrency(a.baseEmi), 'Monthly EMI', fmtShort(a.totalInterest), 'Total interest', s.rate);
-        setWealthArea({
-          title:cfg.wealthTitle, pill:cfg.wealthPill, value:a.baseEmi,
-          narrative:`Borrowing ${fmtCurrency(s.loan)} at ${formatValue(s.rate,'percent')} for ${s.years} years creates an estimated EMI of ${fmtCurrency(a.baseEmi)}.`,
-          stat1:{label:'Loan amount', value:fmtCurrency(s.loan)},
-          stat2:{label:'Total interest', value:fmtCurrency(a.totalInterest)},
-          stat3:{label:'Total payment', value:fmtCurrency(a.totalPayment + feeAmt)},
-          mood:a.baseEmi < 50000 ? 'Manageable' : 'Heavy Load',
-          power:`Fee ${formatValue(s.fee,'percent')}`
-        });
-        setInsights(
-          {title:'Tenure lowers EMI but increases interest.', text:'Stretching the loan reduces monthly EMI pressure, but total borrowing cost rises materially.'},
-          {title:'Rate changes matter a lot.', text:'Even a small movement in home-loan rate can noticeably alter the lifetime interest burden.'},
-          {title:'Processing cost is easy to ignore.', text:`A ${formatValue(s.fee,'percent')} processing fee adds about ${fmtCurrency(feeAmt)} to your upfront borrowing cost.`}
-        );
-        renderChart(a.labels, [
-          {label:'Outstanding balance', data:a.balanceSeries, color:'#00d4ff', fill:true},
-          {label:'Principal repaid', data:a.principalSeries, color:'#4fa3ff', fill:false},
-          {label:'Cumulative interest', data:a.interestSeries, color:'#ff9951', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestonesLoan(a.labels, a.balanceSeries, s.loan));
-        renderTable(
-          ['Month','EMI','Principal','Interest','Balance'],
-          a.rows.map(r=>[r.month, fmtCurrency(r.emi), fmtCurrency(r.principal), fmtCurrency(r.interest), fmtCurrency(r.balance)])
-        );
-        $('tableTitle').textContent = 'Amortization preview';
-        $('tableMeta').textContent = 'First 12 monthly rows to help you see how EMI splits between principal and interest.';
-      }
-
-      if(active === 'car'){
-        const loanAmt = Math.max(s.price - s.down, 0);
-        const a = amortization(loanAmt, s.rate, s.years, 0, 12);
-        setTop(fmtCurrency(a.baseEmi), 'Monthly EMI', fmtShort(a.totalInterest), 'Total interest', s.rate);
-        setWealthArea({
-          title:cfg.wealthTitle, pill:cfg.wealthPill, value:a.baseEmi,
-          narrative:`With an on-road price of ${fmtCurrency(s.price)} and down payment of ${fmtCurrency(s.down)}, your financed amount is ${fmtCurrency(loanAmt)}.`,
-          stat1:{label:'Financed amount', value:fmtCurrency(loanAmt)},
-          stat2:{label:'Total interest', value:fmtCurrency(a.totalInterest)},
-          stat3:{label:'Total outflow', value:fmtCurrency(a.totalPayment + s.down)},
-          mood:s.down >= s.price*0.25 ? 'Healthy Downpay' : 'Higher Finance',
-          power:loanAmt > 0 ? `${Math.round((loanAmt/s.price)*100)}% financed` : 'No loan needed'
-        });
-        setInsights(
-          {title:'Bigger down payment reduces finance pain.', text:'Every extra rupee paid upfront lowers interest burden across the full tenure.'},
-          {title:'Shorter car loans usually age better.', text:'Vehicles depreciate fast, so long tenures can leave you paying heavily for a falling-value asset.'},
-          {title:'EMI is only one part of ownership.', text:'Insurance, fuel, service and depreciation still sit outside the financing math.'}
-        );
-        renderChart(a.labels, [
-          {label:'Outstanding balance', data:a.balanceSeries, color:'#00d4ff', fill:true},
-          {label:'Principal repaid', data:a.principalSeries, color:'#4fa3ff', fill:false},
-          {label:'Cumulative interest', data:a.interestSeries, color:'#ff9951', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestonesLoan(a.labels, a.balanceSeries, loanAmt));
-        renderTable(
-          ['Month','EMI','Principal','Interest','Balance'],
-          a.rows.map(r=>[r.month, fmtCurrency(r.emi), fmtCurrency(r.principal), fmtCurrency(r.interest), fmtCurrency(r.balance)])
-        );
-        $('tableTitle').textContent = 'Car-loan repayment preview';
-        $('tableMeta').textContent = 'First 12 rows showing how the car-loan EMI is allocated.';
-      }
-
-      if(active === 'personal'){
-        const a = amortization(s.loan, s.rate, s.years, 0, 12);
-        setTop(fmtCurrency(a.baseEmi), 'Monthly EMI', fmtShort(a.totalInterest), 'Total interest', s.rate);
-        setWealthArea({
-          title:cfg.wealthTitle, pill:cfg.wealthPill, value:a.baseEmi,
-          narrative:`Borrowing ${fmtCurrency(s.loan)} at ${formatValue(s.rate,'percent')} over ${s.years} years creates an EMI of ${fmtCurrency(a.baseEmi)}.`,
-          stat1:{label:'Loan amount', value:fmtCurrency(s.loan)},
-          stat2:{label:'Total interest', value:fmtCurrency(a.totalInterest)},
-          stat3:{label:'Total payment', value:fmtCurrency(a.totalPayment)},
-          mood:s.rate <= 12 ? 'Reasonable' : 'Expensive Debt',
-          power:`Rate ${formatValue(s.rate,'percent')}`
-        });
-        setInsights(
-          {title:'Personal loans price convenience.', text:'Because they are unsecured, the interest burden is usually much higher than home loans.'},
-          {title:'Short tenures help contain damage.', text:'Reducing tenure may increase EMI but often saves a meaningful amount of interest.'},
-          {title:'Use selectively, not casually.', text:'This is best for urgent or strategic needs—not habitual lifestyle spending.'}
-        );
-        renderChart(a.labels, [
-          {label:'Outstanding balance', data:a.balanceSeries, color:'#00d4ff', fill:true},
-          {label:'Principal repaid', data:a.principalSeries, color:'#4fa3ff', fill:false},
-          {label:'Cumulative interest', data:a.interestSeries, color:'#ff9951', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestonesLoan(a.labels, a.balanceSeries, s.loan));
-        renderTable(
-          ['Month','EMI','Principal','Interest','Balance'],
-          a.rows.map(r=>[r.month, fmtCurrency(r.emi), fmtCurrency(r.principal), fmtCurrency(r.interest), fmtCurrency(r.balance)])
-        );
-        $('tableTitle').textContent = 'Personal-loan repayment preview';
-        $('tableMeta').textContent = 'First 12 rows showing how the EMI breaks into principal and interest.';
-      }
-
-      if(active === 'prepay'){
-        const normal = amortization(s.loan, s.rate, s.years, 0, 12);
-        const fast = amortization(s.loan, s.rate, s.years, s.extra, 12);
-        const interestSaved = Math.max(normal.totalInterest - fast.totalInterest, 0);
-        const monthsSaved = Math.max(normal.months - fast.months, 0);
-        setTop(fmtCurrency(normal.baseEmi + s.extra), 'EMI + extra pay', fmtShort(interestSaved), 'Interest saved', s.rate);
-        setWealthArea({
-          title:cfg.wealthTitle, pill:cfg.wealthPill, value:interestSaved,
-          narrative:`An extra monthly prepayment of ${fmtCurrency(s.extra)} can save roughly ${fmtShort(interestSaved)} in interest and shorten the repayment journey.`,
-          stat1:{label:'Normal tenure', value:normal.months + ' mo'},
-          stat2:{label:'New tenure', value:fast.months + ' mo'},
-          stat3:{label:'Months saved', value:monthsSaved + ' mo'},
-          mood:monthsSaved > 24 ? 'Strong Impact' : 'Moderate Impact',
-          power:`Extra ${fmtCurrency(s.extra)}`
-        });
-        setInsights(
-          {title:'Early prepayment is powerful.', text:'Extra money paid early attacks the loan balance when interest is most sensitive.'},
-          {title:'Small extras stack up.', text:'Even a modest monthly top-up can translate into material lifetime savings.'},
-          {title:'Prepayment fights interest, not just principal.', text:'The biggest win is often the interest avoided across the remaining years.'}
-        );
-        renderChart(normal.labels, [
-          {label:'Standard balance', data:normal.balanceSeries, color:'#7b61ff', fill:false},
-          {label:'Prepayment balance', data:fast.balanceSeries, color:'#00d4ff', fill:true}
-        ], cfg.chartTitle, cfg.chartMeta);
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestonesLoan(fast.labels, fast.balanceSeries, s.loan));
-        renderTable(
-          ['Metric','Standard','With Prepayment'],
-          [
-            ['Monthly payout', fmtCurrency(normal.baseEmi), fmtCurrency(normal.baseEmi + s.extra)],
-            ['Total interest', fmtCurrency(normal.totalInterest), fmtCurrency(fast.totalInterest)],
-            ['Total months', normal.months, fast.months],
-            ['Interest saved', '—', fmtCurrency(interestSaved)]
-          ]
-        );
-        $('tableTitle').textContent = 'Prepayment comparison';
-        $('tableMeta').textContent = 'Quick comparison between standard repayment and prepayment-assisted repayment.';
-      }
-
-      if(active === 'rentbuy'){
-        const c = compareBuyRent(s.price, s.down, s.rate, s.years, s.rent, s.rentInc);
-        const decision = c.totalBuy <= c.totalRent ? 'Buying' : 'Renting';
-        const gap = Math.abs(c.totalBuy - c.totalRent);
-        setTop(decision, 'Lower total outflow', fmtShort(gap), 'Difference over horizon', s.rate);
-        $('topPrimary').textContent = decision;
-        setWealthArea({
-          title:cfg.wealthTitle, pill:cfg.wealthPill, value:Math.min(c.totalBuy, c.totalRent),
-          narrative:`Over ${s.years} years, ${decision.toLowerCase()} looks lighter on cash outflow by about ${fmtShort(gap)} based on the current assumptions.`,
-          stat1:{label:'Buy outflow', value:fmtCurrency(c.totalBuy)},
-          stat2:{label:'Rent outflow', value:fmtCurrency(c.totalRent)},
-          stat3:{label:'Home EMI', value:fmtCurrency(c.emi)},
-          mood:decision === 'Buying' ? 'Buy Tilt' : 'Rent Tilt',
-          power:`Gap ${fmtShort(gap)}`
-        });
-        $('wealthNumber').textContent = decision;
-        setInsights(
-          {title:'This is a cash-flow comparison, not a full wealth model.', text:'Property appreciation, maintenance and opportunity cost are outside this simplified version.'},
-          {title:'Rent inflation compounds quietly.', text:'Even a moderate annual rent increase can make long-term renting more expensive than it first appears.'},
-          {title:'Buying has upfront gravity.', text:'Down payment and transaction-related costs make the early years of buying more capital intensive.'}
-        );
-        renderChart(c.labels, [
-          {label:'Annual buying outflow', data:c.buyAnnual, color:'#00d4ff', fill:true},
-          {label:'Annual renting outflow', data:c.rentAnnual, color:'#ff9951', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        const items = c.labels.map((lab, idx)=>({
-          year:idx+1,
-          value:Math.min(c.buyAnnual[idx], c.rentAnnual[idx]),
-          note:c.buyAnnual[idx] <= c.rentAnnual[idx] ? 'Buying year lower' : 'Renting year lower'
-        }));
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [items[0], items[Math.max(0, Math.floor(items.length/3)-1)], items[Math.max(0, Math.floor(items.length*2/3)-1)], items[items.length-1]]);
-        renderTable(
-          ['Metric','Value'],
-          [
-            ['Property price', fmtCurrency(s.price)],
-            ['Down payment', fmtCurrency(s.down)],
-            ['Loan amount', fmtCurrency(c.principal)],
-            ['Estimated EMI', fmtCurrency(c.emi)],
-            ['Total buying outflow', fmtCurrency(c.totalBuy)],
-            ['Total renting outflow', fmtCurrency(c.totalRent)],
-            ['Decision', decision]
-          ]
-        );
-        $('tableTitle').textContent = 'Buy vs rent summary';
-        $('tableMeta').textContent = 'A simplified cash-outflow comparison over the chosen horizon.';
-      }
-    }
-
-    function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smooth', block:'start'}); }
-    function openProperty(){ window.open('https://justproperty.in','_blank'); }
-    function copySummary(){
-      const summary = `investpercent Loan Dashboard
-Mode: ${CALCS[active].label}
-Primary: ${$('wealthNumber').textContent}
-${$('stat1Label').textContent}: ${$('stat1Value').textContent}
-${$('stat2Label').textContent}: ${$('stat2Value').textContent}
-${$('stat3Label').textContent}: ${$('stat3Value').textContent}`;
-      navigator.clipboard.writeText(summary).then(()=>{
-        const old = $('miniInsight').textContent;
-        $('miniInsight').textContent = 'Summary Copied';
-        setTimeout(()=> $('miniInsight').textContent = old, 1500);
-      });
-    }
-
-    initState();
-    renderTabs();
-    renderControls();
-    update();
-  </script>
 </body>
 </html>
