@@ -313,19 +313,25 @@
 }
 
 .nav-row.sub{
-  flex-wrap:wrap;   /* ✅ ONLY second row wraps */
-}
-
-.nav-row.sub{
-  flex-wrap:nowrap;     /* same as first row */
-  overflow-x:auto;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 .nav-row.sub a{
-  min-height:42px;      /* same height */
-  padding:10px 16px;    /* same padding */
-  font-size:14px;       /* same font */
-  opacity:1;            /* full visibility */
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:10px 16px;
+  border-radius:12px;
+  color:var(--muted);
+  font-weight:700;
+  font-size:inherit;
+  transition:.2s ease;
+  border:1px solid transparent;
+  white-space:nowrap;
+  opacity:1;
 }
 </style>
 </head>
@@ -344,29 +350,27 @@
   <div class="nav-links">
 
   <!-- ROW 1 -->
-  <div class="nav-row">
-    <a href="index.html">Home</a>
-    <a href="investment.html" class="active">Investment</a>
-    <a href="loan.html">Loan</a>
-    <a href="tax.html">Tax</a>
-    <a href="savings.html">Savings</a>
-    <a href="retirement.html">Retirement</a>
-    <a href="personal.html">Personal Finance</a>
-    <a href="global.html">Global Finance</a>
-    <a href="stocks.html">Stock Market</a>
-    <a href="crypto.html">Crypto</a>
-  </div>
+<div class="nav-row">
+  <a href="index.html">Home</a>
+  <a href="investment.html" class="active">Investment</a>
+  <a href="loan.html">Loan</a>
+  <a href="tax.html">Tax</a>
+  <a href="savings.html">Savings</a>
+  <a href="retirement.html">Retirement</a>
+  <a href="personal.html">Personal Finance</a>
+  <a href="global.html">Global Finance</a>
+  <a href="stocks.html">Stock Market</a>
+</div>
 
-  <!-- ROW 2 -->
-  <div class="nav-row sub">
-    <a href="business.html">Business Startup</a>
-    <a href="insurance.html">Insurance</a>
-    <a href="play.html">Play</a>
-    <a href="learn.html">Learn</a>
-    <a href="digital.html">Digital</a>
-    <a href="Real-Etate.html">Real Estate</a>
-  </div>
-
+<div class="nav-row sub">
+  <a href="crypto.html">Crypto</a>
+  <a href="business.html">Business Startup</a>
+  <a href="insurance.html">Insurance</a>
+  <a href="play.html">Play</a>
+  <a href="learn.html">Learn</a>
+  <a href="digital.html">Digital</a>
+  <a href="Real-Etate.html">Real Estate</a>
+</div>
 </div></nav>
 
     <section class="hero">
