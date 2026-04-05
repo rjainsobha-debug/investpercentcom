@@ -1569,13 +1569,6 @@
       renderTabs();
       renderControls();
       update();
-      fetch('/navbar.html')
-        .then(r => r.text())
-        .then(html => {
-          const nav = document.getElementById('navbar');
-          if(nav) nav.innerHTML = html;
-        })
-        .catch(err => console.error('Navbar load failed:', err));
     });
   </script>
 
@@ -1585,6 +1578,16 @@
       if(!drawer) return;
       drawer.classList.toggle('open');
     }
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("/navbar.html")
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById("navbar").innerHTML = data;
+        });
+    });
   </script>
 </body>
 </html>
