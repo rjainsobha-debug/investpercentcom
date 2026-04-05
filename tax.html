@@ -221,7 +221,7 @@
           <div class="insight-box"><strong id="insight1Title"></strong><span id="insight1Text"></span></div>
           <div class="insight-box"><strong id="insight2Title"></strong><span id="insight2Text"></span></div>
           <div class="insight-box"><strong id="insight3Title"></strong><span id="insight3Text"></span></div>
-          <div class="insight-box" style="border-color:rgba(0,212,255,.18);background:rgba(0,212,255,.04)"><strong id="insightAITitle" style="color:var(--cyan)"></strong><span id="insightAIText"></span></div>
+          <div id="insightAIBox" class="insight-box" style="border-color:rgba(0,212,255,.18);background:rgba(0,212,255,.04);display:none"><strong id="insightAITitle" style="color:var(--cyan)"></strong><span id="insightAIText"></span></div>
         </div>
       </div>
       <div class="chart-card">
@@ -524,7 +524,7 @@ const MODES = {
         miniRegime:gainType, miniInsight:isLT?'LT Benefit':'Consider Waiting',
         insights:[
           { title: isLT?'✅ Long-Term Rate Applied':'⚠️ Short-Term Tax Is High',
-            text: isLT?`${months}M holding qualifies as Long Term. ${isEq?'LTCG exempt up to ₹1.25L; rest at 12.5% + cess.':'Property LTCG taxed at 12.5% flat (Budget 2024-25 rules apply).'}`:`${months}M is Short Term. ${isEq?'Wait until 12+ months: STCG 20% → LTCG 12.5% saves significant tax.':'Wait 24+ months for property LTCG benefit.'}` },
+            text: isLT?`${months}M holding qualifies as Long Term. ${isEq?'LTCG exempt up to ₹1.25L; rest taxed at 12.5% + 4% cess.':'Property LTCG at 12.5% (no indexation benefit — indexation was removed in Budget 2024-25). Plan sale timing carefully.'}`:`${months}M is Short Term. ${isEq?'Hold until 12+ months: STCG 20% → LTCG 12.5%, saving significant tax.':'Hold 24+ months for property LTCG. Note: indexation no longer applies post Budget 2024-25.'}` },
           { title: isEq&&isLT&&gain>125000?'💡 ₹1.25L LTCG Exemption Applied':'📋 Tax Rate Applied',
             text: isEq&&isLT?`First ₹1.25L LTCG exempt each FY. Taxable gain: ${fmtINR(Math.max(0,gain-125000))} at 12.5%. Exemption saves ${fmtINR(Math.round(Math.min(gain,125000)*0.125*1.04))}.`:`Tax of ${pct(taxRate)} applied. Total effective tax on gain: ${pct(effTaxPct)}. Cost of ${months}M holding.` },
           { title:'💡 Tax Harvesting Strategy',
@@ -1096,14 +1096,25 @@ function compute() {
   set('timelineTitle',   R.timelineTitle   || '');
   set('timelineMeta',    R.timelineMeta    || '');
 
+  // Clear all insight boxes first so stale content doesn't persist on mode switch
+  [1,2,3].forEach(i => { set('insight'+i+'Title',''); set('insight'+i+'Text',''); });
   (R.insights || []).forEach((ins, i) => {
     set('insight' + (i+1) + 'Title', ins.title);
     set('insight' + (i+1) + 'Text',  ins.text);
   });
 
-  // AI recommendation box
+  // AI recommendation box — hide if no content
+  const aiBox = $('insightAIBox');
+  if (aiBox) aiBox.style.display = R.aiRec ? '' : 'none';
   set('insightAITitle', R.aiRec ? '🤖 AI Recommendation' : '');
-  set('insightAIText',  R.aiRec || '');
+  const aiTextEl = $('insightAIText');
+  if (aiTextEl) {
+    if (R.aiRec) {
+      aiTextEl.innerHTML = R.aiRec + ' <a href="https://justinvesting.in" target="_blank" style="color:var(--cyan);font-weight:700;white-space:nowrap">Talk to a Tax Advisor →</a>';
+    } else {
+      aiTextEl.textContent = '';
+    }
+  }
 
   renderChart(R.chartData, R.legendColors || [], R.legendLabels || []);
 
