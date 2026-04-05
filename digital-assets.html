@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="css/navbar.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Assets Dashboard — investpercent</title>
+  <meta name="description" content="Premium digital assets valuation dashboard with Domain, Online Business, SaaS, Social Media, Email Marketing, App Revenue and Website Valuation calculators." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --bg:#060915;
+      --bg2:#0b1224;
+      --panel:#0f1830;
+      --panel2:#121e3c;
+      --soft:#18284d;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.13);
+      --text:#f7fbff;
+      --muted:#9da9c6;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --red:#ff607d;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
+      --hero:
+        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
+        linear-gradient(180deg,#070c18 0%,#091224 100%);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
+      z-index:0;
+    }
+    a{text-decoration:none;color:inherit}
+    button,input{font:inherit}
+    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:12px 14px 24px}
+
+    .hero{
+      background:var(--hero);border:1px solid var(--line);border-radius:24px;padding:18px 22px;
+      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:14px
+    }
+    .hero::after{
+      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);pointer-events:none
+    }
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+    .hero-copy h1{
+      margin:0;font-family:Poppins,sans-serif;font-size:clamp(26px,3.5vw,42px);
+      line-height:1.1;letter-spacing:-.045em;max-width:840px
+    }
+    .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy p{margin:8px 0 0;color:var(--muted);font-size:15px;max-width:760px;line-height:1.6}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:none;cursor:pointer;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:800;transition:.2s ease
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .tab{
+      background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
+      padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease
+    }
+    .tab:hover{color:var(--text);border-color:var(--line2)}
+    .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
+    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}
+    .metric-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:14px;min-height:90px;position:relative;overflow:hidden
+    }
+    .metric-card::before{
+      content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
+      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
+    }
+    .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+    .metric-value{font-size:clamp(22px,2.5vw,32px);font-weight:800;letter-spacing:-.04em;line-height:1}
+    .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)}
+    .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
+    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:14px;margin-top:12px}
+    .panel{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
+    .controls{padding:16px;position:relative;overflow:hidden}
+    .controls::after{
+      content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
+    }
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
+    .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+    .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
+    .control-group{
+      margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
+    }
+    .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .control-name{font-size:14px;font-weight:700;color:var(--text)}
+    .control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
+    input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
+    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-webkit-slider-thumb{
+      appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
+      border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-moz-range-thumb{
+      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+    .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+    .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card{
+      margin-top:18px;padding:18px;border-radius:20px;
+      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
+      border:1px solid rgba(255,255,255,.1)
+    }
+    .advisor-card h4{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
+    .advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .advisor-actions .btn{flex:1;min-width:150px}
+    .dashboard{padding:14px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:auto}
+    .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
+    .wealth-card,.insight-card,.chart-card,.timeline-card{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
+    }
+    .wealth-card{
+      padding:18px;display:flex;flex-direction:column;justify-content:space-between;min-height:auto;
+      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
+    }
+    .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+    .wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
+    .wealth-number{
+      font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff
+    }
+    .wealth-number .grad{
+      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .wealth-sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:660px}
+    .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+    .wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .wealth-stat .s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+    .wealth-stat .s-value{font-size:24px;font-weight:800;letter-spacing:-.03em}
+    .insight-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:188px}
+    .insight-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .insight-box strong{display:block;font-size:15px;margin-bottom:6px;letter-spacing:-.02em}
+    .insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
+    .chart-card{padding:18px;min-height:260px;display:flex;flex-direction:column}
+    .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+    .chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
+    .legend{display:flex;gap:12px;flex-wrap:wrap}
+    .legend-item{
+      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px
+    }
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .chart-wrap{position:relative;flex:1;min-height:280px;margin-top:8px}
+    .timeline-card{padding:18px}
+    .timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+    .timeline-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .milestone{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+    .m-amount{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
+    .m-note{color:#8390b1;font-size:13px;line-height:1.45}
+    .hidden{display:none !important}
+    @media(max-width:1180px){
+      .top-metrics{grid-template-columns:1fr 1fr}
+      .layout{grid-template-columns:1fr}
+      .dashboard{min-height:auto}
+      .dash-top{grid-template-columns:1fr}
+      .timeline-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:760px){
+      .hero{padding:14px}
+      .hero-copy h1{font-size:22px}
+      .hero-copy p{font-size:13px}
+      .btn{padding:8px 10px;font-size:13px}
+      .top-metrics{grid-template-columns:1fr}
+      .metric-card{padding:12px}
+      .dashboard{gap:10px}
+      .chart-card{min-height:220px}
+      .wealth-number{font-size:32px}
+      .wealth-split,.timeline-grid,.mini-grid{grid-template-columns:1fr}
+      .page{padding:10px 10px 20px}
+      .controls,.dashboard{padding:12px}
+      body{overflow-x:hidden}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div id="navbar"></div>
+
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>Digital Assets <span class="grad">Valuation Dashboard</span></h1>
+          <p>One premium shell. Seven calculators. Instantly value domains, SaaS businesses, online ventures, social channels, email lists, apps, and websites with professional-grade precision.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="scrollToControls()">Start Valuing</button>
+          <button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
+        </div>
+      </div>
+
+      <div class="tabbar" id="tabs"></div>
+
+      <div class="top-metrics">
+        <div class="metric-card">
+          <div class="metric-label">Current mode</div>
+          <div class="metric-value cyan" id="modeHeadline">Domain Value Estimator</div>
+          <div class="metric-sub" id="modeSub">Estimate your domain's market value based on traffic, keywords and extension.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Estimated value</div>
+          <div class="metric-value green" id="topProjected">₹0</div>
+          <div class="metric-sub">At current settings</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Revenue signal</div>
+          <div class="metric-value cyan" id="topGains">₹0</div>
+          <div class="metric-sub">Annualized projection</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Quality tier</div>
+          <div class="metric-value gold" id="topRate">Medium</div>
+          <div class="metric-sub">Asset classification</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="panel controls" id="controlsAnchor">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Control Panel</div>
+            <div class="panel-desc" id="controlDesc">Tune your digital asset parameters. Results update instantly.</div>
+          </div>
+          <div class="badge" id="panelBadge">DOMAIN MODE</div>
+        </div>
+
+        <div id="dynamicControls"></div>
+
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="k">Asset signal</div>
+            <div class="v" id="miniMood">Premium</div>
+          </div>
+          <div class="mini">
+            <div class="k">Key insight</div>
+            <div class="v" id="miniInsight">Traffic is king</div>
+          </div>
+        </div>
+
+        <div class="advisor-card">
+          <h4>Ready to act on your digital asset valuation?</h4>
+          <p id="advisorText">Use this dashboard to explore value opportunities, then take the next step with a guided digital asset conversation.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="openAdvisor()">Explore at investpercent.com</button>
+            <button class="btn secondary" onclick="copySummary()">Copy summary</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title" id="wealthTitle">Domain Valuation</div>
+                <div class="pill" id="wealthPill">Live Estimate</div>
+              </div>
+              <div class="wealth-number"><span class="grad" id="wealthNumber">₹0</span></div>
+              <div class="wealth-sub" id="wealthNarrative">Enter your domain parameters to see an estimated market value based on traffic, keyword quality and extension premium.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label" id="stat1Label">Traffic value</div>
+                <div class="s-value" id="stat1Value">₹0</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat2Label">Keyword score</div>
+                <div class="s-value" id="stat2Value">₹0</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat3Label">Extension tier</div>
+                <div class="s-value" id="stat3Value">.com</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-card">
+            <div class="insight-title">AI Advisor Insights</div>
+            <div class="insight-box"><strong id="insight1Title"></strong><span id="insight1Text"></span></div>
+            <div class="insight-box"><strong id="insight2Title"></strong><span id="insight2Text"></span></div>
+            <div class="insight-box"><strong id="insight3Title"></strong><span id="insight3Text"></span></div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title" id="chartTitle">Value growth projection</div>
+              <div class="chart-meta" id="chartMeta">Projected asset value, revenue and growth trajectory over time.</div>
+            </div>
+            <div class="legend" id="chartLegend"></div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="wealthChart"></canvas>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title" id="timelineTitle">Value Milestones</div>
+              <div class="chart-meta" id="timelineMeta">Key value checkpoints on your digital asset journey.</div>
+            </div>
+          </div>
+          <div class="timeline-grid" id="timelineGrid"></div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script>
+    const CALCS = {
+      domain: {
+        label: "Domain",
+        badge: "DOMAIN MODE",
+        title: "Domain Value Estimator",
+        sub: "Estimate your domain's market value based on traffic, keywords and extension.",
+        desc: "Tune traffic, keyword quality and extension. Domain valuation updates instantly.",
+        wealthTitle: "Domain Valuation",
+        wealthPill: "Live Estimate",
+        chartTitle: "Domain value growth curve",
+        chartMeta: "Projected appreciation in domain value as traffic and relevance compound over time.",
+        timelineTitle: "Value Milestones",
+        timelineMeta: "Key domain value checkpoints as the asset matures.",
+        advisorText: "Domain valuation is nuanced. Explore comparable sales and monetization potential to unlock its full worth.",
+        controls: [
+          {id:"traffic", label:"Monthly Traffic", min:0, max:500000, step:500, value:10000, format:"number"},
+          {id:"keyword", label:"Keyword Quality (1–10)", min:1, max:10, step:1, value:6, format:"score"},
+          {id:"extension", label:"Extension (.com=3 / .in=2 / other=1)", min:1, max:3, step:1, value:3, format:"ext"},
+          {id:"revenue", label:"Monthly Revenue (₹)", min:0, max:500000, step:1000, value:0, format:"currency"},
+          {id:"years", label:"Growth Horizon", min:1, max:10, step:1, value:3, format:"years"}
+        ]
+      },
+      onlinebiz: {
+        label: "Online Biz",
+        badge: "BIZ MODE",
+        title: "Online Business ROI",
+        sub: "Model profit, future value and return on an online business over multiple years.",
+        desc: "Set revenue, expenses and growth rate to project your online business ROI.",
+        wealthTitle: "Business Future Value",
+        wealthPill: "Profit Projection",
+        chartTitle: "Revenue vs profit vs future value",
+        chartMeta: "How revenue, net profit and compounding growth interact over your selected horizon.",
+        timelineTitle: "Business Milestones",
+        timelineMeta: "Key profit and value checkpoints on your business growth path.",
+        advisorText: "Online business valuation hinges on profit consistency. Model scenarios to find your best exit multiple.",
+        controls: [
+          {id:"revenue", label:"Monthly Revenue (₹)", min:1000, max:5000000, step:1000, value:100000, format:"currency"},
+          {id:"expenses", label:"Monthly Expenses (₹)", min:500, max:4000000, step:500, value:60000, format:"currency"},
+          {id:"growth", label:"Growth Rate (%)", min:0, max:100, step:1, value:20, format:"percent"},
+          {id:"years", label:"Duration", min:1, max:15, step:1, value:5, format:"years"}
+        ]
+      },
+      saas: {
+        label: "SaaS",
+        badge: "SaaS MODE",
+        title: "SaaS Metrics Calculator",
+        sub: "Compute MRR, ARR, LTV and growth projections for your SaaS business.",
+        desc: "Enter customer count, ARPU, churn and growth to model your SaaS performance.",
+        wealthTitle: "SaaS Annual Recurring Revenue",
+        wealthPill: "ARR Projection",
+        chartTitle: "MRR growth vs LTV vs ARR",
+        chartMeta: "Monthly recurring revenue growth, lifetime value and annual revenue trajectory.",
+        timelineTitle: "SaaS Milestones",
+        timelineMeta: "Key ARR and LTV checkpoints on your SaaS growth path.",
+        advisorText: "High LTV and low churn are the two levers that multiply SaaS valuation multiples. Focus there first.",
+        controls: [
+          {id:"customers", label:"Customers", min:1, max:100000, step:10, value:200, format:"number"},
+          {id:"arpu", label:"ARPU / month (₹)", min:100, max:100000, step:100, value:2000, format:"currency"},
+          {id:"churn", label:"Monthly Churn (%)", min:0.1, max:20, step:0.1, value:3, format:"percent"},
+          {id:"growth", label:"Monthly Growth (%)", min:0, max:30, step:0.5, value:5, format:"percent"},
+          {id:"years", label:"Projection Horizon", min:1, max:10, step:1, value:3, format:"years"}
+        ]
+      },
+      social: {
+        label: "Social Media",
+        badge: "SOCIAL MODE",
+        title: "Social Media ROI",
+        sub: "Estimate monthly revenue potential from your social media audience.",
+        desc: "Set followers, engagement, conversion rate and revenue per conversion.",
+        wealthTitle: "Social Media Revenue Estimate",
+        wealthPill: "Monetization Output",
+        chartTitle: "Revenue vs reach vs conversion",
+        chartMeta: "How followers, engagement and conversion rate combine into monthly revenue potential.",
+        timelineTitle: "Growth Milestones",
+        timelineMeta: "Key revenue checkpoints as your social audience and monetization scale.",
+        advisorText: "Social monetization is underutilized by most creators. Even a 1% conversion rate creates meaningful revenue at scale.",
+        controls: [
+          {id:"followers", label:"Followers", min:100, max:10000000, step:100, value:50000, format:"number"},
+          {id:"engagement", label:"Engagement Rate (%)", min:0.1, max:30, step:0.1, value:3, format:"percent"},
+          {id:"conversion", label:"Conversion Rate (%)", min:0.01, max:10, step:0.01, value:0.5, format:"percent"},
+          {id:"revenuepc", label:"Revenue per Conversion (₹)", min:100, max:100000, step:100, value:2000, format:"currency"},
+          {id:"years", label:"Growth Horizon", min:1, max:10, step:1, value:3, format:"years"}
+        ]
+      },
+      email: {
+        label: "Email",
+        badge: "EMAIL MODE",
+        title: "Email Marketing Calculator",
+        sub: "Calculate revenue per campaign from your email list performance.",
+        desc: "Enter subscribers, open rate, click rate, conversion and order value.",
+        wealthTitle: "Email Revenue per Campaign",
+        wealthPill: "Campaign Output",
+        chartTitle: "Revenue vs list growth vs conversion",
+        chartMeta: "Campaign revenue potential as list size, engagement and conversion compound.",
+        timelineTitle: "Campaign Milestones",
+        timelineMeta: "Key revenue checkpoints on your email marketing growth journey.",
+        advisorText: "Email lists are among the highest-ROI digital assets. A well-segmented list at 3% conversion outperforms most paid channels.",
+        controls: [
+          {id:"subscribers", label:"Subscribers", min:100, max:5000000, step:100, value:10000, format:"number"},
+          {id:"openrate", label:"Open Rate (%)", min:1, max:80, step:1, value:25, format:"percent"},
+          {id:"clickrate", label:"Click Rate (%)", min:0.5, max:40, step:0.5, value:5, format:"percent"},
+          {id:"conversion", label:"Conversion Rate (%)", min:0.1, max:20, step:0.1, value:2, format:"percent"},
+          {id:"aov", label:"Avg Order Value (₹)", min:100, max:100000, step:100, value:3000, format:"currency"}
+        ]
+      },
+      app: {
+        label: "App",
+        badge: "APP MODE",
+        title: "App Revenue Estimator",
+        sub: "Estimate monthly revenue from daily active users, ARPU and ad revenue.",
+        desc: "Model IAP revenue, subscription income and ad monetization for your app.",
+        wealthTitle: "Monthly App Revenue",
+        wealthPill: "Monetization Model",
+        chartTitle: "App revenue vs user growth vs ad income",
+        chartMeta: "How DAU, ARPU and ad income combine into a compounding revenue model.",
+        timelineTitle: "App Milestones",
+        timelineMeta: "Key revenue checkpoints as your app's user base and monetization scale.",
+        advisorText: "App revenue is highly sensitive to DAU growth. Even modest retention improvements compound into dramatically higher lifetime revenue.",
+        controls: [
+          {id:"dau", label:"Daily Active Users (DAU)", min:100, max:5000000, step:100, value:5000, format:"number"},
+          {id:"arpu", label:"ARPU / month (₹)", min:1, max:5000, step:1, value:50, format:"currency"},
+          {id:"adrev", label:"Ad Revenue per User / month (₹)", min:0, max:500, step:1, value:10, format:"currency"},
+          {id:"growth", label:"Monthly User Growth (%)", min:0, max:50, step:0.5, value:8, format:"percent"},
+          {id:"years", label:"Projection Horizon", min:1, max:7, step:1, value:3, format:"years"}
+        ]
+      },
+      website: {
+        label: "Website Value",
+        badge: "WEBSITE MODE",
+        title: "Website Valuation Tool",
+        sub: "Value your content site or niche website using revenue multiples.",
+        desc: "Enter monthly revenue, growth rate and profit margin to estimate exit value.",
+        wealthTitle: "Website Estimated Value",
+        wealthPill: "Exit Valuation",
+        chartTitle: "Revenue vs profit vs valuation",
+        chartMeta: "How monthly revenue, profit margin and growth multiple combine into an exit valuation.",
+        timelineTitle: "Valuation Milestones",
+        timelineMeta: "Key valuation checkpoints as your website grows.",
+        advisorText: "Website multiples typically range from 24x to 60x monthly profit. Strong growth and diversified traffic push valuation higher.",
+        controls: [
+          {id:"revenue", label:"Monthly Revenue (₹)", min:1000, max:5000000, step:1000, value:50000, format:"currency"},
+          {id:"growth", label:"Annual Growth (%)", min:0, max:150, step:1, value:30, format:"percent"},
+          {id:"margin", label:"Profit Margin (%)", min:5, max:95, step:1, value:40, format:"percent"},
+          {id:"years", label:"Projection Horizon", min:1, max:10, step:1, value:3, format:"years"}
+        ]
+      }
+    };
+
+    let state = {};
+    let active = 'domain';
+    let chart;
+
+    const $ = id => document.getElementById(id);
+
+    const EXT_MAP = {1: 'Other', 2: '.in', 3: '.com'};
+    const EXT_MULT = {1: 1.0, 2: 1.2, 3: 1.5};
+
+    function formatValue(v, kind){
+      v = Number(v);
+      if(kind === 'currency') return '₹' + Math.round(v).toLocaleString('en-IN');
+      if(kind === 'percent') return Number(v).toFixed(1).replace(/\.0$/,'') + '%';
+      if(kind === 'years') return Math.round(v) + ' Years';
+      if(kind === 'score') return Math.round(v) + ' / 10';
+      if(kind === 'ext') return EXT_MAP[Math.round(v)] || '.com';
+      if(kind === 'number') return Math.round(v).toLocaleString('en-IN');
+      return v;
+    }
+    function fmtCurrency(v){ return '₹' + Math.round(v).toLocaleString('en-IN'); }
+    function fmtShort(v){
+      if(Math.abs(v) >= 10000000) return '₹' + (v/10000000).toFixed(2).replace(/\.00$/,'') + ' Cr';
+      if(Math.abs(v) >= 100000) return '₹' + (v/100000).toFixed(2).replace(/\.00$/,'') + ' L';
+      return fmtCurrency(v);
+    }
+    function fmtNum(v){
+      if(v >= 10000000) return (v/10000000).toFixed(2) + ' Cr';
+      if(v >= 100000) return (v/100000).toFixed(2) + ' L';
+      if(v >= 1000) return (v/1000).toFixed(1) + 'K';
+      return Math.round(v).toString();
+    }
+
+    function initState(){
+      Object.keys(CALCS).forEach(key=>{
+        state[key]={};
+        CALCS[key].controls.forEach(c=> state[key][c.id]=c.value);
+      });
+    }
+
+    function renderTabs(){
+      $('tabs').innerHTML = Object.entries(CALCS).map(([key, cfg]) =>
+        `<button class="tab ${key===active?'active':''}" data-key="${key}">${cfg.label}</button>`
+      ).join('');
+      document.querySelectorAll('.tab').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          active = btn.dataset.key;
+          renderTabs();
+          renderControls();
+          update();
+        });
+      });
+    }
+
+    function renderControls(){
+      const cfg = CALCS[active];
+      $('panelBadge').textContent = cfg.badge;
+      $('controlDesc').textContent = cfg.desc;
+      $('modeHeadline').textContent = cfg.title;
+      $('modeSub').textContent = cfg.sub;
+      if($('advisorText')) $('advisorText').textContent = cfg.advisorText;
+
+      $('dynamicControls').innerHTML = cfg.controls.map(c=>`
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">${c.label}</div>
+            <div class="control-value" id="view-${c.id}">${formatValue(state[active][c.id], c.format)}</div>
+          </div>
+          <input type="range" id="ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${state[active][c.id]}">
+        </div>
+      `).join('');
+
+      cfg.controls.forEach(c=>{
+        $(`ctrl-${c.id}`).addEventListener('input', e=>{
+          state[active][c.id] = Number(e.target.value);
+          $(`view-${c.id}`).textContent = formatValue(state[active][c.id], c.format);
+          update();
+        });
+      });
+    }
+
+    function buildMilestones(labels, corpus, base){
+      const total = labels.length;
+      const picks = Array.from(new Set([1, Math.max(1,Math.ceil(total*0.33)), Math.max(1,Math.ceil(total*0.66)), total])).slice(0,4);
+      return picks.map(y=>{
+        const idx = y-1;
+        const val = corpus[idx] || 0;
+        const invested = base[idx] || 0;
+        return {
+          year: y,
+          value: val,
+          note: val > invested ? `${fmtShort(val-invested)} above base cost` : `Value still building`
+        };
+      });
+    }
+
+    function renderMilestones(title, meta, items){
+      $('timelineTitle').textContent = title;
+      $('timelineMeta').textContent = meta;
+      $('timelineGrid').innerHTML = items.map(item=>`
+        <div class="milestone">
+          <div class="m-year">Year ${item.year}</div>
+          <div class="m-amount">${fmtShort(item.value)}</div>
+          <div class="m-note">${item.note}</div>
+        </div>
+      `).join('');
+    }
+
+    function setInsights(a,b,c){
+      $('insight1Title').textContent = a.title; $('insight1Text').textContent = a.text;
+      $('insight2Title').textContent = b.title; $('insight2Text').textContent = b.text;
+      $('insight3Title').textContent = c.title; $('insight3Text').textContent = c.text;
+    }
+
+    function renderChart(labels, series, title, meta){
+      $('chartTitle').textContent = title;
+      $('chartMeta').textContent = meta;
+      $('chartLegend').innerHTML = series.map(s=>`
+        <div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>
+      `).join('');
+
+      const ctx = $('wealthChart').getContext('2d');
+      const gradient = ctx.createLinearGradient(0,0,0,360);
+      gradient.addColorStop(0, 'rgba(0,212,255,.28)');
+      gradient.addColorStop(.55, 'rgba(79,163,255,.12)');
+      gradient.addColorStop(1, 'rgba(79,163,255,0)');
+
+      if(chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type:'line',
+        data:{
+          labels,
+          datasets:series.map((s, idx)=>({
+            label:s.label,
+            data:s.data,
+            borderColor:s.color,
+            backgroundColor: idx===0 ? gradient : 'transparent',
+            fill: !!s.fill,
+            borderWidth: idx===0 ? 3 : 2.2,
+            pointRadius: idx===0 ? 2 : 0,
+            pointHoverRadius: 5,
+            pointBackgroundColor: s.color,
+            pointBorderColor: '#08111f',
+            tension:.38
+          }))
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          interaction:{mode:'index',intersect:false},
+          plugins:{
+            legend:{display:false},
+            tooltip:{
+              backgroundColor:'rgba(7,12,28,.96)',
+              borderColor:'rgba(255,255,255,.08)',
+              borderWidth:1,
+              titleColor:'#fff',
+              bodyColor:'#dce6ff',
+              padding:12,
+              callbacks:{ label:(ctx)=>`${ctx.dataset.label}: ${fmtCurrency(ctx.raw)}` }
+            }
+          },
+          scales:{
+            x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:12}}},
+            y:{
+              beginAtZero:true,
+              grid:{color:'rgba(255,255,255,.06)'},
+              ticks:{color:'rgba(220,230,255,.55)',font:{size:12}, callback:(v)=>fmtShort(v)}
+            }
+          }
+        }
+      });
+    }
+
+    function setWealthArea({title,pill,value,narrative,stat1,stat2,stat3,mood,power}){
+      $('wealthTitle').textContent = title;
+      $('wealthPill').textContent = pill;
+      $('wealthNumber').textContent = value;
+      $('wealthNarrative').textContent = narrative;
+      $('stat1Label').textContent = stat1.label; $('stat1Value').textContent = stat1.value;
+      $('stat2Label').textContent = stat2.label; $('stat2Value').textContent = stat2.value;
+      $('stat3Label').textContent = stat3.label; $('stat3Value').textContent = stat3.value;
+      $('miniMood').textContent = mood;
+      $('miniInsight').textContent = power;
+    }
+
+    function setTop(projected, revenue, tier){
+      $('topProjected').textContent = typeof projected === 'string' ? projected : fmtShort(projected);
+      $('topGains').textContent = typeof revenue === 'string' ? revenue : fmtShort(revenue);
+      $('topRate').textContent = typeof tier === 'string' ? tier : tier;
+    }
+
+    function getDomainBadge(val){
+      if(val >= 1000000) return 'Premium';
+      if(val >= 200000) return 'Medium';
+      return 'Low';
+    }
+
+    function modelGrowthYears(base, growthPct, years){
+      const labels=[], values=[], baseLine=[], gains=[];
+      let current = base;
+      for(let y=1; y<=years; y++){
+        current = current * (1 + growthPct/100);
+        labels.push('Year '+y);
+        values.push(Math.round(current));
+        baseLine.push(Math.round(base));
+        gains.push(Math.round(current - base));
+      }
+      return {labels, values, baseLine, gains};
+    }
+
+    function update(){
+      const s = state[active];
+      const cfg = CALCS[active];
+
+      $('modeHeadline').textContent = cfg.title;
+      $('modeSub').textContent = cfg.sub;
+
+      if(active === 'domain'){
+        const extMultiplier = EXT_MULT[Math.round(s.extension)] || 1.0;
+        const trafficValue = s.traffic * 12 * 10;
+        const keywordValue = s.keyword * 5000;
+        const baseValue = (trafficValue + keywordValue + (s.revenue * 24)) * extMultiplier;
+        const badge = getDomainBadge(baseValue);
+        const extLabel = EXT_MAP[Math.round(s.extension)] || 'Other';
+        const annualRevenue = s.revenue * 12;
+
+        const m = modelGrowthYears(baseValue, 15, s.years);
+        setTop(fmtShort(baseValue), fmtShort(annualRevenue), badge);
+        setWealthArea({
+          title: cfg.wealthTitle, pill: badge + ' Domain', value: fmtShort(baseValue),
+          narrative: `Your domain with ${Math.round(s.traffic).toLocaleString('en-IN')} monthly visitors, ${s.keyword}/10 keyword quality and ${extLabel} extension is estimated at ${fmtShort(baseValue)}. Extension multiplier: ${extMultiplier}x.`,
+          stat1:{label:'Traffic value', value: fmtShort(trafficValue)},
+          stat2:{label:'Keyword value', value: fmtShort(keywordValue)},
+          stat3:{label:'Extension', value: extLabel},
+          mood: badge + ' Asset',
+          power: s.revenue > 0 ? 'Revenue-backed' : 'Traffic-led'
+        });
+        setInsights(
+          {title: badge === 'Premium' ? 'This is a premium-grade domain.' : badge === 'Medium' ? 'This domain has solid commercial potential.' : 'Domain is undervalued — has room to grow.',
+           text: badge === 'Premium' ? 'Premium domains with strong traffic and keywords consistently attract high acquisition offers.' : badge === 'Medium' ? 'Medium-tier domains can be upgraded through SEO and monetization to reach premium status.' : 'Low-value domains can be grown significantly through targeted content and traffic acquisition.'},
+          {title: s.traffic >= 10000 ? 'Traffic is your strongest signal.' : 'Traffic is the fastest value lever.',
+           text: s.traffic >= 10000 ? 'High-traffic domains are the most desirable acquisition targets for digital businesses.' : 'Even modest monthly traffic improvements create outsized domain valuation gains over time.'},
+          {title: s.revenue > 0 ? 'Revenue-generating domains command higher multiples.' : 'Adding revenue transforms valuation.',
+           text: s.revenue > 0 ? 'A domain with proven revenue can trade at 24–48x monthly earnings on top of traffic value.' : 'Even small monthly monetization through ads or affiliates can dramatically increase your domain\'s market price.'}
+        );
+        renderChart(m.labels, [
+          {label:'Estimated value', data:m.values, color:'#00d4ff', fill:true},
+          {label:'Base value', data:m.baseLine, color:'#4fa3ff', fill:false},
+          {label:'Appreciation', data:m.gains, color:'#00e676', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta);
+        const milestones = m.labels.map((l,i)=>({year:i+1, value:m.values[i], note:`${fmtShort(m.gains[i])} above base`}));
+        const picks = [0, Math.floor(m.labels.length*0.33), Math.floor(m.labels.length*0.66), m.labels.length-1];
+        const uniquePicks = [...new Set(picks)].slice(0,4);
+        $('timelineTitle').textContent = cfg.timelineTitle;
+        $('timelineMeta').textContent = cfg.timelineMeta;
+        $('timelineGrid').innerHTML = uniquePicks.map(i=>({year:i+1, value:m.values[i], note:`${fmtShort(m.gains[i])} appreciation`})).map(item=>`
+          <div class="milestone">
+            <div class="m-year">Year ${item.year}</div>
+            <div class="m-amount">${fmtShort(item.value)}</div>
+            <div class="m-note">${item.note}</div>
+          </div>
+        `).join('');
+      }
+
+      if(active === 'onlinebiz'){
+        const profit = Math.max(0, s.revenue - s.expenses);
+        const annualProfit = profit * 12;
+        const futureValue = annualProfit * Math.pow(1 + s.growth/100, s.years);
+        const annualRevenue = s.revenue * 12;
+
+        const labels=[], revArr=[], profArr=[], fvArr=[];
+        for(let y=1; y<=s.years; y++){
+          const fv = annualProfit * Math.pow(1+s.growth/100, y);
+          labels.push('Year '+y);
+          revArr.push(Math.round(s.revenue*12*Math.pow(1+s.growth/100, y)));
+          profArr.push(Math.round(profit*12*Math.pow(1+s.growth/100, y)));
+          fvArr.push(Math.round(fv));
+        }
+
+        setTop(fmtShort(futureValue), fmtShort(annualRevenue), profit > s.revenue*0.3 ? 'High Margin' : 'Lean Margin');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(futureValue),
+          narrative:`With ${fmtCurrency(s.revenue)} monthly revenue and ${fmtCurrency(s.expenses)} expenses, your online business generates ${fmtCurrency(profit)} monthly profit, projecting to ${fmtShort(futureValue)} future value at ${s.growth}% annual growth.`,
+          stat1:{label:'Monthly profit', value: fmtCurrency(profit)},
+          stat2:{label:'Annual revenue', value: fmtCurrency(annualRevenue)},
+          stat3:{label:'Growth rate', value: s.growth + '%'},
+          mood: s.growth >= 30 ? 'Hyper Growth' : s.growth >= 10 ? 'Steady Grower' : 'Stable',
+          power: `${((profit/Math.max(s.revenue,1))*100).toFixed(0)}% margin`
+        });
+        setInsights(
+          {title: profit > 0 ? 'Profitable and growing.' : 'Focus on cost reduction first.',
+           text: profit > 0 ? `A ${((profit/s.revenue)*100).toFixed(0)}% profit margin combined with ${s.growth}% growth creates a powerful compounding effect.` : 'Bringing expenses below revenue is the single highest-leverage action for any online business.'},
+          {title: s.growth >= 20 ? 'High growth unlocks premium exit multiples.' : 'Consistent growth is the valuation multiplier.',
+           text: s.growth >= 20 ? 'Online businesses growing above 20% annually typically command 3x–5x annual revenue at exit.' : 'Even 10–15% annual growth can compound a small business into a highly valuable asset over 3–5 years.'},
+          {title: 'Expenses are the silent equity killer.',
+           text: 'Systematically reducing costs while maintaining revenue has a higher ROI than almost any growth tactic in early-stage online business.'}
+        );
+        renderChart(labels, [
+          {label:'Future value', data:fvArr, color:'#00d4ff', fill:true},
+          {label:'Annual revenue', data:revArr, color:'#4fa3ff', fill:false},
+          {label:'Annual profit', data:profArr, color:'#00e676', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta);
+        const ms = labels.map((l,i)=>({year:i+1, value:fvArr[i], note:`${fmtShort(profArr[i])} annual profit`}));
+        const mpicks = [0, Math.floor(labels.length*0.33), Math.floor(labels.length*0.66), labels.length-1];
+        const munique = [...new Set(mpicks)].slice(0,4);
+        $('timelineTitle').textContent = cfg.timelineTitle; $('timelineMeta').textContent = cfg.timelineMeta;
+        $('timelineGrid').innerHTML = munique.map(i=>ms[i]).filter(Boolean).map(item=>`
+          <div class="milestone"><div class="m-year">Year ${item.year}</div><div class="m-amount">${fmtShort(item.value)}</div><div class="m-note">${item.note}</div></div>`).join('');
+      }
+
+      if(active === 'saas'){
+        const mrr = s.customers * s.arpu;
+        const arr = mrr * 12;
+        const ltv = s.churn > 0 ? s.arpu / (s.churn/100) : s.arpu * 100;
+        const churnRate = s.churn/100;
+        const growthRate = s.growth/100;
+
+        const labels=[], mrrArr=[], ltvArr=[], arrArr=[];
+        let currentMRR = mrr;
+        for(let y=1; y<=s.years; y++){
+          for(let m=0;m<12;m++){
+            currentMRR = currentMRR * (1 + growthRate) * (1 - churnRate);
+          }
+          labels.push('Year '+y);
+          mrrArr.push(Math.round(currentMRR));
+          ltvArr.push(Math.round(ltv));
+          arrArr.push(Math.round(currentMRR * 12));
+        }
+
+        setTop(fmtShort(arr), fmtShort(mrr), ltv > mrr*30 ? 'Strong LTV' : 'Moderate LTV');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(arr),
+          narrative:`${Math.round(s.customers).toLocaleString('en-IN')} customers at ${fmtCurrency(s.arpu)} ARPU generates ${fmtCurrency(mrr)} MRR and ${fmtCurrency(arr)} ARR. Customer LTV is ${fmtCurrency(Math.round(ltv))}.`,
+          stat1:{label:'MRR', value: fmtCurrency(mrr)},
+          stat2:{label:'Customer LTV', value: fmtCurrency(Math.round(ltv))},
+          stat3:{label:'Churn rate', value: s.churn + '%/mo'},
+          mood: s.churn < 3 ? 'Low Churn' : s.churn < 7 ? 'Moderate Churn' : 'High Churn',
+          power: s.churn < 3 ? 'LTV is strong' : 'High churn hurts growth'
+        });
+        setInsights(
+          {title: s.churn < 3 ? 'Your SaaS LTV is strong.' : s.churn < 7 ? 'Churn is moderate — improve to unlock value.' : 'High churn is killing growth.',
+           text: s.churn < 3 ? 'Low churn creates a stable, compounding revenue base that investors and acquirers prize highly.' : s.churn < 7 ? 'Reducing churn by even 1% can increase LTV by 30–50%, dramatically improving your SaaS multiple.' : 'At this churn rate, new customer acquisition is mostly offsetting lost revenue rather than growing the base.'},
+          {title: s.growth >= 10 ? 'Growth rate supports premium SaaS valuation.' : 'Growth velocity needs acceleration.',
+           text: s.growth >= 10 ? 'SaaS businesses growing MRR by 10%+ monthly are typically valued at 8–15x ARR by acquirers.' : 'Below 5% monthly growth, SaaS multiples compress significantly. Focus on acquisition channel diversification.'},
+          {title: 'MRR × retention is the SaaS valuation formula.',
+           text: 'Investors don\'t just pay for ARR — they pay for predictable, retained ARR. High NRR creates compounding valuation multiples.'}
+        );
+        renderChart(labels, [
+          {label:'ARR projection', data:arrArr, color:'#00d4ff', fill:true},
+          {label:'MRR × 12', data:mrrArr.map(v=>v*12), color:'#4fa3ff', fill:false},
+          {label:'LTV baseline', data:ltvArr, color:'#ffd76a', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta);
+        const ms2 = labels.map((l,i)=>({year:i+1, value:arrArr[i], note:`${fmtCurrency(mrrArr[i])} MRR`}));
+        const mp2 = [0, Math.floor(labels.length*0.33), Math.floor(labels.length*0.66), labels.length-1];
+        const mu2 = [...new Set(mp2)].slice(0,4);
+        $('timelineTitle').textContent = cfg.timelineTitle; $('timelineMeta').textContent = cfg.timelineMeta;
+        $('timelineGrid').innerHTML = mu2.map(i=>ms2[i]).filter(Boolean).map(item=>`
+          <div class="milestone"><div class="m-year">Year ${item.year}</div><div class="m-amount">${fmtShort(item.value)}</div><div class="m-note">${item.note}</div></div>`).join('');
+      }
+
+      if(active === 'social'){
+        const engagedUsers = s.followers * (s.engagement/100);
+        const monthlyRevenue = engagedUsers * (s.conversion/100) * s.revenuepc;
+        const annualRevenue = monthlyRevenue * 12;
+
+        const labels=[], revArr=[], followArr=[], convArr=[];
+        let currentFollowers = s.followers;
+        for(let y=1; y<=s.years; y++){
+          currentFollowers = currentFollowers * 1.25;
+          const er = currentFollowers * (s.engagement/100);
+          const rev = er * (s.conversion/100) * s.revenuepc;
+          labels.push('Year '+y);
+          revArr.push(Math.round(rev));
+          followArr.push(Math.round(currentFollowers * (s.revenuepc/10)));
+          convArr.push(Math.round(er * s.revenuepc * 0.01));
+        }
+
+        setTop(fmtShort(monthlyRevenue), fmtShort(annualRevenue), s.engagement >= 5 ? 'High Engagement' : s.engagement >= 2 ? 'Average' : 'Low Engagement');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(monthlyRevenue),
+          narrative:`${fmtNum(s.followers)} followers with ${s.engagement}% engagement and ${s.conversion}% conversion at ${fmtCurrency(s.revenuepc)} per conversion generates ${fmtCurrency(Math.round(monthlyRevenue))} monthly revenue.`,
+          stat1:{label:'Engaged users', value: fmtNum(Math.round(engagedUsers))},
+          stat2:{label:'Monthly revenue', value: fmtCurrency(Math.round(monthlyRevenue))},
+          stat3:{label:'Annual revenue', value: fmtCurrency(Math.round(annualRevenue))},
+          mood: s.engagement >= 5 ? 'High Engagement' : 'Growing Audience',
+          power: monthlyRevenue > 50000 ? 'Strong monetization' : 'Social monetization is weak'
+        });
+        setInsights(
+          {title: s.engagement >= 5 ? 'Engagement is your strongest signal.' : s.engagement >= 2 ? 'Average engagement — focus on quality over quantity.' : 'Low engagement is limiting your revenue potential.',
+           text: s.engagement >= 5 ? 'High engagement rates multiply the impact of every follower milestone, creating outsized revenue potential.' : s.engagement >= 2 ? 'Engagement between 2–5% is typical, but targeted content improvements can push this higher with strong revenue impact.' : 'Below 2% engagement, audience quality matters more than size. Focus on niche, authentic content.'},
+          {title: s.conversion >= 1 ? 'Your conversion rate is working.' : 'Conversion rate has significant upside.',
+           text: s.conversion >= 1 ? 'A 1%+ conversion rate on an engaged audience is commercially strong and scales well.' : 'Even small increases in conversion from 0.1% to 0.5% can 5x your monthly revenue without growing your audience.'},
+          {title: 'Social monetization is underutilized by most creators.',
+           text: 'Diversifying across products, affiliates, sponsorships and digital services typically yields 3–5x higher revenue than any single monetization channel alone.'}
+        );
+        renderChart(labels, [
+          {label:'Projected revenue', data:revArr, color:'#00d4ff', fill:true},
+          {label:'Audience value proxy', data:followArr, color:'#4fa3ff', fill:false},
+          {label:'Conversion yield', data:convArr, color:'#00e676', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta);
+        const ms3 = labels.map((l,i)=>({year:i+1, value:revArr[i], note:`${fmtShort(revArr[i])} projected revenue`}));
+        const mp3 = [0, Math.floor(labels.length*0.33), Math.floor(labels.length*0.66), labels.length-1];
+        const mu3 = [...new Set(mp3)].slice(0,4);
+        $('timelineTitle').textContent = cfg.timelineTitle; $('timelineMeta').textContent = cfg.timelineMeta;
+        $('timelineGrid').innerHTML = mu3.map(i=>ms3[i]).filter(Boolean).map(item=>`
+          <div class="milestone"><div class="m-year">Year ${item.year}</div><div class="m-amount">${fmtShort(item.value)}</div><div class="m-note">${item.note}</div></div>`).join('');
+      }
+
+      if(active === 'email'){
+        const openers = s.subscribers * (s.openrate/100);
+        const clickers = openers * (s.clickrate/100);
+        const buyers = clickers * (s.conversion/100);
+        const campaignRevenue = buyers * s.aov;
+        const annualRevenue = campaignRevenue * 12;
+
+        const labels=[], revArr=[], baseArr=[], subsArr=[];
+        let currentSubs = s.subscribers;
+        for(let y=1; y<=6; y++){
+          currentSubs = currentSubs * 1.2;
+          const op = currentSubs * (s.openrate/100);
+          const cl = op * (s.clickrate/100);
+          const bu = cl * (s.conversion/100);
+          const rev = bu * s.aov;
+          labels.push('Campaign '+y);
+          revArr.push(Math.round(rev));
+          baseArr.push(Math.round(campaignRevenue));
+          subsArr.push(Math.round(currentSubs * s.aov * 0.001));
+        }
+
+        setTop(fmtShort(campaignRevenue), fmtShort(annualRevenue), s.openrate >= 30 ? 'Elite List' : s.openrate >= 20 ? 'Healthy List' : 'Needs Warmup');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(campaignRevenue),
+          narrative:`${fmtNum(s.subscribers)} subscribers, ${s.openrate}% open rate, ${s.clickrate}% click rate and ${s.conversion}% conversion at ${fmtCurrency(s.aov)} AOV generates ${fmtCurrency(Math.round(campaignRevenue))} per campaign.`,
+          stat1:{label:'Openers', value: fmtNum(Math.round(openers))},
+          stat2:{label:'Buyers/campaign', value: fmtNum(Math.round(buyers))},
+          stat3:{label:'Annual revenue', value: fmtCurrency(Math.round(annualRevenue))},
+          mood: s.openrate >= 30 ? 'Elite Engagement' : s.openrate >= 20 ? 'Strong List' : 'Growing List',
+          power: `${s.openrate}% open rate`
+        });
+        setInsights(
+          {title: s.openrate >= 30 ? 'Your list has elite open rates.' : s.openrate >= 20 ? 'Solid open rates — keep testing subject lines.' : 'Open rate improvement is your highest-ROI action.',
+           text: s.openrate >= 30 ? 'A 30%+ open rate signals exceptional list quality and trust — this audience is primed for high conversion campaigns.' : s.openrate >= 20 ? 'Industry average open rates hover around 20–25%. A/B testing subject lines can push this to 30%+ with significant revenue impact.' : 'Below 20% open rate suggests list hygiene issues. Removing inactive subscribers often improves deliverability and engagement simultaneously.'},
+          {title: s.clickrate >= 5 ? 'Click rates are strong — your content converts.' : 'Click rate is your conversion funnel gate.',
+           text: s.clickrate >= 5 ? 'A 5%+ click rate means your email content is compelling and well-targeted. This is where most marketers struggle.' : 'Improving click-through rates by 2% typically increases revenue per campaign by 40–100%. Focus on single CTA emails.'},
+          {title: 'Email lists are high-ROI digital assets.',
+           text: 'A well-maintained email list with above-average engagement is often valued at ₹50–200 per subscriber by acquirers, making list building one of the highest-return digital activities.'}
+        );
+        renderChart(labels, [
+          {label:'Projected revenue', data:revArr, color:'#00d4ff', fill:true},
+          {label:'Base campaign revenue', data:baseArr, color:'#4fa3ff', fill:false},
+          {label:'List value proxy', data:subsArr, color:'#ffd76a', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta);
+        const ms4 = labels.map((l,i)=>({year:i+1, value:revArr[i], note:`${fmtNum(Math.round(currentSubs*Math.pow(1.2,i+1)*0.0001))} subscribers`}));
+        const mp4 = [0, 1, 3, 5];
+        $('timelineTitle').textContent = cfg.timelineTitle; $('timelineMeta').textContent = cfg.timelineMeta;
+        $('timelineGrid').innerHTML = mp4.map(i=>ms4[i]).filter(Boolean).map(item=>`
+          <div class="milestone"><div class="m-year">Campaign ${item.year}</div><div class="m-amount">${fmtShort(item.value)}</div><div class="m-note">${item.note}</div></div>`).join('');
+      }
+
+      if(active === 'app'){
+        const iapRevenue = s.dau * 30 * (s.arpu / 30);
+        const adRevenue = s.dau * 30 * (s.adrev / 30);
+        const monthlyRevenue = (s.dau * s.arpu) + (s.dau * s.adrev);
+        const growthRate = s.growth/100;
+
+        const labels=[], revArr=[], iapArr=[], adArr=[];
+        let currentDAU = s.dau;
+        for(let y=1; y<=s.years; y++){
+          for(let m=0;m<12;m++) currentDAU = currentDAU * (1 + growthRate);
+          const rev = (currentDAU * s.arpu) + (currentDAU * s.adrev);
+          labels.push('Year '+y);
+          revArr.push(Math.round(rev));
+          iapArr.push(Math.round(currentDAU * s.arpu));
+          adArr.push(Math.round(currentDAU * s.adrev));
+        }
+
+        setTop(fmtShort(monthlyRevenue), fmtShort(monthlyRevenue*12), s.growth >= 15 ? 'High Growth App' : s.growth >= 5 ? 'Steady App' : 'Mature App');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(monthlyRevenue),
+          narrative:`${fmtNum(s.dau)} DAU at ${fmtCurrency(s.arpu)} ARPU and ${fmtCurrency(s.adrev)} ad revenue per user generates ${fmtCurrency(Math.round(monthlyRevenue))} monthly with ${s.growth}% monthly user growth.`,
+          stat1:{label:'IAP revenue/mo', value: fmtCurrency(Math.round(s.dau * s.arpu))},
+          stat2:{label:'Ad revenue/mo', value: fmtCurrency(Math.round(s.dau * s.adrev))},
+          stat3:{label:'Total monthly', value: fmtCurrency(Math.round(monthlyRevenue))},
+          mood: s.growth >= 15 ? 'Hyper Growth' : s.growth >= 5 ? 'Steady Grower' : 'Monetizing Well',
+          power: `${s.growth}% monthly user growth`
+        });
+        setInsights(
+          {title: s.dau >= 50000 ? 'Strong DAU base — monetization is your focus.' : s.dau >= 5000 ? 'Solid user base with clear monetization path.' : 'Build DAU first — monetization follows retention.',
+           text: s.dau >= 50000 ? 'At this scale, even minor improvements in ARPU or ad CPM have dramatic revenue multiplier effects.' : s.dau >= 5000 ? 'With a healthy DAU base, optimizing in-app purchase flows and ad placements will yield the fastest revenue gains.' : 'Below 5,000 DAU, user acquisition and retention should take priority over monetization optimization.'},
+          {title: s.growth >= 10 ? 'User growth is a powerful revenue multiplier.' : 'Growth velocity needs attention.',
+           text: s.growth >= 10 ? 'At 10%+ monthly growth, your revenue compounds dramatically. In 12 months, DAU and revenue could be 3–5x current levels.' : 'Below 5% monthly growth, focus on improving D7 and D30 retention — it\'s the most reliable way to unlock organic growth loops.'},
+          {title: 'App revenue is highly sensitive to DAU × ARPU.',
+           text: 'The highest-performing apps earn through multiple simultaneous streams: subscriptions, IAP, ads, and affiliate placements — diversification reduces revenue volatility.'}
+        );
+        renderChart(labels, [
+          {label:'Total revenue', data:revArr, color:'#00d4ff', fill:true},
+          {label:'IAP revenue', data:iapArr, color:'#4fa3ff', fill:false},
+          {label:'Ad revenue', data:adArr, color:'#ffd76a', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta);
+        const ms5 = labels.map((l,i)=>({year:i+1, value:revArr[i], note:`${fmtShort(iapArr[i])} IAP + ${fmtShort(adArr[i])} ads`}));
+        const mp5 = [0, Math.floor(labels.length*0.33), Math.floor(labels.length*0.66), labels.length-1];
+        const mu5 = [...new Set(mp5)].slice(0,4);
+        $('timelineTitle').textContent = cfg.timelineTitle; $('timelineMeta').textContent = cfg.timelineMeta;
+        $('timelineGrid').innerHTML = mu5.map(i=>ms5[i]).filter(Boolean).map(item=>`
+          <div class="milestone"><div class="m-year">Year ${item.year}</div><div class="m-amount">${fmtShort(item.value)}</div><div class="m-note">${item.note}</div></div>`).join('');
+      }
+
+      if(active === 'website'){
+        const monthlyProfit = s.revenue * (s.margin/100);
+        const annualProfit = monthlyProfit * 12;
+        const growthPct = s.growth;
+        let multiplier;
+        if(growthPct < 20) multiplier = 24;
+        else if(growthPct < 40) multiplier = 36;
+        else if(growthPct < 80) multiplier = 48;
+        else multiplier = 60;
+
+        const websiteValue = monthlyProfit * multiplier;
+        const annualRevenue = s.revenue * 12;
+
+        const labels=[], valArr=[], revArr2=[], profArr2=[];
+        let currentRev = s.revenue;
+        for(let y=1; y<=s.years; y++){
+          currentRev = currentRev * (1 + growthPct/100);
+          const prof = currentRev * (s.margin/100);
+          const val = prof * multiplier;
+          labels.push('Year '+y);
+          valArr.push(Math.round(val));
+          revArr2.push(Math.round(currentRev * 12));
+          profArr2.push(Math.round(prof * 12));
+        }
+
+        setTop(fmtShort(websiteValue), fmtShort(annualRevenue), multiplier + 'x multiple');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(websiteValue),
+          narrative:`${fmtCurrency(Math.round(s.revenue))} monthly revenue at ${s.margin}% profit margin with ${s.growth}% annual growth applies a ${multiplier}x multiple, valuing this website at ${fmtShort(websiteValue)}.`,
+          stat1:{label:'Monthly profit', value: fmtCurrency(Math.round(monthlyProfit))},
+          stat2:{label:'Annual profit', value: fmtCurrency(Math.round(annualProfit))},
+          stat3:{label:'Exit multiple', value: multiplier + 'x monthly'},
+          mood: multiplier >= 48 ? 'Premium Exit' : multiplier >= 36 ? 'Strong Multiple' : 'Standard Multiple',
+          power: `${s.margin}% profit margin`
+        });
+        setInsights(
+          {title: multiplier >= 48 ? 'Your growth unlocks premium exit multiples.' : multiplier >= 36 ? 'Good growth — solid exit multiple territory.' : 'Moderate growth applies standard valuation multiples.',
+           text: multiplier >= 48 ? 'High-growth content sites and niche websites can command 48–60x monthly profit multiples from digital business acquirers.' : multiplier >= 36 ? 'At 36x monthly profit, your website sits in the mid-tier acquisition range. Accelerating growth to 40%+ unlocks the next multiple band.' : 'Below 20% annual growth, websites typically trade at 24–30x monthly profit. Focused content and SEO investment can shift this significantly.'},
+          {title: s.margin >= 50 ? 'High profit margin strengthens your negotiating position.' : 'Profit margin is the key value lever.',
+           text: s.margin >= 50 ? 'A 50%+ profit margin is exceptional for a content website and adds a quality premium to the headline multiple.' : 'Reducing hosting, content creation and tooling costs to push margin above 40% can meaningfully increase your exit multiple.'},
+          {title: 'Website valuations are multiple-driven.',
+           text: 'Buyers pay for predictable profit, not just revenue. Diversifying traffic (SEO + social + email), adding recurring revenue, and demonstrating consistent growth all push multiples higher.'}
+        );
+        renderChart(labels, [
+          {label:'Website valuation', data:valArr, color:'#00d4ff', fill:true},
+          {label:'Annual revenue', data:revArr2, color:'#4fa3ff', fill:false},
+          {label:'Annual profit', data:profArr2, color:'#00e676', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta);
+        const ms6 = labels.map((l,i)=>({year:i+1, value:valArr[i], note:`${fmtShort(profArr2[i])} annual profit`}));
+        const mp6 = [0, Math.floor(labels.length*0.33), Math.floor(labels.length*0.66), labels.length-1];
+        const mu6 = [...new Set(mp6)].slice(0,4);
+        $('timelineTitle').textContent = cfg.timelineTitle; $('timelineMeta').textContent = cfg.timelineMeta;
+        $('timelineGrid').innerHTML = mu6.map(i=>ms6[i]).filter(Boolean).map(item=>`
+          <div class="milestone"><div class="m-year">Year ${item.year}</div><div class="m-amount">${fmtShort(item.value)}</div><div class="m-note">${item.note}</div></div>`).join('');
+      }
+    }
+
+    function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smooth', block:'start'}); }
+    function openAdvisor(){ window.open('https://investpercent.com','_blank'); }
+    function copySummary(){
+      const summary = `investpercent Digital Assets Dashboard
+Mode: ${CALCS[active].label}
+Value: ${$('wealthNumber').textContent}
+${$('stat1Label').textContent}: ${$('stat1Value').textContent}
+${$('stat2Label').textContent}: ${$('stat2Value').textContent}
+${$('stat3Label').textContent}: ${$('stat3Value').textContent}`;
+      navigator.clipboard.writeText(summary).then(()=>{
+        const old = $('miniInsight').textContent;
+        $('miniInsight').textContent = 'Summary Copied!';
+        setTimeout(()=> $('miniInsight').textContent = old, 1500);
+      });
+    }
+
+    initState();
+    renderTabs();
+    renderControls();
+    update();
+  </script>
+  <script>
+    fetch("components/navbar.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+        const currentPath = window.location.pathname.split("/").pop() || "index.html";
+        const links = document.querySelectorAll(".nav a, .mobile-drawer a");
+        links.forEach(link => {
+          const href = link.getAttribute("href");
+          if (href === currentPath) {
+            link.classList.add("active");
+          }
+        });
+      });
+
+    function toggleMenu(){
+      document.getElementById("mobileDrawer")?.classList.toggle("open");
+    }
+  </script>
+</body>
+</html>
