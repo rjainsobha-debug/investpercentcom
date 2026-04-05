@@ -408,6 +408,38 @@
     .score-chip-lg.high{color:var(--green);border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.09)}
     .score-chip-lg.medium{color:var(--gold);border-color:rgba(255,215,106,.3);background:rgba(255,215,106,.08)}
     .score-chip-lg.low{color:var(--red);border-color:rgba(255,96,125,.3);background:rgba(255,96,125,.07)}
+
+    /* ── ADVISOR-FIRST: greeting banner ── */
+    .advisor-greeting{
+      margin-top:16px;padding:15px 20px;border-radius:18px;
+      background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(0,230,118,.05));
+      border:1px solid rgba(0,212,255,.15);line-height:1.7;
+      font-size:15px;font-weight:600;color:var(--text);
+      opacity:0;transform:translateY(10px);
+      transition:opacity .55s ease,transform .55s ease;
+    }
+    .advisor-greeting.visible{opacity:1;transform:none}
+    .advisor-greeting .ag-amount{color:var(--green);font-weight:800;font-size:16px}
+
+    /* ── Why This Plan section ── */
+    .why-plan{padding:14px 16px;border-radius:18px;margin-top:8px;
+      background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06)}
+    .why-plan-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.06em;margin-bottom:10px}
+    .why-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:7px}
+    .why-row:last-child{margin-bottom:0}
+    .why-icon{font-size:14px;margin-top:1px;flex-shrink:0}
+    .why-text{font-size:13px;color:#c8d8ff;line-height:1.5}
+    .why-text strong{color:var(--text);font-weight:700}
+
+    /* ── CTA subtext ── */
+    .cta-subtext{font-size:11px;color:rgba(7,17,32,.55);font-weight:600;margin-top:4px;text-align:center;letter-spacing:.01em}
+
+    /* ── Count-up / first impression ── */
+    @keyframes countFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    .wealth-card{animation:countFadeIn .5s ease .2s both}
+    .ai-card{animation:countFadeIn .5s ease .5s both}
+    .score-band{animation:countFadeIn .45s ease .35s both}
   </style>
 </head>
 <body>
@@ -456,10 +488,15 @@
         <div class="hero-copy">
           <h1>Savings <span class="grad">Planning Dashboard</span></h1>
           <p>All safe savings tools in one place — Fixed Deposits, Government Schemes, and Inflation-adjusted planning.</p>
+          <!-- STEP 1: dynamic advisor greeting -->
+          <div class="advisor-greeting" id="advisorGreeting"></div>
         </div>
         <div class="hero-cta">
-          <button class="btn primary" onclick="scrollToControls()">Start Planning</button>
-          <button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
+          <div>
+            <button class="btn primary" onclick="openLeadModal(null)">Get My Personal Plan (Free)</button>
+            <div class="cta-subtext">Takes 30 seconds &bull; No spam</div>
+          </div>
+          <button class="btn secondary" onclick="scrollToControls()">Explore the Calculator</button>
         </div>
       </div>
 
@@ -562,6 +599,8 @@
             </div>
           </div>
           <div id="aiAutoOutput"></div>
+          <!-- STEP 6: Why This Plan section -->
+          <div id="whyPlanSection"></div>
         </div>
 
         <!-- ═══ AI CHAT BOX ═══ -->
@@ -813,7 +852,8 @@
 
     function onProfileChange(){
       Object.assign(userProfile, readProfileForm());
-      updateRecBar(); /* ADD 5: smart auto trigger on profile change */
+      updateRecBar();           /* ADD 5: smart auto trigger */
+      updateAdvisorGreeting();  /* STEP 1: refresh greeting when profile changes */
     }
 
     /* ═══ RULE-BASED AI CHAT ENGINE ═══ */
@@ -1791,10 +1831,11 @@
 
       runAutoAdvisor();
 
-      /* ADD 5: smart auto trigger on every slider/calc change */
+      /* ADD 5 + STEP 1: smart auto triggers on every slider/calc change */
       updateRecBar();
       renderGoalProgress();
       renderConfidenceScore();
+      updateAdvisorGreeting(); /* STEP 1: refresh projection when sliders move */
     }
 
     /* ═══════════════════════════════════════════
@@ -1811,7 +1852,10 @@
       const hasData = monthly || pro.risk || pro.goal;
 
       if(!hasData){
-        bar.classList.remove("visible");
+        /* STEP 4: always show a smart default recommendation */
+        $("recBarText").innerHTML = `💡 <strong>Smart default</strong> for a medium-risk investor saving ₹15,000/month → SIP&nbsp;<strong>60%</strong>&nbsp;(₹9,000) &nbsp;|&nbsp; FD&nbsp;<strong>25%</strong>&nbsp;(₹3,750) &nbsp;|&nbsp; RD&nbsp;<strong>15%</strong>&nbsp;(₹2,250)`;
+        bar.classList.add("visible");
+        _recBarPlan = {alloc:{fd:25,rd:15,sip:60,nsc:0,scss:0},monthly:15000,horizon:10,recMode:"compare"};
         return;
       }
       bar.classList.add("visible");
@@ -1972,7 +2016,10 @@
       </div>`;
     }
 
+    let _lastAlloc = []; /* tracks last aiAlloc call for renderWhyPlan */
+
     function aiAlloc(splits){
+      _lastAlloc = splits; /* STEP 6: capture for Why This Plan */
       const bars = splits.map(([pct,label,color])=>
         `<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
           <div style="width:${pct*1.5}px;min-width:24px;height:10px;border-radius:999px;background:${color}"></div>
@@ -2474,6 +2521,7 @@
 
       rows.push(aiCTA());
       out.innerHTML = rows.join("");
+      renderWhyPlan(_lastAlloc); /* STEP 6: always render Why This Plan */
     }
 
     /* ═══════════════════════════════════════════
@@ -2498,13 +2546,94 @@ via justinvesting.in`;
     }
 
     /* ═══════════════════════════════════════════
-       BOOT
+       ADVISOR-FIRST STEP 7: Smart Default Profile
+    ═══════════════════════════════════════════ */
+    function setDefaultProfile(){
+      if(localStorage.getItem("ip_userProfile")) return; /* honour saved profile */
+      const def = {age:30, income:75000, savings:15000, risk:"Medium", goal:"Medium"};
+      Object.assign(userProfile, def);
+      $("pp_age").value     = def.age;
+      $("pp_income").value  = def.income;
+      $("pp_savings").value = def.savings;
+      $("pp_risk").value    = def.risk;
+      $("pp_goal").value    = def.goal;
+    }
+
+    /* ═══════════════════════════════════════════
+       ADVISOR-FIRST STEP 2: Auto detect best mode
+    ═══════════════════════════════════════════ */
+    function _autoApplyBestMode(){
+      const pro  = userProfile;
+      const risk = pro.risk || "Medium";
+      const age  = pro.age  || 30;
+      let best;
+      if(age >= 60)           best = "scss";
+      else if(risk === "Low") best = "nsc";
+      else                    best = "compare"; /* Medium + High → compare (SIP-dominant) */
+      if(best !== active) switchTab(best);
+    }
+
+    /* ═══════════════════════════════════════════
+       ADVISOR-FIRST STEP 1: Dynamic hero greeting
+    ═══════════════════════════════════════════ */
+    function updateAdvisorGreeting(){
+      const el = $("advisorGreeting");
+      if(!el) return;
+      const pro      = userProfile;
+      const savings  = pro.savings || 15000;
+      const r12      = 12 / 12 / 100;
+      const fv10     = Math.round(savings * (Math.pow(1+r12,120)-1)/r12 * (1+r12));
+      const fv15     = Math.round(savings * (Math.pow(1+r12,180)-1)/r12 * (1+r12));
+      /* try to get name from lead form if already filled */
+      const leadEl   = $("leadName");
+      const leadName = leadEl ? leadEl.value.trim() : "";
+      const greeting = leadName
+        ? `👋 ${leadName}, based on your profile:`
+        : "👋 Based on your current savings rate:";
+      el.innerHTML = `${greeting}<br>
+        <span class="ag-amount">${fmtShort(fv10)} – ${fmtShort(fv15)}</span> is what you can potentially build in 10–15 years — investing just <strong>${fmtCurrency(savings)}/month</strong>.`;
+      el.classList.add("visible");
+    }
+
+    /* ═══════════════════════════════════════════
+       ADVISOR-FIRST STEP 6: Why This Plan section
+    ═══════════════════════════════════════════ */
+    function renderWhyPlan(splits){
+      const el = $("whyPlanSection");
+      if(!el || !splits || splits.length === 0) return;
+      const db = {
+        "Equity SIP": { icon:"📈", text:"<strong>SIP</strong> quietly beats inflation over time — your money compounds at 12%+ annually, turning ₹ invested into long-term wealth." },
+        "SIP":        { icon:"📈", text:"<strong>SIP</strong> quietly beats inflation over time — your money compounds at 12%+ annually, turning ₹ invested into long-term wealth." },
+        "FD":         { icon:"🛡️", text:"<strong>Fixed Deposit</strong> protects your capital with a guaranteed return — the foundation of any stable savings plan." },
+        "RD":         { icon:"💰", text:"<strong>Recurring Deposit</strong> builds the discipline of saving a fixed amount every month — small, consistent deposits that compound." },
+        "NSC":        { icon:"🏛️", text:"<strong>NSC</strong> locks in a government-backed rate with a Section 80C tax benefit — safe, predictable, and tax-smart." },
+        "SCSS":       { icon:"👴", text:"<strong>SCSS</strong> gives senior citizens the highest guaranteed quarterly income from any government scheme." },
+        "Gold":       { icon:"🌟", text:"<strong>Gold</strong> acts as a natural hedge — it tends to rise when markets fall, protecting your overall portfolio." },
+        "Liquid Fund":{ icon:"💧", text:"<strong>Liquid Fund</strong> keeps your emergency buffer working — earning 5–6% vs 3% in a savings account, while staying fully accessible." },
+        "FD/NSC":     { icon:"🏛️", text:"<strong>FD/NSC</strong> anchors your portfolio with guaranteed, government-backed returns to balance equity volatility." },
+      };
+      const rows = splits.map(([, name]) => {
+        const r = db[name] || db["SIP"];
+        return `<div class="why-row"><div class="why-icon">${r.icon}</div><div class="why-text">${r.text}</div></div>`;
+      }).join("");
+      el.innerHTML = `<div class="why-plan"><div class="why-plan-title">Why this plan?</div>${rows}</div>`;
+    }
+
+    /* ═══════════════════════════════════════════
+       BOOT — ADVISOR-FIRST SEQUENCE
     ═══════════════════════════════════════════ */
     initState();
     renderTabs();
     renderControls();
-    update();
-    loadProfile(); /* restore saved user profile */
+    loadProfile();            /* restore saved profile first */
+    setDefaultProfile();      /* STEP 7: smart defaults if no saved profile */
+    _autoApplyBestMode();     /* STEP 2: switch to the best calculator for this user */
+    update();                 /* full render in the correct mode */
+
+    /* STEP 1 + 3: fade in greeting + AI after a short delay */
+    setTimeout(function(){
+      updateAdvisorGreeting();
+    }, 800);
 
     /* ═══════════════════════════════════════════
        LEVEL 3 — AI ADVISOR + LEAD ENGINE
