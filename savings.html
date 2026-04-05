@@ -358,9 +358,7 @@
   </div>
 
   <script>
-  const CALCS<script>
-
-let state = {};
+  let state = {};
 let active = "fd";
 
 function init(){
@@ -688,19 +686,21 @@ miniInsight.innerText = o.power;
 }
 
 /* CHART */
-function drawChart(years,value){
-let labels=[],data=[];
-for(let i=1;i<=years;i++){
-labels.push("Year "+i);
-data.push(value*i/years);
-}
+function drawChart(labels,datasets){
 
 if(chart) chart.destroy();
 
 chart=new Chart(document.getElementById("wealthChart"),{
 type:"line",
-data:{labels,datasets:[{data,borderColor:"#00d4ff"}]},
-options:{plugins:{legend:{display:false}}}
+data:{labels,datasets},
+options:{
+plugins:{legend:{display:true}},
+interaction:{mode:"index",intersect:false},
+scales:{
+x:{ticks:{color:"#9da9c6"}},
+y:{ticks:{color:"#9da9c6"}}
+}
+}
 });
 }
 
@@ -723,8 +723,13 @@ stat3:{label:'Total',value:fmtCurrency(v)},
 mood:"Safe",
 power:"Stable"
 });
-drawChart(s.years,v);
-}
+drawChart(
+Array.from({length:s.years},(_,i)=>"Year "+(i+1)),
+[
+{label:"FD Growth",data:Array.from({length:s.years},(_,i)=>s.amount*Math.pow(1+s.rate/100,i+1)),borderColor:"#00d4ff"},
+{label:"Principal",data:Array.from({length:s.years},()=>s.amount),borderColor:"#ffd76a"}
+]
+);
 
 if(active==="rd"){
 let r = s.rate/12/100;
@@ -742,8 +747,13 @@ stat3:{label:'Total',value:fmtCurrency(v)},
 mood:"Disciplined",
 power:"Consistency"
 });
-drawChart(s.years,v);
-}
+drawChart(
+Array.from({length:s.years},(_,i)=>"Year "+(i+1)),
+[
+{label:"RD Value",data:Array.from({length:s.years},(_,i)=>s.monthly*12*(i+1)),borderColor:"#00e676"},
+{label:"Investment",data:Array.from({length:s.years},(_,i)=>s.monthly*12*(i+1)),borderColor:"#ffd76a"}
+]
+);
 
 if(active==="nsc" || active==="scss" || active==="post"){
 let v = s.amount*Math.pow(1+s.rate/100,s.years);
