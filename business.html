@@ -12,162 +12,80 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root{
-      --bg:#060915;
-      --bg2:#0b1224;
-      --panel:#0f1830;
-      --panel2:#121e3c;
-      --soft:#18284d;
-      --line:rgba(255,255,255,.08);
-      --line2:rgba(255,255,255,.13);
-      --text:#f7fbff;
-      --muted:#9da9c6;
-      --cyan:#00d4ff;
-      --blue:#4fa3ff;
-      --violet:#7b61ff;
-      --green:#00e676;
-      --gold:#ffd76a;
-      --red:#ff607d;
-      --shadow:0 22px 70px rgba(0,0,0,.38);
-      --shadow2:0 12px 34px rgba(0,0,0,.24);
-      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
-      --hero:
-        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
-        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
-        linear-gradient(180deg,#070c18 0%,#091224 100%);
+      --bg:#060915;--bg2:#0b1224;--panel:#0f1830;--panel2:#121e3c;--soft:#18284d;
+      --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);--text:#f7fbff;--muted:#9da9c6;
+      --cyan:#00d4ff;--blue:#4fa3ff;--violet:#7b61ff;--green:#00e676;--gold:#ffd76a;--red:#ff607d;
+      --shadow:0 22px 70px rgba(0,0,0,.38);--shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%);
+      --hero:radial-gradient(circle at 16% 20%,rgba(0,212,255,.18),transparent 28%),radial-gradient(circle at 88% 12%,rgba(123,97,255,.18),transparent 24%),linear-gradient(180deg,#070c18 0%,#091224 100%);
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family:Inter,system-ui,sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
-        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
-        var(--bg);
-      min-height:100vh;
-      overflow-x:hidden;
-    }
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background-image:
-        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-      background-size:34px 34px;
-      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
-      z-index:0;
-    }
-    a{text-decoration:none;color:inherit}
-    button,input{font:inherit}
+    *{box-sizing:border-box}html,body{margin:0;padding:0}
+    body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(0,212,255,.06),transparent 18%),radial-gradient(circle at bottom right,rgba(123,97,255,.08),transparent 22%),var(--bg);min-height:100vh;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 92%);z-index:0}
+    a{text-decoration:none;color:inherit}button,input,select{font:inherit}
     .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:18px 18px 38px}
-
-    .hero{
-      background:var(--hero);border:1px solid var(--line);border-radius:32px;padding:28px;
-      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:18px
-    }
-    .hero::after{
-      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
-      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
-      filter:blur(14px);pointer-events:none
-    }
+    .hero{background:var(--hero);border:1px solid var(--line);border-radius:32px;padding:28px;box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:18px}
+    .hero::after{content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.18),transparent 62%);filter:blur(14px);pointer-events:none}
     .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
-    .hero-copy h1{
-      margin:0;font-family:Poppins,sans-serif;font-size:clamp(34px,5vw,58px);
-      line-height:1.02;letter-spacing:-.045em;max-width:840px
-    }
+    .hero-copy h1{margin:0;font-family:Poppins,sans-serif;font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:-.045em;max-width:840px}
     .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
     .hero-copy p{margin:14px 0 0;color:var(--muted);font-size:18px;max-width:760px;line-height:1.6}
     .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{
-      border:none;cursor:pointer;border-radius:14px;padding:13px 18px;font-weight:800;transition:.2s ease
-    }
+    .btn{border:none;cursor:pointer;border-radius:14px;padding:13px 18px;font-weight:800;transition:.2s ease}
     .btn:hover{transform:translateY(-1px)}
     .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
     .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
     .tabbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-    .tab{
-      background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
-      padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease
-    }
+    .tab{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease}
     .tab:hover{color:var(--text);border-color:var(--line2)}
     .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
     .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:14px}
-    .metric-card{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--line);border-radius:22px;padding:18px;min-height:110px;position:relative;overflow:hidden
-    }
-    .metric-card::before{
-      content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
-      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
-    }
+    .metric-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:22px;padding:18px;min-height:110px;position:relative;overflow:hidden}
+    .metric-card::before{content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.06),transparent 60%);pointer-events:none}
     .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
     .metric-value{font-size:clamp(28px,3vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1}
-    .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)}
+    .metric-value.cyan{color:var(--cyan)}.metric-value.green{color:var(--green)}.metric-value.gold{color:var(--gold)}
     .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
     .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:18px;margin-top:18px}
-    .panel{
-      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
-      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
-    }
+    .panel{background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)}
     .controls{padding:22px;position:relative;overflow:hidden}
-    .controls::after{
-      content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
-      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
-    }
+    .controls::after{content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(123,97,255,.12),transparent 60%);pointer-events:none}
     .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
     .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
     .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
     .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
-    .control-group{
-      margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
-    }
+    .control-group{margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
     .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
     .control-name{font-size:14px;font-weight:700;color:var(--text)}
     .control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
+    .control-hint{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.45}
     input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
-    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
-    input[type=range]::-webkit-slider-thumb{
-      appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
-      border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
-    }
-    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
-    input[type=range]::-moz-range-thumb{
-      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
-    }
+    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
+    input[type=range]::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)}
+    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
+    input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)}
+    .ctrl-select{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line2);border-radius:12px;color:var(--cyan);padding:10px 14px;font-size:14px;font-weight:700;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239da9c6' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+    .ctrl-select option{background:#0f1830;color:#f7fbff}
+    .ctrl-toggle{padding:8px 18px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-size:13px;font-weight:800;cursor:pointer;transition:.2s ease;white-space:nowrap;user-select:none}
+    .ctrl-toggle.active{background:var(--grad);color:#071120;border-color:transparent}
     .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
     .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
     .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
     .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
-    .advisor-card{
-      margin-top:18px;padding:18px;border-radius:20px;
-      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
-      border:1px solid rgba(255,255,255,.1)
-    }
+    .advisor-card{margin-top:18px;padding:18px;border-radius:20px;background:radial-gradient(circle at top left,rgba(0,212,255,.18),transparent 36%),linear-gradient(135deg,rgba(79,163,255,.12),rgba(123,97,255,.14));border:1px solid rgba(255,255,255,.1)}
     .advisor-card h4{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.03em}
     .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
     .advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
     .advisor-actions .btn{flex:1;min-width:150px}
     .dashboard{padding:18px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:780px}
     .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
-    .wealth-card,.insight-card,.chart-card,.timeline-card{
-      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
-    }
-    .wealth-card{
-      padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:188px;
-      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
-    }
+    .wealth-card,.insight-card,.chart-card,.timeline-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px}
+    .wealth-card{padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:188px;background:radial-gradient(circle at 20% 20%,rgba(0,212,255,.14),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02))}
     .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
     .wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
     .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
-    .wealth-number{
-      font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff
-    }
-    .wealth-number .grad{
-      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
-      -webkit-background-clip:text;background-clip:text;color:transparent
-    }
+    .wealth-number{font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff}
+    .wealth-number .grad{background:linear-gradient(135deg,#ffffff 0%,#9feeff 38%,#00e676 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
     .wealth-sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:660px}
     .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
     .wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
@@ -183,10 +101,7 @@
     .chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
     .chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
     .legend{display:flex;gap:12px;flex-wrap:wrap}
-    .legend-item{
-      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;
-      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px
-    }
+    .legend-item{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px}
     .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
     .chart-wrap{position:relative;flex:1;min-height:280px;margin-top:8px}
     .timeline-card{padding:18px}
@@ -198,23 +113,8 @@
     .m-amount{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
     .m-note{color:#8390b1;font-size:13px;line-height:1.45}
     .hidden{display:none !important}
-    @media(max-width:1180px){
-      .top-metrics{grid-template-columns:1fr 1fr}
-      .layout{grid-template-columns:1fr}
-      .dashboard{min-height:auto}
-      .dash-top{grid-template-columns:1fr}
-      .timeline-grid{grid-template-columns:1fr 1fr}
-    }
-    @media(max-width:760px){
-      .page{padding:12px 12px 28px}
-      .nav{padding:14px}
-      .hero{padding:18px}
-      .controls,.dashboard{padding:16px}
-      .wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
-      .hero-copy p{font-size:15px}
-      .metric-value{font-size:30px}
-      .wealth-number{font-size:42px}
-    }
+    @media(max-width:1180px){.top-metrics{grid-template-columns:1fr 1fr}.layout{grid-template-columns:1fr}.dashboard{min-height:auto}.dash-top{grid-template-columns:1fr}.timeline-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:760px){.page{padding:12px 12px 28px}.nav{padding:14px}.hero{padding:18px}.controls,.dashboard{padding:16px}.wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}.hero-copy p{font-size:15px}.metric-value{font-size:30px}.wealth-number{font-size:42px}}
   </style>
 </head>
 <body>
@@ -232,9 +132,7 @@
           <button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
         </div>
       </div>
-
       <div class="tabbar" id="tabs"></div>
-
       <div class="top-metrics">
         <div class="metric-card">
           <div class="metric-label">Current mode</div>
@@ -244,17 +142,17 @@
         <div class="metric-card">
           <div class="metric-label">Primary output</div>
           <div class="metric-value green" id="topProjected">—</div>
-          <div class="metric-sub">At current settings</div>
+          <div class="metric-sub" id="topProjectedLabel">At current settings</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Secondary output</div>
           <div class="metric-value cyan" id="topGains">—</div>
-          <div class="metric-sub">Derived metric</div>
+          <div class="metric-sub" id="topGainsLabel">Derived metric</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Key rate / ratio</div>
           <div class="metric-value gold" id="topRate">—</div>
-          <div class="metric-sub">Reference figure</div>
+          <div class="metric-sub" id="topRateLabel">Reference figure</div>
         </div>
       </div>
     </section>
@@ -264,13 +162,11 @@
         <div class="panel-head">
           <div>
             <div class="panel-title">Control Panel</div>
-            <div class="panel-desc" id="controlDesc">Tune your business inputs. Your dashboard updates instantly.</div>
+            <div class="panel-desc" id="controlDesc">Tune your business inputs. Dashboard updates instantly.</div>
           </div>
           <div class="badge" id="panelBadge">BREAK-EVEN</div>
         </div>
-
         <div id="dynamicControls"></div>
-
         <div class="mini-grid">
           <div class="mini">
             <div class="k">Business health</div>
@@ -281,7 +177,6 @@
             <div class="v" id="miniInsight">—</div>
           </div>
         </div>
-
         <div class="advisor-card">
           <h4>Ready to move from analysis to action?</h4>
           <p>Use the dashboard to model your business scenarios, then take the next step with a guided financial conversation.</p>
@@ -318,7 +213,6 @@
               </div>
             </div>
           </div>
-
           <div class="insight-card">
             <div class="insight-title">Business Insights</div>
             <div class="insight-box"><strong id="insight1Title"></strong><span id="insight1Text"></span></div>
@@ -326,7 +220,6 @@
             <div class="insight-box"><strong id="insight3Title"></strong><span id="insight3Text"></span></div>
           </div>
         </div>
-
         <div class="chart-card">
           <div class="chart-head">
             <div>
@@ -335,11 +228,8 @@
             </div>
             <div class="legend" id="chartLegend"></div>
           </div>
-          <div class="chart-wrap">
-            <canvas id="wealthChart"></canvas>
-          </div>
+          <div class="chart-wrap"><canvas id="wealthChart"></canvas></div>
         </div>
-
         <div class="timeline-card">
           <div class="timeline-head">
             <div>
@@ -353,741 +243,963 @@
     </section>
   </div>
 
-  <script>
-    const CALCS = {
-      breakEven: {
-        label: "Break-Even",
-        badge: "BREAK-EVEN",
-        title: "Break-Even Analyzer",
-        sub: "Find the exact units and revenue needed to cover all costs.",
-        desc: "Tune fixed cost, variable cost and selling price. Dashboard updates instantly.",
-        wealthTitle: "Break-Even Performance",
-        wealthPill: "Cost Analysis",
-        chartTitle: "Revenue vs. Total Cost Curve",
-        chartMeta: "At break-even point revenue line crosses total cost — profit begins beyond that.",
-        timelineTitle: "Production Milestones",
-        timelineMeta: "Key unit volume checkpoints and their financial position.",
-        controls: [
-          {id:"fixedCost", label:"Fixed Cost (₹)", min:10000, max:10000000, step:10000, value:500000, format:"currency"},
-          {id:"varCost", label:"Variable Cost per Unit (₹)", min:10, max:50000, step:10, value:200, format:"currency"},
-          {id:"sellPrice", label:"Selling Price per Unit (₹)", min:50, max:100000, step:50, value:500, format:"currency"}
-        ]
-      },
-      profitMargin: {
-        label: "Profit Margin",
-        badge: "MARGIN MODE",
-        title: "Profit Margin Calculator",
-        sub: "Quantify your revenue, cost and resulting profit margin percentage.",
-        desc: "Enter your revenue and cost to instantly see your margin and profitability.",
-        wealthTitle: "Profit & Margin Analysis",
-        wealthPill: "P&L View",
-        chartTitle: "Revenue vs. Cost Breakdown",
-        chartMeta: "Visualizing how much of your revenue translates into actual profit.",
-        timelineTitle: "Revenue Checkpoints",
-        timelineMeta: "How margin and profit evolve at different revenue scales.",
-        controls: [
-          {id:"revenue", label:"Revenue (₹)", min:10000, max:100000000, step:10000, value:1000000, format:"currency"},
-          {id:"cost", label:"Total Cost (₹)", min:5000, max:90000000, step:5000, value:700000, format:"currency"}
-        ]
-      },
-      roi: {
-        label: "ROI",
-        badge: "ROI MODE",
-        title: "Return on Investment",
-        sub: "Measure how effectively your capital generates returns.",
-        desc: "Enter your investment and return to calculate ROI percentage.",
-        wealthTitle: "ROI Performance",
-        wealthPill: "Capital Return",
-        chartTitle: "Investment vs. Return Curve",
-        chartMeta: "How your return grows relative to investment at different capital levels.",
-        timelineTitle: "ROI Milestones",
-        timelineMeta: "Key investment size checkpoints and their return projections.",
-        controls: [
-          {id:"investment", label:"Investment (₹)", min:10000, max:100000000, step:10000, value:500000, format:"currency"},
-          {id:"returnAmt", label:"Total Return (₹)", min:10000, max:200000000, step:10000, value:800000, format:"currency"}
-        ]
-      },
-      startupValuation: {
-        label: "Valuation",
-        badge: "VALUATION",
-        title: "Startup Valuation Estimator",
-        sub: "Estimate your startup's value based on revenue, growth and industry multiplier.",
-        desc: "Model your valuation using revenue, growth rate and sector multiple.",
-        wealthTitle: "Estimated Valuation",
-        wealthPill: "VC Lens",
-        chartTitle: "Valuation Sensitivity Curve",
-        chartMeta: "How your valuation shifts as revenue scales at current growth and multiple.",
-        timelineTitle: "Valuation Milestones",
-        timelineMeta: "Valuation projections at different revenue levels.",
-        controls: [
-          {id:"revenue", label:"Annual Revenue (₹)", min:100000, max:100000000, step:100000, value:5000000, format:"currency"},
-          {id:"growthRate", label:"Growth Rate (%)", min:1, max:300, step:1, value:50, format:"percent"},
-          {id:"multiplier", label:"Industry Multiplier (x)", min:1, max:10, step:0.5, value:5, format:"multiplier"}
-        ]
-      },
-      loanEligibility: {
-        label: "Loan",
-        badge: "LOAN MODE",
-        title: "Business Loan Eligibility",
-        sub: "Estimate how much business credit you can access based on your cash flow.",
-        desc: "Enter monthly revenue, expenses and existing EMI to see your loan potential.",
-        wealthTitle: "Loan Eligibility Result",
-        wealthPill: "Credit Analysis",
-        chartTitle: "Cash Flow vs. EMI Capacity",
-        chartMeta: "How your net cash flow creates headroom for business loan repayment.",
-        timelineTitle: "Loan Milestones",
-        timelineMeta: "EMI and loan amount at different revenue scenarios.",
-        controls: [
-          {id:"monthlyRev", label:"Monthly Revenue (₹)", min:10000, max:10000000, step:10000, value:500000, format:"currency"},
-          {id:"monthlyExp", label:"Monthly Expenses (₹)", min:5000, max:9000000, step:5000, value:300000, format:"currency"},
-          {id:"existingEmi", label:"Existing EMI (₹)", min:0, max:500000, step:1000, value:20000, format:"currency"}
-        ]
-      },
-      cashFlow: {
-        label: "Cash Flow",
-        badge: "CASH FLOW",
-        title: "Cash Flow Projection",
-        sub: "Project net cash position month-over-month for planning and risk management.",
-        desc: "Set monthly revenue, expenses and duration to map your cash trajectory.",
-        wealthTitle: "Cash Flow Outlook",
-        wealthPill: "Monthly Projection",
-        chartTitle: "Cumulative Cash Flow Projection",
-        chartMeta: "Month-by-month net cash position and cumulative balance over your chosen period.",
-        timelineTitle: "Cash Flow Milestones",
-        timelineMeta: "Cumulative cash balance at key intervals.",
-        controls: [
-          {id:"monthlyRev", label:"Monthly Revenue (₹)", min:10000, max:10000000, step:10000, value:500000, format:"currency"},
-          {id:"monthlyExp", label:"Monthly Expenses (₹)", min:5000, max:9000000, step:5000, value:350000, format:"currency"},
-          {id:"months", label:"Projection Period", min:3, max:60, step:1, value:12, format:"months"}
-        ]
-      },
-      unitEconomics: {
-        label: "Unit Economics",
-        badge: "UNIT ECON",
-        title: "Unit Economics Analyzer",
-        sub: "Measure LTV/CAC ratio and payback period to validate your business model.",
-        desc: "Enter CAC, LTV, revenue per user and churn to assess unit economics health.",
-        wealthTitle: "Unit Economics Health",
-        wealthPill: "SaaS / Growth Lens",
-        chartTitle: "LTV vs. CAC Recovery Curve",
-        chartMeta: "How quickly your customer lifetime value recovers the acquisition cost.",
-        timelineTitle: "Unit Economics Milestones",
-        timelineMeta: "Cumulative value per customer at different time horizons.",
-        controls: [
-          {id:"cac", label:"CAC — Customer Acquisition Cost (₹)", min:100, max:500000, step:100, value:5000, format:"currency"},
-          {id:"ltv", label:"LTV — Lifetime Value (₹)", min:100, max:5000000, step:100, value:25000, format:"currency"},
-          {id:"revenuePerUser", label:"Monthly Revenue per User (₹)", min:10, max:50000, step:10, value:1000, format:"currency"},
-          {id:"churn", label:"Monthly Churn (%)", min:0.1, max:30, step:0.1, value:5, format:"percent"}
-        ]
-      },
-      gstTracker: {
-        label: "GST Tracker",
-        badge: "GST MODE",
-        title: "GST Turnover Tracker",
-        sub: "Monitor your annual turnover relative to GST registration thresholds.",
-        desc: "Adjust monthly sales across 12 months to track annual turnover and GST status.",
-        wealthTitle: "Annual Turnover & GST Status",
-        wealthPill: "Compliance Lens",
-        chartTitle: "Monthly Sales & Cumulative Turnover",
-        chartMeta: "Month-by-month sales buildup and when your business crosses GST thresholds.",
-        timelineTitle: "Turnover Milestones",
-        timelineMeta: "Quarterly cumulative turnover checkpoints and GST threshold proximity.",
-        controls: [
-          {id:"jan", label:"January Sales (₹)", min:0, max:5000000, step:5000, value:200000, format:"currency"},
-          {id:"feb", label:"February Sales (₹)", min:0, max:5000000, step:5000, value:220000, format:"currency"},
-          {id:"mar", label:"March Sales (₹)", min:0, max:5000000, step:5000, value:250000, format:"currency"},
-          {id:"apr", label:"April Sales (₹)", min:0, max:5000000, step:5000, value:230000, format:"currency"},
-          {id:"may", label:"May Sales (₹)", min:0, max:5000000, step:5000, value:210000, format:"currency"},
-          {id:"jun", label:"June Sales (₹)", min:0, max:5000000, step:5000, value:240000, format:"currency"},
-          {id:"jul", label:"July Sales (₹)", min:0, max:5000000, step:5000, value:260000, format:"currency"},
-          {id:"aug", label:"August Sales (₹)", min:0, max:5000000, step:5000, value:270000, format:"currency"},
-          {id:"sep", label:"September Sales (₹)", min:0, max:5000000, step:5000, value:280000, format:"currency"},
-          {id:"oct", label:"October Sales (₹)", min:0, max:5000000, step:5000, value:300000, format:"currency"},
-          {id:"nov", label:"November Sales (₹)", min:0, max:5000000, step:5000, value:320000, format:"currency"},
-          {id:"dec", label:"December Sales (₹)", min:0, max:5000000, step:5000, value:350000, format:"currency"}
-        ]
-      }
-    };
-
-    let state = {};
-    let active = 'breakEven';
-    let chart;
-
-    const $ = id => document.getElementById(id);
-
-    const GST_THRESHOLD_STANDARD = 2000000;
-    const GST_THRESHOLD_SPECIAL = 1000000;
-    const GST_THRESHOLD_SERVICE = 2000000;
-
-    function formatValue(v, kind){
-      v = Number(v);
-      if(kind === 'currency') return '₹' + Math.round(v).toLocaleString('en-IN');
-      if(kind === 'percent') return Number(v).toFixed(1).replace('.0','') + '%';
-      if(kind === 'months') return Math.round(v) + ' Months';
-      if(kind === 'multiplier') return Number(v).toFixed(1) + 'x';
-      return v;
+<script>
+  /* ─── CALCULATORS CONFIG ─────────────────────────────────────────── */
+  const CALCS = {
+    breakEven: {
+      label:"Break-Even", badge:"BREAK-EVEN", title:"Break-Even Analyzer Pro",
+      sub:"Units, revenue, target profit, safety margin and months to break-even.",
+      desc:"Tune fixed cost, variable cost, selling price, target profit and capacity.",
+      wealthTitle:"Break-Even Performance", wealthPill:"Cost Analysis",
+      chartTitle:"Revenue vs. Total Cost vs. Target Profit",
+      chartMeta:"Revenue line crosses total cost at break-even. Target profit zone is above that.",
+      timelineTitle:"Production Milestones", timelineMeta:"Financial position at key unit volume checkpoints.",
+      controls:[
+        {id:"fixedCost",  label:"Fixed Cost",             min:10000,    max:10000000, step:10000, value:500000,  format:"currency", hint:"Rent, salaries, insurance — costs that don't change with volume"},
+        {id:"varCost",    label:"Variable Cost per Unit",  min:10,       max:50000,    step:10,    value:200,     format:"currency", hint:"Materials, packaging, per-unit labour"},
+        {id:"sellPrice",  label:"Selling Price per Unit",  min:50,       max:100000,   step:50,    value:500,     format:"currency", hint:"Your current or planned selling price"},
+        {id:"targetProfit",label:"Target Profit",          min:0,        max:5000000,  step:10000, value:200000,  format:"currency", hint:"How much profit do you want to earn beyond break-even?"},
+        {id:"monthCap",   label:"Monthly Capacity (units)",min:100,      max:100000,   step:100,   value:2000,    format:"units",    hint:"Maximum units your business can produce or sell per month"},
+        {id:"safetyBuf",  label:"Safety Buffer",           min:0,        max:40,       step:1,     value:15,      format:"percent",  hint:"Comfortable cushion above break-even point"}
+      ]
+    },
+    profitMargin: {
+      label:"Profit Margin", badge:"MARGIN MODE", title:"Profit Margin Pro",
+      sub:"Gross profit, net profit before/after tax, margin and operating ratio.",
+      desc:"Enter revenue, cost, tax rate, other income and pricing leakage.",
+      wealthTitle:"Profit & Margin Analysis", wealthPill:"P&L View",
+      chartTitle:"Revenue Breakdown at Scale",
+      chartMeta:"How revenue, cost, pre-tax and post-tax profit evolve as you scale.",
+      timelineTitle:"Revenue Scale Checkpoints", timelineMeta:"Margin and profit at different revenue levels.",
+      controls:[
+        {id:"revenue",    label:"Revenue",                 min:10000,    max:100000000,step:10000, value:1000000, format:"currency", hint:"Total top-line sales revenue"},
+        {id:"cost",       label:"Total Cost",              min:5000,     max:90000000, step:5000,  value:700000,  format:"currency", hint:"All operating costs combined"},
+        {id:"otherIncome",label:"Other Income",            min:0,        max:10000000, step:5000,  value:50000,   format:"currency", hint:"Rental income, interest, grants, etc."},
+        {id:"discount",   label:"Pricing Leakage / Discount",min:0,      max:30,       step:0.5,   value:5,       format:"percent",  hint:"Revenue lost to discounts, returns, or pricing gaps"},
+        {id:"taxRate",    label:"Effective Tax Rate",      min:0,        max:40,       step:0.5,   value:25,      format:"percent",  hint:"Corporate / income tax rate applicable"}
+      ]
+    },
+    roi: {
+      label:"ROI", badge:"ROI MODE", title:"ROI Analyzer Pro",
+      sub:"Absolute, annualized and inflation-adjusted return on investment.",
+      desc:"Model investment, return, holding period, maintenance, exit costs and inflation.",
+      wealthTitle:"ROI Performance", wealthPill:"Capital Return",
+      chartTitle:"Gross vs. Net vs. Real Return",
+      chartMeta:"How maintenance costs, exit costs and inflation erode gross ROI over the holding period.",
+      timelineTitle:"Capital Milestones", timelineMeta:"Return projections at different investment scales.",
+      controls:[
+        {id:"investment", label:"Investment",              min:10000,    max:100000000,step:10000, value:500000,  format:"currency", hint:"Total capital deployed including setup"},
+        {id:"returnAmt",  label:"Total Return (Gross)",    min:10000,    max:200000000,step:10000, value:800000,  format:"currency", hint:"Expected total cash received back"},
+        {id:"timePeriod", label:"Holding Period",          min:1,        max:120,      step:1,     value:24,      format:"months",   hint:"Months until the investment is realised"},
+        {id:"annualMaint",label:"Annual Maintenance Cost", min:0,        max:5000000,  step:5000,  value:30000,   format:"currency", hint:"Recurring annual cost of maintaining this investment"},
+        {id:"exitCost",   label:"Exit Cost",               min:0,        max:15,       step:0.5,   value:3,       format:"percent",  hint:"Brokerage, legal, or closing costs as % of return"},
+        {id:"inflation",  label:"Inflation Rate",          min:0,        max:15,       step:0.5,   value:6,       format:"percent",  hint:"Annual inflation used to compute real return"}
+      ]
+    },
+    startupValuation: {
+      label:"Valuation", badge:"VALUATION", title:"Startup Valuation Pro",
+      sub:"Conservative, base and aggressive risk-adjusted valuation range.",
+      desc:"Model revenue, growth, multiple, EBITDA, revenue type, founder risk and burn.",
+      wealthTitle:"Risk-Adjusted Valuation", wealthPill:"VC Lens",
+      chartTitle:"Conservative / Base / Aggressive Valuation Range",
+      chartMeta:"How adjustments to risk factors pull valuation above or below the base multiple.",
+      timelineTitle:"Valuation at Revenue Milestones", timelineMeta:"How valuation shifts as your revenue scales.",
+      controls:[
+        {id:"revenue",    label:"Annual Revenue",          min:100000,   max:100000000,step:100000,value:5000000, format:"currency", hint:"Current annualised revenue run rate"},
+        {id:"growthRate", label:"Revenue Growth Rate",     min:1,        max:300,      step:1,     value:60,      format:"percent",  hint:"YoY growth rate — higher growth commands premium multiples"},
+        {id:"multiplier", label:"Industry Revenue Multiple",min:1,       max:15,       step:0.5,   value:5,       format:"multiplier",hint:"Typical revenue multiple in your sector (SaaS: 5-10x, retail: 1-2x)"},
+        {id:"ebitdaMgn",  label:"EBITDA Margin",           min:-50,      max:60,       step:1,     value:15,      format:"percent",  hint:"Strong EBITDA margin (+20%) improves valuation quality"},
+        {id:"custConc",   label:"Customer Concentration",  min:0,        max:100,      step:5,     value:30,      format:"percent",  hint:"Revenue from top 3 customers as % of total — high = fragile"},
+        {id:"burnMult",   label:"Burn Multiple",           min:0.1,      max:5,        step:0.1,   value:1.5,     format:"multiplier",hint:"Net Burn / Net New ARR — lower is better (< 1 = efficient)"},
+        {id:"revenueType",label:"Revenue Type",            format:"select",value:"mixed",
+          options:[{v:"recurring",l:"Recurring (SaaS / Subscriptions)"},{v:"mixed",l:"Mixed (Recurring + Transactional)"},{v:"transactional",l:"Transactional (One-time / Project)"}],
+          hint:"Recurring revenue commands 20-30% premium over transactional"},
+        {id:"founderDep", label:"Founder Dependency",      format:"select",value:"medium",
+          options:[{v:"low",l:"Low — Strong management team"},{v:"medium",l:"Medium — Partially founder-led"},{v:"high",l:"High — Founder-critical"}],
+          hint:"High founder dependency is a significant investor risk discount"}
+      ]
+    },
+    loanEligibility: {
+      label:"Loan", badge:"LOAN MODE", title:"Loan Eligibility Pro",
+      sub:"Safe, aggressive and stress-tested loan eligibility with EMI-to-income ratio.",
+      desc:"Model revenue, expenses, credit score, collateral and interest rate.",
+      wealthTitle:"Loan Eligibility Result", wealthPill:"Credit Analysis",
+      chartTitle:"EMI Capacity vs. Loan Eligibility",
+      chartMeta:"Safe and aggressive eligibility at current and stress-tested income levels.",
+      timelineTitle:"Loan Scenarios", timelineMeta:"Eligibility at different revenue levels and risk bands.",
+      controls:[
+        {id:"monthlyRev", label:"Monthly Revenue",         min:10000,    max:10000000, step:10000, value:500000,  format:"currency", hint:"Average monthly revenue over last 3-6 months"},
+        {id:"monthlyExp", label:"Monthly Operating Expenses",min:5000,   max:9000000,  step:5000,  value:300000,  format:"currency", hint:"All fixed and variable monthly expenses"},
+        {id:"existingEmi",label:"Existing EMI Obligations",min:0,        max:500000,   step:1000,  value:20000,   format:"currency", hint:"Total EMI you already pay each month"},
+        {id:"loanTenure", label:"Loan Tenure",             min:6,        max:120,      step:6,     value:48,      format:"months",   hint:"How many months you want to repay the loan over"},
+        {id:"interestRate",label:"Interest Rate",          min:6,        max:24,       step:0.5,   value:14,      format:"percent",  hint:"Annual interest rate on the business loan"},
+        {id:"creditScore",label:"Credit Score Band",       format:"select",value:"good",
+          options:[{v:"poor",l:"Poor (< 650)"},{v:"fair",l:"Fair (650–699)"},{v:"good",l:"Good (700–749)"},{v:"excellent",l:"Excellent (750+)"}],
+          hint:"A good credit score significantly improves loan eligibility multiplier"},
+        {id:"collateral", label:"Collateral Available",    format:"toggle",value:false,
+          hint:"Property, equipment or assets pledged increase lender confidence"},
+        {id:"gstFiled",   label:"GST Filed Regularly",     format:"toggle",value:true,
+          hint:"Regular GST filing improves lender confidence and eligibility"}
+      ]
+    },
+    cashFlow: {
+      label:"Cash Flow", badge:"CASH FLOW", title:"Cash Flow Projection Pro",
+      sub:"Monthly cash dynamics with growth, one-time expenses, seasonality and runway.",
+      desc:"Model revenue growth, expense growth, opening balance, one-time events and seasonality.",
+      wealthTitle:"Cash Flow Outlook", wealthPill:"Monthly Projection",
+      chartTitle:"Revenue, Expenses & Cash Flow Projection",
+      chartMeta:"Month-by-month revenue, expense, net flow and cumulative cash balance.",
+      timelineTitle:"Cash Flow Milestones", timelineMeta:"Cumulative cash balance at key intervals.",
+      controls:[
+        {id:"monthlyRev", label:"Starting Monthly Revenue",min:10000,    max:10000000, step:10000, value:500000,  format:"currency", hint:"Revenue in Month 1 — grows by growth rate each month"},
+        {id:"monthlyExp", label:"Starting Monthly Expenses",min:5000,    max:9000000,  step:5000,  value:350000,  format:"currency", hint:"Expenses in Month 1 — grows by growth rate each month"},
+        {id:"openingBal", label:"Opening Cash Balance",    min:0,        max:10000000, step:50000, value:500000,  format:"currency", hint:"Cash in bank at the start of the projection"},
+        {id:"revGrowth",  label:"Monthly Revenue Growth",  min:-5,       max:20,       step:0.5,   value:3,       format:"percent",  hint:"Expected % revenue growth each month"},
+        {id:"expGrowth",  label:"Monthly Expense Growth",  min:-5,       max:15,       step:0.5,   value:1,       format:"percent",  hint:"Expected % expense growth each month"},
+        {id:"months",     label:"Projection Period",       min:3,        max:60,       step:1,     value:12,      format:"months",   hint:"Number of months to project"},
+        {id:"oneTimeMonth",label:"One-Time Expense Month", min:1,        max:60,       step:1,     value:6,       format:"month",    hint:"Month in which a large one-time expense occurs"},
+        {id:"oneTimeAmt", label:"One-Time Expense Amount", min:0,        max:5000000,  step:10000, value:100000,  format:"currency", hint:"Large one-time capex or exceptional expense amount"},
+        {id:"seasonality",label:"Seasonality Pattern",     format:"select",value:"none",
+          options:[{v:"none",l:"None — Flat growth"},{v:"mild",l:"Mild — ±15% seasonal swings"},{v:"high",l:"High — ±30% seasonal swings"}],
+          hint:"Seasonal patterns create peaks and troughs in monthly cash flow"}
+      ]
+    },
+    unitEconomics: {
+      label:"Unit Economics", badge:"UNIT ECON", title:"Unit Economics Pro",
+      sub:"LTV/CAC, payback, contribution margin, adjusted LTV and gross profit per user.",
+      desc:"Model CAC, LTV, gross margin, support costs, expansion and commission drag.",
+      wealthTitle:"Unit Economics Health", wealthPill:"SaaS / Growth Lens",
+      chartTitle:"CAC Recovery & Adjusted LTV Curve",
+      chartMeta:"Month-by-month cumulative contribution per customer — when you recover CAC and reach full LTV.",
+      timelineTitle:"Unit Economics Milestones", timelineMeta:"Customer value at key time horizons.",
+      controls:[
+        {id:"cac",        label:"CAC — Customer Acquisition Cost",min:100,max:500000,  step:100,   value:5000,    format:"currency", hint:"All costs to acquire one paying customer (ads, sales, onboarding)"},
+        {id:"ltv",        label:"LTV — Lifetime Value",           min:100,max:5000000, step:100,   value:25000,   format:"currency", hint:"Total revenue expected from one customer over their lifetime"},
+        {id:"revPerUser", label:"Monthly Revenue per User",       min:10, max:50000,   step:10,    value:1000,    format:"currency", hint:"Average monthly recurring revenue per active customer"},
+        {id:"churn",      label:"Monthly Churn Rate",             min:0.1,max:30,      step:0.1,   value:5,       format:"percent",  hint:"% of customers lost each month — 2-3% is healthy for SaaS"},
+        {id:"grossMgn",   label:"Gross Margin",                   min:10, max:95,      step:1,     value:70,      format:"percent",  hint:"Revenue minus direct cost of serving the customer"},
+        {id:"supportCost",label:"Monthly Support Cost per User",  min:0,  max:10000,   step:50,    value:100,     format:"currency", hint:"Customer success, infrastructure, helpdesk cost per user"},
+        {id:"expansion",  label:"Annual Expansion Revenue",       min:0,  max:50,      step:1,     value:10,      format:"percent",  hint:"Upsell/cross-sell uplift per existing customer per year"},
+        {id:"commission", label:"Sales Commission",               min:0,  max:30,      step:0.5,   value:8,       format:"percent",  hint:"Commission as % of CAC or deal value — adds to acquisition cost"}
+      ]
+    },
+    gstTracker: {
+      label:"GST Tracker", badge:"GST MODE", title:"GST Turnover Tracker Pro",
+      sub:"Taxable vs. exempt turnover, threshold cross month and compliance status.",
+      desc:"Track 12 monthly sales with business type, state category and exemption split.",
+      wealthTitle:"Annual Turnover & GST Status", wealthPill:"Compliance Lens",
+      chartTitle:"Monthly Sales & Cumulative Turnover",
+      chartMeta:"Monthly sales, cumulative turnover and taxable turnover — GST threshold shown as reference.",
+      timelineTitle:"Quarterly Turnover Breakdown", timelineMeta:"Cumulative turnover at quarter-end checkpoints.",
+      controls:[
+        {id:"bizType",    label:"Business Type",           format:"select",value:"services",
+          options:[{v:"goods",l:"Goods / Manufacturing"},{v:"services",l:"Services"},{v:"mixed",l:"Mixed (Goods + Services)"}]},
+        {id:"stateType",  label:"State Category",          format:"select",value:"normal",
+          options:[{v:"normal",l:"Normal State"},{v:"special",l:"Special Category State (NE / Hill states)"}]},
+        {id:"gstReg",     label:"Already GST Registered",  format:"toggle",value:false, hint:"Toggle on if you are already voluntarily registered"},
+        {id:"exemptPct",  label:"Exempt Sales %",          min:0,  max:100, step:5,  value:0,  format:"percent", hint:"% of sales that are GST-exempt (e.g. agricultural produce, healthcare)"},
+        {id:"jan",label:"January Sales",  min:0,max:5000000,step:5000,value:200000,format:"currency"},
+        {id:"feb",label:"February Sales", min:0,max:5000000,step:5000,value:220000,format:"currency"},
+        {id:"mar",label:"March Sales",    min:0,max:5000000,step:5000,value:280000,format:"currency"},
+        {id:"apr",label:"April Sales",    min:0,max:5000000,step:5000,value:230000,format:"currency"},
+        {id:"may",label:"May Sales",      min:0,max:5000000,step:5000,value:210000,format:"currency"},
+        {id:"jun",label:"June Sales",     min:0,max:5000000,step:5000,value:240000,format:"currency"},
+        {id:"jul",label:"July Sales",     min:0,max:5000000,step:5000,value:260000,format:"currency"},
+        {id:"aug",label:"August Sales",   min:0,max:5000000,step:5000,value:270000,format:"currency"},
+        {id:"sep",label:"September Sales",min:0,max:5000000,step:5000,value:280000,format:"currency"},
+        {id:"oct",label:"October Sales",  min:0,max:5000000,step:5000,value:300000,format:"currency"},
+        {id:"nov",label:"November Sales", min:0,max:5000000,step:5000,value:320000,format:"currency"},
+        {id:"dec",label:"December Sales", min:0,max:5000000,step:5000,value:350000,format:"currency"}
+      ]
     }
-    function fmtCurrency(v){ return '₹' + Math.round(v).toLocaleString('en-IN'); }
-    function fmtShort(v){
-      if(Math.abs(v) >= 10000000) return '₹' + (v/10000000).toFixed(2).replace(/\.00$/,'') + ' Cr';
-      if(Math.abs(v) >= 100000) return '₹' + (v/100000).toFixed(2).replace(/\.00$/,'') + ' L';
-      return fmtCurrency(v);
-    }
-    function fmtNum(v, decimals){
-      return Number(v).toFixed(decimals !== undefined ? decimals : 2);
-    }
+  };
 
-    function initState(){
-      Object.keys(CALCS).forEach(key=>{
-        state[key]={};
-        CALCS[key].controls.forEach(c=> state[key][c.id]=c.value);
+  /* ─── STATE & GLOBALS ─────────────────────────────────────────────── */
+  let state = {};
+  let active = 'breakEven';
+  let chart;
+  const $ = id => document.getElementById(id);
+
+  /* ─── FORMATTERS ──────────────────────────────────────────────────── */
+  function fmtCurrency(v){ return '₹' + Math.round(v).toLocaleString('en-IN'); }
+  function fmtShort(v){
+    v = Number(v);
+    if(isNaN(v)) return '—';
+    const sign = v < 0 ? '-' : '';
+    const abs = Math.abs(v);
+    if(abs >= 10000000) return sign + '₹' + (abs/10000000).toFixed(2).replace(/\.00$/,'') + ' Cr';
+    if(abs >= 100000)   return sign + '₹' + (abs/100000).toFixed(2).replace(/\.00$/,'') + ' L';
+    if(abs >= 1000)     return sign + '₹' + (abs/1000).toFixed(1).replace(/\.0$/,'') + 'K';
+    return sign + fmtCurrency(abs);
+  }
+  function fmtPct(v, d=1){ return isFinite(v) ? Number(v).toFixed(d).replace(/\.0$/,'') + '%' : '—'; }
+  function fmtNum(v, d=2){ return isFinite(v) ? Number(v).toFixed(d) : '—'; }
+  function fmtUnits(v){ return Math.round(v).toLocaleString('en-IN') + ' units'; }
+  function safe(v){ return (!isFinite(v) || isNaN(v)) ? 0 : v; }
+  function safeDiv(n, d, fallback){ return (d && isFinite(d) && d !== 0) ? n/d : fallback !== undefined ? fallback : 0; }
+
+  function formatValue(v, kind){
+    v = Number(v);
+    if(kind === 'currency')   return fmtCurrency(v);
+    if(kind === 'percent')    return fmtPct(v);
+    if(kind === 'months')     return Math.round(v) + ' Mo';
+    if(kind === 'month')      return 'Month ' + Math.round(v);
+    if(kind === 'multiplier') return Number(v).toFixed(1) + 'x';
+    if(kind === 'units')      return Math.round(v).toLocaleString('en-IN') + ' units/mo';
+    return v;
+  }
+
+  /* ─── STATE INIT ──────────────────────────────────────────────────── */
+  function initState(){
+    Object.keys(CALCS).forEach(key=>{
+      state[key] = {};
+      CALCS[key].controls.forEach(c=>{
+        state[key][c.id] = c.value;
       });
-    }
+    });
+  }
 
-    function renderTabs(){
-      $('tabs').innerHTML = Object.entries(CALCS).map(([key, cfg]) =>
-        `<button class="tab ${key===active?'active':''}" data-key="${key}">${cfg.label}</button>`
-      ).join('');
-      document.querySelectorAll('.tab').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          active = btn.dataset.key;
-          renderTabs();
-          renderControls();
+  /* ─── TABS ────────────────────────────────────────────────────────── */
+  function renderTabs(){
+    $('tabs').innerHTML = Object.entries(CALCS).map(([key, cfg]) =>
+      `<button class="tab ${key===active?'active':''}" data-key="${key}">${cfg.label}</button>`
+    ).join('');
+    document.querySelectorAll('.tab').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        active = btn.dataset.key;
+        renderTabs(); renderControls(); update();
+      });
+    });
+  }
+
+  /* ─── CONTROLS RENDERER ───────────────────────────────────────────── */
+  function renderControls(){
+    const cfg = CALCS[active];
+    $('panelBadge').textContent   = cfg.badge;
+    $('controlDesc').textContent  = cfg.desc;
+    $('modeHeadline').textContent = cfg.title;
+    $('modeSub').textContent      = cfg.sub;
+
+    $('dynamicControls').innerHTML = cfg.controls.map(c => buildControlHtml(c)).join('');
+
+    cfg.controls.forEach(c=>{
+      if(c.format === 'select'){
+        const el = $('ctrl-'+c.id);
+        if(el) el.addEventListener('change', e=>{
+          state[active][c.id] = e.target.value;
           update();
         });
-      });
-    }
-
-    function renderControls(){
-      const cfg = CALCS[active];
-      $('panelBadge').textContent = cfg.badge;
-      $('controlDesc').textContent = cfg.desc;
-      $('modeHeadline').textContent = cfg.title;
-      $('modeSub').textContent = cfg.sub;
-
-      $('dynamicControls').innerHTML = cfg.controls.map(c=>`
-        <div class="control-group">
-          <div class="control-top">
-            <div class="control-name">${c.label}</div>
-            <div class="control-value" id="view-${c.id}">${formatValue(state[active][c.id], c.format)}</div>
-          </div>
-          <input type="range" id="ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${state[active][c.id]}">
-        </div>
-      `).join('');
-
-      cfg.controls.forEach(c=>{
-        $(`ctrl-${c.id}`).addEventListener('input', e=>{
+      } else if(c.format === 'toggle'){
+        const el = $('ctrl-'+c.id);
+        if(el) el.addEventListener('click', ()=>{
+          state[active][c.id] = !state[active][c.id];
+          el.textContent = state[active][c.id] ? 'Yes' : 'No';
+          el.classList.toggle('active', state[active][c.id]);
+          update();
+        });
+      } else {
+        const el = $('ctrl-'+c.id);
+        if(el) el.addEventListener('input', e=>{
           state[active][c.id] = Number(e.target.value);
-          $(`view-${c.id}`).textContent = formatValue(state[active][c.id], c.format);
+          const view = $('view-'+c.id);
+          if(view) view.textContent = formatValue(state[active][c.id], c.format);
           update();
         });
-      });
+      }
+    });
+  }
+
+  function buildControlHtml(c){
+    const hint = c.hint ? `<div class="control-hint">${c.hint}</div>` : '';
+    if(c.format === 'select'){
+      const opts = c.options.map(o=>`<option value="${o.v}" ${state[active][c.id]===o.v?'selected':''}>${o.l}</option>`).join('');
+      return `<div class="control-group">
+        <div class="control-top"><div class="control-name">${c.label}</div></div>
+        <select class="ctrl-select" id="ctrl-${c.id}">${opts}</select>
+        ${hint}
+      </div>`;
     }
-
-    function setTop(primary, secondary, rate){
-      $('topProjected').textContent = primary;
-      $('topGains').textContent = secondary;
-      $('topRate').textContent = rate;
-    }
-
-    function setInsights(a,b,c){
-      $('insight1Title').textContent = a.title; $('insight1Text').textContent = a.text;
-      $('insight2Title').textContent = b.title; $('insight2Text').textContent = b.text;
-      $('insight3Title').textContent = c.title; $('insight3Text').textContent = c.text;
-    }
-
-    function setPerformanceArea({title, pill, value, narrative, stat1, stat2, stat3, mood, power}){
-      $('wealthTitle').textContent = title;
-      $('wealthPill').textContent = pill;
-      $('wealthNumber').textContent = value;
-      $('wealthNarrative').textContent = narrative;
-      $('stat1Label').textContent = stat1.label; $('stat1Value').textContent = stat1.value;
-      $('stat2Label').textContent = stat2.label; $('stat2Value').textContent = stat2.value;
-      $('stat3Label').textContent = stat3.label; $('stat3Value').textContent = stat3.value;
-      $('miniMood').textContent = mood;
-      $('miniInsight').textContent = power;
-    }
-
-    function renderChart(labels, series, title, meta){
-      $('chartTitle').textContent = title;
-      $('chartMeta').textContent = meta;
-      $('chartLegend').innerHTML = series.map(s=>`
-        <div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>
-      `).join('');
-
-      const ctx = $('wealthChart').getContext('2d');
-      const gradient = ctx.createLinearGradient(0,0,0,360);
-      gradient.addColorStop(0, 'rgba(0,212,255,.28)');
-      gradient.addColorStop(.55, 'rgba(79,163,255,.12)');
-      gradient.addColorStop(1, 'rgba(79,163,255,0)');
-
-      if(chart) chart.destroy();
-      chart = new Chart(ctx, {
-        type:'line',
-        data:{
-          labels,
-          datasets:series.map((s, idx)=>({
-            label:s.label,
-            data:s.data,
-            borderColor:s.color,
-            backgroundColor: idx===0 ? gradient : 'transparent',
-            fill: !!s.fill,
-            borderWidth: idx===0 ? 3 : 2.2,
-            pointRadius: idx===0 ? 2 : 0,
-            pointHoverRadius: 5,
-            pointBackgroundColor: s.color,
-            pointBorderColor: '#08111f',
-            tension:.38
-          }))
-        },
-        options:{
-          responsive:true,
-          maintainAspectRatio:false,
-          interaction:{mode:'index',intersect:false},
-          plugins:{
-            legend:{display:false},
-            tooltip:{
-              backgroundColor:'rgba(7,12,28,.96)',
-              borderColor:'rgba(255,255,255,.08)',
-              borderWidth:1,
-              titleColor:'#fff',
-              bodyColor:'#dce6ff',
-              padding:12,
-              callbacks:{ label:(ctx)=>`${ctx.dataset.label}: ${typeof ctx.raw === 'number' && ctx.raw > 999 ? fmtCurrency(ctx.raw) : ctx.raw}` }
-            }
-          },
-          scales:{
-            x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:12}}},
-            y:{
-              beginAtZero:true,
-              grid:{color:'rgba(255,255,255,.06)'},
-              ticks:{color:'rgba(220,230,255,.55)',font:{size:12}, callback:(v)=>fmtShort(v)}
-            }
-          }
-        }
-      });
-    }
-
-    function renderMilestones(title, meta, items){
-      $('timelineTitle').textContent = title;
-      $('timelineMeta').textContent = meta;
-      $('timelineGrid').innerHTML = items.map(item=>`
-        <div class="milestone">
-          <div class="m-year">${item.label}</div>
-          <div class="m-amount">${item.value}</div>
-          <div class="m-note">${item.note}</div>
+    if(c.format === 'toggle'){
+      const val = state[active][c.id];
+      return `<div class="control-group">
+        <div class="control-top">
+          <div class="control-name">${c.label}</div>
+          <div class="ctrl-toggle ${val?'active':''}" id="ctrl-${c.id}">${val?'Yes':'No'}</div>
         </div>
-      `).join('');
+        ${hint}
+      </div>`;
     }
+    return `<div class="control-group">
+      <div class="control-top">
+        <div class="control-name">${c.label}</div>
+        <div class="control-value" id="view-${c.id}">${formatValue(state[active][c.id], c.format)}</div>
+      </div>
+      <input type="range" id="ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${state[active][c.id]}">
+      ${hint}
+    </div>`;
+  }
 
-    function update(){
-      const s = state[active];
-      const cfg = CALCS[active];
-      $('modeHeadline').textContent = cfg.title;
-      $('modeSub').textContent = cfg.sub;
-
-      if(active === 'breakEven'){
-        const contribution = s.sellPrice - s.varCost;
-        const beUnits = contribution > 0 ? Math.ceil(s.fixedCost / contribution) : Infinity;
-        const beRevenue = beUnits * s.sellPrice;
-        const margin = ((contribution / s.sellPrice) * 100);
-
-        const maxUnits = beUnits < Infinity ? beUnits * 2 : 1000;
-        const step = Math.max(1, Math.ceil(maxUnits / 10));
-        const labels = [], revData = [], totalCostData = [], profitData = [];
-        for(let u = 0; u <= maxUnits; u += step){
-          labels.push(u.toLocaleString('en-IN') + ' units');
-          revData.push(Math.round(u * s.sellPrice));
-          totalCostData.push(Math.round(s.fixedCost + u * s.varCost));
-          profitData.push(Math.round(u * s.sellPrice - s.fixedCost - u * s.varCost));
+  /* ─── DISPLAY HELPERS ─────────────────────────────────────────────── */
+  function setTop(primary, secondary, rate, labels){
+    $('topProjected').textContent = primary;
+    $('topGains').textContent     = secondary;
+    $('topRate').textContent      = rate;
+    if(labels){
+      if(labels[0]) $('topProjectedLabel').textContent = labels[0];
+      if(labels[1]) $('topGainsLabel').textContent     = labels[1];
+      if(labels[2]) $('topRateLabel').textContent      = labels[2];
+    }
+  }
+  function setInsights(a, b, c){
+    $('insight1Title').textContent = a.title; $('insight1Text').textContent = a.text;
+    $('insight2Title').textContent = b.title; $('insight2Text').textContent = b.text;
+    $('insight3Title').textContent = c.title; $('insight3Text').textContent = c.text;
+  }
+  function setPerformanceArea({title,pill,value,narrative,stat1,stat2,stat3,mood,power}){
+    $('wealthTitle').textContent   = title;
+    $('wealthPill').textContent    = pill;
+    $('wealthNumber').textContent  = value;
+    $('wealthNarrative').textContent = narrative;
+    $('stat1Label').textContent = stat1.label; $('stat1Value').textContent = stat1.value;
+    $('stat2Label').textContent = stat2.label; $('stat2Value').textContent = stat2.value;
+    $('stat3Label').textContent = stat3.label; $('stat3Value').textContent = stat3.value;
+    $('miniMood').textContent    = mood;
+    $('miniInsight').textContent = power;
+  }
+  function renderChart(labels, series, title, meta){
+    $('chartTitle').textContent = title;
+    $('chartMeta').textContent  = meta;
+    $('chartLegend').innerHTML  = series.map(s=>`<div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>`).join('');
+    const ctx = $('wealthChart').getContext('2d');
+    const gradient = ctx.createLinearGradient(0,0,0,360);
+    gradient.addColorStop(0, 'rgba(0,212,255,.28)');
+    gradient.addColorStop(.55,'rgba(79,163,255,.12)');
+    gradient.addColorStop(1, 'rgba(79,163,255,0)');
+    if(chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type:'line',
+      data:{labels, datasets:series.map((s,idx)=>({
+        label:s.label, data:s.data, borderColor:s.color,
+        backgroundColor: idx===0 ? gradient : 'transparent',
+        fill:!!s.fill, borderWidth:idx===0?3:2.2, tension:.38,
+        pointRadius:idx===0?2:0, pointHoverRadius:5,
+        pointBackgroundColor:s.color, pointBorderColor:'#08111f',
+        borderDash: s.dashed ? [6,4] : []
+      }))},
+      options:{responsive:true,maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:false},tooltip:{
+          backgroundColor:'rgba(7,12,28,.96)',borderColor:'rgba(255,255,255,.08)',
+          borderWidth:1,titleColor:'#fff',bodyColor:'#dce6ff',padding:12,
+          callbacks:{label:(ctx)=>`${ctx.dataset.label}: ${typeof ctx.raw==='number' && Math.abs(ctx.raw)>999 ? fmtShort(ctx.raw) : ctx.raw}`}
+        }},
+        scales:{
+          x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:12}}},
+          y:{beginAtZero:false,grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)',font:{size:12},callback:(v)=>fmtShort(v)}}
         }
+      }
+    });
+  }
+  function renderMilestones(title, meta, items){
+    $('timelineTitle').textContent = title;
+    $('timelineMeta').textContent  = meta;
+    $('timelineGrid').innerHTML    = items.map(item=>`
+      <div class="milestone">
+        <div class="m-year">${item.label}</div>
+        <div class="m-amount">${item.value}</div>
+        <div class="m-note">${item.note}</div>
+      </div>`).join('');
+  }
 
-        setTop(
-          beUnits < Infinity ? beUnits.toLocaleString('en-IN') + ' units' : '∞',
-          beUnits < Infinity ? fmtShort(beRevenue) : '—',
-          fmtNum(margin, 1) + '%'
-        );
-        setPerformanceArea({
-          title: cfg.wealthTitle, pill: cfg.wealthPill,
-          value: beUnits < Infinity ? beUnits.toLocaleString('en-IN') + ' units' : '∞',
-          narrative: contribution > 0
-            ? `You need to sell ${beUnits.toLocaleString('en-IN')} units (generating ${fmtShort(beRevenue)}) to cover all fixed and variable costs.`
-            : 'Selling price is below variable cost — every unit sold deepens the loss.',
-          stat1:{label:'Fixed Cost', value: fmtShort(s.fixedCost)},
-          stat2:{label:'Break-Even Revenue', value: beUnits < Infinity ? fmtShort(beRevenue) : '—'},
-          stat3:{label:'Contribution Margin', value: fmtNum(margin,1) + '%'},
-          mood: margin > 40 ? 'Healthy Margins' : margin > 20 ? 'Moderate Margins' : 'Tight Margins',
-          power: contribution > 0 ? `₹${Math.round(contribution).toLocaleString('en-IN')} per unit` : 'Selling at a loss'
-        });
-        setInsights(
-          {title: contribution > 0 ? 'Break-even is achievable.' : 'Repricing required urgently.', text: contribution > 0 ? `You recover ₹${Math.round(contribution).toLocaleString('en-IN')} per unit after variable costs. Every unit beyond break-even is pure profit.` : 'Your selling price must exceed your variable cost per unit before fixed costs can even be addressed.'},
-          {title: 'Fixed cost structure matters.', text: `₹${fmtShort(s.fixedCost)} in fixed costs must be spread across all units. Higher volume lowers cost per unit and improves margins.`},
-          {title: margin > 40 ? 'Strong contribution margin.' : 'Consider pricing levers.', text: margin > 40 ? 'A high contribution margin gives you pricing flexibility and profitability resilience during volume dips.' : 'Raising prices or reducing variable costs will directly move the break-even point down and improve long-term profitability.'}
-        );
-        renderChart(labels, [
-          {label:'Revenue', data:revData, color:'#00d4ff', fill:true},
-          {label:'Total Cost', data:totalCostData, color:'#ff607d', fill:false},
-          {label:'Profit / Loss', data:profitData, color:'#00e676', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        const milestoneUnits = beUnits < Infinity
-          ? [Math.round(beUnits*0.25), Math.round(beUnits*0.5), beUnits, Math.round(beUnits*1.5)]
-          : [250, 500, 750, 1000];
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, milestoneUnits.map(u=>{
-          const rev = u * s.sellPrice;
-          const cost = s.fixedCost + u * s.varCost;
-          const pnl = rev - cost;
-          return {
-            label: u.toLocaleString('en-IN') + ' units',
-            value: fmtShort(Math.abs(pnl)),
-            note: pnl >= 0 ? `Profit of ${fmtShort(pnl)}` : `Loss of ${fmtShort(Math.abs(pnl))}`
-          };
-        }));
+  /* ─── MAIN UPDATE ─────────────────────────────────────────────────── */
+  function update(){
+    const s   = state[active];
+    const cfg = CALCS[active];
+    $('modeHeadline').textContent = cfg.title;
+    $('modeSub').textContent      = cfg.sub;
+
+    /* ── 1. BREAK-EVEN PRO ────────────────────────────────────── */
+    if(active === 'breakEven'){
+      const contribution = s.sellPrice - s.varCost;
+      const beUnits      = contribution > 0 ? Math.ceil(s.fixedCost / contribution) : Infinity;
+      const beRevenue    = beUnits * s.sellPrice;
+      const targetUnits  = contribution > 0 ? Math.ceil((s.fixedCost + s.targetProfit) / contribution) : Infinity;
+      const targetRev    = targetUnits * s.sellPrice;
+      const safetyUnits  = s.monthCap > 0 && beUnits < Infinity ? Math.max(0, s.monthCap - beUnits) : 0;
+      const marginSafety = s.monthCap > 0 && beUnits < Infinity ? Math.max(0, safeDiv(s.monthCap - beUnits, s.monthCap) * 100) : 0;
+      const bufferedBE   = contribution > 0 ? Math.ceil(s.fixedCost / contribution / (1 - s.safetyBuf/100)) : Infinity;
+      const monthsToBE   = s.monthCap > 0 && beUnits < Infinity ? Math.ceil(beUnits / s.monthCap) : Infinity;
+      const cMarginPct   = s.sellPrice > 0 ? contribution / s.sellPrice * 100 : 0;
+      const isFragile    = cMarginPct < 20 || beUnits > s.monthCap * 3;
+
+      const maxUnits     = beUnits < Infinity ? Math.max(targetUnits, s.monthCap) * 1.15 : s.monthCap * 2;
+      const step         = Math.max(1, Math.ceil(maxUnits / 10));
+      const labels=[], revD=[], costD=[], profitD=[], tpLine=[];
+      for(let u=0; u<=maxUnits; u+=step){
+        labels.push(Math.round(u).toLocaleString('en-IN') + ' u');
+        revD.push(Math.round(u * s.sellPrice));
+        costD.push(Math.round(s.fixedCost + u * s.varCost));
+        profitD.push(Math.round(u * s.sellPrice - s.fixedCost - u * s.varCost));
+        tpLine.push(safe(s.targetProfit));
       }
 
-      if(active === 'profitMargin'){
-        const profit = s.revenue - s.cost;
-        const marginPct = s.revenue > 0 ? (profit / s.revenue) * 100 : 0;
-        const markup = s.cost > 0 ? (profit / s.cost) * 100 : 0;
-
-        const revSteps = [0.2, 0.4, 0.6, 0.8, 1, 1.25, 1.5, 1.75, 2].map(x=>Math.round(s.revenue*x));
-        const labels = revSteps.map(v=>fmtShort(v));
-        const revData = revSteps;
-        const costData = revSteps.map(v=>Math.round((s.cost/s.revenue)*v));
-        const profitData = revSteps.map((v,i)=>v - costData[i]);
-
-        setTop(fmtShort(profit > 0 ? profit : 0), fmtNum(marginPct,1)+'%', fmtNum(markup,1)+'%');
-        setPerformanceArea({
-          title: cfg.wealthTitle, pill: cfg.wealthPill,
-          value: profit >= 0 ? fmtShort(profit) : '-'+fmtShort(Math.abs(profit)),
-          narrative: profit >= 0
-            ? `Your business is profitable. Generating ${fmtShort(s.revenue)} in revenue against ${fmtShort(s.cost)} in costs leaves you with a ${fmtNum(marginPct,1)}% net margin.`
-            : `Costs exceed revenue by ${fmtShort(Math.abs(profit))}. Reduce costs or grow revenue to achieve profitability.`,
-          stat1:{label:'Total Revenue', value: fmtShort(s.revenue)},
-          stat2:{label:'Profit / Loss', value: profit >= 0 ? fmtShort(profit) : '-'+fmtShort(Math.abs(profit))},
-          stat3:{label:'Profit Margin', value: fmtNum(marginPct,1)+'%'},
-          mood: profit > 0 ? marginPct > 20 ? 'Highly Profitable' : 'Profitable' : 'Operating at Loss',
-          power: profit > 0 ? `${fmtNum(marginPct,1)}% net margin` : 'Loss-making'
-        });
-        setInsights(
-          {title: profit > 0 ? 'You are profitable.' : 'Business is loss-making.', text: profit > 0 ? `Every ₹100 of revenue keeps ₹${fmtNum(marginPct,0)} after all costs. This is your room for reinvestment and growth.` : 'Total costs exceed revenue. Identify the largest cost drivers and explore pricing strategy or cost reduction.'},
-          {title: marginPct > 20 ? 'Strong margin profile.' : 'Margin improvement opportunity.', text: marginPct > 20 ? 'High margins give you resilience against market downturns and pricing pressure from competitors.' : 'A 5-point margin improvement can dramatically change your cash generation capacity at scale.'},
-          {title: 'Scale amplifies margin reality.', text: 'At higher revenues the same margin percentage creates exponentially more absolute profit — focus on unit economics before chasing volume.'}
-        );
-        renderChart(labels, [
-          {label:'Revenue', data:revData, color:'#00d4ff', fill:true},
-          {label:'Total Cost', data:costData, color:'#4fa3ff', fill:false},
-          {label:'Profit', data:profitData, color:'#00e676', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        const scalePoints = [0.5, 1, 1.5, 2].map(x=>{
-          const rev = Math.round(s.revenue*x);
-          const c = Math.round(s.cost*x);
-          const p = rev - c;
-          const m = rev > 0 ? (p/rev*100) : 0;
-          return {label:`${fmtShort(rev)} revenue`, value: p>=0?fmtShort(p):'-'+fmtShort(Math.abs(p)), note:`Margin: ${fmtNum(m,1)}%`};
-        });
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, scalePoints);
-      }
-
-      if(active === 'roi'){
-        const netReturn = s.returnAmt - s.investment;
-        const roiPct = s.investment > 0 ? (netReturn / s.investment) * 100 : 0;
-        const multiple = s.investment > 0 ? s.returnAmt / s.investment : 0;
-
-        const invSteps = [0.25,0.5,0.75,1,1.5,2,2.5,3].map(x=>Math.round(s.investment*x));
-        const labels = invSteps.map(v=>fmtShort(v));
-        const retData = invSteps.map(v=>Math.round(v * (s.returnAmt/s.investment)));
-        const profitData = retData.map((v,i)=>v - invSteps[i]);
-
-        setTop(fmtNum(roiPct,1)+'%', fmtShort(netReturn), fmtNum(multiple,2)+'x');
-        setPerformanceArea({
-          title: cfg.wealthTitle, pill: cfg.wealthPill,
-          value: fmtNum(roiPct,1)+'%',
-          narrative: `An investment of ${fmtShort(s.investment)} returning ${fmtShort(s.returnAmt)} delivers an ROI of ${fmtNum(roiPct,1)}% — a ${fmtNum(multiple,2)}x multiple on deployed capital.`,
-          stat1:{label:'Investment', value: fmtShort(s.investment)},
-          stat2:{label:'Net Gain', value: fmtShort(netReturn)},
-          stat3:{label:'Multiple', value: fmtNum(multiple,2)+'x'},
-          mood: roiPct > 50 ? 'Exceptional ROI' : roiPct > 20 ? 'Strong ROI' : roiPct > 0 ? 'Positive ROI' : 'Negative ROI',
-          power: `${fmtNum(roiPct,1)}% return`
-        });
-        setInsights(
-          {title: roiPct > 20 ? 'Strong capital efficiency.' : roiPct > 0 ? 'Positive return achieved.' : 'Capital is being destroyed.', text: roiPct > 0 ? `Your capital is generating a ${fmtNum(roiPct,1)}% return. Compare this to your cost of capital to assess true value creation.` : 'The return is below the original investment. Evaluate whether the business case assumptions need revisiting.'},
-          {title: 'Context determines quality.', text: 'An ROI of 20% over 1 year is exceptional. The same over 10 years may be underwhelming. Always factor in duration and risk when interpreting ROI.'},
-          {title: 'Multiple vs. ROI.', text: `A ${fmtNum(multiple,2)}x multiple means your capital came back ${fmtNum(multiple,2)} times. Net gain represents absolute wealth created — both metrics together paint the full picture.`}
-        );
-        renderChart(labels, [
-          {label:'Total Return', data:retData, color:'#00d4ff', fill:true},
-          {label:'Investment Base', data:invSteps, color:'#4fa3ff', fill:false},
-          {label:'Net Gain', data:profitData, color:'#00e676', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        const roiMilestones = [0.5, 1, 2, 3].map(x=>{
-          const inv = Math.round(s.investment*x);
-          const ret = Math.round(s.returnAmt*x);
-          const gain = ret - inv;
-          return {label:`${fmtShort(inv)} invested`, value: fmtShort(ret), note:`Gain: ${fmtShort(gain)}`};
-        });
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, roiMilestones);
-      }
-
-      if(active === 'startupValuation'){
-        const growthFactor = 1 + (s.growthRate / 100);
-        const valuation = s.revenue * s.multiplier * growthFactor;
-
-        const revSteps = [0.25,0.5,0.75,1,1.5,2,2.5,3].map(x=>Math.round(s.revenue*x));
-        const labels = revSteps.map(v=>fmtShort(v));
-        const valData = revSteps.map(v=>Math.round(v * s.multiplier * growthFactor));
-        const baseMultipleData = revSteps.map(v=>Math.round(v * s.multiplier));
-
-        setTop(fmtShort(valuation), fmtNum(s.multiplier,1)+'x', s.growthRate+'%');
-        setPerformanceArea({
-          title: cfg.wealthTitle, pill: cfg.wealthPill,
-          value: fmtShort(valuation),
-          narrative: `With ${fmtShort(s.revenue)} in revenue, a ${fmtNum(s.multiplier,1)}x industry multiple and ${s.growthRate}% growth rate, your startup's estimated valuation is ${fmtShort(valuation)}.`,
-          stat1:{label:'Annual Revenue', value: fmtShort(s.revenue)},
-          stat2:{label:'Base Multiple Val.', value: fmtShort(s.revenue * s.multiplier)},
-          stat3:{label:'Growth-Adj. Premium', value: fmtNum((growthFactor-1)*100,1)+'%'},
-          mood: valuation > 100000000 ? 'Unicorn Track' : valuation > 10000000 ? 'Strong Valuation' : 'Early Stage',
-          power: `${fmtNum(s.multiplier,1)}x revenue multiple`
-        });
-        setInsights(
-          {title: 'Valuation is growth-adjusted.', text: `A ${s.growthRate}% growth rate adds a premium to the base multiple valuation. High-growth startups command premium multiples from investors.`},
-          {title: 'Multiple reflects risk & market.', text: `A ${fmtNum(s.multiplier,1)}x multiple is your sector's premium. SaaS typically gets 5-10x, consumer goods 1-3x, and services 1-2x revenue multiples.`},
-          {title: 'Revenue quality matters.', text: 'Recurring revenue (subscriptions, retainers) commands higher multiples than transactional revenue. Gross margin also significantly impacts valuation.'}
-        );
-        renderChart(labels, [
-          {label:'Growth-Adj. Valuation', data:valData, color:'#00d4ff', fill:true},
-          {label:'Base Multiple Val.', data:baseMultipleData, color:'#4fa3ff', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        const valMilestones = [0.5, 1, 2, 3].map(x=>{
-          const rev = Math.round(s.revenue*x);
-          const val = Math.round(rev * s.multiplier * growthFactor);
-          return {label:`${fmtShort(rev)} revenue`, value: fmtShort(val), note:`At ${fmtNum(s.multiplier,1)}x + ${s.growthRate}% growth factor`};
-        });
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, valMilestones);
-      }
-
-      if(active === 'loanEligibility'){
-        const netIncome = s.monthlyRev - s.monthlyExp;
-        const dscr = s.existingEmi > 0 ? netIncome / s.existingEmi : netIncome > 0 ? Infinity : 0;
-        const availableForEmi = Math.max(0, netIncome * 0.5 - s.existingEmi);
-        const estimatedLoan = availableForEmi * 48;
-
-        const revSteps = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map(x=>Math.round(s.monthlyRev*x));
-        const labels = revSteps.map(v=>fmtShort(v)+'/mo');
-        const netData = revSteps.map(v=>Math.max(0, v - s.monthlyExp));
-        const emiCapData = revSteps.map(v=>Math.max(0, (v - s.monthlyExp)*0.5 - s.existingEmi));
-
-        setTop(fmtShort(estimatedLoan), fmtShort(availableForEmi)+'/mo', fmtShort(netIncome)+'/mo');
-        setPerformanceArea({
-          title: cfg.wealthTitle, pill: cfg.wealthPill,
-          value: fmtShort(estimatedLoan),
-          narrative: `Based on ₹${fmtShort(s.monthlyRev)} monthly revenue and ₹${fmtShort(s.monthlyExp)} expenses, your eligible EMI headroom is ${fmtShort(availableForEmi)} per month, supporting a loan of approximately ${fmtShort(estimatedLoan)}.`,
-          stat1:{label:'Net Monthly Income', value: fmtShort(netIncome)},
-          stat2:{label:'Eligible EMI', value: fmtShort(availableForEmi)+'/mo'},
-          stat3:{label:'Estimated Loan', value: fmtShort(estimatedLoan)},
-          mood: netIncome > 0 ? availableForEmi > 0 ? 'Loan Eligible' : 'Borderline Eligible' : 'Not Eligible',
-          power: availableForEmi > 0 ? `~${fmtShort(estimatedLoan)} credit` : 'Reduce expenses first'
-        });
-        setInsights(
-          {title: availableForEmi > 0 ? 'You have EMI headroom.' : 'Loan eligibility is constrained.', text: availableForEmi > 0 ? `With ₹${fmtShort(availableForEmi)} available for new EMIs each month, lenders may offer a loan around ${fmtShort(estimatedLoan)} over 4 years.` : 'Your current net income after expenses and existing EMI leaves insufficient room for additional debt. Focus on revenue growth.'},
-          {title: 'DSCR determines approval.', text: `Debt Service Coverage Ratio measures your ability to cover loan repayments from income. Most lenders require DSCR above 1.25x for business loans.`},
-          {title: 'Collateral expands access.', text: 'Secured loans using business or personal assets can substantially increase eligibility beyond what pure income metrics suggest.'}
-        );
-        renderChart(labels, [
-          {label:'Net Monthly Income', data:netData, color:'#00d4ff', fill:true},
-          {label:'Available for EMI', data:emiCapData, color:'#00e676', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        const loanMilestones = [0.5, 1, 1.5, 2].map(x=>{
-          const rev = Math.round(s.monthlyRev*x);
-          const net = Math.max(0, rev - s.monthlyExp);
-          const emi = Math.max(0, net*0.5 - s.existingEmi);
-          const loan = emi * 48;
-          return {label: `${fmtShort(rev)}/mo revenue`, value: fmtShort(loan), note: `Eligible EMI: ${fmtShort(emi)}/mo`};
-        });
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, loanMilestones);
-      }
-
-      if(active === 'cashFlow'){
-        const netMonthly = s.monthlyRev - s.monthlyExp;
-        const totalNet = netMonthly * s.months;
-        const labels = [], netData = [], cumulativeData = [];
-        let cumulative = 0;
-        for(let m=1; m<=s.months; m++){
-          labels.push('M'+m);
-          netData.push(Math.round(netMonthly));
-          cumulative += netMonthly;
-          cumulativeData.push(Math.round(cumulative));
-        }
-
-        const firstNegative = netData.findIndex(v=>v<0);
-        setTop(
-          fmtShort(totalNet),
-          fmtShort(netMonthly)+'/mo',
-          netMonthly >= 0 ? 'Positive' : 'Negative'
-        );
-        setPerformanceArea({
-          title: cfg.wealthTitle, pill: cfg.wealthPill,
-          value: fmtShort(Math.abs(totalNet)),
-          narrative: netMonthly >= 0
-            ? `Generating ${fmtShort(netMonthly)} per month in net cash flow, you will accumulate ${fmtShort(totalNet)} over ${s.months} months.`
-            : `Burning ${fmtShort(Math.abs(netMonthly))} per month — total burn over ${s.months} months is ${fmtShort(Math.abs(totalNet))}. Extend your runway urgently.`,
-          stat1:{label:'Monthly Net', value: fmtShort(netMonthly)+'/mo'},
-          stat2:{label:'Cumulative', value: fmtShort(totalNet)},
-          stat3:{label:'Efficiency', value: s.monthlyRev > 0 ? fmtNum((netMonthly/s.monthlyRev)*100,1)+'%' : '—'},
-          mood: netMonthly > 0 ? 'Cash Generating' : 'Cash Burning',
-          power: netMonthly >= 0 ? `${fmtShort(totalNet)} surplus` : `${s.months}mo burn`
-        });
-        setInsights(
-          {title: netMonthly >= 0 ? 'Positive cash flow confirmed.' : 'Cash flow is negative.', text: netMonthly >= 0 ? `Your revenue exceeds expenses by ${fmtShort(netMonthly)} monthly. This surplus funds growth, debt repayment, and reserves.` : `Expenses exceed revenue by ${fmtShort(Math.abs(netMonthly))} monthly. Identify and cut non-essential costs before runway runs out.`},
-          {title: 'Cumulative cash is what matters.', text: `After ${s.months} months your cumulative position is ${fmtShort(totalNet)}. This is your actual operational headroom for investment decisions.`},
-          {title: 'Cash flow negative after month ' + (netMonthly < 0 ? '1' : s.months+'+') + '.', text: netMonthly < 0 ? 'Even a single month of negative cash flow can become a runway crisis. Accelerate revenue or cut fixed costs immediately.' : 'Your current model sustains positive flow throughout. Use surplus months to build a 3-6 month operating reserve.'}
-        );
-        renderChart(labels, [
-          {label:'Monthly Net Cash Flow', data:netData, color:'#00d4ff', fill:true},
-          {label:'Cumulative Position', data:cumulativeData, color:'#00e676', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        const qMilestones = [3, 6, 9, 12].filter(m=>m<=s.months).concat(s.months<12?[s.months]:[]);
-        const uniqueQ = [...new Set(qMilestones)].slice(0,4);
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, uniqueQ.map(m=>{
-          const cum = Math.round(netMonthly * m);
-          return {label: `Month ${m}`, value: fmtShort(Math.abs(cum)), note: cum>=0 ? `Cumulative surplus` : `Cumulative burn`};
-        }));
-      }
-
-      if(active === 'unitEconomics'){
-        const ltvCacRatio = s.cac > 0 ? s.ltv / s.cac : 0;
-        const paybackMonths = s.revenuePerUser > 0 ? Math.ceil(s.cac / s.revenuePerUser) : Infinity;
-        const avgLifespanMonths = s.churn > 0 ? 1 / (s.churn/100) : Infinity;
-        const calculatedLtv = s.revenuePerUser * avgLifespanMonths;
-
-        const months = 36;
-        const labels = Array.from({length:months}, (_,i)=>'M'+(i+1));
-        const cumulRevData = labels.map((_,i)=>{
-          const monthNum = i+1;
-          const retRate = Math.pow(1 - s.churn/100, monthNum);
-          return Math.round(s.revenuePerUser * monthNum * retRate - s.cac);
-        });
-        const baseLineData = labels.map((_,i)=>Math.round(s.revenuePerUser * (i+1)));
-
-        setTop(
-          fmtNum(ltvCacRatio,2)+'x LTV/CAC',
-          paybackMonths < Infinity ? paybackMonths+' months payback' : '∞',
-          fmtShort(s.ltv)
-        );
-        setPerformanceArea({
-          title: cfg.wealthTitle, pill: cfg.wealthPill,
-          value: fmtNum(ltvCacRatio,2)+'x',
-          narrative: `Your LTV/CAC ratio is ${fmtNum(ltvCacRatio,2)}x. ${ltvCacRatio >= 3 ? 'This is above the 3x benchmark — your unit economics are healthy.' : 'This is below the 3x benchmark — each customer acquired may not justify acquisition cost.'}`,
-          stat1:{label:'LTV / CAC Ratio', value: fmtNum(ltvCacRatio,2)+'x'},
-          stat2:{label:'Payback Period', value: paybackMonths < Infinity ? paybackMonths+' months' : '∞'},
-          stat3:{label:'Avg. Customer Lifespan', value: avgLifespanMonths < Infinity ? fmtNum(avgLifespanMonths,1)+' months' : '∞'},
-          mood: ltvCacRatio >= 3 ? 'Healthy Unit Econ' : ltvCacRatio >= 1 ? 'Marginal Unit Econ' : 'High CAC Risk',
-          power: ltvCacRatio >= 3 ? '3x+ LTV/CAC' : 'Below benchmark'
-        });
-        setInsights(
-          {title: ltvCacRatio >= 3 ? 'Excellent unit economics.' : ltvCacRatio >= 1 ? 'Unit economics need improvement.' : 'High CAC risk — model is unsustainable.', text: ltvCacRatio >= 3 ? 'A 3x+ LTV/CAC ratio is the gold standard for SaaS and subscription businesses. You have strong customer value creation.' : ltvCacRatio >= 1 ? 'You recover acquisition cost, but margins are tight. Improving retention or reducing CAC will significantly improve economics.' : 'Each customer you acquire costs more than their lifetime value. Address CAC through channel efficiency or churn through product improvement.'},
-          {title: 'Payback period drives growth speed.', text: paybackMonths < Infinity ? `Recovering CAC in ${paybackMonths} months means you can reinvest in customer acquisition faster, accelerating growth compounding.` : 'With no clear payback period, prioritize improving revenue per user or reducing acquisition costs immediately.'},
-          {title: 'Churn is the silent destroyer.', text: `A ${s.churn}% monthly churn translates to ${fmtNum(100*(1-Math.pow(1-s.churn/100,12)),1)}% annual churn. Even a 1-2% reduction in monthly churn compounds into dramatically better lifetime value.`}
-        );
-        renderChart(labels, [
-          {label:'Cumulative Value (net CAC)', data:cumulRevData, color:'#00d4ff', fill:true},
-          {label:'Gross Revenue per Customer', data:baseLineData, color:'#4fa3ff', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
-          {label:'At Acquisition', value: '-'+fmtShort(s.cac), note:'Customer acquisition cost paid'},
-          {label:`Month ${paybackMonths < Infinity ? paybackMonths : '—'}`, value: paybackMonths < Infinity ? fmtShort(s.cac) : '—', note:'CAC fully recovered'},
-          {label:'LTV Reached', value: fmtShort(s.ltv), note:`Full lifetime value realized`},
-          {label:'LTV/CAC', value: fmtNum(ltvCacRatio,2)+'x', note: ltvCacRatio >= 3 ? 'Benchmark: 3x+ (healthy)' : 'Below 3x benchmark'}
-        ]);
-      }
-
-      if(active === 'gstTracker'){
-        const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-        const monthLabels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        const monthlySales = months.map(m=>s[m]||0);
-        const annualTurnover = monthlySales.reduce((a,b)=>a+b, 0);
-        let cumulative = 0;
-        const cumulativeData = monthlySales.map(v=>{ cumulative+=v; return Math.round(cumulative); });
-
-        const gstAlert = annualTurnover >= GST_THRESHOLD_STANDARD
-          ? 'MANDATORY GST' : annualTurnover >= GST_THRESHOLD_SPECIAL
-          ? 'APPROACHING LIMIT' : 'BELOW GST THRESHOLD';
-
-        setTop(
-          fmtShort(annualTurnover),
-          gstAlert,
-          annualTurnover >= GST_THRESHOLD_STANDARD ? '20L+ Crossed' : `${fmtNum((annualTurnover/GST_THRESHOLD_STANDARD)*100,1)}% of limit`
-        );
-        setPerformanceArea({
-          title: cfg.wealthTitle, pill: cfg.wealthPill,
-          value: fmtShort(annualTurnover),
-          narrative: annualTurnover >= GST_THRESHOLD_STANDARD
-            ? `Annual turnover of ${fmtShort(annualTurnover)} exceeds the ₹20L GST threshold. GST registration is mandatory for your business.`
-            : `Annual turnover of ${fmtShort(annualTurnover)} is ${fmtNum((annualTurnover/GST_THRESHOLD_STANDARD)*100,1)}% of the ₹20L standard threshold. Monitor monthly to stay compliant.`,
-          stat1:{label:'Annual Turnover', value: fmtShort(annualTurnover)},
-          stat2:{label:'GST Standard Limit', value: '₹20,00,000'},
-          stat3:{label:'Threshold Used', value: fmtNum((annualTurnover/GST_THRESHOLD_STANDARD)*100,1)+'%'},
-          mood: annualTurnover >= GST_THRESHOLD_STANDARD ? 'GST Required' : annualTurnover > GST_THRESHOLD_SPECIAL ? 'Monitor Closely' : 'Below Threshold',
-          power: gstAlert
-        });
-        setInsights(
-          {title: annualTurnover >= GST_THRESHOLD_STANDARD ? 'GST registration is mandatory.' : 'Voluntary registration may be beneficial.', text: annualTurnover >= GST_THRESHOLD_STANDARD ? 'Your turnover crosses ₹20 lakh. You must register for GST, file returns, and charge GST on invoices to avoid penalties.' : 'Even below the threshold, voluntary GST registration lets you claim input tax credit and serve GST-registered clients more easily.'},
-          {title: 'Special category states have lower limits.', text: 'For businesses in Manipur, Mizoram, Nagaland, Tripura, and Sikkim, the GST threshold is ₹10 lakh. Check your state-specific rules.'},
-          {title: 'Quarterly vs. monthly filing.', text: 'Businesses below ₹5 Cr turnover can file GST returns quarterly under the QRMP scheme, reducing compliance burden significantly.'}
-        );
-        renderChart(monthLabels, [
-          {label:'Monthly Sales', data:monthlySales, color:'#00d4ff', fill:true},
-          {label:'Cumulative Turnover', data:cumulativeData, color:'#ffd76a', fill:false}
-        ], cfg.chartTitle, cfg.chartMeta);
-        const q1 = monthlySales.slice(0,3).reduce((a,b)=>a+b,0);
-        const q2 = monthlySales.slice(3,6).reduce((a,b)=>a+b,0);
-        const q3 = monthlySales.slice(6,9).reduce((a,b)=>a+b,0);
-        const q4 = monthlySales.slice(9,12).reduce((a,b)=>a+b,0);
-        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
-          {label:'Q1 (Jan-Mar)', value: fmtShort(q1), note:`${fmtNum((q1/GST_THRESHOLD_STANDARD)*100,1)}% of annual limit`},
-          {label:'Q2 (Apr-Jun)', value: fmtShort(q2), note:`Cumulative: ${fmtShort(q1+q2)}`},
-          {label:'Q3 (Jul-Sep)', value: fmtShort(q3), note:`Cumulative: ${fmtShort(q1+q2+q3)}`},
-          {label:'Q4 (Oct-Dec)', value: fmtShort(q4), note:`Annual total: ${fmtShort(annualTurnover)}`}
-        ]);
-      }
-    }
-
-    function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smooth', block:'start'}); }
-    function openAdvisor(){ window.open('https://justinvesting.in','_blank'); }
-    function copySummary(){
-      const summary = `Business Finance Dashboard
-Mode: ${CALCS[active].label}
-Result: ${$('wealthNumber').textContent}
-${$('stat1Label').textContent}: ${$('stat1Value').textContent}
-${$('stat2Label').textContent}: ${$('stat2Value').textContent}
-${$('stat3Label').textContent}: ${$('stat3Value').textContent}`;
-      navigator.clipboard.writeText(summary).then(()=>{
-        const old = $('miniInsight').textContent;
-        $('miniInsight').textContent = 'Report Copied!';
-        setTimeout(()=> $('miniInsight').textContent = old, 1500);
+      setTop(
+        beUnits < Infinity ? fmtUnits(beUnits) : '∞',
+        beRevenue < Infinity ? fmtShort(beRevenue) : '—',
+        fmtPct(cMarginPct),
+        ['Break-Even Units','Break-Even Revenue','Contribution Margin']
+      );
+      setPerformanceArea({
+        title:cfg.wealthTitle, pill:cfg.wealthPill,
+        value: beUnits < Infinity ? fmtUnits(beUnits) : '∞',
+        narrative: contribution > 0
+          ? `You need ${fmtUnits(beUnits)} to cover costs. Target profit of ${fmtShort(s.targetProfit)} requires ${fmtUnits(targetUnits)}. At ${fmtUnits(s.monthCap)} monthly capacity, ${monthsToBE < Infinity ? 'break-even in ~' + monthsToBE + ' months.' : 'capacity too low to break even.'}`
+          : 'Selling price is below variable cost — every unit sold deepens the loss. Raise price or cut variable cost immediately.',
+        stat1:{label:'Break-Even Revenue', value: beRevenue < Infinity ? fmtShort(beRevenue) : '—'},
+        stat2:{label:'Target Profit Revenue', value: targetUnits < Infinity ? fmtShort(targetRev) : '—'},
+        stat3:{label:'Margin of Safety', value: fmtPct(marginSafety)},
+        mood: isFragile ? 'Fragile Model' : marginSafety > 30 ? 'Resilient Model' : 'Stable Model',
+        power: contribution > 0 ? `${monthsToBE < Infinity ? monthsToBE+'mo to BE' : 'Capacity too low'}` : 'Loss per unit'
       });
+      setInsights(
+        {title: cMarginPct < 20 ? 'Critically weak contribution margin.' : cMarginPct < 40 ? 'Moderate contribution margin.' : 'Strong contribution margin.',
+         text: `Your contribution per unit is ${fmtCurrency(contribution)} — ${fmtPct(cMarginPct)} of price. ${cMarginPct<20?'Below 20% leaves almost no room to cover fixed costs at any reasonable volume. Repricing or cost reduction is urgent.':cMarginPct<40?'Margins are workable but every cost increase will hurt significantly. Focus on variable cost discipline.':'Good — you have room to absorb cost fluctuations and invest in growth.'}`},
+        {title: beUnits < s.monthCap ? 'Break-even achievable within monthly capacity.' : 'Monthly capacity is insufficient to break even.',
+         text: beUnits < s.monthCap
+           ? `At ${fmtUnits(s.monthCap)} monthly capacity, you reach break-even in ${monthsToBE} month${monthsToBE>1?'s':''}. Every unit beyond ${fmtUnits(beUnits)} is profit.`
+           : `Your monthly capacity of ${fmtUnits(s.monthCap)} cannot absorb ${fmtUnits(beUnits)} break-even units. Increase capacity or reduce fixed costs.`},
+        {title: marginSafety > 20 ? 'Healthy margin of safety.' : 'Margin of safety is thin.',
+         text: `At full capacity, your margin of safety is ${fmtPct(marginSafety)} — ${safetyUnits.toLocaleString('en-IN')} units above break-even. ${marginSafety<10?'This is dangerously thin — a small revenue dip puts you below break-even.':marginSafety<25?'Reasonable buffer, but not enough to absorb sustained market pressure.':'You have good buffer. Even a revenue dip of ' + fmtPct(marginSafety) + ' keeps you profitable.'}`}
+      );
+      renderChart(labels,[
+        {label:'Revenue',        data:revD,    color:'#00d4ff',fill:true},
+        {label:'Total Cost',     data:costD,   color:'#ff607d',fill:false},
+        {label:'Profit/Loss',    data:profitD, color:'#00e676',fill:false},
+        {label:'Target Profit',  data:tpLine,  color:'#ffd76a',fill:false,dashed:true}
+      ],cfg.chartTitle,cfg.chartMeta);
+      renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[
+        {label:'25% of Break-Even',   value:fmtUnits(Math.round(beUnits<Infinity?beUnits*0.25:s.monthCap*0.25)), note:`Revenue: ${fmtShort((beUnits<Infinity?beUnits*0.25:0)*s.sellPrice)} — still making a loss`},
+        {label:'50% of Break-Even',   value:fmtUnits(Math.round(beUnits<Infinity?beUnits*0.5:s.monthCap*0.5)),  note:`Loss narrows to ${fmtShort(Math.abs(s.fixedCost - (beUnits<Infinity?beUnits*0.5:0)*contribution))}`},
+        {label:'Break-Even Point',    value:beUnits<Infinity?fmtUnits(beUnits):'Unreachable',                    note:`Revenue: ${beUnits<Infinity?fmtShort(beRevenue):'—'} — costs fully covered`},
+        {label:'Target Profit Level', value:targetUnits<Infinity?fmtUnits(targetUnits):'Unreachable',            note:`Revenue: ${targetUnits<Infinity?fmtShort(targetRev):'—'} — profit: ${fmtShort(s.targetProfit)}`}
+      ]);
     }
 
-    initState();
-    renderTabs();
-    renderControls();
-    update();
-  </script>
-  <script>
-    fetch("components/navbar.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("navbar").innerHTML = data;
-        const currentPath = window.location.pathname.split("/").pop() || "index.html";
-        const links = document.querySelectorAll(".nav a, .mobile-drawer a");
-        links.forEach(link => {
-          const href = link.getAttribute("href");
-          if(href === currentPath) link.classList.add("active");
-        });
+    /* ── 2. PROFIT MARGIN PRO ─────────────────────────────────── */
+    if(active === 'profitMargin'){
+      const discountLoss   = s.revenue * s.discount / 100;
+      const effectiveRev   = s.revenue * (1 - s.discount/100) + s.otherIncome;
+      const grossProfit    = effectiveRev - s.cost;
+      const grossMarginPct = safeDiv(grossProfit, effectiveRev) * 100;
+      const preTaxProfit   = grossProfit;
+      const taxAmt         = Math.max(0, preTaxProfit * s.taxRate / 100);
+      const netProfit      = preTaxProfit - taxAmt;
+      const netMarginPct   = safeDiv(netProfit, effectiveRev) * 100;
+      const opRatio        = safeDiv(s.cost, effectiveRev) * 100;
+
+      const scales = [0.5, 0.75, 1, 1.25, 1.5, 2];
+      const labels  = scales.map(x => fmtShort(s.revenue * x));
+      const revD    = scales.map(x => Math.round(s.revenue * x * (1-s.discount/100) + s.otherIncome));
+      const costD   = scales.map(x => Math.round(s.cost * x));
+      const preTaxD = scales.map((x,i) => Math.round(revD[i] - costD[i]));
+      const postTaxD= scales.map((x,i) => Math.round(preTaxD[i] * (1 - s.taxRate/100)));
+
+      setTop(fmtShort(netProfit), fmtPct(netMarginPct), fmtPct(grossMarginPct),
+        ['Net Profit (After Tax)','Net Margin','Gross Margin']);
+      setPerformanceArea({
+        title:cfg.wealthTitle, pill:cfg.wealthPill,
+        value: netProfit >= 0 ? fmtShort(netProfit) : '-'+fmtShort(Math.abs(netProfit)),
+        narrative: netProfit >= 0
+          ? `Gross margin: ${fmtPct(grossMarginPct)} | Net margin after ${fmtPct(s.taxRate)} tax: ${fmtPct(netMarginPct)}. Discount leakage costs you ${fmtShort(discountLoss)} and other income adds ${fmtShort(s.otherIncome)}.`
+          : `Operating at a loss of ${fmtShort(Math.abs(netProfit))}. Reduce costs or fix discount leakage of ${fmtShort(discountLoss)}.`,
+        stat1:{label:'Gross Profit', value: fmtShort(grossProfit)},
+        stat2:{label:'Net Profit (After Tax)', value: fmtShort(netProfit)},
+        stat3:{label:'Operating Ratio', value: fmtPct(opRatio)},
+        mood: netMarginPct > 20 ? 'Elite Margins' : netMarginPct > 10 ? 'Healthy Margins' : netMarginPct > 0 ? 'Thin Margins' : 'Loss-Making',
+        power: `${fmtPct(netMarginPct)} net retained`
+      });
+      setInsights(
+        {title: netMarginPct > 20 ? 'Elite margin profile — well above industry norms.' : netMarginPct > 10 ? 'Healthy margins with room to grow.' : netMarginPct > 0 ? 'Thin margins — vulnerable to cost shocks.' : 'Business is loss-making.',
+         text: netProfit >= 0 ? `Every ₹100 of revenue retains ₹${fmtNum(netMarginPct,1)} after all costs and tax. ${netMarginPct>20?'This puts you in top-quartile profitability.':netMarginPct>10?'Above average — focus on scaling revenue to maximise absolute profit.':'Build a buffer: a 10% revenue drop would turn this negative.'}` : 'Costs exceed effective revenue. Identify if cost structure is truly variable at scale or if fixed cost dilution is needed.'},
+        {title: `Discount leakage is costing ${fmtShort(discountLoss)} per period.`,
+         text: `A ${fmtPct(s.discount)} pricing discount/leakage reduces your effective revenue from ${fmtShort(s.revenue)} to ${fmtShort(effectiveRev)}. Plugging even half this leakage would ${fmtShort(discountLoss/2)} more in net profit — equivalent to a ${fmtPct(safeDiv(discountLoss/2, s.revenue)*100)} margin improvement.`},
+        {title: `Tax consumes ${fmtShort(taxAmt)} — ${fmtPct(safeDiv(taxAmt, grossProfit)*100)} of gross profit.`,
+         text: `At ${fmtPct(s.taxRate)} effective tax rate, your business retains ${fmtPct(100-s.taxRate)} of pre-tax earnings. ${s.taxRate>30?'High tax rate — review if any deductions, depreciation or incentives are being missed.':'Tax burden is within normal range for the business profile.'}`}
+      );
+      renderChart(labels,[
+        {label:'Effective Revenue', data:revD,    color:'#00d4ff',fill:true},
+        {label:'Total Cost',        data:costD,   color:'#4fa3ff',fill:false},
+        {label:'Pre-Tax Profit',    data:preTaxD, color:'#ffd76a',fill:false},
+        {label:'Post-Tax Profit',   data:postTaxD,color:'#00e676',fill:false}
+      ],cfg.chartTitle,cfg.chartMeta);
+      renderMilestones(cfg.timelineTitle,cfg.timelineMeta,scales.slice(0,4).map(x=>{
+        const rev  = Math.round(s.revenue * x * (1-s.discount/100) + s.otherIncome);
+        const cost = Math.round(s.cost * x);
+        const np   = Math.round((rev - cost) * (1 - s.taxRate/100));
+        const nm   = safeDiv(np, rev) * 100;
+        return {label:`${fmtShort(s.revenue*x)} revenue`, value: fmtShort(np), note:`Net margin: ${fmtPct(nm)}`};
+      }));
+    }
+
+    /* ── 3. ROI PRO ───────────────────────────────────────────── */
+    if(active === 'roi'){
+      const years          = s.timePeriod / 12;
+      const totalMaint     = s.annualMaint * years;
+      const exitCostAmt    = s.returnAmt * s.exitCost / 100;
+      const grossGain      = s.returnAmt - s.investment;
+      const netGain        = s.returnAmt - s.investment - totalMaint - exitCostAmt;
+      const grossROI       = safeDiv(grossGain, s.investment) * 100;
+      const netROI         = safeDiv(netGain,   s.investment) * 100;
+      const annualNetROI   = (Math.pow(Math.max(0, 1 + netROI/100), 1/Math.max(years, 0.08)) - 1) * 100;
+      const realROI        = annualNetROI - s.inflation;
+      const multiple       = safeDiv(s.returnAmt, s.investment, 0);
+      const beatsInflation = realROI > 0;
+
+      const steps = [0.5, 0.75, 1, 1.25, 1.5, 2];
+      const labels  = steps.map(x => fmtShort(s.investment * x));
+      const grossD  = steps.map(x => Math.round(s.returnAmt * x));
+      const netD    = steps.map(x => Math.round((s.returnAmt * x) - (s.investment * x) - totalMaint - (s.returnAmt * x * s.exitCost/100)));
+      const realD   = steps.map((x,i) => Math.round(netD[i] / Math.pow(1 + s.inflation/100, years)));
+
+      setTop(fmtPct(netROI), fmtPct(annualNetROI), fmtPct(realROI),
+        ['Net ROI','Annualized Net ROI','Real ROI (after inflation)']);
+      setPerformanceArea({
+        title:cfg.wealthTitle, pill:cfg.wealthPill,
+        value: fmtPct(netROI,1),
+        narrative: `Gross ROI: ${fmtPct(grossROI,1)}. After ${fmtShort(totalMaint)} maintenance + ${fmtShort(exitCostAmt)} exit costs, net ROI is ${fmtPct(netROI,1)}. Annualized: ${fmtPct(annualNetROI,1)}. Real (after ${fmtPct(s.inflation)} inflation): ${fmtPct(realROI,1)}.`,
+        stat1:{label:'Net Gain After Costs', value: fmtShort(netGain)},
+        stat2:{label:'Annualized Net ROI',   value: fmtPct(annualNetROI,1)},
+        stat3:{label:'Return Multiple',      value: fmtNum(multiple,2)+'x'},
+        mood: realROI > 15 ? 'Excellent Return' : realROI > 5 ? 'Good Return' : realROI > 0 ? 'Marginal Return' : 'Negative Real Return',
+        power: beatsInflation ? 'Beats inflation' : 'Below inflation'
+      });
+      setInsights(
+        {title: beatsInflation ? `Real return of ${fmtPct(realROI,1)} — wealth is being created.` : `Real return is negative at ${fmtPct(realROI,1)} — inflation is eroding value.`,
+         text: beatsInflation ? `Your investment grows faster than ${fmtPct(s.inflation)} inflation, creating genuine real wealth. Annualized net return of ${fmtPct(annualNetROI,1)} is ${annualNetROI>12?'well above':'in line with'} equity market benchmarks.` : `Even with a positive nominal return, inflation at ${fmtPct(s.inflation)} means purchasing power is declining. Consider whether this is still the best use of capital.`},
+        {title: `Hidden costs erode ${fmtPct(safeDiv(totalMaint+exitCostAmt, s.investment)*100)} of your investment.`,
+         text: `${fmtShort(totalMaint)} in maintenance over ${s.timePeriod} months plus ${fmtShort(exitCostAmt)} in exit costs (${fmtPct(s.exitCost)}) reduce gross ROI of ${fmtPct(grossROI,1)} to net ROI of ${fmtPct(netROI,1)}. Always model these before committing capital.`},
+        {title: annualNetROI > 15 ? 'Strong annualized return — above typical equity benchmarks.' : annualNetROI > 8 ? 'Annualized return is competitive.' : 'Low annualized return — compare against alternatives.',
+         text: `A ${s.timePeriod}-month holding period with annualized net return of ${fmtPct(annualNetROI,1)} equates to a ${fmtNum(multiple,2)}x money multiple. ${multiple<1.2?'Low multiple — the risk may not be worth the reward.':multiple>=2?'Strong multiple — this is a high-quality outcome.':'Decent outcome for the capital deployed.'}`}
+      );
+      renderChart(labels,[
+        {label:'Gross Return',          data:grossD,color:'#00d4ff',fill:true},
+        {label:'Net Return (after costs)',data:netD, color:'#4fa3ff',fill:false},
+        {label:'Real Return (inflation-adj)',data:realD,color:'#00e676',fill:false}
+      ],cfg.chartTitle,cfg.chartMeta);
+      renderMilestones(cfg.timelineTitle,cfg.timelineMeta,steps.slice(0,4).map(x=>{
+        const inv  = Math.round(s.investment * x);
+        const ret  = Math.round(s.returnAmt  * x);
+        const net  = Math.round(ret - inv - totalMaint - ret*s.exitCost/100);
+        return {label:`${fmtShort(inv)} invested`, value: fmtShort(ret), note:`Net gain: ${fmtShort(net)}`};
+      }));
+    }
+
+    /* ── 4. STARTUP VALUATION PRO ─────────────────────────────── */
+    if(active === 'startupValuation'){
+      const revTypeMult   = {recurring:1.25, mixed:1.0, transactional:0.8}[s.revenueType] || 1.0;
+      const founderFactor = {low:1.0, medium:0.88, high:0.72}[s.founderDep]    || 1.0;
+      const concFactor    = s.custConc <= 20 ? 1.0 : s.custConc <= 50 ? 0.9 : 0.75;
+      const burnFactor    = s.burnMult <= 1 ? 1.12 : s.burnMult <= 2 ? 1.0 : s.burnMult <= 3 ? 0.88 : 0.72;
+      const ebitdaFactor  = s.ebitdaMgn >= 20 ? 1.12 : s.ebitdaMgn >= 10 ? 1.0 : s.ebitdaMgn >= 0 ? 0.9 : 0.78;
+      const growthFactor  = 1 + s.growthRate / 100;
+      const baseVal       = s.revenue * s.multiplier;
+      const adjMult       = s.multiplier * revTypeMult * founderFactor * concFactor * burnFactor * ebitdaFactor;
+      const baseAdjVal    = s.revenue * adjMult * growthFactor;
+      const conservative  = Math.round(baseAdjVal * 0.65);
+      const base          = Math.round(baseAdjVal);
+      const aggressive    = Math.round(baseAdjVal * 1.45);
+      const totalAdj      = revTypeMult * founderFactor * concFactor * burnFactor * ebitdaFactor;
+      const adjPct        = (totalAdj - 1) * 100;
+
+      const revSteps = [0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3].map(x=>Math.round(s.revenue*x));
+      const labels     = revSteps.map(v=>fmtShort(v));
+      const aggD       = revSteps.map(v=>Math.round(v * adjMult * growthFactor * 1.45));
+      const baseD      = revSteps.map(v=>Math.round(v * adjMult * growthFactor));
+      const consD      = revSteps.map(v=>Math.round(v * adjMult * growthFactor * 0.65));
+      const baseMulD   = revSteps.map(v=>Math.round(v * s.multiplier));
+
+      setTop(fmtShort(base), fmtShort(conservative)+'–'+fmtShort(aggressive), fmtPct(adjPct, 1),
+        ['Base Valuation','Valuation Range','Risk-Adjustment %']);
+      setPerformanceArea({
+        title:cfg.wealthTitle, pill:cfg.wealthPill,
+        value: fmtShort(base),
+        narrative:`Revenue ${fmtShort(s.revenue)} × ${fmtNum(adjMult,2)}x adjusted multiple × ${s.growthRate}% growth factor = ${fmtShort(base)} base valuation. Risk range: ${fmtShort(conservative)} (conservative) to ${fmtShort(aggressive)} (aggressive).`,
+        stat1:{label:'Conservative',  value: fmtShort(conservative)},
+        stat2:{label:'Base Valuation',value: fmtShort(base)},
+        stat3:{label:'Aggressive',    value: fmtShort(aggressive)},
+        mood: base > 100000000 ? 'Unicorn Track' : base > 10000000 ? 'Strong Valuation' : 'Early Stage',
+        power: adjPct >= 0 ? `+${fmtPct(adjPct,0)} risk premium` : `${fmtPct(adjPct,0)} risk discount`
+      });
+      const premiums = [
+        revTypeMult!==1.0?`${s.revenueType==='recurring'?'+25%':'-20%'} for ${s.revenueType} revenue`:'',
+        founderFactor<1.0?`-${fmtPct((1-founderFactor)*100,0)} founder dependency discount`:'',
+        concFactor<1.0?`-${fmtPct((1-concFactor)*100,0)} customer concentration risk`:'',
+        burnFactor!==1.0?burnFactor<1?`-${fmtPct((1-burnFactor)*100,0)} high burn penalty`:'+12% efficient burn premium':'',
+        ebitdaFactor!==1.0?ebitdaFactor>1?'+12% EBITDA premium':`-${fmtPct((1-ebitdaFactor)*100,0)} EBITDA discount`:''
+      ].filter(Boolean);
+      setInsights(
+        {title: adjPct >= 0 ? `Net premium of ${fmtPct(Math.abs(adjPct),1)} above base multiple.` : `Net discount of ${fmtPct(Math.abs(adjPct),1)} below base multiple.`,
+         text: premiums.length ? premiums.join(' | ') : 'All risk factors are neutral at current settings.'},
+        {title: s.custConc > 50 ? 'High customer concentration is a serious valuation risk.' : s.custConc > 20 ? 'Moderate customer concentration — watch closely.' : 'Customer base is well-diversified.',
+         text: `${fmtPct(s.custConc)} revenue concentration in top customers ${s.custConc>50?'triggers a valuation discount — investors will require aggressive clawback clauses or escrow structures.':s.custConc>20?'is a yellow flag. Investors will probe churn risk on top accounts.':'gives investors confidence in revenue stability.'}`},
+        {title: s.burnMult <= 1 ? 'Excellent burn efficiency — major investor confidence signal.' : s.burnMult <= 2 ? 'Acceptable burn multiple.' : 'High burn multiple is a valuation headwind.',
+         text: `Burn multiple of ${fmtNum(s.burnMult,1)}x means you spend ₹${fmtNum(s.burnMult,1)} for every ₹1 of new ARR. ${s.burnMult<=1?'Sub-1x burn is rare and commands a premium in today\'s market.':s.burnMult<=2?'Within acceptable range — focus on improving with scale.':'Investors will demand a clear path to capital efficiency before valuing at full multiple.'}`}
+      );
+      renderChart(labels,[
+        {label:'Aggressive',    data:aggD,   color:'#00e676',fill:false},
+        {label:'Base Valuation',data:baseD,  color:'#00d4ff',fill:true},
+        {label:'Conservative',  data:consD,  color:'#4fa3ff',fill:false},
+        {label:'Base Multiple', data:baseMulD,color:'#ffd76a',fill:false,dashed:true}
+      ],cfg.chartTitle,cfg.chartMeta);
+      renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[
+        {label:`${fmtShort(s.revenue*0.5)} revenue`,  value:fmtShort(Math.round(s.revenue*0.5*adjMult*growthFactor)), note:`Conservative: ${fmtShort(Math.round(s.revenue*0.5*adjMult*growthFactor*0.65))}`},
+        {label:`${fmtShort(s.revenue)} revenue`,      value:fmtShort(base),                                           note:`Range: ${fmtShort(conservative)} – ${fmtShort(aggressive)}`},
+        {label:`${fmtShort(s.revenue*2)} revenue`,    value:fmtShort(Math.round(s.revenue*2*adjMult*growthFactor)),   note:`Conservative: ${fmtShort(Math.round(s.revenue*2*adjMult*growthFactor*0.65))}`},
+        {label:`${fmtShort(s.revenue*3)} revenue`,    value:fmtShort(Math.round(s.revenue*3*adjMult*growthFactor)),   note:`Conservative: ${fmtShort(Math.round(s.revenue*3*adjMult*growthFactor*0.65))}`}
+      ]);
+    }
+
+    /* ── 5. LOAN ELIGIBILITY PRO ──────────────────────────────── */
+    if(active === 'loanEligibility'){
+      const creditMult    = {poor:0.5, fair:0.75, good:1.0, excellent:1.25}[s.creditScore] || 1.0;
+      const collateralMult= s.collateral ? 1.30 : 1.0;
+      const gstMult       = s.gstFiled   ? 1.10 : 1.0;
+      const netSurplus    = s.monthlyRev - s.monthlyExp - s.existingEmi;
+      const safeEmi       = Math.max(0, netSurplus * 0.40);
+      const aggressiveEmi = Math.max(0, netSurplus * 0.65);
+      const r             = s.interestRate / 12 / 100;
+      const n             = s.loanTenure;
+      const pvFactor      = r > 0 ? (1 - Math.pow(1+r,-n)) / r : n;
+      const baseLoan      = Math.round(safeEmi * pvFactor * creditMult * collateralMult * gstMult);
+      const aggLoan       = Math.round(aggressiveEmi * pvFactor * creditMult * collateralMult * gstMult);
+      const stressRev     = s.monthlyRev * 0.85;
+      const stressExp     = s.monthlyExp * 1.10;
+      const stressNet     = Math.max(0, stressRev - stressExp - s.existingEmi);
+      const stressEmi     = stressNet * 0.40;
+      const stressLoan    = Math.round(stressEmi * pvFactor * creditMult * collateralMult * gstMult);
+      const emiToIncome   = safeDiv(safeEmi, s.monthlyRev) * 100;
+
+      const revSteps = [0.5, 0.75, 1, 1.25, 1.5, 2].map(x=>Math.round(s.monthlyRev*x));
+      const labels    = revSteps.map(v=>fmtShort(v)+'/mo');
+      const safeEmiD  = revSteps.map(v=>Math.max(0,(v - s.monthlyExp - s.existingEmi)*0.40));
+      const aggEmiD   = revSteps.map(v=>Math.max(0,(v - s.monthlyExp - s.existingEmi)*0.65));
+      const baseLoanD = revSteps.map((_,i)=>Math.round(safeEmiD[i]*pvFactor*creditMult*collateralMult*gstMult));
+      const stressD   = revSteps.map(v=>Math.round(Math.max(0,(v*0.85-s.monthlyExp*1.1-s.existingEmi)*0.40)*pvFactor*creditMult*collateralMult*gstMult));
+
+      setTop(fmtShort(baseLoan), fmtShort(stressLoan), fmtPct(emiToIncome),
+        ['Safe Loan Eligibility','Stress-Test Eligibility','EMI-to-Income Ratio']);
+      setPerformanceArea({
+        title:cfg.wealthTitle, pill:cfg.wealthPill,
+        value: fmtShort(baseLoan),
+        narrative:`Net surplus: ${fmtShort(netSurplus)}/mo. Safe EMI headroom: ${fmtShort(safeEmi)}/mo supports ${fmtShort(baseLoan)} at ${s.interestRate}% over ${s.loanTenure} months. Credit+collateral multiplier: ${fmtNum(creditMult*collateralMult*gstMult,2)}x.`,
+        stat1:{label:'Safe EMI Capacity',     value: fmtShort(safeEmi)+'/mo'},
+        stat2:{label:'Aggressive Eligibility',value: fmtShort(aggLoan)},
+        stat3:{label:'Stress-Test Loan',      value: fmtShort(stressLoan)},
+        mood: baseLoan > 5000000 ? 'Strong Eligibility' : baseLoan > 1000000 ? 'Moderate Eligibility' : netSurplus <= 0 ? 'Not Eligible' : 'Low Eligibility',
+        power: `EMI: ${fmtPct(emiToIncome,0)} of revenue`
+      });
+      setInsights(
+        {title: netSurplus > 0 ? `Monthly surplus of ${fmtShort(netSurplus)} supports loan repayment.` : 'No surplus — loan eligibility is zero.',
+         text: netSurplus > 0 ? `Safe EMI capacity of ${fmtShort(safeEmi)}/month (40% of surplus) supports ${fmtShort(baseLoan)} over ${s.loanTenure} months at ${s.interestRate}% interest. Aggressive capacity (65% of surplus) could unlock ${fmtShort(aggLoan)}.` : 'Expenses and existing EMIs fully consume revenue. Grow revenue or reduce expenses before applying for additional credit.'},
+        {title: `Stress-test shows ${fmtShort(baseLoan - stressLoan)} of cushion above worst-case eligibility.`,
+         text: `If revenue drops 15% and expenses rise 10%, eligible loan falls to ${fmtShort(stressLoan)}. A ${fmtPct(safeDiv(stressLoan, baseLoan)*100,0)} retention of eligibility under stress is ${stressLoan > baseLoan*0.7?'healthy':'fragile — reconsider the loan size'}.`},
+        {title: `Credit score and collateral are adding a ${fmtNum(creditMult*collateralMult*gstMult,2)}x multiplier.`,
+         text: `${s.creditScore.charAt(0).toUpperCase()+s.creditScore.slice(1)} credit score: ${fmtNum(creditMult,2)}x | ${s.collateral?'Collateral: +30%':'No collateral — missing +30% uplift'} | ${s.gstFiled?'GST compliance: +10%':'No GST filing — missing +10% uplift'}. Improving these can significantly increase eligibility.`}
+      );
+      renderChart(labels,[
+        {label:'Base Eligibility',   data:baseLoanD,color:'#00d4ff',fill:true},
+        {label:'Stress Eligibility', data:stressD,  color:'#ff607d',fill:false},
+        {label:'Safe EMI',           data:safeEmiD, color:'#4fa3ff',fill:false},
+        {label:'Aggressive EMI',     data:aggEmiD,  color:'#00e676',fill:false}
+      ],cfg.chartTitle,cfg.chartMeta);
+      renderMilestones(cfg.timelineTitle,cfg.timelineMeta,
+        [0.5, 1, 1.5, 2].map(x=>{
+          const rev  = Math.round(s.monthlyRev*x);
+          const net  = Math.max(0, rev - s.monthlyExp - s.existingEmi);
+          const emi  = net * 0.40;
+          const loan = Math.round(emi * pvFactor * creditMult * collateralMult * gstMult);
+          return {label:`${fmtShort(rev)}/mo revenue`, value:fmtShort(loan), note:`Safe EMI: ${fmtShort(emi)}/mo`};
+        })
+      );
+    }
+
+    /* ── 6. CASH FLOW PRO ─────────────────────────────────────── */
+    if(active === 'cashFlow'){
+      const SEASONAL = {
+        none:  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        mild:  [0.9,0.92,1.05,1.08,1.12,1.15,1.1,1.05,1.0,0.95,0.88,1.3,0.9,0.92,1.05,1.08,1.12,1.15,1.1,1.05,1.0,0.95,0.88,1.3,0.9,0.92,1.05,1.08,1.12,1.15,1.1,1.05,1.0,0.95,0.88,1.3,0.9,0.92,1.05,1.08,1.12,1.15,1.1,1.05,1.0,0.95,0.88,1.3,0.9,0.92,1.05,1.08,1.12,1.15,1.1,1.05,1.0,0.95,0.88,1.3],
+        high:  [0.75,0.8,1.1,1.2,1.3,1.4,1.25,1.1,1.0,0.9,0.75,1.6,0.75,0.8,1.1,1.2,1.3,1.4,1.25,1.1,1.0,0.9,0.75,1.6,0.75,0.8,1.1,1.2,1.3,1.4,1.25,1.1,1.0,0.9,0.75,1.6,0.75,0.8,1.1,1.2,1.3,1.4,1.25,1.1,1.0,0.9,0.75,1.6,0.75,0.8,1.1,1.2,1.3,1.4,1.25,1.1,1.0,0.9,0.75,1.6]
+      };
+      const seasonFactor = SEASONAL[s.seasonality] || SEASONAL.none;
+      let rev=s.monthlyRev, exp=s.monthlyExp, cumulative=s.openingBal;
+      let lowestCash=cumulative, lowestMonth=0, negativeMonth=null;
+      const labels=[], revD=[], expD=[], netD=[], cumD=[];
+      for(let m=1; m<=s.months; m++){
+        const sf   = seasonFactor[(m-1) % 12] || 1;
+        const mRev = Math.round(rev * sf);
+        const mExp = Math.round(exp + (m === s.oneTimeMonth ? s.oneTimeAmt : 0));
+        const net  = mRev - mExp;
+        cumulative += net;
+        labels.push('M'+m); revD.push(mRev); expD.push(mExp); netD.push(net); cumD.push(Math.round(cumulative));
+        if(cumulative < lowestCash){ lowestCash=cumulative; lowestMonth=m; }
+        if(cumulative < 0 && negativeMonth === null) negativeMonth = m;
+        rev = Math.round(rev * (1 + s.revGrowth/100));
+        exp = Math.round(exp * (1 + s.expGrowth/100));
+      }
+      const endingBal  = cumulative;
+      const totalRev   = revD.reduce((a,b)=>a+b,0);
+      const totalExp   = expD.reduce((a,b)=>a+b,0);
+      const avgMonthly = safeDiv(endingBal - s.openingBal, s.months);
+
+      setTop(
+        fmtShort(endingBal),
+        negativeMonth ? 'Goes negative M'+negativeMonth : 'Always positive',
+        fmtShort(avgMonthly)+'/mo',
+        ['Ending Cash Balance','Cash Health','Avg Monthly Net']
+      );
+      setPerformanceArea({
+        title:cfg.wealthTitle, pill:cfg.wealthPill,
+        value: fmtShort(endingBal),
+        narrative: endingBal >= 0
+          ? `Starting with ${fmtShort(s.openingBal)}, your ${s.months}-month projection ends at ${fmtShort(endingBal)}. Lowest cash point: ${fmtShort(lowestCash)} in Month ${lowestMonth}.${s.oneTimeAmt>0?' One-time expense of '+fmtShort(s.oneTimeAmt)+' in Month '+s.oneTimeMonth+' is included.':''}`
+          : `Cash goes negative in Month ${negativeMonth}. Ending balance: ${fmtShort(endingBal)}. Immediate action needed.`,
+        stat1:{label:'Lowest Cash Point',  value: fmtShort(lowestCash)+' (M'+lowestMonth+')'},
+        stat2:{label:'Ending Cash Balance',value: fmtShort(endingBal)},
+        stat3:{label:'Total Net Generated',value: fmtShort(endingBal - s.openingBal)},
+        mood: endingBal >= 0 ? avgMonthly > 0 ? 'Cash Generating' : 'Cash Declining' : 'Cash Crisis',
+        power: negativeMonth ? 'Goes neg M'+negativeMonth : fmtShort(endingBal)+' runway'
+      });
+      setInsights(
+        {title: negativeMonth ? `Cash turns negative in Month ${negativeMonth} — runway risk.` : `Cash stays positive throughout all ${s.months} months.`,
+         text: negativeMonth ? `Without corrective action, you will run out of cash by Month ${negativeMonth}. The burn is ${fmtShort(Math.abs(avgMonthly))}/month net. Options: raise revenue by ${fmtPct(safeDiv(Math.abs(avgMonthly), s.monthlyRev)*100,0)}, cut expenses, or raise external capital.` : `Ending balance of ${fmtShort(endingBal)} represents ${Math.round(safeDiv(endingBal, Math.abs(expD[expD.length-1])))} months of expense cover at current run rate. Good position.`},
+        {title: lowestCash < s.openingBal * 0.3 ? 'Low cash dip detected — opening balance buffer is thin.' : 'Opening balance buffer is holding well.',
+         text: `Lowest cash point is ${fmtShort(lowestCash)} in Month ${lowestMonth}. ${lowestCash < 0?'Negative cash — you will need emergency funding or credit.':lowestCash < s.monthlyExp?'Less than 1 month of expenses in reserve — very exposed.':'You maintain adequate operating reserves throughout.'}`},
+        {title: s.oneTimeAmt > 0 ? `One-time expense of ${fmtShort(s.oneTimeAmt)} in Month ${s.oneTimeMonth} creates a cash dip.` : 'No one-time expenses modelled.',
+         text: s.oneTimeAmt > 0 ? `This exceptional expense reduces your cash by ${fmtShort(s.oneTimeAmt)} in a single month. ${s.oneTimeAmt > cumD[s.oneTimeMonth-1]?'This alone could push you negative — plan financing ahead of this month.':'Your current cash level can absorb it, but plan accordingly.'}` : 'Model a one-time capex or exceptional expense using the "One-Time Expense" controls to test resilience.'}
+      );
+      renderChart(labels,[
+        {label:'Revenue',          data:revD,color:'#00d4ff',fill:false},
+        {label:'Expenses',         data:expD,color:'#ff607d',fill:false},
+        {label:'Net Cash Flow',    data:netD,color:'#ffd76a',fill:false},
+        {label:'Cumulative Balance',data:cumD,color:'#00e676',fill:true}
+      ],cfg.chartTitle,cfg.chartMeta);
+      const qMs = [3,6,9,12].filter(m=>m<=s.months).concat(s.months>12?[s.months]:[]);
+      const uniqQ = [...new Set(qMs)].slice(0,4);
+      renderMilestones(cfg.timelineTitle,cfg.timelineMeta,uniqQ.map(m=>{
+        const val = cumD[m-1] || 0;
+        const mNet= netD[m-1] || 0;
+        return {label:'Month '+m, value:fmtShort(val), note:`Net that month: ${fmtShort(mNet)} | ${val>=0?'Positive':'NEGATIVE'}`};
+      }));
+    }
+
+    /* ── 7. UNIT ECONOMICS PRO ────────────────────────────────── */
+    if(active === 'unitEconomics'){
+      const avgLifespan    = safeDiv(1, s.churn/100, 200);
+      const realCac        = s.cac * (1 + s.commission/100);
+      const contribPerUser = s.revPerUser * (s.grossMgn/100) - s.supportCost;
+      const grossProfitUser= s.revPerUser * (s.grossMgn/100);
+      const expansionMonthly = s.ltv * (s.expansion/100) / 12;
+      const adjLtv         = Math.max(0, contribPerUser * avgLifespan + expansionMonthly * avgLifespan);
+      const ltvCacRatio    = safeDiv(adjLtv, realCac);
+      const paybackMonths  = contribPerUser > 0 ? Math.ceil(safeDiv(realCac, contribPerUser)) : Infinity;
+      const annualChurnPct = (1 - Math.pow(1 - s.churn/100, 12)) * 100;
+
+      const months = 36;
+      const labels = Array.from({length:months}, (_,i)=>'M'+(i+1));
+      const cumContribD = labels.map((_,i)=>{
+        const m       = i + 1;
+        const retained = Math.pow(1 - s.churn/100, m);
+        return Math.round(contribPerUser * m * retained - realCac + expansionMonthly * m * retained);
+      });
+      const cacRecovD = labels.map((_,i)=>Math.round(contribPerUser * (i+1) - realCac));
+      const adjLtvLine  = labels.map(()=>Math.round(adjLtv));
+
+      setTop(fmtNum(ltvCacRatio,2)+'x', paybackMonths<Infinity?paybackMonths+' months':'∞',
+        fmtPct(100-annualChurnPct,1)+' retention',
+        ['LTV/CAC Ratio','CAC Payback Period','Annual Retention']);
+      setPerformanceArea({
+        title:cfg.wealthTitle, pill:cfg.wealthPill,
+        value: fmtNum(ltvCacRatio,2)+'x LTV/CAC',
+        narrative:`Real CAC (with ${s.commission}% commission): ${fmtShort(realCac)}. Contribution/user: ${fmtShort(contribPerUser)}/mo. Adjusted LTV: ${fmtShort(adjLtv)}. Payback: ${paybackMonths<Infinity?paybackMonths+' months':'∞'}. Annual churn: ${fmtPct(annualChurnPct,1)}.`,
+        stat1:{label:'Adjusted LTV',            value: fmtShort(adjLtv)},
+        stat2:{label:'Contribution Margin/User', value: fmtShort(contribPerUser)+'/mo'},
+        stat3:{label:'Gross Profit/User',        value: fmtShort(grossProfitUser)+'/mo'},
+        mood: ltvCacRatio >= 3 ? 'Healthy Unit Econ' : ltvCacRatio >= 1.5 ? 'Acceptable' : ltvCacRatio >= 1 ? 'Marginal' : 'Unsustainable',
+        power: ltvCacRatio >= 3 ? '3x+ benchmark met' : `Below ${fmtNum(ltvCacRatio,1)}x — needs work`
+      });
+      setInsights(
+        {title: ltvCacRatio >= 3 ? 'Excellent — LTV/CAC exceeds 3x benchmark.' : ltvCacRatio >= 1.5 ? 'Acceptable unit economics — target 3x.' : ltvCacRatio >= 1 ? 'Marginal — you recover cost but barely.' : 'Unsustainable — each customer costs more than their value.',
+         text: ltvCacRatio >= 3 ? `LTV/CAC of ${fmtNum(ltvCacRatio,2)}x with a ${paybackMonths}-month payback means capital is recycled efficiently. You can increase CAC and still maintain healthy economics.` : ltvCacRatio >= 1 ? `To reach 3x, either increase adjusted LTV by ${fmtPct(safeDiv(realCac*3-adjLtv, adjLtv)*100,0)} or reduce real CAC by ${fmtPct(safeDiv(adjLtv/3-realCac, realCac)*-100,0)}.` : 'Acquiring customers at current cost is destroying value. Reduce CAC through organic channels or increase retention to extend LTV.'},
+        {title: `${fmtPct(s.churn,1)}% monthly churn = ${fmtPct(annualChurnPct,1)}% annual churn — ${annualChurnPct>50?'extremely high':annualChurnPct>30?'very high':annualChurnPct>15?'high':'manageable'}.`,
+         text: `At ${fmtPct(s.churn,1)}% monthly churn, average customer lifespan is ${fmtNum(avgLifespan,1)} months. Reducing churn by just 1% would extend lifespan by ${fmtNum(safeDiv(1,(s.churn-1)/100) - avgLifespan,1)} months and increase LTV by ${fmtShort((safeDiv(1,(s.churn-1)/100) - avgLifespan) * contribPerUser)}.`},
+        {title: `Support cost of ${fmtShort(s.supportCost)}/user/month is ${fmtPct(safeDiv(s.supportCost, s.revPerUser)*100,0)} of revenue per user.`,
+         text: `${s.supportCost>s.revPerUser*0.3?'High support cost is a significant margin drag — invest in self-serve tooling, documentation, or automation to reduce per-user cost.':s.supportCost<s.revPerUser*0.1?'Support cost is well-controlled. Your contribution margin per user is strong.':'Support cost is within acceptable range — monitor as you scale.'}`}
+      );
+      renderChart(labels,[
+        {label:'Cumulative Contribution (net CAC)',data:cumContribD,color:'#00d4ff',fill:true},
+        {label:'CAC Recovery Line',               data:cacRecovD,  color:'#4fa3ff',fill:false},
+        {label:'Adjusted LTV Target',             data:adjLtvLine, color:'#ffd76a',fill:false,dashed:true}
+      ],cfg.chartTitle,cfg.chartMeta);
+      renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[
+        {label:'At Acquisition',   value:'-'+fmtShort(realCac),     note:`CAC paid (incl. ${s.commission}% commission)`},
+        {label:`Month ${paybackMonths<Infinity?paybackMonths:'∞'}`, value:paybackMonths<Infinity?fmtShort(realCac):'—', note:'CAC fully recovered from contribution margin'},
+        {label:'Adjusted LTV',     value:fmtShort(adjLtv),          note:`After gross margin, support cost and expansion`},
+        {label:'LTV / CAC',        value:fmtNum(ltvCacRatio,2)+'x', note:ltvCacRatio>=3?'Above 3x benchmark ✓':'Below 3x — needs improvement'}
+      ]);
+    }
+
+    /* ── 8. GST TRACKER PRO ───────────────────────────────────── */
+    if(active === 'gstTracker'){
+      const monthKeys  = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+      const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const sales      = monthKeys.map(k=>s[k]||0);
+      const annualTurn = sales.reduce((a,b)=>a+b,0);
+      const avgSales   = annualTurn / 12;
+      const exemptTurn = annualTurn * (s.exemptPct/100);
+      const taxableTurn= annualTurn - exemptTurn;
+
+      const thresholds = {
+        goods:    {normal:4000000,  special:2000000},
+        services: {normal:2000000,  special:1000000},
+        mixed:    {normal:2000000,  special:1000000}
+      };
+      const bizT    = thresholds[s.bizType] || thresholds.services;
+      const limit   = bizT[s.stateType] || bizT.normal;
+      const limitLabel = limit >= 100000 ? fmtShort(limit) : fmtCurrency(limit);
+      const taxableLimit = limit * (1 - s.exemptPct/100);
+
+      let cumulative=0, crossMonth=null;
+      const cumData=[], taxCumData=[], salesData=[];
+      sales.forEach((v,i)=>{
+        cumulative += v;
+        cumData.push(Math.round(cumulative));
+        taxCumData.push(Math.round(cumulative * (1-s.exemptPct/100)));
+        salesData.push(v);
+        if(crossMonth===null && cumulative >= limit) crossMonth = i+1;
       });
 
-    function toggleMenu(){
-      document.getElementById("mobileDrawer")?.classList.toggle("open");
+      const pctUsed      = safeDiv(annualTurn, limit) * 100;
+      const mandatoryReg = annualTurn >= limit;
+      const nearLimit    = pctUsed >= 75 && !mandatoryReg;
+      const regStatus    = s.gstReg ? 'Voluntarily Registered' : mandatoryReg ? 'Mandatory — Must Register' : nearLimit ? 'Monitor Closely' : 'Below Threshold';
+
+      setTop(
+        fmtShort(annualTurn),
+        fmtShort(taxableTurn),
+        fmtPct(pctUsed,1)+' used',
+        ['Gross Annual Turnover','Taxable Turnover',`% of ${limitLabel} Limit`]
+      );
+      setPerformanceArea({
+        title:cfg.wealthTitle, pill:cfg.wealthPill,
+        value: fmtShort(annualTurn),
+        narrative: mandatoryReg
+          ? `Turnover of ${fmtShort(annualTurn)} exceeds ${limitLabel} limit for ${s.bizType}/${s.stateType.replace('_',' ')} businesses. GST registration is mandatory${crossMonth?' — limit crossed in '+monthNames[crossMonth-1]:''}.`
+          : `Turnover of ${fmtShort(annualTurn)} is ${fmtPct(pctUsed,1)} of the ${limitLabel} threshold. Taxable portion: ${fmtShort(taxableTurn)}.`,
+        stat1:{label:'Taxable Turnover',  value: fmtShort(taxableTurn)},
+        stat2:{label:'Exempt Turnover',   value: fmtShort(exemptTurn)},
+        stat3:{label:'Threshold Used',    value: fmtPct(pctUsed,1)},
+        mood: s.gstReg ? 'GST Registered' : mandatoryReg ? 'GST Required' : nearLimit ? 'Monitor Closely' : 'Below Threshold',
+        power: regStatus
+      });
+      setInsights(
+        {title: mandatoryReg ? 'GST registration is mandatory — do not delay.' : s.gstReg ? 'You are voluntarily registered — good compliance posture.' : nearLimit ? `Approaching ${limitLabel} threshold — register proactively.` : `Well below ${limitLabel} threshold — ${fmtPct(100-pctUsed,0)} headroom remaining.`,
+         text: mandatoryReg ? `Your turnover of ${fmtShort(annualTurn)} exceeds the ${limitLabel} limit for ${s.bizType} in a ${s.stateType==='special'?'special category':'normal'} state. Failure to register attracts 100% penalty plus tax. File immediately.` : nearLimit ? `At ${fmtPct(pctUsed,1)} of limit with average monthly sales of ${fmtShort(avgSales)}, you will cross the threshold in approximately ${Math.ceil((limit-annualTurn)/avgSales)} months. Register before crossing to avoid retrospective liability.` : `Voluntary registration is beneficial if you sell to GST-registered businesses — it enables input tax credit claims and improves B2B credibility.`},
+        {title: s.exemptPct > 0 ? `${fmtPct(s.exemptPct)} exempt sales reduce taxable turnover to ${fmtShort(taxableTurn)}.` : 'All sales are taxable — no exempt component.',
+         text: s.exemptPct > 0 ? `Exempt turnover of ${fmtShort(exemptTurn)} reduces your GST liability and effectively raises the revenue level at which registration becomes mandatory. Ensure your exemptions are correctly classified under the GST schedule.` : 'If your business sells any goods/services under GST-exempt categories (agriculture, healthcare, education), ensure they are correctly excluded from taxable turnover.'},
+        {title: crossMonth ? `GST threshold crossed in ${monthNames[crossMonth-1]}.` : 'Threshold not crossed this year.',
+         text: crossMonth ? `Cumulative turnover hit ${limitLabel} in ${monthNames[crossMonth-1]}. Tax liability and filing obligations started from that month. Ensure all returns from that point are filed correctly.` : `Your projected annual turnover of ${fmtShort(annualTurn)} stays below the ${limitLabel} limit throughout the year. Review if growth projections change this picture.`}
+      );
+      renderChart(monthNames,[
+        {label:'Monthly Sales',         data:salesData,  color:'#00d4ff',fill:true},
+        {label:'Cumulative Turnover',   data:cumData,    color:'#ffd76a',fill:false},
+        {label:'Taxable Cumulative',    data:taxCumData, color:'#4fa3ff',fill:false},
+        {label:'GST Threshold (const)', data:Array(12).fill(limit),color:'#ff607d',fill:false,dashed:true}
+      ],cfg.chartTitle,cfg.chartMeta);
+      const q1=sales.slice(0,3).reduce((a,b)=>a+b,0);
+      const q2=sales.slice(3,6).reduce((a,b)=>a+b,0);
+      const q3=sales.slice(6,9).reduce((a,b)=>a+b,0);
+      const q4=sales.slice(9,12).reduce((a,b)=>a+b,0);
+      renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[
+        {label:'Q1 Jan–Mar', value:fmtShort(q1),          note:`Cumulative: ${fmtShort(q1)} | ${fmtPct(safeDiv(q1,limit)*100,1)} of limit`},
+        {label:'Q2 Apr–Jun', value:fmtShort(q2),          note:`Cumulative: ${fmtShort(q1+q2)} | ${fmtPct(safeDiv(q1+q2,limit)*100,1)} of limit`},
+        {label:'Q3 Jul–Sep', value:fmtShort(q3),          note:`Cumulative: ${fmtShort(q1+q2+q3)} | ${fmtPct(safeDiv(q1+q2+q3,limit)*100,1)} of limit`},
+        {label:'Q4 Oct–Dec', value:fmtShort(q4),          note:`Annual total: ${fmtShort(annualTurn)} | Status: ${regStatus}`}
+      ]);
     }
-  </script>
+  }
+
+  /* ─── UTILITY FUNCTIONS ───────────────────────────────────────────── */
+  function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smooth',block:'start'}); }
+  function openAdvisor(){ window.open('https://justinvesting.in','_blank'); }
+
+  function copySummary(){
+    const s   = state[active];
+    const cfg = CALCS[active];
+    const inputs = cfg.controls.map(c=>{
+      const val = c.format==='toggle' ? (s[c.id]?'Yes':'No') : c.format==='select' ? (c.options.find(o=>o.v===s[c.id])?.l||s[c.id]) : formatValue(s[c.id],c.format);
+      return `  ${c.label}: ${val}`;
+    }).join('\n');
+    const report =
+`────────────────────────────────────────
+BUSINESS FINANCE REPORT — ${cfg.label.toUpperCase()}
+Generated: ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}
+────────────────────────────────────────
+
+MODE: ${cfg.title}
+
+KEY INPUTS:
+${inputs}
+
+PRIMARY OUTPUTS:
+  ${$('stat1Label').textContent}: ${$('stat1Value').textContent}
+  ${$('stat2Label').textContent}: ${$('stat2Value').textContent}
+  ${$('stat3Label').textContent}: ${$('stat3Value').textContent}
+
+TOP METRICS:
+  Primary:   ${$('topProjected').textContent}
+  Secondary: ${$('topGains').textContent}
+  Rate/Ratio:${$('topRate').textContent}
+
+INTERPRETATION:
+${$('wealthNarrative').textContent}
+
+KEY INSIGHTS:
+  1. ${$('insight1Title').textContent} — ${$('insight1Text').textContent}
+  2. ${$('insight2Title').textContent} — ${$('insight2Text').textContent}
+  3. ${$('insight3Title').textContent} — ${$('insight3Text').textContent}
+
+BUSINESS HEALTH: ${$('miniMood').textContent}
+KEY SIGNAL:     ${$('miniInsight').textContent}
+
+────────────────────────────────────────
+Powered by Business Finance Dashboard
+────────────────────────────────────────`;
+
+    navigator.clipboard.writeText(report).then(()=>{
+      const old = $('miniInsight').textContent;
+      $('miniInsight').textContent = 'Report Copied!';
+      setTimeout(()=>$('miniInsight').textContent = old, 2000);
+    });
+  }
+
+  /* ─── BOOT ────────────────────────────────────────────────────────── */
+  initState();
+  renderTabs();
+  renderControls();
+  update();
+</script>
+
+<script>
+  fetch("components/navbar.html")
+    .then(res=>res.text())
+    .then(data=>{
+      document.getElementById("navbar").innerHTML=data;
+      const currentPath=window.location.pathname.split("/").pop()||"index.html";
+      document.querySelectorAll(".nav a,.mobile-drawer a").forEach(link=>{
+        if(link.getAttribute("href")===currentPath) link.classList.add("active");
+      });
+    }).catch(()=>{});
+  function toggleMenu(){ document.getElementById("mobileDrawer")?.classList.toggle("open"); }
+</script>
 </body>
 </html>
