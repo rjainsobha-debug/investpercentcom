@@ -867,6 +867,10 @@
       document.querySelectorAll('.tab').forEach(btn => {
         btn.addEventListener('click', () => {
           active = btn.dataset.key;
+          /* V2.1: reset intelligence panel on tool switch */
+          document.getElementById('verdictBox').innerText = '—';
+          document.getElementById('verdictReasons').innerHTML = '';
+          document.getElementById('actionSteps').innerHTML = '';
           renderTabs();
           renderControls();
           update();
@@ -1156,6 +1160,9 @@
           {label:'Current',  value:grossArr[2].toFixed(2)+'%', note:`Net: ${netArr[2].toFixed(2)}%`},
           {label:'150% rent',value:grossArr[4].toFixed(2)+'%', note:'Gross yield at higher rent'}
         ]);
+        updateVerdict('yield', { yield: netYield });
+        updateActions('yield', { yield: netYield });
+        updateScore({ roi: netYield, yield: netYield });
       }
 
       /* -------- TOOL 3: BUY VS RENT -------- */
@@ -1199,6 +1206,9 @@
           {label:'Cumulative Rent', data:rentArr, color:'#ffd76a', fill:false}
         ], cfg.chartTitle, cfg.chartMeta);
         renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestones(labels, emiArr, rentArr));
+        updateVerdict('buyvrent', { emi, rent: s.rent });
+        updateActions('buyvrent', { emi, rent: s.rent });
+        updateScore({ roi: cumulativeEMI < totalRent ? 12 : 6, yield: 3 });
       }
 
       /* -------- TOOL 4: AFFORDABILITY -------- */
@@ -1245,6 +1255,9 @@
           note: `Loan: ${fmtShort(loanArr[incomeSteps.indexOf(inc)] || 0)}`
         }));
         renderMilestones(cfg.timelineTitle, cfg.timelineMeta, milestones);
+        updateVerdict('afford', { maxLoan });
+        updateActions('afford', { maxLoan });
+        updateScore({ roi: maxLoan > 5000000 ? 14 : maxLoan > 2000000 ? 9 : 5, yield: 3 });
       }
 
       /* -------- TOOL 5: STAMP DUTY -------- */
@@ -1290,6 +1303,9 @@
           note: `Stamp: ${fmtShort(stampArr[i])}`
         }));
         renderMilestones(cfg.timelineTitle, cfg.timelineMeta, milestones);
+        updateVerdict('stamp', { rate, gender });
+        updateActions('stamp', { rate, gender });
+        updateScore({ roi: rate < 0.05 ? 12 : rate < 0.07 ? 8 : 5, yield: 3 });
       }
 
       /* -------- TOOL 6: IRR -------- */
@@ -1335,6 +1351,9 @@
           {label:'Annual Net Cash Flow', data:netCFArr, color:'#00e676', fill:false}
         ], cfg.chartTitle, cfg.chartMeta);
         renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestones(labels, cumulArr, Array(s.years).fill(0)));
+        updateVerdict('irr', { irr: irrPct });
+        updateActions('irr', { irr: irrPct });
+        updateScore({ roi: irrPct, yield: (s.rentalIncome / (s.downPayment || 1)) * 100 });
       }
 
       /* -------- TOOL 7: FLIP PROFIT -------- */
@@ -1373,6 +1392,9 @@
           {label:'Holding',    value: s.holding,    note:'Carrying cost'},
           {label:'Net Profit', value: Math.max(0,netProfit), note: roiPct.toFixed(1)+'% ROI'}
         ]);
+        updateVerdict('flip', { roi: roiPct });
+        updateActions('flip', { roi: roiPct });
+        updateScore({ roi: roiPct, yield: 3 });
       }
 
       /* -------- TOOL 8: COMPARE -------- */
@@ -1412,6 +1434,9 @@
           {label:'Gold',        data:goldArr, color:'#ffd76a', fill:false}
         ], cfg.chartTitle, cfg.chartMeta);
         renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestones(labels, mfArr, reArr));
+        updateVerdict('compare', { best });
+        updateActions('compare', { best });
+        updateScore({ roi: Math.max(s.reRate, s.mfRate, s.goldRate), yield: 3 });
       }
 
       /* -------- TOOL 9: LOCATION SCORE -------- */
@@ -1446,6 +1471,9 @@
           {label:'Rental Demand',  value:s.rental+'/25',     note:'Occupier interest'},
           {label:'Total Score',    value:totalScore+'/100',   note:recommendation}
         ]);
+        updateVerdict('location', { score: totalScore });
+        updateActions('location', { score: totalScore });
+        updateScore({ roi: totalScore / 5, yield: totalScore / 20 });
       }
 
       /* -------- TOOL 10: PRICE GROWTH -------- */
@@ -1486,6 +1514,9 @@
           {label:'Worst Scenario',data:worstArr, color:'#ff607d', fill:false}
         ], cfg.chartTitle, cfg.chartMeta);
         renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestones(labels, baseArr, Array(s.years).fill(s.price)));
+        updateVerdict('growth', { rate: s.baseRate });
+        updateActions('growth', { rate: s.baseRate });
+        updateScore({ roi: s.baseRate, yield: s.baseRate * 0.4 });
       }
 
       /* -------- TOOL 11: LOAN ELIGIBILITY -------- */
@@ -1529,6 +1560,9 @@
           value: loanArr[i],
           note: `Property up to ${fmtShort(Math.round(loanArr[i]/0.80))}`
         })));
+        updateVerdict('loanelig', { maxLoan, maxLoanFmt: fmtShort(maxLoan), maxPropFmt: fmtShort(maxProp) });
+        updateActions('loanelig', { maxLoan, maxLoanFmt: fmtShort(maxLoan), maxPropFmt: fmtShort(maxProp) });
+        updateScore({ roi: maxLoan > 5000000 ? 14 : maxLoan > 2000000 ? 9 : 5, yield: 3 });
       }
 
       /* -------- TOOL 12: PREPAYMENT -------- */
@@ -1575,6 +1609,9 @@
           {label:'With Prepayment',    data:prepayBal, color:'#00d4ff', fill:true}
         ], cfg.chartTitle, cfg.chartMeta);
         renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestones(labels, prepayBal, normalBal));
+        updateVerdict('prepay', { saved: interestSaved });
+        updateActions('prepay', { saved: interestSaved });
+        updateScore({ roi: interestSaved > 500000 ? 14 : interestSaved > 100000 ? 9 : 6, yield: 3 });
       }
 
       /* -------- TOOL 13: AI ADVISOR -------- */
@@ -1645,6 +1682,9 @@
           {label:'5 yrs',     value:Math.round(budget * Math.pow(1+yieldData[1]/100, 5)), note:'Medium-term estimate'},
           {label:yrs+' yrs',  value:Math.round(futureVal), note:'Target horizon value'}
         ]);
+        updateVerdict('advisor', { purpose, risk, yield: yield_ });
+        updateActions('advisor', { purpose, risk, yield: yield_ });
+        updateScore({ roi: yieldData[riskLevels.indexOf(risk)] || 8, yield: yieldData[riskLevels.indexOf(risk)] || 8 });
       }
 
       /* -------- TOOL 14: PROPERTY MATCH -------- */
@@ -1711,50 +1751,168 @@
         } else {
           existingMatch.querySelector('a').href = ctaURL;
         }
+        updateVerdict('match', { fit, bhk, city });
+        updateActions('match', { fit, bhk, city });
+        updateScore({ roi: fit === 'Good Fit' ? 12 : fit === 'Premium Budget' ? 16 : 6, yield: 3 });
       }
 
-      /* V2: run intelligence layer after every update */
+      /* V2: run generic investment score panel (non-tool-specific) */
       const score = computeScore();
-      computeVerdict(score);
-      computeActions();
     }
 
-    /* ======== V2.1: VERDICT ENGINE ======== */
+    /* ======== V2.1: VERDICT ENGINE (ALL TOOLS) ======== */
     function updateVerdict(type, data){
       let verdict = '';
       let reasons = [];
 
       if(type === 'roi'){
-        const roi = data.roi;
-        if(roi > 15){
+        if(data.roi > 15){
           verdict = '🔥 STRONG BUY';
-          reasons = [
-            'High ROI potential',
-            'Strong appreciation + rental mix',
-            'Good long-term investment'
-          ];
-        } else if(roi > 8){
+          reasons = ['High ROI potential','Strong appreciation + rental mix','Good long-term investment'];
+        } else if(data.roi > 8){
           verdict = '✅ GOOD INVESTMENT';
-          reasons = [
-            'Balanced return profile',
-            'Acceptable yield',
-            'Moderate growth potential'
-          ];
-        } else if(roi > 5){
+          reasons = ['Balanced return profile','Acceptable yield','Moderate growth potential'];
+        } else if(data.roi > 5){
           verdict = '⚠️ AVERAGE';
-          reasons = [
-            'Low upside potential',
-            'Returns close to inflation',
-            'Consider better options'
-          ];
+          reasons = ['Low upside potential','Returns close to inflation','Consider better options'];
         } else {
           verdict = '❌ AVOID';
-          reasons = [
-            'Very low ROI',
-            'High capital lock-in',
-            'Better alternatives available'
-          ];
+          reasons = ['Very low ROI','High capital lock-in','Better alternatives available'];
         }
+      }
+
+      if(type === 'yield'){
+        if(data.yield > 5){
+          verdict = '🔥 STRONG RENTAL';
+          reasons = ['Net yield above 5% — beats most FD rates','Strong passive income potential','Good rental demand implied'];
+        } else if(data.yield > 3){
+          verdict = '✅ DECENT YIELD';
+          reasons = ['Moderate income return','Acceptable with appreciation upside','Review vacancy and maintenance costs'];
+        } else {
+          verdict = '❌ WEAK YIELD';
+          reasons = ['Net yield below FD rates','Illiquidity not justified by income','Consider REIT or higher-yield areas'];
+        }
+      }
+
+      if(type === 'buyvrent'){
+        verdict = data.emi < data.rent ? '🔥 BUY — EMI < Rent' : '⚠️ RENT — EMI > Current Rent';
+        reasons = data.emi < data.rent
+          ? ['Monthly EMI less than rent — buying is cheaper','EMI builds equity; rent does not','Lock in now before prices rise']
+          : ['Renting is cheaper in pure cash terms','Down payment could be invested elsewhere','Consider a smaller property or lower loan'];
+      }
+
+      if(type === 'afford'){
+        verdict = data.maxLoan > 5000000 ? '✅ GOOD ELIGIBILITY' : data.maxLoan > 2000000 ? '⚠️ MODERATE ELIGIBILITY' : '❌ LIMITED ELIGIBILITY';
+        reasons = [
+          data.maxLoan > 3000000 ? 'Loan eligibility covers meaningful property options' : 'Limited loan may restrict location choices',
+          'Consider joint application to increase eligibility',
+          'Clear existing EMIs to improve eligibility significantly'
+        ];
+      }
+
+      if(type === 'stamp'){
+        verdict = data.rate < 0.05 ? '✅ LOW STAMP DUTY STATE' : data.rate < 0.07 ? '⚠️ MODERATE STAMP DUTY' : '❌ HIGH STAMP DUTY STATE';
+        reasons = [
+          `Stamp duty at ${(data.rate*100).toFixed(1)}% adds to upfront acquisition cost`,
+          'Stamp duty cannot be included in home loan — budget separately',
+          data.gender === 'Female' ? 'Female buyer discount applied where available' : 'Female buyer rebate available in many states'
+        ];
+      }
+
+      if(type === 'irr'){
+        if(data.irr > 15){
+          verdict = '🔥 EXCELLENT DEAL';
+          reasons = ['IRR above 15% — exceptional return','Beats equity and MF alternatives','Consider early entry'];
+        } else if(data.irr > 10){
+          verdict = '✅ GOOD DEAL';
+          reasons = ['Strong IRR for real estate','Positive cash flow likely','Hold and collect rental income'];
+        } else {
+          verdict = '❌ LOW RETURN';
+          reasons = ['IRR below 10% — consider alternatives','Illiquidity may not be justified','Renegotiate price or improve rental'];
+        }
+      }
+
+      if(type === 'flip'){
+        if(data.roi > 20){
+          verdict = '🔥 GREAT FLIP';
+          reasons = ['ROI above 20% — excellent flip margin','Execute quickly to maximize IRR','Strong deal at current numbers'];
+        } else if(data.roi > 10){
+          verdict = '✅ OK FLIP';
+          reasons = ['Decent margin but watch renovation costs','Sell fast to protect annualised return','Budget 15% buffer for overruns'];
+        } else {
+          verdict = '❌ RISKY FLIP';
+          reasons = ['Thin or negative margin','Any overrun will result in a loss','Renegotiate purchase price or cut scope'];
+        }
+      }
+
+      if(type === 'compare'){
+        verdict = data.best === 'Real Estate' ? '🏠 REAL ESTATE WINS' : data.best === 'Mutual Funds' ? '📈 MUTUAL FUNDS WIN' : '🥇 GOLD WINS';
+        reasons = [
+          `${data.best} delivers the highest value over the selected horizon`,
+          'Diversify across all three for balanced risk and return',
+          'Rebalance allocation annually based on market conditions'
+        ];
+      }
+
+      if(type === 'location'){
+        if(data.score >= 75){
+          verdict = '🔥 HOT LOCATION — INVEST NOW';
+          reasons = ['Strong fundamentals across all pillars','High infrastructure and rental demand scores','Good long-term appreciation potential'];
+        } else if(data.score >= 50){
+          verdict = '✅ MODERATE — WATCH & WAIT';
+          reasons = ['Mixed fundamentals — some pillars strong','Monitor infrastructure development closely','Consider entry on dips'];
+        } else {
+          verdict = '❌ AVOID — POOR FUNDAMENTALS';
+          reasons = ['Weak location scores across parameters','High risk of underperformance','Wait for infrastructure improvement'];
+        }
+      }
+
+      if(type === 'growth'){
+        verdict = data.rate >= 8 ? '🔥 HIGH GROWTH CORRIDOR' : data.rate >= 5 ? '✅ STEADY GROWTH' : '⚠️ SLOW MARKET';
+        reasons = [
+          `Base growth rate of ${data.rate}% ${data.rate>=6?'is above':'is below'} the Indian residential average of 6–9%`,
+          'Best case adds 3% — significant upside in high-growth corridors',
+          'Plan for worst case: size EMI so you can sustain a slower market'
+        ];
+      }
+
+      if(type === 'loanelig'){
+        verdict = data.maxLoan > 5000000 ? '✅ STRONG ELIGIBILITY' : data.maxLoan > 2000000 ? '⚠️ MODERATE ELIGIBILITY' : '❌ LIMITED ELIGIBILITY';
+        reasons = [
+          `Eligible for loan of ${data.maxLoanFmt} supporting property up to ${data.maxPropFmt}`,
+          'Joint application can increase limit by 60–80%',
+          'Clearing existing EMIs is the fastest way to boost eligibility'
+        ];
+      }
+
+      if(type === 'prepay'){
+        verdict = data.saved > 500000 ? '🔥 PREPAY NOW — BIG SAVING' : data.saved > 100000 ? '✅ GOOD MOVE' : '⚠️ MODEST IMPACT';
+        reasons = [
+          `Interest saved: guaranteed tax-free return on prepayment`,
+          'Prepaying in early years saves 3–5x more than late-tenure prepayment',
+          'No prepayment penalty on floating rate home loans (RBI mandate)'
+        ];
+      }
+
+      if(type === 'advisor'){
+        const riskMap = {Low:'✅ CONSERVATIVE APPROACH', Medium:'✅ BALANCED STRATEGY', High:'🔥 AGGRESSIVE GROWTH'};
+        verdict = riskMap[data.risk] || '✅ BALANCED STRATEGY';
+        reasons = [
+          `${data.purpose} purpose with ${data.risk} risk profile identified`,
+          `Target yield: ${data.yield} based on your strategy`,
+          'Review and adjust strategy annually as market conditions evolve'
+        ];
+      }
+
+      if(type === 'match'){
+        verdict = data.fit === 'Good Fit' ? '✅ GOOD BUDGET FIT' : data.fit === 'Stretch Budget' ? '⚠️ STRETCH BUDGET' : '🔥 PREMIUM BUDGET';
+        reasons = [
+          data.fit === 'Good Fit' ? 'Budget is within the typical range — multiple options available' :
+            data.fit === 'Stretch Budget' ? 'Budget below typical range — consider smaller BHK or peripheral location' :
+            'Budget above typical range — premium or larger units accessible',
+          `Searching for ${data.bhk} in ${data.city}`,
+          'Negotiate 5–8% below asking price in current market'
+        ];
       }
 
       document.getElementById('verdictBox').innerText = verdict;
@@ -1762,23 +1920,165 @@
         reasons.map(r => `<div class="verdict-reason">• ${r}</div>`).join('');
     }
 
-    /* ======== V2.1: ACTION ENGINE ======== */
+    /* ======== V2.1: ACTION ENGINE (ALL TOOLS) ======== */
     function updateActions(type, data){
       let actions = [];
 
       if(type === 'roi'){
         if(data.roi < 8){
           actions.push('Negotiate property price by 5–10% to improve ROI');
-          actions.push('Increase rental income to improve yield');
+          actions.push('Increase rental income to boost yield component');
         }
         if(data.emi > data.rent){
-          actions.push('EMI is higher than rent → consider lower loan or cheaper property');
+          actions.push('EMI exceeds rent — consider a lower loan amount or cheaper property');
         }
         if(data.roi > 15){
-          actions.push('Strong deal → consider early entry before price rises');
+          actions.push('Strong deal — consider entering before prices rise further');
         }
         if(actions.length === 0){
-          actions.push('Returns look solid — maintain hold strategy and review in 2 years');
+          actions.push('Returns look solid — hold and review in 2 years');
+        }
+      }
+
+      if(type === 'yield'){
+        if(data.yield < 3){
+          actions.push('Increase rent or switch to a higher-demand location');
+          actions.push('Reduce vacancy periods by listing on aggregators');
+        }
+        if(data.yield >= 3 && data.yield < 5){
+          actions.push('Negotiate minor rent increase at next renewal');
+          actions.push('Reduce maintenance costs to improve net yield');
+        }
+        if(data.yield >= 5){
+          actions.push('Strong yield — lock in tenants on long-term leases to stabilise income');
+        }
+      }
+
+      if(type === 'buyvrent'){
+        if(data.emi > data.rent){
+          actions.push('Renting is cheaper currently — invest down payment in mutual funds');
+          actions.push('Monitor rent escalation: if rent crosses EMI, revisit buying');
+        } else {
+          actions.push('EMI is competitive — proceed with home purchase for equity building');
+          actions.push('Lock in a fixed rate loan before rates rise further');
+        }
+      }
+
+      if(type === 'afford'){
+        if(data.maxLoan < 3000000){
+          actions.push('Pay off existing EMIs to increase eligibility significantly');
+          actions.push('Add co-applicant income to boost combined loan eligibility');
+          actions.push('Consider a longer tenure (25–30 yr) to reduce required EMI');
+        } else {
+          actions.push('Eligibility looks solid — begin property search now');
+          actions.push('Get pre-approval letter from bank for negotiating leverage');
+        }
+      }
+
+      if(type === 'stamp'){
+        actions.push('Budget stamp duty and registration as upfront cash — not in loan');
+        if(data.gender !== 'Female'){
+          actions.push('Register property in female co-owner's name for stamp duty discount in many states');
+        }
+        actions.push('Consider timing: stamp duty applies on agreement value, so negotiate carefully');
+      }
+
+      if(type === 'irr'){
+        if(data.irr < 10){
+          actions.push('IRR is below threshold — renegotiate purchase price or improve rental income');
+          actions.push('Explore alternative assets (REITs, MF) that offer similar returns with more liquidity');
+        }
+        if(data.irr >= 10 && data.irr < 15){
+          actions.push('Good deal — ensure rental income covers EMI from day one');
+          actions.push('Review exit strategy: plan sale at 5–7 year horizon for best IRR');
+        }
+        if(data.irr >= 15){
+          actions.push('Excellent deal — prioritise this over other options in your portfolio');
+        }
+      }
+
+      if(type === 'flip'){
+        if(data.roi < 10){
+          actions.push('Margin too thin — negotiate purchase price down by at least 10%');
+          actions.push('Cut renovation scope to essentials only to protect margin');
+        }
+        if(data.roi >= 10){
+          actions.push('Execute fast — every extra month of holding erodes annualised return');
+          actions.push('Get 3 contractor quotes before committing renovation budget');
+        }
+        actions.push('Buffer 15% extra on renovation budget for cost overruns');
+      }
+
+      if(type === 'compare'){
+        if(data.best === 'Mutual Funds'){
+          actions.push('Allocate primary savings to equity mutual funds for this horizon');
+          actions.push('Keep real estate exposure through REITs for liquidity');
+        } else if(data.best === 'Real Estate'){
+          actions.push('Real estate leads — proceed with property investment in growth corridor');
+          actions.push('Ensure 20% down payment is ready and loan pre-approval is in place');
+        } else {
+          actions.push('Gold leads — consider Sovereign Gold Bonds for tax-efficient gold exposure');
+        }
+        actions.push('Diversify: no single asset class should exceed 60% of net worth');
+      }
+
+      if(type === 'location'){
+        if(data.score < 50){
+          actions.push('Avoid investing in this location currently — wait for infrastructure improvements');
+          actions.push('Look for upcoming metro or expressway projects as a positive trigger');
+        } else if(data.score < 75){
+          actions.push('Watch for infrastructure announcements before committing capital');
+          actions.push('Consider a smaller entry position and increase after confirmation');
+        } else {
+          actions.push('Strong location — enter now before wider awareness drives up prices');
+          actions.push('Focus on projects with good rental demand for immediate income');
+        }
+      }
+
+      if(type === 'growth'){
+        if(data.rate < 5){
+          actions.push('Slow market — wait for a price correction before entering');
+          actions.push('Look for infrastructure triggers that could re-rate the location');
+        } else {
+          actions.push('Growth corridor — buy early and hold for compounding appreciation');
+          actions.push('Plan exit at the peak of next real estate cycle (typically 7–10 years)');
+        }
+      }
+
+      if(type === 'loanelig'){
+        if(data.maxLoan < 2000000){
+          actions.push('Improve eligibility: clear personal/car loans before applying');
+          actions.push('Consider joint home loan with spouse for combined eligibility');
+        } else {
+          actions.push('Eligibility confirmed — get bank pre-approval to speed up purchase');
+          actions.push('Compare at least 3 lenders for the best interest rate');
+        }
+      }
+
+      if(type === 'prepay'){
+        actions.push('Make prepayments in early loan years for maximum interest savings');
+        actions.push('Use annual bonus or windfall to prepay principal — zero penalty on floating loans');
+        if(data.saved > 500000){
+          actions.push('Large saving potential — prioritise prepayment over other investments yielding <8%');
+        }
+      }
+
+      if(type === 'advisor'){
+        actions.push(`For ${data.purpose}, focus on ${data.risk === 'High' ? 'pre-launch or commercial property' : data.risk === 'Low' ? 'ready possession in established areas' : 'growth corridor ready-to-move units'}`);
+        actions.push('Model IRR before committing — always ensure rental can service EMI partially');
+        actions.push(`Review strategy after ${data.risk === 'High' ? '2' : '3'} years and adjust based on market conditions`);
+      }
+
+      if(type === 'match'){
+        if(data.fit === 'Stretch Budget'){
+          actions.push('Consider a smaller BHK or peripheral micro-market for the same city');
+          actions.push('Look for under-construction properties — typically 15–20% below ready prices');
+        } else if(data.fit === 'Premium Budget'){
+          actions.push('Explore luxury or larger unit — you have negotiating power');
+          actions.push('Ask for extras: parking, club access, modular kitchen in the deal');
+        } else {
+          actions.push('Budget is right — shortlist 3–5 properties and negotiate hard');
+          actions.push('Check RERA registration before making any advance payment');
         }
       }
 
