@@ -12,63 +12,42 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root{
-      --bg:#060915;
-      --bg2:#0b1224;
-      --panel:#0f1830;
-      --panel2:#121e3c;
-      --soft:#18284d;
-      --line:rgba(255,255,255,.08);
-      --line2:rgba(255,255,255,.13);
-      --text:#f7fbff;
-      --muted:#9da9c6;
-      --cyan:#00d4ff;
-      --blue:#4fa3ff;
-      --violet:#7b61ff;
-      --green:#00e676;
-      --gold:#ffd76a;
-      --red:#ff607d;
-      --shadow:0 22px 70px rgba(0,0,0,.38);
-      --shadow2:0 12px 34px rgba(0,0,0,.24);
-      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
-      --hero:
-        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
-        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
-        linear-gradient(180deg,#070c18 0%,#091224 100%);
+      --bg:#060915;--bg2:#0b1224;--panel:#0f1830;--panel2:#121e3c;--soft:#18284d;
+      --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);
+      --text:#f7fbff;--muted:#9da9c6;
+      --cyan:#00d4ff;--blue:#4fa3ff;--violet:#7b61ff;
+      --green:#00e676;--gold:#ffd76a;--red:#ff607d;
+      --shadow:0 22px 70px rgba(0,0,0,.38);--shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%);
+      --hero:radial-gradient(circle at 16% 20%,rgba(0,212,255,.18),transparent 28%),
+             radial-gradient(circle at 88% 12%,rgba(123,97,255,.18),transparent 24%),
+             linear-gradient(180deg,#070c18 0%,#091224 100%);
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{
-      font-family:Inter,system-ui,sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
-        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
-        var(--bg);
-      min-height:100vh;
-      overflow-x:hidden;
+      font-family:Inter,system-ui,sans-serif;color:var(--text);
+      background:radial-gradient(circle at top left,rgba(0,212,255,.06),transparent 18%),
+        radial-gradient(circle at bottom right,rgba(123,97,255,.08),transparent 22%),var(--bg);
+      min-height:100vh;overflow-x:hidden;
     }
     body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background-image:
-        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      content:"";position:fixed;inset:0;pointer-events:none;
+      background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
       background-size:34px 34px;
-      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
-      z-index:0;
+      mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 92%);z-index:0;
     }
     a{text-decoration:none;color:inherit}
     button,input{font:inherit}
     .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:12px 14px 24px}
     .hero{
-      background:var(--hero);border:1px solid var(--line);border-radius:24px;padding:18px 22px;
-      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:14px
+      background:var(--hero);border:1px solid var(--line);border-radius:24px;
+      padding:18px 22px;box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:14px
     }
     .hero::after{
       content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
-      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      background:radial-gradient(circle,rgba(0,212,255,.18),transparent 62%);
       filter:blur(14px);pointer-events:none
     }
     .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px}
@@ -79,9 +58,7 @@
     .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
     .hero-copy p{margin:8px 0 0;color:var(--muted);font-size:15px;max-width:760px;line-height:1.6}
     .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{
-      border:none;cursor:pointer;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:800;transition:.2s ease
-    }
+    .btn{border:none;cursor:pointer;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:800;transition:.2s ease}
     .btn:hover{transform:translateY(-1px)}
     .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
     .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
@@ -94,54 +71,50 @@
     .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
     .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}
     .metric-card{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
       border:1px solid var(--line);border-radius:22px;padding:14px;min-height:90px;position:relative;overflow:hidden
     }
     .metric-card::before{
       content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
-      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
+      background:radial-gradient(circle,rgba(255,255,255,.06),transparent 60%);pointer-events:none
     }
     .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
     .metric-value{font-size:clamp(22px,2.5vw,32px);font-weight:800;letter-spacing:-.04em;line-height:1}
-    .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)}
+    .metric-value.cyan{color:var(--cyan)}.metric-value.green{color:var(--green)}.metric-value.gold{color:var(--gold)}
     .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
     .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:14px;margin-top:12px}
     .panel{
-      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));
       border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
     }
     .controls{padding:16px;position:relative;overflow:hidden}
     .controls::after{
       content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
-      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
+      background:radial-gradient(circle,rgba(123,97,255,.12),transparent 60%);pointer-events:none
     }
     .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
     .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
     .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
     .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
-    .control-group{
-      margin-bottom:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
-    }
+    .control-group{margin-bottom:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
     .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
     .control-name{font-size:14px;font-weight:700;color:var(--text)}
     .control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
     input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
-    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
     input[type=range]::-webkit-slider-thumb{
       appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
       border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
     }
-    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
-    input[type=range]::-moz-range-thumb{
-      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
-    }
+    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
+    input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)}
     .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
     .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
     .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
     .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
     .advisor-card{
       margin-top:16px;padding:16px;border-radius:20px;
-      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
+      background:radial-gradient(circle at top left,rgba(0,212,255,.18),transparent 36%),linear-gradient(135deg,rgba(79,163,255,.12),rgba(123,97,255,.14));
       border:1px solid rgba(255,255,255,.1)
     }
     .advisor-card h4{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.03em}
@@ -150,23 +123,16 @@
     .advisor-actions .btn{flex:1;min-width:150px}
     .dashboard{padding:14px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:auto}
     .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
-    .wealth-card,.insight-card,.chart-card,.timeline-card{
-      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
-    }
+    .wealth-card,.insight-card,.chart-card,.timeline-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px}
     .wealth-card{
       padding:18px;display:flex;flex-direction:column;justify-content:space-between;min-height:auto;
-      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
+      background:radial-gradient(circle at 20% 20%,rgba(0,212,255,.14),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02))
     }
     .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
     .wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
     .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
-    .wealth-number{
-      font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff
-    }
-    .wealth-number .grad{
-      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
-      -webkit-background-clip:text;background-clip:text;color:transparent
-    }
+    .wealth-number{font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff}
+    .wealth-number .grad{background:linear-gradient(135deg,#ffffff 0%,#9feeff 38%,#00e676 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
     .wealth-sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:660px}
     .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
     .wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
@@ -196,7 +162,6 @@
     .m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
     .m-amount{font-size:22px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
     .m-note{color:#8390b1;font-size:13px;line-height:1.45}
-    .hidden{display:none !important}
     @media(max-width:1180px){
       .top-metrics{grid-template-columns:1fr 1fr}
       .layout{grid-template-columns:1fr}
@@ -217,7 +182,6 @@
       .wealth-split,.timeline-grid,.mini-grid{grid-template-columns:1fr}
       .page{padding:10px 10px 20px}
       .controls,.dashboard{padding:12px}
-      body{overflow-x:hidden}
     }
   </style>
 </head>
@@ -358,152 +322,114 @@
   </div>
 
   <script>
-    /* ═══════════════════════════════════════════
-       CALCS — single source of truth
-    ═══════════════════════════════════════════ */
+    /* ═══════════════════════════════════════════════════
+       CALCS — single definition, all 8 calculators
+    ═══════════════════════════════════════════════════ */
     const CALCS = {
       fd: {
-        label: "FD",
-        badge: "FD MODE",
-        title: "Fixed Deposit",
-        sub: "Safe compounding on a lump sum deposit.",
-        desc: "Set principal, rate and tenure to see FD maturity value.",
-        wealthTitle: "FD Maturity Value",
-        wealthPill: "Safe Returns",
-        chartTitle: "FD growth curve",
-        chartMeta: "Year-by-year compounding of your fixed deposit.",
-        timelineTitle: "Milestones",
-        timelineMeta: "Key checkpoints in your FD journey.",
-        controls: [
-          { id:"amount",  label:"Principal amount", min:10000,   max:5000000,  step:5000,  value:100000, format:"currency" },
-          { id:"rate",    label:"Interest rate",    min:3,       max:10,       step:0.1,   value:7,      format:"percent" },
-          { id:"years",   label:"Tenure",           min:1,       max:10,       step:1,     value:5,      format:"years" }
+        label:"FD", badge:"FD MODE", title:"Fixed Deposit",
+        sub:"Safe annual compounding on a lump sum deposit.",
+        desc:"Set principal, rate and tenure to see FD maturity value.",
+        wealthTitle:"FD Maturity Value", wealthPill:"Safe Returns",
+        chartTitle:"FD compounding curve", chartMeta:"Year-by-year compounding of your fixed deposit.",
+        timelineTitle:"FD Milestones", timelineMeta:"How your deposit grows year by year.",
+        controls:[
+          {id:"amount", label:"Principal amount", min:10000,  max:5000000, step:5000, value:100000, format:"currency"},
+          {id:"rate",   label:"Interest rate",    min:3,      max:10,      step:0.1,  value:7,      format:"percent"},
+          {id:"years",  label:"Tenure",           min:1,      max:10,      step:1,    value:5,      format:"years"}
         ]
       },
       rd: {
-        label: "RD",
-        badge: "RD MODE",
-        title: "Recurring Deposit",
-        sub: "Monthly savings with quarterly compounding.",
-        desc: "Set monthly deposit, rate and tenure to see RD maturity.",
-        wealthTitle: "RD Maturity Value",
-        wealthPill: "Monthly Savings",
-        chartTitle: "RD growth curve",
-        chartMeta: "Year-by-year accumulation of your recurring deposit.",
-        timelineTitle: "Milestones",
-        timelineMeta: "Key checkpoints in your RD journey.",
-        controls: [
-          { id:"monthly", label:"Monthly deposit",  min:500,     max:100000,   step:500,   value:5000,   format:"currency" },
-          { id:"rate",    label:"Interest rate",    min:3,       max:10,       step:0.1,   value:7,      format:"percent" },
-          { id:"years",   label:"Tenure",           min:1,       max:10,       step:1,     value:5,      format:"years" }
+        label:"RD", badge:"RD MODE", title:"Recurring Deposit",
+        sub:"Monthly savings with monthly compounding.",
+        desc:"Set monthly deposit, rate and tenure to see RD maturity.",
+        wealthTitle:"RD Maturity Value", wealthPill:"Monthly Savings",
+        chartTitle:"RD growth curve", chartMeta:"Invested vs maturity value, year by year.",
+        timelineTitle:"RD Milestones", timelineMeta:"Invested capital vs total value at key intervals.",
+        controls:[
+          {id:"monthly", label:"Monthly deposit", min:500,    max:100000,  step:500,  value:5000,   format:"currency"},
+          {id:"rate",    label:"Interest rate",   min:3,      max:10,      step:0.1,  value:7,      format:"percent"},
+          {id:"years",   label:"Tenure",          min:1,      max:10,      step:1,    value:5,      format:"years"}
         ]
       },
       nsc: {
-        label: "NSC",
-        badge: "NSC MODE",
-        title: "National Savings Certificate",
-        sub: "Government-backed 5-year compounding scheme.",
-        desc: "NSC compounds annually at the government rate for 5 years.",
-        wealthTitle: "NSC Maturity Value",
-        wealthPill: "Govt Scheme",
-        chartTitle: "NSC compounding path",
-        chartMeta: "Annual compounding on your NSC investment.",
-        timelineTitle: "Milestones",
-        timelineMeta: "Key checkpoints in your NSC journey.",
-        controls: [
-          { id:"amount",  label:"Investment amount", min:1000,   max:500000,   step:1000,  value:50000,  format:"currency" },
-          { id:"rate",    label:"Interest rate",     min:6,      max:9,        step:0.1,   value:7.7,    format:"percent" },
-          { id:"years",   label:"Tenure",            min:5,      max:5,        step:1,     value:5,      format:"years" }
+        label:"NSC", badge:"NSC MODE", title:"National Savings Certificate",
+        sub:"Government-backed 5-year compounding scheme.",
+        desc:"NSC compounds annually at the government rate for 5 years.",
+        wealthTitle:"NSC Maturity Value", wealthPill:"Govt Scheme",
+        chartTitle:"NSC compounding path", chartMeta:"Annual compounding on your NSC investment.",
+        timelineTitle:"NSC Milestones", timelineMeta:"Key checkpoints in your NSC journey.",
+        controls:[
+          {id:"amount", label:"Investment amount", min:1000,  max:500000,  step:1000, value:50000,  format:"currency"},
+          {id:"rate",   label:"Interest rate",     min:6,     max:9,       step:0.1,  value:7.7,    format:"percent"},
+          {id:"years",  label:"Tenure",            min:5,     max:5,       step:1,    value:5,      format:"years"}
         ]
       },
       kvp: {
-        label: "KVP",
-        badge: "KVP MODE",
-        title: "Kisan Vikas Patra",
-        sub: "Government scheme that doubles your investment.",
-        desc: "KVP doubles your principal in a fixed tenure.",
-        wealthTitle: "KVP Maturity Value",
-        wealthPill: "Double Money",
-        chartTitle: "KVP growth path",
-        chartMeta: "Linear path to doubling your investment.",
-        timelineTitle: "Milestones",
-        timelineMeta: "Key checkpoints in your KVP journey.",
-        controls: [
-          { id:"amount",  label:"Investment amount", min:1000,   max:500000,   step:1000,  value:50000,  format:"currency" },
-          { id:"years",   label:"Doubling period",   min:8,      max:10,       step:1,     value:9,      format:"years" }
+        label:"KVP", badge:"KVP MODE", title:"Kisan Vikas Patra",
+        sub:"Government scheme that doubles your investment.",
+        desc:"KVP doubles your principal in a government-set tenure.",
+        wealthTitle:"KVP Maturity Value", wealthPill:"Double Money",
+        chartTitle:"KVP growth path", chartMeta:"Path from investment to doubling.",
+        timelineTitle:"KVP Milestones", timelineMeta:"Key checkpoints on the way to doubling.",
+        controls:[
+          {id:"amount", label:"Investment amount", min:1000,  max:500000,  step:1000, value:50000,  format:"currency"},
+          {id:"years",  label:"Doubling period",   min:8,     max:10,      step:1,    value:9,      format:"years"}
         ]
       },
       scss: {
-        label: "SCSS",
-        badge: "SCSS MODE",
-        title: "Senior Citizen Savings Scheme",
-        sub: "High-interest quarterly payout for senior citizens.",
-        desc: "SCSS pays quarterly interest at a high government rate.",
-        wealthTitle: "SCSS Total Payout",
-        wealthPill: "Senior Scheme",
-        chartTitle: "SCSS interest payout",
-        chartMeta: "Annual interest earned on your SCSS deposit.",
-        timelineTitle: "Milestones",
-        timelineMeta: "Cumulative interest milestones.",
-        controls: [
-          { id:"amount",  label:"Deposit amount",    min:10000,  max:3000000,  step:10000, value:500000, format:"currency" },
-          { id:"rate",    label:"Interest rate",     min:7,      max:9,        step:0.1,   value:8.2,    format:"percent" },
-          { id:"years",   label:"Tenure",            min:5,      max:5,        step:1,     value:5,      format:"years" }
+        label:"SCSS", badge:"SCSS MODE", title:"Senior Citizen Savings Scheme",
+        sub:"High-interest quarterly payout — no compounding.",
+        desc:"SCSS pays simple interest quarterly. Principal stays fixed, interest is paid out.",
+        wealthTitle:"SCSS Total Payout", wealthPill:"Senior Scheme",
+        chartTitle:"SCSS cumulative interest", chartMeta:"Cumulative interest received over tenure (no compounding).",
+        timelineTitle:"SCSS Payout Milestones", timelineMeta:"Cumulative interest received at key intervals.",
+        controls:[
+          {id:"amount", label:"Deposit amount",  min:10000,  max:3000000, step:10000, value:500000, format:"currency"},
+          {id:"rate",   label:"Interest rate",   min:7,      max:9,       step:0.1,   value:8.2,    format:"percent"},
+          {id:"years",  label:"Tenure",          min:5,      max:5,       step:1,     value:5,      format:"years"}
         ]
       },
       post: {
-        label: "Post Office",
-        badge: "POST MODE",
-        title: "Post Office Savings",
-        sub: "Simple secure savings with government backing.",
-        desc: "Post Office TD grows your deposit with annual simple interest.",
-        wealthTitle: "Post Office Value",
-        wealthPill: "Secure Deposit",
-        chartTitle: "Post Office growth path",
-        chartMeta: "Yearly growth of your post office deposit.",
-        timelineTitle: "Milestones",
-        timelineMeta: "Key value checkpoints.",
-        controls: [
-          { id:"amount",  label:"Deposit amount",    min:1000,   max:1000000,  step:1000,  value:50000,  format:"currency" },
-          { id:"rate",    label:"Interest rate",     min:3,      max:7,        step:0.1,   value:4,      format:"percent" },
-          { id:"years",   label:"Tenure",            min:1,      max:10,       step:1,     value:5,      format:"years" }
+        label:"Post Office", badge:"POST MODE", title:"Post Office Savings",
+        sub:"Simple interest on your post office time deposit.",
+        desc:"Post Office TD pays simple interest annually — principal is returned at maturity.",
+        wealthTitle:"Post Office Value", wealthPill:"Secure Deposit",
+        chartTitle:"Post Office growth path", chartMeta:"Simple interest growth year by year.",
+        timelineTitle:"Post Office Milestones", timelineMeta:"Interest accrued at key intervals.",
+        controls:[
+          {id:"amount", label:"Deposit amount",  min:1000,   max:1000000, step:1000, value:50000,  format:"currency"},
+          {id:"rate",   label:"Interest rate",   min:3,      max:7,       step:0.1,  value:4,      format:"percent"},
+          {id:"years",  label:"Tenure",          min:1,      max:10,      step:1,    value:5,      format:"years"}
         ]
       },
       compare: {
-        label: "Compare",
-        badge: "COMPARE",
-        title: "FD vs RD vs SIP",
-        sub: "Side-by-side comparison of three savings approaches.",
-        desc: "Compare the final value of FD, RD and basic SIP over the same horizon.",
-        wealthTitle: "Best Option Result",
-        wealthPill: "Decision Tool",
-        chartTitle: "FD vs RD vs SIP comparison",
-        chartMeta: "All three strategies modelled on the same amount and horizon.",
-        timelineTitle: "Comparison milestones",
-        timelineMeta: "How each strategy performs at key intervals.",
-        controls: [
-          { id:"amount",  label:"Lump sum / Monthly", min:10000, max:500000,   step:5000,  value:100000, format:"currency" },
-          { id:"fdrate",  label:"FD rate",            min:3,     max:10,       step:0.1,   value:7,      format:"percent" },
-          { id:"siprate", label:"SIP / equity rate",  min:6,     max:18,       step:0.5,   value:12,     format:"percent" },
-          { id:"years",   label:"Horizon",            min:1,     max:15,       step:1,     value:5,      format:"years" }
+        label:"Compare", badge:"COMPARE", title:"FD vs RD vs SIP",
+        sub:"Compare three independent savings strategies side by side.",
+        desc:"Set separate amounts for FD, RD and SIP. Each is calculated independently.",
+        wealthTitle:"Best Option Result", wealthPill:"Decision Tool",
+        chartTitle:"FD vs RD vs SIP", chartMeta:"Independent amounts, same time horizon.",
+        timelineTitle:"Comparison Milestones", timelineMeta:"How each strategy builds over time.",
+        controls:[
+          {id:"fdamount",  label:"FD lump sum",      min:10000,  max:1000000, step:5000, value:100000, format:"currency"},
+          {id:"rdmonthly", label:"RD monthly",        min:500,    max:50000,   step:500,  value:5000,   format:"currency"},
+          {id:"sipmonthly",label:"SIP monthly",       min:500,    max:50000,   step:500,  value:5000,   format:"currency"},
+          {id:"fdrate",    label:"FD interest rate",  min:3,      max:10,      step:0.1,  value:7,      format:"percent"},
+          {id:"siprate",   label:"SIP/equity rate",   min:6,      max:18,      step:0.5,  value:12,     format:"percent"},
+          {id:"years",     label:"Horizon",           min:1,      max:15,      step:1,    value:5,      format:"years"}
         ]
       },
       inflation: {
-        label: "Inflation",
-        badge: "REAL VALUE",
-        title: "Inflation-Adjusted Value",
-        sub: "See how inflation erodes purchasing power over time.",
-        desc: "Enter today's amount and inflation rate to see future real value.",
-        wealthTitle: "Real Future Value",
-        wealthPill: "Inflation Lens",
-        chartTitle: "Purchasing power erosion",
-        chartMeta: "How the real value of your money declines year by year.",
-        timelineTitle: "Erosion milestones",
-        timelineMeta: "Purchasing power at key intervals.",
-        controls: [
-          { id:"amount",    label:"Today's amount",  min:10000,  max:10000000, step:10000, value:100000, format:"currency" },
-          { id:"inflation", label:"Inflation rate",  min:1,      max:12,       step:0.5,   value:6,      format:"percent" },
-          { id:"years",     label:"Years ahead",     min:1,      max:30,       step:1,     value:10,     format:"years" }
+        label:"Inflation", badge:"REAL VALUE", title:"Inflation-Adjusted Value",
+        sub:"See how inflation erodes purchasing power over time.",
+        desc:"Enter today's amount and inflation rate to see future real value.",
+        wealthTitle:"Real Future Value", wealthPill:"Inflation Lens",
+        chartTitle:"Purchasing power erosion", chartMeta:"How the real value of your money declines year by year.",
+        timelineTitle:"Erosion Milestones", timelineMeta:"Purchasing power at key intervals.",
+        controls:[
+          {id:"amount",    label:"Today's amount", min:10000,  max:10000000, step:10000, value:100000, format:"currency"},
+          {id:"inflation", label:"Inflation rate", min:1,      max:12,       step:0.5,   value:6,      format:"percent"},
+          {id:"years",     label:"Years ahead",    min:1,      max:30,       step:1,     value:10,     format:"years"}
         ]
       }
     };
@@ -514,8 +440,7 @@
     let state  = {};
     let active = "fd";
     let chart;
-
-    const $  = id => document.getElementById(id);
+    const $ = id => document.getElementById(id);
 
     /* ═══════════════════════════════════════════
        FORMAT HELPERS
@@ -555,7 +480,6 @@
         `<button class="tab ${k===active?"active":""}" onclick="switchTab('${k}')">${CALCS[k].label}</button>`
       ).join("");
     }
-
     function switchTab(k){
       active = k;
       renderTabs();
@@ -568,10 +492,12 @@
     ═══════════════════════════════════════════ */
     function renderControls(){
       const cfg = CALCS[active];
-      $("panelBadge").textContent  = cfg.badge;
-      $("controlDesc").textContent = cfg.desc;
+      $("panelBadge").textContent   = cfg.badge;
+      $("controlDesc").textContent  = cfg.desc;
       $("modeHeadline").textContent = cfg.title;
       $("modeSub").textContent      = cfg.sub;
+      $("timelineTitle").textContent = cfg.timelineTitle;
+      $("timelineMeta").textContent  = cfg.timelineMeta;
 
       $("dynamicControls").innerHTML = cfg.controls.map(c => `
         <div class="control-group">
@@ -640,11 +566,11 @@
         `<div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>`
       ).join("");
 
-      const ctx = $("wealthChart").getContext("2d");
+      const ctx  = $("wealthChart").getContext("2d");
       const grad = ctx.createLinearGradient(0, 0, 0, 320);
-      grad.addColorStop(0,   "rgba(0,212,255,.26)");
-      grad.addColorStop(.6,  "rgba(79,163,255,.1)");
-      grad.addColorStop(1,   "rgba(79,163,255,0)");
+      grad.addColorStop(0,  "rgba(0,212,255,.26)");
+      grad.addColorStop(.6, "rgba(79,163,255,.1)");
+      grad.addColorStop(1,  "rgba(79,163,255,0)");
 
       if(chart) chart.destroy();
       chart = new Chart(ctx, {
@@ -666,6 +592,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: { duration: 250 },
           interaction: { mode:"index", intersect:false },
           plugins: {
             legend: { display: false },
@@ -692,318 +619,384 @@
     }
 
     /* ═══════════════════════════════════════════
-       MILESTONES
+       MILESTONES — mode-aware notes
     ═══════════════════════════════════════════ */
-    function renderMilestones(labels, corpus, base){
+    function renderMilestones(labels, corpus, base, mode){
       const total = labels.length;
-      const picks = Array.from(new Set([1, Math.max(1,Math.ceil(total*.33)), Math.max(1,Math.ceil(total*.66)), total])).slice(0,4);
+      const picks = Array.from(
+        new Set([1, Math.max(1,Math.ceil(total*.33)), Math.max(1,Math.ceil(total*.66)), total])
+      ).slice(0,4);
+
       $("timelineGrid").innerHTML = picks.map(y => {
         const idx = y - 1;
         const val = corpus[idx] || 0;
         const inv = base[idx]   || 0;
+        let note = "";
+
+        if(mode === "rd"){
+          const gain = val - inv;
+          note = gain > 0
+            ? `Invested ${fmtShort(inv)}, earned ${fmtShort(gain)}`
+            : "Building corpus";
+        } else if(mode === "inflation"){
+          const pctLost = inv > 0 ? Math.round((1 - val/inv)*100) : 0;
+          note = `${pctLost}% of purchasing power lost`;
+        } else if(mode === "scss" || mode === "post"){
+          const interest = val - inv;
+          note = interest > 0 ? `${fmtShort(interest)} interest earned so far` : "Interest accumulating";
+        } else if(mode === "compare"){
+          note = val > inv ? `${fmtShort(val - inv)} above FD baseline` : "Building";
+        } else {
+          /* fd, nsc, kvp */
+          note = val > inv
+            ? `${fmtShort(val - inv)} compounded beyond principal`
+            : "Compounding starts";
+        }
+
         return `<div class="milestone">
           <div class="m-year">Year ${y}</div>
           <div class="m-amount">${fmtShort(val)}</div>
-          <div class="m-note">${val > inv ? fmtShort(val-inv) + " created beyond base" : "Capital still building"}</div>
+          <div class="m-note">${note}</div>
         </div>`;
       }).join("");
     }
 
     /* ═══════════════════════════════════════════
-       UPDATE ENGINE — one clean block per calculator
+       UPDATE ENGINE
     ═══════════════════════════════════════════ */
     function update(){
-      const s   = state[active];
-      const cfg = CALCS[active];
+      const s = state[active];
 
-      /* ── FD ── */
+      /* ─── FD ─── */
       if(active === "fd"){
         const labels = [], corpus = [], base = [];
-        for(let y = 1; y <= s.years; y++){
-          labels.push("Year " + y);
+        for(let y=1; y<=s.years; y++){
+          labels.push("Year "+y);
           corpus.push(Math.round(s.amount * Math.pow(1 + s.rate/100, y)));
           base.push(s.amount);
         }
-        const maturity = corpus[corpus.length - 1];
-        const gain     = maturity - s.amount;
+        const mat  = corpus[corpus.length-1];
+        const gain = mat - s.amount;
+        const mult = mat / s.amount;
 
-        setTop(maturity, gain, s.rate);
+        setTop(mat, gain, s.rate);
         setWealth({
-          value: maturity,
-          narrative: `A deposit of ${fmtCurrency(s.amount)} at ${s.rate}% for ${s.years} years grows to ${fmtShort(maturity)}.`,
-          stat1: { label:"Principal",     value: fmtCurrency(s.amount) },
-          stat2: { label:"Interest earned", value: fmtCurrency(gain) },
-          stat3: { label:"Multiple",      value: (maturity/s.amount).toFixed(2) + "x" },
-          mood: "Safe", power: "Guaranteed"
+          value: mat,
+          narrative: `${fmtCurrency(s.amount)} at ${s.rate}% for ${s.years} yr${s.years>1?"s":""} grows to ${fmtShort(mat)} — ${mult.toFixed(2)}x your money.`,
+          stat1:{label:"Principal",       value:fmtCurrency(s.amount)},
+          stat2:{label:"Interest earned", value:fmtCurrency(gain)},
+          stat3:{label:"Multiple",        value:mult.toFixed(2)+"x"},
+          mood:"Safe", power:"Guaranteed"
         });
-        setInsights(
-          { title:"Fixed deposits offer capital protection.", text:"Your principal is guaranteed. The rate locks in at deposit time." },
-          { title:"Compounding beats simple interest.", text:"Each year's interest builds on the previous year's total, accelerating growth." },
-          { title:"Ladder FDs for liquidity.", text:"Breaking into multiple smaller FDs with different tenures gives you periodic access to funds." }
-        );
+
+        /* smart insights */
+        const i1 = s.years > 10
+          ? {title:"Long-term compounding is powerful.", text:`Over ${s.years} years, compounding creates ${fmtShort(gain)} — ${((gain/s.amount)*100).toFixed(0)}% more than your starting capital.`}
+          : {title:"FD offers full capital protection.", text:"Your principal is guaranteed by the bank and the rate locks in at deposit time."};
+        const i2 = s.rate < 6
+          ? {title:"Rate may not beat inflation.", text:`At ${s.rate}%, with typical Indian inflation near 5-6%, real returns could be near zero. Consider NSC at 7.7% or SCSS at 8.2%.`}
+          : {title:"Compounding accelerates in later years.", text:`The last year alone generates more interest than the first ${Math.ceil(s.years/3)} years combined.`};
+        const i3 = {title:"Ladder FDs for better liquidity.", text:"Splitting into FDs with staggered maturities lets you access funds at regular intervals without breaking early."};
+        setInsights(i1, i2, i3);
+
         renderChart(labels, [
-          { label:"FD value",   data: corpus, color:"#00d4ff" },
-          { label:"Principal",  data: base,   color:"#ffd76a" }
+          {label:"FD value",  data:corpus, color:"#00d4ff"},
+          {label:"Principal", data:base,   color:"#ffd76a"}
         ]);
-        renderMilestones(labels, corpus, base);
+        renderMilestones(labels, corpus, base, "fd");
       }
 
-      /* ── RD ── */
+      /* ─── RD ─── */
       if(active === "rd"){
-        const r = s.rate / 12 / 100;
-        const labels = [], corpus = [], base = [];
-        for(let y = 1; y <= s.years; y++){
-          const n = y * 12;
+        const r = s.rate/12/100;
+        const labels=[], corpus=[], base=[];
+        for(let y=1; y<=s.years; y++){
+          const n = y*12;
           const v = s.monthly * ((Math.pow(1+r,n)-1)/r) * (1+r);
-          labels.push("Year " + y);
+          labels.push("Year "+y);
           corpus.push(Math.round(v));
-          base.push(s.monthly * n);
+          base.push(s.monthly*n);
         }
-        const maturity  = corpus[corpus.length - 1];
-        const invested  = base[base.length - 1];
-        const gain      = maturity - invested;
+        const mat     = corpus[corpus.length-1];
+        const invested = base[base.length-1];
+        const gain    = mat - invested;
 
-        setTop(maturity, gain, s.rate);
+        setTop(mat, gain, s.rate);
         setWealth({
-          value: maturity,
-          narrative: `Depositing ${fmtCurrency(s.monthly)} every month at ${s.rate}% for ${s.years} years builds ${fmtShort(maturity)}.`,
-          stat1: { label:"Total invested", value: fmtCurrency(invested) },
-          stat2: { label:"Interest earned", value: fmtCurrency(gain) },
-          stat3: { label:"Multiple",        value: (maturity/invested).toFixed(2) + "x" },
-          mood: "Disciplined", power: "Consistency"
+          value: mat,
+          narrative: `${fmtCurrency(s.monthly)}/month at ${s.rate}% for ${s.years} yr${s.years>1?"s":""} → invested ${fmtShort(invested)}, maturity ${fmtShort(mat)}.`,
+          stat1:{label:"Total invested",  value:fmtCurrency(invested)},
+          stat2:{label:"Interest earned", value:fmtCurrency(gain)},
+          stat3:{label:"Multiple",        value:(mat/invested).toFixed(2)+"x"},
+          mood:"Disciplined", power:"Consistency"
         });
-        setInsights(
-          { title:"RD builds wealth through habit.", text:"Monthly deposits enforce saving discipline and generate steady compounded returns." },
-          { title:"Useful for goal-based saving.", text:"A specific target — vacation, appliance, down payment — pairs well with an RD." },
-          { title:"Compare with SIP for higher return goals.", text:"For long horizons, equity SIPs historically outperform RDs significantly." }
-        );
+
+        const i1 = s.years > 10
+          ? {title:"Long-term discipline pays off.", text:`Over ${s.years} years of ${fmtCurrency(s.monthly)}/month, you'll earn ${fmtShort(gain)} purely from interest — nearly ${((gain/invested)*100).toFixed(0)}% of your invested amount.`}
+          : {title:"RD enforces saving discipline.", text:"A recurring deposit turns monthly saving into a habit and generates steady returns."};
+        const i2 = s.rate < 6
+          ? {title:"Low rate may not beat inflation.", text:`At ${s.rate}%, returns may be eroded by inflation. Consider comparing against an equity SIP in the Compare tab.`}
+          : {title:"Good for short-to-medium goals.", text:"RDs work well for vacations, appliances or down payment savings over 2–5 years."};
+        const i3 = {title:"Compare vs SIP for long horizons.", text:"For 7+ years, equity SIPs historically outperform RDs by 2–3x due to market compounding."};
+        setInsights(i1, i2, i3);
+
         renderChart(labels, [
-          { label:"RD value",      data: corpus, color:"#00e676" },
-          { label:"Amount saved",  data: base,   color:"#ffd76a" }
+          {label:"RD value",     data:corpus, color:"#00e676"},
+          {label:"Amount saved", data:base,   color:"#ffd76a"}
         ]);
-        renderMilestones(labels, corpus, base);
+        renderMilestones(labels, corpus, base, "rd");
       }
 
-      /* ── NSC ── */
+      /* ─── NSC ─── */
       if(active === "nsc"){
-        const labels = [], corpus = [], base = [];
-        for(let y = 1; y <= s.years; y++){
-          labels.push("Year " + y);
-          corpus.push(Math.round(s.amount * Math.pow(1 + s.rate/100, y)));
+        const labels=[], corpus=[], base=[];
+        for(let y=1; y<=s.years; y++){
+          labels.push("Year "+y);
+          corpus.push(Math.round(s.amount * Math.pow(1+s.rate/100, y)));
           base.push(s.amount);
         }
-        const maturity = corpus[corpus.length - 1];
-        const gain     = maturity - s.amount;
+        const mat  = corpus[corpus.length-1];
+        const gain = mat - s.amount;
 
-        setTop(maturity, gain, s.rate);
+        setTop(mat, gain, s.rate);
         setWealth({
-          value: maturity,
-          narrative: `NSC investment of ${fmtCurrency(s.amount)} at ${s.rate}% compounded annually matures to ${fmtShort(maturity)}.`,
-          stat1: { label:"Invested",      value: fmtCurrency(s.amount) },
-          stat2: { label:"Interest",      value: fmtCurrency(gain) },
-          stat3: { label:"Maturity",      value: fmtShort(maturity) },
-          mood: "Secure", power: "Govt-Backed"
+          value: mat,
+          narrative: `NSC of ${fmtCurrency(s.amount)} at ${s.rate}% compounded annually matures to ${fmtShort(mat)} in 5 years.`,
+          stat1:{label:"Invested",  value:fmtCurrency(s.amount)},
+          stat2:{label:"Interest",  value:fmtCurrency(gain)},
+          stat3:{label:"Maturity",  value:fmtShort(mat)},
+          mood:"Secure", power:"Govt-Backed"
         });
+
+        const i2 = s.rate < 6
+          ? {title:"Rate may trail inflation.", text:`At ${s.rate}%, inflation could erode real returns. NSC is primarily a tax-saving tool.`}
+          : {title:"Interest reinvested automatically.", text:"NSC interest is deemed reinvested each year, compounding your returns for the full 5-year term."};
         setInsights(
-          { title:"NSC offers tax deduction under 80C.", text:"Investments up to ₹1.5L per year qualify for income tax deduction." },
-          { title:"Interest is reinvested automatically.", text:"NSC interest is deemed reinvested, compounding your returns for the full 5-year term." },
-          { title:"No TDS on NSC interest.", text:"Tax is payable but no TDS is deducted, giving better cash flow during the tenure." }
+          {title:"NSC gives 80C tax deduction.", text:"Investments up to ₹1.5L per year qualify for income tax deduction under Section 80C."},
+          i2,
+          {title:"No TDS deducted on maturity.", text:"Tax liability exists but no TDS is deducted, giving better liquidity through the tenure."}
         );
         renderChart(labels, [
-          { label:"NSC value",  data: corpus, color:"#4fa3ff" },
-          { label:"Invested",   data: base,   color:"#ffd76a" }
+          {label:"NSC value", data:corpus, color:"#4fa3ff"},
+          {label:"Invested",  data:base,   color:"#ffd76a"}
         ]);
-        renderMilestones(labels, corpus, base);
+        renderMilestones(labels, corpus, base, "nsc");
       }
 
-      /* ── KVP ── */
+      /* ─── KVP ─── */
       if(active === "kvp"){
-        const maturity = s.amount * 2;
+        const mat         = s.amount * 2;
         const impliedRate = (Math.pow(2, 1/s.years) - 1) * 100;
-        const labels = [], corpus = [], base = [];
-        for(let y = 1; y <= s.years; y++){
-          labels.push("Year " + y);
-          corpus.push(Math.round(s.amount * Math.pow(1 + impliedRate/100, y)));
+        const labels=[], corpus=[], base=[];
+        for(let y=1; y<=s.years; y++){
+          labels.push("Year "+y);
+          corpus.push(Math.round(s.amount * Math.pow(1+impliedRate/100, y)));
           base.push(s.amount);
         }
 
-        setTop(maturity, s.amount, impliedRate);
+        setTop(mat, s.amount, impliedRate);
         setWealth({
-          value: maturity,
-          narrative: `KVP doubles ${fmtCurrency(s.amount)} in ${s.years} years — equivalent to ${impliedRate.toFixed(2)}% CAGR.`,
-          stat1: { label:"Invested",    value: fmtCurrency(s.amount) },
-          stat2: { label:"Gain",        value: fmtCurrency(s.amount) },
-          stat3: { label:"Maturity",    value: fmtShort(maturity) },
-          mood: "Guaranteed", power: "Doubling"
+          value: mat,
+          narrative: `KVP doubles ${fmtCurrency(s.amount)} in ${s.years} years — equivalent to ${impliedRate.toFixed(2)}% CAGR guaranteed.`,
+          stat1:{label:"Invested",  value:fmtCurrency(s.amount)},
+          stat2:{label:"Gain",      value:fmtCurrency(s.amount)},
+          stat3:{label:"Maturity",  value:fmtShort(mat)},
+          mood:"Guaranteed", power:"Doubling"
         });
+
         setInsights(
-          { title:"KVP guarantees doubling.", text:"The principal doubles at a fixed government-set rate with no market risk." },
-          { title:"No upper limit on investment.", text:"Unlike many small savings schemes, KVP has no maximum investment cap." },
-          { title:"Freely transferable.", text:"KVP certificates can be transferred from one person to another, useful for gifting wealth." }
+          {title:"KVP guarantees doubling — zero risk.", text:"The principal doubles at a fixed government-set rate with no market risk whatsoever."},
+          {title:"No upper investment limit.", text:"Unlike most small savings schemes, KVP has no maximum investment cap — ideal for large lump sums."},
+          {title:"Freely transferable.", text:"KVP certificates can be transferred person-to-person or pledged as loan collateral."}
         );
         renderChart(labels, [
-          { label:"KVP value",  data: corpus, color:"#00e676" },
-          { label:"Principal",  data: base,   color:"#ffd76a" }
+          {label:"KVP value",  data:corpus, color:"#00e676"},
+          {label:"Principal",  data:base,   color:"#ffd76a"}
         ]);
-        renderMilestones(labels, corpus, base);
+        renderMilestones(labels, corpus, base, "kvp");
       }
 
-      /* ── SCSS ── */
+      /* ─── SCSS (simple interest, quarterly payout) ─── */
       if(active === "scss"){
-        const annualInterest = s.amount * s.rate / 100;
-        const labels = [], corpus = [], base = [];
-        for(let y = 1; y <= s.years; y++){
-          labels.push("Year " + y);
-          corpus.push(Math.round(s.amount + annualInterest * y));
-          base.push(s.amount);
+        const annualInterest   = s.amount * s.rate / 100;
+        const quarterlyPayout  = annualInterest / 4;
+        const labels=[], corpus=[], base=[];
+        for(let y=1; y<=s.years; y++){
+          labels.push("Year "+y);
+          corpus.push(Math.round(annualInterest * y)); /* cumulative interest, principal returned at end */
+          base.push(0);
         }
         const totalInterest = annualInterest * s.years;
-        const total         = s.amount + totalInterest;
+        const totalReceived = s.amount + totalInterest; /* principal back + all interest */
 
-        setTop(total, totalInterest, s.rate);
+        setTop(totalReceived, totalInterest, s.rate);
         setWealth({
-          value: total,
-          narrative: `SCSS deposit of ${fmtCurrency(s.amount)} at ${s.rate}% earns ${fmtCurrency(annualInterest)} per year — ${fmtShort(totalInterest)} total over ${s.years} years.`,
-          stat1: { label:"Deposit",         value: fmtCurrency(s.amount) },
-          stat2: { label:"Total interest",  value: fmtCurrency(totalInterest) },
-          stat3: { label:"Quarterly payout", value: fmtCurrency(annualInterest/4) },
-          mood: "Income Phase", power: "Quarterly Cash"
+          value: totalReceived,
+          narrative: `SCSS deposit of ${fmtCurrency(s.amount)} at ${s.rate}% (simple interest) pays ${fmtCurrency(quarterlyPayout)} every quarter — ${fmtShort(totalInterest)} total interest, principal returned at maturity.`,
+          stat1:{label:"Annual interest",    value:fmtCurrency(annualInterest)},
+          stat2:{label:"Quarterly payout",   value:fmtCurrency(quarterlyPayout)},
+          stat3:{label:"Total interest",     value:fmtShort(totalInterest)},
+          mood:"Income Phase", power:"Quarterly Cash"
         });
+
+        const i1 = s.amount >= 2000000
+          ? {title:"Near the deposit limit.", text:"Individual SCSS limit is ₹30L. Consider splitting with a spouse to double the allowed deposit."}
+          : {title:"SCSS: India's best guaranteed rate.", text:`At ${s.rate}%, SCSS offers among the highest guaranteed returns for senior citizens with sovereign safety.`};
         setInsights(
-          { title:"SCSS is India's highest-rate small savings scheme.", text:"At 8.2%, it offers among the best guaranteed returns for senior citizens." },
-          { title:"Quarterly payouts give regular income.", text:"Interest is paid every quarter, providing a reliable cash flow stream post-retirement." },
-          { title:"Max deposit is ₹30 lakh.", text:"Individual SCSS limit is ₹30L. Joint accounts with spouses can allow higher allocation." }
+          i1,
+          {title:"Quarterly payouts = regular income.", text:"Interest is paid every quarter — a reliable post-retirement cash flow for living expenses."},
+          {title:"No compounding — pure simple interest.", text:"The quarterly payout is always fixed. The principal remains untouched and is returned fully at maturity."}
         );
         renderChart(labels, [
-          { label:"Cumulative value",  data: corpus, color:"#7b61ff" },
-          { label:"Principal",         data: base,   color:"#ffd76a" }
+          {label:"Cumulative interest received", data:corpus, color:"#7b61ff"},
+          {label:"Zero line",                    data:base,   color:"rgba(255,255,255,.0)"}
         ]);
-        renderMilestones(labels, corpus, base);
+        renderMilestones(labels, corpus, Array(labels.length).fill(s.amount), "scss");
       }
 
-      /* ── POST OFFICE ── */
+      /* ─── POST OFFICE (simple interest) ─── */
       if(active === "post"){
-        const labels = [], corpus = [], base = [];
-        for(let y = 1; y <= s.years; y++){
-          labels.push("Year " + y);
-          corpus.push(Math.round(s.amount * Math.pow(1 + s.rate/100, y)));
+        const annualInterest = s.amount * s.rate / 100;
+        const labels=[], corpus=[], base=[];
+        for(let y=1; y<=s.years; y++){
+          labels.push("Year "+y);
+          corpus.push(Math.round(s.amount + annualInterest * y)); /* simple interest: P + P*r*t */
           base.push(s.amount);
         }
-        const maturity = corpus[corpus.length - 1];
-        const gain     = maturity - s.amount;
+        const mat  = corpus[corpus.length-1];
+        const gain = mat - s.amount;
 
-        setTop(maturity, gain, s.rate);
+        setTop(mat, gain, s.rate);
         setWealth({
-          value: maturity,
-          narrative: `Post Office deposit of ${fmtCurrency(s.amount)} at ${s.rate}% grows to ${fmtShort(maturity)} in ${s.years} years.`,
-          stat1: { label:"Deposited",  value: fmtCurrency(s.amount) },
-          stat2: { label:"Interest",   value: fmtCurrency(gain) },
-          stat3: { label:"Maturity",   value: fmtShort(maturity) },
-          mood: "Very Safe", power: "Sovereign"
+          value: mat,
+          narrative: `Post Office deposit of ${fmtCurrency(s.amount)} at ${s.rate}% simple interest grows to ${fmtShort(mat)} in ${s.years} years.`,
+          stat1:{label:"Deposited",       value:fmtCurrency(s.amount)},
+          stat2:{label:"Total interest",  value:fmtCurrency(gain)},
+          stat3:{label:"Maturity",        value:fmtShort(mat)},
+          mood:"Very Safe", power:"Sovereign"
         });
+
+        const i2 = s.rate < 6
+          ? {title:"Rate may not beat inflation.", text:`At ${s.rate}%, typical Indian inflation of 5-6% could erode real value. Consider NSC or SCSS for better guaranteed returns.`}
+          : {title:"Interest is simple, not compound.", text:"Post Office TD pays simple interest — unlike FDs, interest on interest is not added. Use FD for compounding."};
         setInsights(
-          { title:"Backed by the Government of India.", text:"Post Office deposits carry a sovereign guarantee, making them among the safest instruments." },
-          { title:"Available across all pin codes.", text:"Post Office branches are in every corner of India, making them accessible everywhere." },
-          { title:"Compare rates before depositing.", text:"Post Office TD rates are revised quarterly — check current rates before locking in." }
+          {title:"Backed by the Government of India.", text:"Post Office deposits carry a sovereign guarantee — among the safest savings instruments available."},
+          i2,
+          {title:"Rates revised quarterly.", text:"Post Office TD rates are announced quarterly by the government. Lock in when rates are high."}
         );
         renderChart(labels, [
-          { label:"Deposit value", data: corpus, color:"#00d4ff" },
-          { label:"Principal",     data: base,   color:"#ffd76a" }
+          {label:"Deposit value", data:corpus, color:"#00d4ff"},
+          {label:"Principal",     data:base,   color:"#ffd76a"}
         ]);
-        renderMilestones(labels, corpus, base);
+        renderMilestones(labels, corpus, base, "post");
       }
 
-      /* ── COMPARE ── */
+      /* ─── COMPARE (fully independent inputs) ─── */
       if(active === "compare"){
-        const labels    = [];
-        const fdCorpus  = [], rdCorpus = [], sipCorpus = [];
-        const rdMonthly = s.amount / (s.years * 12);
-        const sipR      = s.siprate / 12 / 100;
-        const fdBase    = [], rdBase = [];
+        const rdR   = s.fdrate / 12 / 100;
+        const sipR  = s.siprate / 12 / 100;
+        const labels=[], fdCorpus=[], rdCorpus=[], sipCorpus=[], fdBase=[];
 
-        for(let y = 1; y <= s.years; y++){
-          labels.push("Year " + y);
-          fdCorpus.push(Math.round(s.amount * Math.pow(1 + s.fdrate/100, y)));
-          fdBase.push(s.amount);
+        for(let y=1; y<=s.years; y++){
+          const n = y*12;
+          labels.push("Year "+y);
 
-          const n   = y * 12;
-          const rdV = rdMonthly * ((Math.pow(1 + s.fdrate/12/100, n)-1)/(s.fdrate/12/100)) * (1 + s.fdrate/12/100);
+          /* FD: lump sum compounded annually */
+          fdCorpus.push(Math.round(s.fdamount * Math.pow(1+s.fdrate/100, y)));
+          fdBase.push(s.fdamount);
+
+          /* RD: independent monthly amount, monthly compounding at FD rate */
+          const rdV = s.rdmonthly * ((Math.pow(1+rdR,n)-1)/rdR) * (1+rdR);
           rdCorpus.push(Math.round(rdV));
-          rdBase.push(Math.round(rdMonthly * n));
 
-          const sipV = rdMonthly * ((Math.pow(1+sipR,n)-1)/sipR) * (1+sipR);
+          /* SIP: independent monthly amount, monthly compounding at equity rate */
+          const sipV = s.sipmonthly * ((Math.pow(1+sipR,n)-1)/sipR) * (1+sipR);
           sipCorpus.push(Math.round(sipV));
         }
 
-        const fdFinal  = fdCorpus[fdCorpus.length - 1];
-        const rdFinal  = rdCorpus[rdCorpus.length - 1];
-        const sipFinal = sipCorpus[sipCorpus.length - 1];
+        const fdFinal  = fdCorpus[fdCorpus.length-1];
+        const rdFinal  = rdCorpus[rdCorpus.length-1];
+        const sipFinal = sipCorpus[sipCorpus.length-1];
         const best     = Math.max(fdFinal, rdFinal, sipFinal);
-        const bestName = best === sipFinal ? "SIP" : best === fdFinal ? "FD" : "RD";
+        const bestName = best===sipFinal ? "SIP" : best===fdFinal ? "FD" : "RD";
 
-        setTop(best, best - s.amount, s.fdrate);
+        setTop(best, best - Math.min(s.fdamount, s.rdmonthly*s.years*12), s.fdrate);
         setWealth({
           value: best,
-          narrative: `Over ${s.years} years, ${bestName} produces the best outcome at ${fmtShort(best)}. FD: ${fmtShort(fdFinal)} | RD: ${fmtShort(rdFinal)} | SIP: ${fmtShort(sipFinal)}.`,
-          stat1: { label:"FD value",   value: fmtShort(fdFinal) },
-          stat2: { label:"RD value",   value: fmtShort(rdFinal) },
-          stat3: { label:"SIP value",  value: fmtShort(sipFinal) },
-          mood: bestName + " Wins", power: "Compare"
+          narrative: `Over ${s.years} years: FD ${fmtShort(fdFinal)} | RD ${fmtShort(rdFinal)} | SIP ${fmtShort(sipFinal)}. ${bestName} wins.`,
+          stat1:{label:"FD value",  value:fmtShort(fdFinal)},
+          stat2:{label:"RD value",  value:fmtShort(rdFinal)},
+          stat3:{label:"SIP value", value:fmtShort(sipFinal)},
+          mood:bestName+" Wins", power:"Compare"
         });
+
+        const sipWins = sipFinal > fdFinal;
+        const i1 = sipWins
+          ? {title:"Equity (SIP) outperforms in long term.", text:`SIP at ${s.siprate}% beats FD at ${s.fdrate}% by ${fmtShort(sipFinal-fdFinal)} over ${s.years} years. The higher rate makes a large difference over time.`}
+          : {title:`FD leads at these settings.`, text:`FD of ${fmtShort(s.fdamount)} beats SIP here. Likely because the horizon is short or the SIP amount is smaller.`};
+        const i2 = s.years > 10
+          ? {title:"Long horizon favours equity strongly.", text:`Over ${s.years} years, even a 1-2% higher SIP rate compounds to a massive advantage. Consider staying invested longer.`}
+          : {title:"Short horizon reduces SIP advantage.", text:"SIP's power comes from long-term compounding. For under 7 years, FD's certainty often makes more practical sense."};
         setInsights(
-          { title:`${bestName} leads over ${s.years} years.`, text:`At these assumptions, ${bestName} delivers the highest ending value.` },
-          { title:"SIP benefits from equity upside.", text:"Higher equity return assumption gives SIP a structural edge over longer horizons." },
-          { title:"FD offers certainty, SIP offers growth.", text:"The right choice depends on risk tolerance, time horizon and liquidity needs." }
+          i1, i2,
+          {title:"These are independent amounts.", text:"Each slider controls a separate pool of money. Use them to model what you'd actually allocate to each instrument."}
         );
         renderChart(labels, [
-          { label:"FD",  data: fdCorpus,  color:"#ffd76a" },
-          { label:"RD",  data: rdCorpus,  color:"#4fa3ff" },
-          { label:"SIP", data: sipCorpus, color:"#00e676" }
+          {label:"FD",  data:fdCorpus,  color:"#ffd76a"},
+          {label:"RD",  data:rdCorpus,  color:"#4fa3ff"},
+          {label:"SIP", data:sipCorpus, color:"#00e676"}
         ]);
-        renderMilestones(labels, sipCorpus, fdBase);
+        renderMilestones(labels, sipCorpus, fdCorpus, "compare");
       }
 
-      /* ── INFLATION ── */
+      /* ─── INFLATION ─── */
       if(active === "inflation"){
-        const labels = [], corpus = [], base = [];
-        for(let y = 1; y <= s.years; y++){
-          const real = s.amount / Math.pow(1 + s.inflation/100, y);
-          labels.push("Year " + y);
+        const labels=[], corpus=[], base=[];
+        for(let y=1; y<=s.years; y++){
+          const real = s.amount / Math.pow(1+s.inflation/100, y);
+          labels.push("Year "+y);
           corpus.push(Math.round(real));
           base.push(s.amount);
         }
-        const finalReal = corpus[corpus.length - 1];
+        const finalReal = corpus[corpus.length-1];
         const loss      = s.amount - finalReal;
+        const halvingYrs = Math.round(72/s.inflation);
 
         setTop(finalReal, loss, s.inflation);
         setWealth({
           value: finalReal,
-          narrative: `${fmtCurrency(s.amount)} today will have the purchasing power of only ${fmtShort(finalReal)} in ${s.years} years at ${s.inflation}% inflation.`,
-          stat1: { label:"Today's value",  value: fmtCurrency(s.amount) },
-          stat2: { label:"Future real value", value: fmtShort(finalReal) },
-          stat3: { label:"Power lost",     value: fmtShort(loss) },
-          mood: "Awareness", power: "Real Value"
+          narrative: `${fmtCurrency(s.amount)} today will have the purchasing power of only ${fmtShort(finalReal)} in ${s.years} years at ${s.inflation}% inflation — a loss of ${fmtShort(loss)}.`,
+          stat1:{label:"Today's value",      value:fmtCurrency(s.amount)},
+          stat2:{label:"Future real value",  value:fmtShort(finalReal)},
+          stat3:{label:"Power lost",         value:fmtShort(loss)},
+          mood:"Awareness", power:"Real Value"
         });
-        setInsights(
-          { title:"Inflation silently erodes wealth.", text:"Money not deployed in inflation-beating instruments loses real value year by year." },
-          { title:"Even 6% inflation halves value in 12 years.", text:"The Rule of 72 works for inflation too — at 6%, purchasing power halves in 12 years." },
-          { title:"Beat inflation with equity and real assets.", text:"Historically, equity returns of 12–14% have comfortably beaten Indian inflation." }
-        );
+
+        const i1 = s.years > 15
+          ? {title:"Severe erosion over long horizons.", text:`Over ${s.years} years at ${s.inflation}% inflation, ${fmtShort(loss)} — ${Math.round((loss/s.amount)*100)}% of your money's value — simply disappears in real terms.`}
+          : {title:"Inflation silently erodes wealth.", text:"Money left idle in low-yield accounts loses real value year by year — even if the nominal amount stays the same."};
+        const i2 = {title:`Rule of 72: value halves in ~${halvingYrs} years.`, text:`At ${s.inflation}% inflation, purchasing power halves every ${halvingYrs} years. Your ${fmtShort(s.amount)} will feel like ${fmtShort(s.amount/2)} by then.`};
+        const i3 = s.inflation >= 7
+          ? {title:"High inflation demands equity allocation.", text:`At ${s.inflation}%, only equity investments (historically 12-14% CAGR) can reliably preserve and grow real wealth.`}
+          : {title:"Beat inflation with equity and real assets.", text:"Equity historically returns 12-14% — comfortably above 5-7% Indian inflation. NSC, FD and RD only partially hedge."};
+        setInsights(i1, i2, i3);
+
         renderChart(labels, [
-          { label:"Real value",         data: corpus, color:"#ff607d" },
-          { label:"Nominal (original)", data: base,   color:"rgba(255,255,255,.2)" }
+          {label:"Real value",         data:corpus, color:"#ff607d"},
+          {label:"Nominal (original)", data:base,   color:"rgba(255,255,255,.18)"}
         ]);
-        renderMilestones(labels, corpus, base);
+        renderMilestones(labels, corpus, base, "inflation");
       }
     }
 
     /* ═══════════════════════════════════════════
        UTILITY
     ═══════════════════════════════════════════ */
-    function scrollToControls(){ $("controlsAnchor").scrollIntoView({behavior:"smooth", block:"start"}); }
-    function openAdvisor(){ window.open("https://justinvesting.in", "_blank"); }
+    function scrollToControls(){ $("controlsAnchor").scrollIntoView({behavior:"smooth",block:"start"}); }
+    function openAdvisor(){ window.open("https://justinvesting.in","_blank"); }
     function copySummary(){
-      const txt = `investpercent Savings Dashboard
+      const txt =
+`investpercent Savings Dashboard
 Mode: ${CALCS[active].label}
 Result: ${$("wealthNumber").textContent}
 ${$("stat1Label").textContent}: ${$("stat1Value").textContent}
@@ -1012,7 +1005,7 @@ ${$("stat3Label").textContent}: ${$("stat3Value").textContent}
 via justinvesting.in`;
       if(navigator.clipboard){
         navigator.clipboard.writeText(txt)
-          .then(()=>{ const old=$("miniInsight").textContent; $("miniInsight").textContent="Copied!"; setTimeout(()=>$("miniInsight").textContent=old, 1500); })
+          .then(()=>{ const old=$("miniInsight").textContent; $("miniInsight").textContent="Copied!"; setTimeout(()=>$("miniInsight").textContent=old,1500); })
           .catch(()=>alert("Copy failed. Please copy manually."));
       } else { alert("Clipboard not supported."); }
     }
