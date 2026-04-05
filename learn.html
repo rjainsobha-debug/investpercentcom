@@ -1,106 +1,1128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learn Hub | InvestPercent</title>
+  <link rel="stylesheet" href="css/navbar.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learn Finance — investpercent</title>
+  <meta name="description" content="Learn finance like a pro — investing, stock market, mutual funds, taxes, insurance and advanced wealth creation. Free, premium, and structured." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#060915;
+      --bg2:#0b1224;
+      --panel:#0f1830;
+      --panel2:#121e3c;
+      --soft:#18284d;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.13);
+      --text:#f7fbff;
+      --muted:#9da9c6;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --red:#ff607d;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
+      --hero:
+        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
+        linear-gradient(180deg,#070c18 0%,#091224 100%);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
+      z-index:0;
+    }
+    a{text-decoration:none;color:inherit}
+    button,input{font:inherit}
+    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:12px 14px 24px}
 
-<link rel="stylesheet" href="../css/global.css">
+    /* HERO */
+    .hero{
+      background:var(--hero);border:1px solid var(--line);border-radius:24px;padding:18px 22px;
+      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:14px
+    }
+    .hero::after{
+      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);pointer-events:none
+    }
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+    .hero-copy h1{
+      margin:0;font-family:Poppins,sans-serif;font-size:clamp(26px,3.5vw,42px);
+      line-height:1.1;letter-spacing:-.045em;max-width:840px
+    }
+    .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy p{margin:8px 0 0;color:var(--muted);font-size:15px;max-width:760px;line-height:1.6}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+    .btn{border:none;cursor:pointer;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:800;transition:.2s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
 
-<style>
-body {
-  background:#0c0f1a;
-  color:#fff;
-  font-family:'Inter',sans-serif;
-}
+    /* SEARCH BAR */
+    .search-bar{
+      display:flex;align-items:center;gap:12px;
+      background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;
+      padding:10px 16px;margin-bottom:12px;transition:.2s ease
+    }
+    .search-bar:focus-within{border-color:rgba(0,212,255,.4);background:rgba(0,212,255,.04)}
+    .search-icon{color:var(--muted);font-size:16px;flex-shrink:0}
+    .search-bar input{
+      background:transparent;border:none;outline:none;color:var(--text);font-size:14px;font-weight:500;
+      width:100%;
+    }
+    .search-bar input::placeholder{color:var(--muted)}
+    .search-count{color:var(--muted);font-size:12px;font-weight:700;white-space:nowrap}
 
-.hero {
-  text-align:center;
-  padding:80px 20px;
-}
+    /* TABS */
+    .tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .tab{
+      background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
+      padding:10px 14px;font-weight:800;font-size:13px;cursor:pointer;transition:.2s ease
+    }
+    .tab:hover{color:var(--text);border-color:var(--line2)}
+    .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
 
-.hero h1 {
-  font-size:42px;
-  background: linear-gradient(90deg,#00ffa3,#00c3ff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
+    /* HERO METRICS */
+    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-top:2px}
+    .metric-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:14px;min-height:90px;position:relative;overflow:hidden
+    }
+    .metric-card::before{
+      content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
+      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
+    }
+    .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+    .metric-value{font-size:clamp(22px,2.5vw,32px);font-weight:800;letter-spacing:-.04em;line-height:1}
+    .metric-value.cyan{color:var(--cyan)}.metric-value.green{color:var(--green)}.metric-value.gold{color:var(--gold)}
+    .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
 
-.grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-  gap:20px;
-  max-width:1200px;
-  margin:auto;
-}
+    /* MAIN LAYOUT */
+    .learn-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;margin-top:12px}
+    .panel{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
 
-.card {
-  background:rgba(255,255,255,0.05);
-  padding:20px;
-  border-radius:20px;
-  transition:0.3s;
-}
+    /* CONTENT PANEL */
+    .content-panel{padding:16px}
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}
+    .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+    .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
 
-.card:hover {
-  transform:translateY(-5px);
-}
+    /* TOPIC CARDS */
+    .topics-grid{display:flex;flex-direction:column;gap:10px}
+    .topic-card{
+      border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+      overflow:hidden;transition:.2s ease
+    }
+    .topic-card:hover{border-color:rgba(0,212,255,.2);background:rgba(0,212,255,.03)}
+    .topic-header{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:16px;cursor:pointer;
+    }
+    .topic-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+    .topic-icon{
+      width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-size:18px;flex-shrink:0;
+      background:linear-gradient(135deg, rgba(0,212,255,.15), rgba(123,97,255,.15));
+      border:1px solid rgba(255,255,255,.08)
+    }
+    .topic-meta{min-width:0}
+    .topic-title{font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+    .topic-desc{color:var(--muted);font-size:13px;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .topic-toggle{
+      width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      font-size:14px;color:var(--muted);transition:.25s ease;font-weight:800
+    }
+    .topic-card.open .topic-toggle{background:rgba(0,212,255,.15);border-color:rgba(0,212,255,.3);color:var(--cyan);transform:rotate(45deg)}
+    .topic-card.open .topic-desc{white-space:normal}
+    .topic-body{
+      display:none;padding:0 16px 18px;border-top:1px solid rgba(255,255,255,.05)
+    }
+    .topic-card.open .topic-body{display:block}
+    .topic-content{padding-top:14px}
+    .topic-content p{color:#c8d4f0;font-size:14px;line-height:1.75;margin:0 0 12px}
+    .topic-content h4{font-size:14px;font-weight:800;color:var(--text);margin:14px 0 8px;letter-spacing:-.01em}
+    .topic-content ul{margin:0 0 12px;padding-left:20px}
+    .topic-content ul li{color:var(--muted);font-size:13px;line-height:1.65;margin-bottom:4px}
+    .topic-content ul li strong{color:var(--text)}
+    .insight-chip{
+      display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;
+      background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.18);
+      font-size:12px;font-weight:700;color:var(--cyan);margin:4px 4px 0 0
+    }
+    .example-box{
+      margin-top:12px;padding:14px;border-radius:14px;
+      background:radial-gradient(circle at top left, rgba(0,230,118,.08), transparent 50%),
+                 rgba(255,255,255,.03);
+      border:1px solid rgba(0,230,118,.14)
+    }
+    .example-box .ex-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--green);margin-bottom:6px}
+    .example-box p{color:#c8f0dc;font-size:13px;line-height:1.65;margin:0}
+    .no-results{
+      text-align:center;padding:48px 24px;color:var(--muted);
+    }
+    .no-results .nr-icon{font-size:36px;margin-bottom:12px}
+    .no-results p{font-size:15px;font-weight:600}
 
-button {
-  margin-top:10px;
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  background:#00ffa3;
-  cursor:pointer;
-}
-</style>
+    /* SIDEBAR */
+    .sidebar{display:flex;flex-direction:column;gap:14px}
+    .side-panel{padding:16px}
+    .side-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:14px}
+    .insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);margin-bottom:10px}
+    .insight-box:last-child{margin-bottom:0}
+    .insight-box strong{display:block;font-size:14px;font-weight:800;margin-bottom:6px;letter-spacing:-.01em}
+    .insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
+    .progress-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .progress-label{font-size:13px;font-weight:700;color:var(--text)}
+    .progress-count{font-size:12px;font-weight:800;color:var(--muted)}
+    .progress-bar-wrap{height:6px;border-radius:999px;background:rgba(255,255,255,.06);margin-bottom:12px;overflow:hidden}
+    .progress-bar{height:100%;border-radius:999px;background:var(--grad)}
+    .advisor-card{
+      padding:18px;border-radius:20px;
+      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
+      border:1px solid rgba(255,255,255,.1)
+    }
+    .advisor-card h4{margin:0 0 8px;font-size:17px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:13px;line-height:1.6}
+    .advisor-actions{display:flex;flex-direction:column;gap:8px}
+    .advisor-actions .btn{text-align:center}
+    .quick-links{display:flex;flex-direction:column;gap:8px}
+    .quick-link{
+      display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);
+      cursor:pointer;transition:.2s ease;font-size:13px;font-weight:700;color:var(--muted)
+    }
+    .quick-link:hover{color:var(--text);border-color:var(--line2);background:rgba(255,255,255,.05)}
+    .quick-link .ql-icon{font-size:16px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,.06);flex-shrink:0}
+
+    /* BOTTOM ADVISOR */
+    .bottom-advisor{
+      margin-top:14px;padding:24px;border-radius:24px;
+      background:
+        radial-gradient(circle at 10% 50%, rgba(0,212,255,.14), transparent 40%),
+        radial-gradient(circle at 90% 50%, rgba(123,97,255,.14), transparent 40%),
+        linear-gradient(135deg, rgba(15,24,48,.98), rgba(10,18,37,.98));
+      border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow);
+      display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap
+    }
+    .ba-copy h3{margin:0 0 8px;font-family:Poppins,sans-serif;font-size:clamp(18px,2.5vw,26px);font-weight:800;letter-spacing:-.04em}
+    .ba-copy p{margin:0;color:var(--muted);font-size:14px;line-height:1.6;max-width:560px}
+    .ba-actions{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
+
+    @media(max-width:1180px){
+      .top-metrics{grid-template-columns:1fr 1fr}
+      .learn-layout{grid-template-columns:1fr}
+      .sidebar{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    }
+    @media(max-width:760px){
+      .hero{padding:14px}
+      .hero-copy h1{font-size:22px}
+      .hero-copy p{font-size:13px}
+      .btn{padding:8px 10px;font-size:13px}
+      .top-metrics{grid-template-columns:1fr}
+      .metric-card{padding:12px}
+      .page{padding:10px 10px 20px}
+      .sidebar{grid-template-columns:1fr}
+      .bottom-advisor{flex-direction:column}
+      body{overflow-x:hidden}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page">
+    <div id="navbar"></div>
 
-<section class="hero">
-<h1>Learn Finance the Smart Way</h1>
-<p>Simplified guides, tools & strategies</p>
-</section>
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>Learn Finance <span class="grad">Like a Pro</span></h1>
+          <p>From basics to advanced — master money, investing, taxes, and wealth creation in one place. No jargon. No fluff. Just clarity.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="document.getElementById('learnContent').scrollIntoView({behavior:'smooth'})">Start Learning</button>
+          <button class="btn secondary" onclick="window.open('https://investpercent.com','_blank')">Talk to Advisor</button>
+        </div>
+      </div>
 
-<section class="grid">
+      <div class="search-bar">
+        <span class="search-icon">&#x2315;</span>
+        <input type="text" id="searchInput" placeholder="Search any topic — SIP, P/E ratio, LTCG, FIRE..." oninput="handleSearch()">
+        <span class="search-count" id="searchCount"></span>
+      </div>
 
-<div class="card">
-<h3>SIP vs Lump Sum</h3>
-<p>Understand which strategy builds more wealth</p>
-<button onclick="goInvest()">Try Calculator</button>
-</div>
+      <div class="tabbar" id="tabs"></div>
 
-<div class="card">
-<h3>Tax Saving Guide</h3>
-<p>Maximize deductions under 80C</p>
-<button onclick="goInvest()">Calculate Tax</button>
-</div>
+      <div class="top-metrics">
+        <div class="metric-card">
+          <div class="metric-label">Current category</div>
+          <div class="metric-value cyan" id="metricCategory" style="font-size:clamp(16px,2vw,22px)">Basics of Finance</div>
+          <div class="metric-sub" id="metricSub">Core money concepts every investor must understand.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Topics in category</div>
+          <div class="metric-value green" id="metricTopics">8</div>
+          <div class="metric-sub">Available to explore</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Total topics</div>
+          <div class="metric-value cyan">60+</div>
+          <div class="metric-sub">Across all categories</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Learning mode</div>
+          <div class="metric-value gold">Free</div>
+          <div class="metric-sub">No login required</div>
+        </div>
+      </div>
+    </section>
 
-<div class="card">
-<h3>Home Loan Strategy</h3>
-<p>Reduce EMI & interest burden</p>
-<button onclick="goInvest()">Check EMI</button>
-</div>
+    <div class="learn-layout" id="learnContent">
+      <div class="panel content-panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title" id="panelTitle">Basics of Finance</div>
+            <div class="panel-desc" id="panelDesc">Core money concepts every investor must understand before taking their first step.</div>
+          </div>
+          <div class="badge" id="panelBadge">BEGINNER</div>
+        </div>
+        <div class="topics-grid" id="topicsGrid"></div>
+        <div class="no-results hidden" id="noResults">
+          <div class="nr-icon">&#x1F50D;</div>
+          <p>No topics match your search. Try a different keyword.</p>
+        </div>
+      </div>
 
-<div class="card">
-<h3>Retirement Planning</h3>
-<p>Build your ₹5 Cr retirement plan</p>
-<button onclick="goInvest()">Start Planning</button>
-</div>
+      <aside class="sidebar">
+        <div class="panel side-panel">
+          <div class="side-title">&#x1F4A1; Smart Insights</div>
+          <div class="insight-box">
+            <strong>Did you know?</strong>
+            <span>If you invest ₹5,000/month at 12% for 20 years, you build ₹49.9 Lakh — on just ₹12L invested. That's the compounding effect.</span>
+          </div>
+          <div class="insight-box">
+            <strong>Quick Tip</strong>
+            <span>The Rule of 72 tells you how fast your money doubles: divide 72 by your annual return. At 12%, your money doubles in 6 years.</span>
+          </div>
+          <div class="insight-box">
+            <strong>Mistake to avoid</strong>
+            <span>Treating insurance as an investment. Term insurance is pure protection at low cost. Mixing the two (ULIPs, endowment) hurts both goals.</span>
+          </div>
+        </div>
 
-</section>
+        <div class="panel side-panel">
+          <div class="side-title">&#x1F4CA; Category Progress</div>
+          <div id="progressList"></div>
+        </div>
 
-<section style="padding:40px;text-align:center">
-<h2>Need a personalized plan?</h2>
-<button onclick="window.location.href='https://justinvesting.in'">Talk to Advisor</button>
-</section>
+        <div class="advisor-card">
+          <h4>Still confused?</h4>
+          <p>Get personalized financial advice tailored to your goals, income, and risk profile from our expert advisors.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="window.open('https://investpercent.com','_blank')">Talk to Advisor</button>
+            <button class="btn secondary" onclick="window.open('investment.html','_self')">Start Planning</button>
+          </div>
+        </div>
 
-<script>
-function goInvest(){
-  window.location.href='../pages/investment.html';
-}
-</script>
+        <div class="panel side-panel">
+          <div class="side-title">&#x26A1; Quick Links</div>
+          <div class="quick-links">
+            <div class="quick-link" onclick="window.open('investment.html','_self')"><span class="ql-icon">&#x1F4C8;</span>SIP Calculator</div>
+            <div class="quick-link" onclick="window.open('digital-assets.html','_self')"><span class="ql-icon">&#x1F310;</span>Digital Assets</div>
+            <div class="quick-link" onclick="switchCategory('tax')"><span class="ql-icon">&#x1F9FE;</span>Tax Guide</div>
+            <div class="quick-link" onclick="switchCategory('insurance')"><span class="ql-icon">&#x1F6E1;</span>Insurance Guide</div>
+            <div class="quick-link" onclick="switchCategory('advanced')"><span class="ql-icon">&#x1F3AF;</span>FIRE Movement</div>
+          </div>
+        </div>
+      </aside>
+    </div>
 
+    <div class="bottom-advisor">
+      <div class="ba-copy">
+        <h3>Ready to move from <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">learning to action?</span></h3>
+        <p>Use our calculators to simulate your financial future, then talk to an advisor to build your personalized roadmap.</p>
+      </div>
+      <div class="ba-actions">
+        <button class="btn primary" onclick="window.open('investment.html','_self')">Open Investment Dashboard</button>
+        <button class="btn secondary" onclick="window.open('https://investpercent.com','_blank')">Talk to Advisor</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CATEGORIES = {
+      basics: {
+        label: "Basics",
+        title: "Basics of Finance",
+        desc: "Core money concepts every investor must understand before taking their first step.",
+        badge: "BEGINNER",
+        sub: "Core money concepts every investor must understand.",
+        topics: [
+          {
+            id:"money", icon:"💵", title:"What is Money?",
+            desc:"Why paper has value and how currency systems work.",
+            body:`<p>Money is any medium of exchange that society collectively agrees to use. Historically, humans used barter — trading goods directly — but this was inefficient. Money solved this by acting as a store of value, unit of account, and medium of exchange.</p>
+<h4>Three Functions of Money</h4>
+<ul><li><strong>Medium of exchange:</strong> Lets you buy goods without needing a direct barter match.</li><li><strong>Store of value:</strong> You can save it and use it later (though inflation erodes this).</li><li><strong>Unit of account:</strong> Prices everything in a common measure.</li></ul>
+<h4>Why Fiat Money Has Value</h4>
+<p>Indian Rupee is "fiat" money — it has no intrinsic commodity backing. Its value comes from government decree, legal tender laws, and collective trust. The RBI manages its supply to keep the economy stable.</p>
+<div class="example-box"><div class="ex-label">Real-world example</div><p>In Zimbabwe (2008), hyperinflation destroyed trust in fiat money — prices doubled every 24 hours. This shows that money's value depends entirely on institutional trust and monetary discipline.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Key insight: Money is a social contract, not intrinsic value</span><span class="insight-chip">&#x23F1; Read time: 3 min</span>`
+          },
+          {
+            id:"inflation", icon:"📉", title:"Inflation — The Silent Thief",
+            desc:"How rising prices erode your purchasing power over time.",
+            body:`<p>Inflation is the rate at which the general price level of goods and services rises, causing purchasing power to fall. If inflation is 6% and your savings earn 4%, you're actually losing 2% real purchasing power every year.</p>
+<h4>Types of Inflation</h4>
+<ul><li><strong>Demand-pull:</strong> Too much money chasing too few goods (e.g., post-pandemic spending boom).</li><li><strong>Cost-push:</strong> Rising input costs (e.g., oil prices raising transport and product costs).</li><li><strong>Built-in:</strong> Workers demand higher wages → businesses raise prices → cycle continues.</li></ul>
+<h4>India-Specific Context</h4>
+<p>India's CPI inflation averaged ~5–6% over the past decade. A ₹1,00,000 corpus today will feel like ₹55,000 in 10 years at 6% inflation. This is why "saving in a bank" at 4% FD is wealth destruction in real terms.</p>
+<div class="example-box"><div class="ex-label">Real-world example</div><p>Your grandfather's monthly grocery bill in 1990: ₹500. The same basket today: ₹5,000+. That's 10× inflation in 30 years — approximately 8% CAGR. This is why investing to beat inflation is non-negotiable.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Beat inflation: equity averages 12–14% CAGR long-term</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"tvm", icon:"⏳", title:"Time Value of Money",
+            desc:"₹1 today is always worth more than ₹1 tomorrow.",
+            body:`<p>The time value of money (TVM) is the core principle behind all of finance: a rupee received today is worth more than a rupee received in the future, because money today can be invested to earn returns.</p>
+<h4>Two Key Concepts</h4>
+<ul><li><strong>Future Value (FV):</strong> What a sum today will be worth in the future. FV = PV × (1+r)^n</li><li><strong>Present Value (PV):</strong> What a future sum is worth today. PV = FV / (1+r)^n</li></ul>
+<h4>Why It Matters for Investing</h4>
+<p>Starting a SIP of ₹5,000/month at age 25 versus age 35 means 10 extra years of compounding. At 12% return, starting early could mean 3× the final corpus — from the same ₹5,000/month contribution.</p>
+<div class="example-box"><div class="ex-label">Calculation example</div><p>₹1,00,000 invested today at 12% annual return for 10 years: Future Value = ₹1,00,000 × (1.12)^10 = ₹3,10,585. Your money tripled in a decade with no additional contributions.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Start early — time is your most powerful investment tool</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"interest", icon:"🔢", title:"Simple vs Compound Interest",
+            desc:"Why compound interest is the eighth wonder of the world.",
+            body:`<p>Simple interest is calculated only on the principal. Compound interest is calculated on the principal plus all previously earned interest — it snowballs over time.</p>
+<h4>The Math</h4>
+<ul><li><strong>Simple Interest:</strong> SI = P × R × T / 100. ₹1L at 10% for 5 years = ₹50,000 interest.</li><li><strong>Compound Interest:</strong> A = P × (1 + R/100)^T. ₹1L at 10% for 5 years = ₹61,051 interest.</li></ul>
+<p>The difference grows massively over longer periods. At 20 years, SI gives ₹2,00,000 in interest vs CI gives ₹5,72,750 — nearly 3× more from the same principal.</p>
+<h4>Compounding Frequency</h4>
+<p>More frequent compounding = more wealth. Daily compounding beats monthly, which beats annual. Mutual funds and SIPs benefit from daily NAV compounding over the long term.</p>
+<div class="example-box"><div class="ex-label">Warren Buffett principle</div><p>"My wealth has come from a combination of living in America, some lucky genes, and compound interest." He started investing at 11 and has never stopped. 99% of his net worth was built after age 52 — purely from decades of compounding.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Avoid breaking investments — let compounding work uninterrupted</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"rule72", icon:"📐", title:"Rule of 72",
+            desc:"A shortcut to know exactly how fast your money doubles.",
+            body:`<p>Divide 72 by your annual interest rate to get the approximate number of years needed to double your money. It's not perfectly accurate but works brilliantly as a mental shortcut.</p>
+<h4>Quick Reference</h4>
+<ul><li><strong>6% return:</strong> 72 ÷ 6 = 12 years to double</li><li><strong>8% return:</strong> 72 ÷ 8 = 9 years to double</li><li><strong>12% return:</strong> 72 ÷ 12 = 6 years to double</li><li><strong>18% return:</strong> 72 ÷ 18 = 4 years to double</li></ul>
+<h4>The Flip Side — Debt</h4>
+<p>Rule of 72 works for debt too. A credit card at 36% APR doubles what you owe in just 2 years. This is why high-interest debt is financial poison.</p>
+<div class="example-box"><div class="ex-label">Practical use</div><p>Your EPF earns 8.15%. Rule of 72 says it doubles in ~8.8 years. So ₹5 lakh in EPF today becomes ₹10 lakh by 2033, ₹20 lakh by 2042 — without adding a single rupee. This is why EPF balance should never be withdrawn early.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Apply to debt too — see how fast loans compound against you</span><span class="insight-chip">&#x23F1; Read time: 3 min</span>`
+          },
+          {
+            id:"saveinvest", icon:"⚖️", title:"Saving vs Investing",
+            desc:"They are not the same — and confusing them costs you wealth.",
+            body:`<p>Saving is setting money aside safely (FD, savings account) for near-term needs. Investing is deploying capital into assets (equity, real estate, gold) expecting returns that beat inflation over time. Both are necessary — but for different goals.</p>
+<h4>When to Save</h4>
+<ul><li>Emergency fund (3–6 months of expenses) in liquid, safe instruments</li><li>Goals within 1–2 years (vacation, car downpayment)</li><li>Short-term requirements that cannot afford volatility</li></ul>
+<h4>When to Invest</h4>
+<ul><li>Goals 3+ years away — education, retirement, wealth creation</li><li>When you can absorb short-term volatility for long-term gains</li><li>Once emergency fund is in place</li></ul>
+<div class="example-box"><div class="ex-label">The real cost of only saving</div><p>₹10L in a savings account at 4% for 20 years = ₹21.9L. The same ₹10L in equity mutual funds at 12% = ₹96.5L. The difference: ₹74.6L — from doing nothing differently except choosing where to park the money.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Rule: save for emergencies, invest for goals</span><span class="insight-chip">&#x23F1; Read time: 3 min</span>`
+          },
+          {
+            id:"risk", icon:"⚠️", title:"Risk vs Return",
+            desc:"Higher return always comes with higher risk — always.",
+            body:`<p>Risk is the possibility that an investment's actual return will differ from the expected return. Every asset class carries a different risk-return profile. Understanding this prevents both reckless speculation and excessive conservatism.</p>
+<h4>Risk-Return Spectrum</h4>
+<ul><li><strong>Savings account / FD:</strong> Very low risk, 3–7% returns. Beats inflation only marginally.</li><li><strong>Debt mutual funds:</strong> Low risk, 6–8% returns. Better than FDs post-tax.</li><li><strong>Gold:</strong> Medium risk, 8–10% long-term returns. Inflation hedge.</li><li><strong>Real estate:</strong> Medium-high risk, illiquid, 8–12% including rental yield.</li><li><strong>Equity / mutual funds:</strong> High short-term risk, 12–15% long-term returns.</li><li><strong>Small caps / F&O:</strong> Very high risk, extreme variance in outcomes.</li></ul>
+<div class="example-box"><div class="ex-label">Key principle</div><p>Risk tolerance depends on three factors: time horizon (longer = can take more risk), financial stability (emergency fund in place?), and emotional capacity (can you watch your portfolio drop 30% without panic selling?). Most people overestimate all three.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Never take more risk than you can afford to hold through</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"assetclasses", icon:"🏦", title:"Asset Classes",
+            desc:"The four buckets every investor should understand.",
+            body:`<p>An asset class is a group of investments that share similar characteristics, behave similarly in markets, and are subject to the same regulations. Diversifying across asset classes reduces portfolio risk significantly.</p>
+<h4>The Four Major Asset Classes</h4>
+<ul><li><strong>Equity (Stocks/Mutual Funds):</strong> Ownership in businesses. Highest long-term returns, highest short-term volatility. Best for 5+ year goals.</li><li><strong>Fixed Income (Bonds/FDs/Debt Funds):</strong> Lending money in exchange for fixed interest. Lower risk, predictable returns. Best for capital preservation.</li><li><strong>Real Assets (Real Estate, Gold):</strong> Tangible assets. Inflation hedge, illiquid, requires large capital.</li><li><strong>Cash & Equivalents (Savings, Liquid Funds):</strong> Highest liquidity, lowest return. For emergency funds only.</li></ul>
+<h4>Asset Allocation Rule of Thumb</h4>
+<p>A simple starting framework: subtract your age from 100 to get your equity allocation. Age 30 → 70% equity. Age 50 → 50% equity. Adjust based on goals and risk tolerance.</p>
+<div class="example-box"><div class="ex-label">Why diversification works</div><p>In 2020 COVID crash, equity fell 38% but gold rose 25%. A 60/40 equity-gold portfolio fell only ~12%. Diversification doesn't maximize returns — it maximizes risk-adjusted returns, which is what matters for sustainable wealth building.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Own multiple asset classes — they rarely fall together</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          }
+        ]
+      },
+      investing: {
+        label: "Investing",
+        title: "Investing Mastery",
+        desc: "Build systematic wealth through disciplined, goal-based investing strategies.",
+        badge: "CORE SKILL",
+        sub: "Build systematic wealth through disciplined, goal-based investing strategies.",
+        topics: [
+          {
+            id:"sip", icon:"📅", title:"SIP Explained",
+            desc:"Systematic Investment Plan — the most powerful wealth tool for salaried Indians.",
+            body:`<p>A SIP (Systematic Investment Plan) means investing a fixed amount into a mutual fund on a fixed date every month — regardless of market conditions. It removes the need to "time the market" by averaging your purchase cost over time.</p>
+<h4>How SIP Works</h4>
+<ul><li>You invest ₹5,000 every month into a chosen fund.</li><li>When markets are high → you buy fewer units. When markets are low → you buy more units.</li><li>Over time, your average cost per unit tends to be lower than the average price — this is called Rupee Cost Averaging.</li></ul>
+<h4>The SIP Power Chart</h4>
+<ul><li>₹5,000/month for 10 years at 12% = ₹11.5L invested → ₹23.2L corpus</li><li>₹5,000/month for 20 years at 12% = ₹12L invested → ₹49.9L corpus</li><li>₹5,000/month for 30 years at 12% = ₹18L invested → ₹1.76 Cr corpus</li></ul>
+<div class="example-box"><div class="ex-label">Key behavior insight</div><p>The biggest SIP mistake: stopping during market crashes. 2008, 2020, 2022 — every crash felt catastrophic. Investors who stopped SIPs missed the recovery gains. Those who continued (or increased) SIPs in downturns saw the most growth in the subsequent bull run.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Never stop a SIP — especially during market falls</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"lumpsum", icon:"💰", title:"Lump Sum Investing",
+            desc:"When and how to deploy a large sum at once.",
+            body:`<p>Lump sum investing means deploying a large amount of capital at once rather than spreading it over time. It works best when you have a windfall (bonus, inheritance, property sale) and markets are not at extreme valuations.</p>
+<h4>SIP vs Lump Sum — When to Use Which</h4>
+<ul><li><strong>SIP:</strong> Best for regular monthly savings from salary. Removes timing risk.</li><li><strong>Lump Sum:</strong> Best when markets have corrected significantly (P/E below historical average).</li><li><strong>Hybrid approach:</strong> Deploy lump sum into liquid/debt fund, then transfer to equity via Systematic Transfer Plan (STP) over 6–12 months.</li></ul>
+<div class="example-box"><div class="ex-label">Research evidence</div><p>Historical data (Vanguard study): lump sum investing outperforms SIP/DCA approximately 66% of the time over 10-year periods. But psychologically, most people cannot handle a 30% drawdown immediately after investing a large sum. STP is often the best of both worlds.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Use STP to reduce lump sum timing anxiety</span><span class="insight-chip">&#x23F1; Read time: 3 min</span>`
+          },
+          {
+            id:"compounding", icon:"🌱", title:"The Power of Compounding",
+            desc:"Why starting 5 years early can mean 2× the final corpus.",
+            body:`<p>Compounding is earning returns on your returns. It starts slowly but accelerates exponentially — the "hockey stick" curve that every investor should visualize and believe in.</p>
+<h4>The Early Starter Advantage</h4>
+<ul><li><strong>Riya:</strong> Invests ₹5,000/month from age 25–35 (10 years), then stops. Final corpus at 60: ₹3.8 Cr.</li><li><strong>Rahul:</strong> Invests ₹5,000/month from age 35–60 (25 years). Final corpus at 60: ₹1.9 Cr.</li><li>Riya invested for fewer years but earns 2× — because she started 10 years earlier.</li></ul>
+<h4>The Compounding Acceleration</h4>
+<p>A portfolio growing at 12% takes 6 years to double. But the second doubling takes another 6 years on a much larger base. By year 30, each 6-year period adds far more absolute wealth than the entire first decade.</p>
+<div class="example-box"><div class="ex-label">Buffett's secret</div><p>Warren Buffett made 99% of his ₹8 lakh crore net worth after age 65. He started at 11. The lesson isn't genius — it's decades of consistent compounding without major interruption.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Time in market > timing the market</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"portfolio", icon:"🗂️", title:"Portfolio Allocation",
+            desc:"How to divide your money across asset classes for your life stage.",
+            body:`<p>Asset allocation is deciding what percentage of your total wealth goes into which asset class — equity, debt, gold, real estate, cash. It is the single most important investment decision, accounting for over 90% of long-term portfolio returns according to research.</p>
+<h4>Life-Stage Allocation Framework</h4>
+<ul><li><strong>Age 20–30:</strong> 80% equity, 10% gold, 10% debt. High risk tolerance, long runway.</li><li><strong>Age 30–45:</strong> 65% equity, 15% gold, 20% debt. Building family, moderate risk.</li><li><strong>Age 45–60:</strong> 50% equity, 15% gold, 35% debt. Capital preservation becoming important.</li><li><strong>Age 60+:</strong> 30% equity, 15% gold, 55% debt/fixed income. Income generation priority.</li></ul>
+<div class="example-box"><div class="ex-label">The rebalancing rule</div><p>Review portfolio allocation annually. If equity has grown to 75% (from target 65%), sell some equity to buy debt and restore balance. This enforces "buy low, sell high" automatically — the hardest discipline for most investors to maintain emotionally.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Rebalance annually — not when markets move emotionally</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"diversification", icon:"🕸️", title:"Diversification",
+            desc:"Don't put all eggs in one basket — and understand why.",
+            body:`<p>Diversification is spreading investments across multiple assets, sectors, geographies, and instruments so that a single negative event cannot destroy your portfolio. It is the only "free lunch" in investing — reducing risk without necessarily reducing expected returns.</p>
+<h4>Levels of Diversification</h4>
+<ul><li><strong>Asset class:</strong> Equity + Debt + Gold + Real estate</li><li><strong>Within equity:</strong> Large cap + Mid cap + Small cap + International</li><li><strong>Sector:</strong> IT + Banking + Pharma + FMCG + Energy</li><li><strong>Geography:</strong> India + US + Emerging markets</li></ul>
+<h4>The Correlation Insight</h4>
+<p>Diversification works best with assets that are not correlated (don't move together). Gold and equity often move in opposite directions — gold rises in fear, equity rises in optimism. This makes the gold-equity combination one of the best portfolio stabilizers.</p>
+<div class="example-box"><div class="ex-label">Common mistake</div><p>Buying 10 different equity mutual funds and calling it diversification. If all 10 are large-cap funds, you're essentially holding the same portfolio 10 times. True diversification is across asset classes, geographies, and styles — not just more funds.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Diversify across asset classes, not just within one</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"goalbased", icon:"🎯", title:"Goal-Based Investing",
+            desc:"Match every investment to a specific life goal with a timeline.",
+            body:`<p>Goal-based investing means assigning every rupee a specific purpose with a defined timeline. Instead of "investing for the future," you invest for "Riya's college in 12 years" or "retirement in 25 years." This prevents emotional decisions during volatility.</p>
+<h4>Goal Framework</h4>
+<ul><li><strong>Short-term (0–3 years):</strong> FD, liquid funds, arbitrage funds. Capital safety above returns.</li><li><strong>Medium-term (3–7 years):</strong> Hybrid funds, balanced advantage funds. Moderate growth with some stability.</li><li><strong>Long-term (7+ years):</strong> Equity mutual funds, direct stocks. Maximum growth potential.</li></ul>
+<div class="example-box"><div class="ex-label">Practical mapping</div><p>Goal: Daughter's MBA in 10 years, estimated cost ₹25L. Monthly SIP needed at 12% return: ₹8,600. You now know exactly how much to invest, where (equity funds), and for how long. This specificity prevents "I'll invest more later" syndrome.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Every investment needs a goal, timeline, and amount</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"behavioral", icon:"🧠", title:"Behavioral Finance",
+            desc:"Why smart people make terrible investment decisions.",
+            body:`<p>Behavioral finance studies the psychological biases that cause investors to make irrational decisions. Understanding these biases is arguably more important than understanding financial math — because emotions destroy more wealth than poor math ever could.</p>
+<h4>Key Biases Every Investor Must Know</h4>
+<ul><li><strong>Loss aversion:</strong> Pain from loss is 2× stronger than pleasure from gain. This causes premature selling during dips.</li><li><strong>Recency bias:</strong> Overweighting recent events. Buying at market peaks because "it keeps going up."</li><li><strong>Herding:</strong> Following the crowd into the same investments at the same time.</li><li><strong>Anchoring:</strong> Refusing to sell a stock below your buy price, ignoring fundamentals entirely.</li><li><strong>Overconfidence:</strong> Believing you can time the market or pick winning stocks consistently.</li></ul>
+<div class="example-box"><div class="ex-label">The DALBAR finding</div><p>DALBAR's annual study shows that over 20 years, equity markets returned ~10% annually. The average equity investor earned only ~5% — because they bought high (greed) and sold low (fear). Behavior, not market performance, determined the gap.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Automate investments to remove emotion from decisions</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          }
+        ]
+      },
+      stocks: {
+        label: "Stock Market",
+        title: "Stock Market",
+        desc: "Understand how equity markets work before placing your first trade.",
+        badge: "INTERMEDIATE",
+        sub: "Understand how equity markets work before placing your first trade.",
+        topics: [
+          {
+            id:"whatisstock", icon:"📊", title:"What is the Stock Market?",
+            desc:"How ownership of companies is bought and sold publicly.",
+            body:`<p>The stock market is a marketplace where shares of publicly listed companies are bought and sold. When you buy a share of Reliance Industries, you own a tiny fraction of that business — its assets, earnings, and future growth.</p>
+<h4>How It Works</h4>
+<ul><li>Companies list shares via an IPO to raise capital from the public.</li><li>After listing, shares trade on exchanges (NSE/BSE) between buyers and sellers throughout trading hours.</li><li>Prices are determined by supply and demand — driven by earnings expectations, economic news, and investor sentiment.</li></ul>
+<div class="example-box"><div class="ex-label">Why markets rise long-term</div><p>Markets rise because good businesses grow their earnings over time. Sensex in 2000: ~5,000. Sensex in 2024: ~75,000. That's 15× in 24 years — approximately 12% CAGR. The economy grows, companies earn more, and share prices reflect that growth.</p></div>
+<br><span class="insight-chip">&#x1F4A1; You own a business, not a ticker symbol</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"nsebse", icon:"🏛️", title:"How NSE / BSE Work",
+            desc:"India's two main exchanges and how trading happens.",
+            body:`<p>India has two primary stock exchanges: BSE (Bombay Stock Exchange, est. 1875 — Asia's oldest) and NSE (National Stock Exchange, est. 1994 — India's largest by volume). Most modern trading happens on NSE.</p>
+<h4>Key Indices</h4>
+<ul><li><strong>Sensex:</strong> BSE's benchmark — tracks top 30 companies by free-float market cap.</li><li><strong>Nifty 50:</strong> NSE's benchmark — tracks top 50 companies. Most futures/options trade against Nifty.</li><li><strong>Nifty Midcap 150, Smallcap 250:</strong> Broader indices tracking smaller companies.</li></ul>
+<h4>T+1 Settlement</h4>
+<p>India moved to T+1 settlement in 2023 — when you buy a stock, shares arrive in your demat account the next trading day. This is one of the fastest settlement cycles globally.</p>
+<div class="example-box"><div class="ex-label">Trading hours</div><p>NSE/BSE regular session: 9:15 AM to 3:30 PM, Monday to Friday. Pre-market session: 9:00–9:15 AM. After-market orders: 3:40–4:00 PM. Markets are closed on national holidays and weekends.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Nifty 50 is the go-to benchmark for Indian equity</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"marketcap", icon:"📏", title:"Market Cap: Large, Mid, Small Cap",
+            desc:"The size classification that determines risk and return profile.",
+            body:`<p>Market capitalization = Share price × Total number of shares. It measures a company's total market value. SEBI defines categories based on market cap rank among all listed companies.</p>
+<h4>SEBI Classification</h4>
+<ul><li><strong>Large Cap:</strong> Top 100 companies by market cap. Stable, lower risk, lower growth. Example: TCS, Reliance, HDFC Bank.</li><li><strong>Mid Cap:</strong> Rank 101–250. Higher growth potential, higher volatility. Example: Voltas, Dixon Technologies.</li><li><strong>Small Cap:</strong> Rank 251 onwards. Highest growth potential, highest risk, low liquidity. Example: many under-researched companies.</li></ul>
+<div class="example-box"><div class="ex-label">Historical returns (20-year)</div><p>Nifty 50 (Large Cap): ~12% CAGR. Nifty Midcap 150: ~15% CAGR. Nifty Smallcap 250: ~14% CAGR but with significantly higher drawdowns. Small and mid caps can fall 50–70% in bear markets vs 30–40% for large caps.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Higher cap = lower risk; smaller cap = higher growth AND risk</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"pe", icon:"💹", title:"P/E Ratio Explained",
+            desc:"The single most important valuation metric for stocks.",
+            body:`<p>Price-to-Earnings (P/E) ratio = Stock Price ÷ Earnings Per Share (EPS). It tells you how much the market is willing to pay per rupee of company earnings. A P/E of 20 means investors pay ₹20 for every ₹1 of annual profit.</p>
+<h4>How to Interpret P/E</h4>
+<ul><li><strong>Low P/E (below 15):</strong> Potentially undervalued, or low growth expected, or problems in business.</li><li><strong>Moderate P/E (15–25):</strong> Fairly valued for stable businesses.</li><li><strong>High P/E (25–50+):</strong> Market expects high future growth. Risky if growth doesn't materialize.</li></ul>
+<h4>Nifty P/E Context</h4>
+<p>Nifty 50 historical average P/E: ~20–22. Above 25: markets are expensive, reduce equity allocation. Below 17: markets are attractive for long-term buying. Use this for broad market valuation judgment, not individual stocks.</p>
+<div class="example-box"><div class="ex-label">P/E trap to avoid</div><p>Buying a stock purely because P/E is low can be a "value trap" — sometimes P/E is low because the business is genuinely deteriorating. Always combine P/E with earnings growth rate (PEG ratio = P/E ÷ EPS Growth) and business quality assessment.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Compare P/E to sector average, not just market average</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"fundamental", icon:"🔬", title:"Fundamental Analysis",
+            desc:"Reading a business's financial health before investing.",
+            body:`<p>Fundamental analysis evaluates a company's intrinsic value by examining financial statements, business model, management quality, and industry position. It answers: "Is this a good business at a fair price?"</p>
+<h4>Key Metrics to Analyze</h4>
+<ul><li><strong>Revenue growth:</strong> Is the company consistently growing top line?</li><li><strong>Profit margins:</strong> EBITDA margin, PAT margin — are they stable or expanding?</li><li><strong>Return on Equity (ROE):</strong> Above 15% is generally strong. Measures profit per rupee of shareholder equity.</li><li><strong>Debt-to-Equity:</strong> Below 1 preferred for most sectors. High debt = financial fragility.</li><li><strong>Cash flow from operations:</strong> Is reported profit backed by real cash? Check for divergence.</li></ul>
+<div class="example-box"><div class="ex-label">Where to find data</div><p>Annual reports (company website), Screener.in (free fundamental screener), Tickertape.in, and NSE/BSE websites. Before investing, read at least 3 years of annual reports and 8 quarters of results. Most retail investors never do this — which creates opportunity for those who do.</p></div>
+<br><span class="insight-chip">&#x1F4A1; ROE + Low debt + Revenue growth = quality business foundation</span><span class="insight-chip">&#x23F1; Read time: 6 min</span>`
+          },
+          {
+            id:"technical", icon:"📈", title:"Technical Analysis Basics",
+            desc:"Using price charts to time entries and exits.",
+            body:`<p>Technical analysis studies historical price and volume data to forecast future price movements. Unlike fundamental analysis (which values businesses), technical analysis focuses purely on market psychology expressed through charts.</p>
+<h4>Core Concepts</h4>
+<ul><li><strong>Support:</strong> Price level where buying historically emerges — stock "bounces" from here.</li><li><strong>Resistance:</strong> Price level where selling historically emerges — stock struggles to cross here.</li><li><strong>Trend:</strong> Higher highs and higher lows = uptrend. Lower highs and lower lows = downtrend.</li><li><strong>Moving averages (50 DMA, 200 DMA):</strong> Smoothed price lines that signal trend direction.</li></ul>
+<h4>Limitations</h4>
+<p>Technical analysis works better for short-term trading than long-term investing. Many patterns are subjective. Combined with fundamentals (buy quality at technical support), it is more useful than used alone.</p>
+<div class="example-box"><div class="ex-label">The 200 DMA rule</div><p>Many investors use the 200-day moving average as a market health indicator. Nifty above 200 DMA = bull market, stay invested. Nifty below 200 DMA = caution, reduce risk. It's not perfect but prevents catastrophic losses during major bear markets.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Use TA for timing, FA for selection — combine both</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"ipo", icon:"🚀", title:"IPO Explained",
+            desc:"What happens when a company lists on the stock market for the first time.",
+            body:`<p>An IPO (Initial Public Offering) is when a private company sells its shares to the public for the first time, listing on NSE/BSE. Companies do this to raise capital for growth, allow early investors to exit, or increase brand visibility.</p>
+<h4>IPO Process in India</h4>
+<ul><li>Company files a DRHP (Draft Red Herring Prospectus) with SEBI — read this for business details and risks.</li><li>IPO opens for 3 days. Retail investors can apply for lots (minimum ₹14,000–15,000 typically).</li><li>If oversubscribed, allotment is done by lottery for retail category.</li><li>Listing happens typically 6 trading days after IPO closes. Price discovery on listing day.</li></ul>
+<div class="example-box"><div class="ex-label">IPO investment reality</div><p>Of all IPOs listed in India between 2010–2023, approximately 40% were trading below their issue price after 2 years. The grey market premium (GMP) is speculative, not indicative of long-term value. Read the DRHP, evaluate the business, and only apply if you'd hold the stock even if it lists flat.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Avoid IPO hype — evaluate like any business investment</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          }
+        ]
+      },
+      mf: {
+        label: "Mutual Funds",
+        title: "Mutual Funds",
+        desc: "Everything about India's most accessible wealth-building instrument.",
+        badge: "POPULAR",
+        sub: "Everything about India's most accessible wealth-building instrument.",
+        topics: [
+          {
+            id:"mftypes", icon:"🗂️", title:"Types of Mutual Funds",
+            desc:"Equity, debt, hybrid, index — what to choose and when.",
+            body:`<p>Mutual funds pool money from thousands of investors and invest in securities according to a defined mandate. There are 44 fund categories defined by SEBI, but most investors need to understand just 6–8 key types.</p>
+<h4>Major Fund Categories</h4>
+<ul><li><strong>Large Cap:</strong> Invest in top 100 companies. Lower risk, 10–12% historical CAGR.</li><li><strong>Flexi Cap / Multi Cap:</strong> Invest across market caps. Fund manager flexibility. Good for core portfolio.</li><li><strong>Mid & Small Cap:</strong> Higher growth potential, higher volatility. Only for 5+ year horizon.</li><li><strong>ELSS (Tax Saver):</strong> Equity fund with 3-year lock-in. Eligible for 80C deduction.</li><li><strong>Debt Funds:</strong> Invest in bonds and money market. Stable, lower returns. Good for 1–3 year goals.</li><li><strong>Index Funds:</strong> Passively track an index (Nifty 50, etc.). Low cost, no fund manager risk.</li><li><strong>Hybrid / Balanced Funds:</strong> Mix of equity and debt in one fund. Good for moderate risk investors.</li></ul>
+<div class="example-box"><div class="ex-label">For most investors</div><p>A simple 3-fund portfolio works for 90% of investors: Nifty 50 Index Fund (50%) + Nifty Midcap 150 Index Fund (30%) + Debt/Liquid Fund (20%). This covers large/mid equity with passive management and low costs.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Start simple: index funds + debt fund is a complete portfolio</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"equitydebt", icon:"⚖️", title:"Equity vs Debt Funds",
+            desc:"The fundamental choice between growth and stability.",
+            body:`<p>Equity funds invest primarily in stocks, aiming for long-term capital appreciation. Debt funds invest in fixed-income instruments like bonds, providing stable, lower returns with significantly less volatility.</p>
+<h4>Key Differences</h4>
+<ul><li><strong>Returns:</strong> Equity: 10–15% historical CAGR. Debt: 6–8% CAGR.</li><li><strong>Risk:</strong> Equity: Can fall 30–50% in bear markets. Debt: Rarely falls more than 2–5%.</li><li><strong>Tax (post-April 2023):</strong> Both equity and debt gains now taxed at slab rate for less than 2 years. Equity LTCG (2+ years): 12.5% above ₹1.25L gain. Debt funds: slab rate regardless of holding period.</li><li><strong>Horizon:</strong> Equity: 5+ years minimum. Debt: 3 months to 3 years.</li></ul>
+<div class="example-box"><div class="ex-label">The hybrid solution</div><p>Balanced Advantage Funds (BAF) dynamically shift between equity and debt based on market valuations. When markets are expensive, they reduce equity. When markets are cheap, they increase equity. Good for first-time equity investors who cannot handle pure equity volatility.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Match fund type to goal timeline, not return expectation</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"expenseratio", icon:"💸", title:"Expense Ratio — The Hidden Cost",
+            desc:"How fund management fees compound against your wealth over decades.",
+            body:`<p>The expense ratio is the annual fee a mutual fund charges as a percentage of your investment. A 1% expense ratio means ₹100 of every ₹10,000 you hold is taken by the AMC each year — before you receive your returns.</p>
+<h4>Why It Matters Long-Term</h4>
+<ul><li>Direct plan expense ratio: typically 0.1–0.5% (index funds) to 0.5–1% (active funds)</li><li>Regular plan expense ratio: add ~0.5–1% distributor commission to direct plan costs</li><li>On ₹10L over 20 years at 12% gross return: direct plan (0.5% expense) = ₹94L. Regular plan (1.5% expense) = ₹77L. Difference: ₹17L lost to fees.</li></ul>
+<div class="example-box"><div class="ex-label">Always choose direct plans</div><p>There is no logical reason to invest in a regular plan unless you are getting active, ongoing financial advice that adds more value than the 0.5–1% additional cost. For DIY investors, direct plans via AMC websites or platforms like Coin, Groww, or MFU are the right choice — always.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Direct plan: higher returns. Regular plan: distributor benefits</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"nav", icon:"🏷️", title:"NAV Explained",
+            desc:"What Net Asset Value means and what it doesn't.",
+            body:`<p>NAV (Net Asset Value) is the per-unit price of a mutual fund. NAV = (Total assets of fund − liabilities) ÷ Total units outstanding. It's calculated daily at market close.</p>
+<h4>The NAV Misconception</h4>
+<p>Many investors prefer funds with "low NAV" thinking they're cheaper. This is wrong. A fund with NAV ₹10 and a fund with NAV ₹500 are not differently priced — you simply own more/fewer units. What matters is future return percentage, not current NAV level.</p>
+<h4>NAV vs Returns</h4>
+<p>If Fund A has NAV ₹100 and grows to ₹120 (20% return) and Fund B has NAV ₹10 and grows to ₹12 (20% return) — they gave you the same return. NAV is just a unit measure, not a signal of cheapness or expensiveness.</p>
+<div class="example-box"><div class="ex-label">What actually matters</div><p>When choosing a fund: expense ratio (lower is better), fund manager track record across market cycles, consistency of returns vs benchmark, and AUM size (too large can hamper small/mid cap performance). NAV is irrelevant to fund selection.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Low NAV does NOT mean cheap — ignore it when choosing funds</span><span class="insight-chip">&#x23F1; Read time: 3 min</span>`
+          },
+          {
+            id:"directregular", icon:"🔀", title:"Direct vs Regular Plans",
+            desc:"Why the same fund has two versions and which one you should pick.",
+            body:`<p>Every mutual fund in India has two versions: Direct Plan (you invest directly with the AMC) and Regular Plan (you invest through a distributor/broker who earns commission). The fund, portfolio, and fund manager are identical — only the fees differ.</p>
+<h4>The Cost Difference</h4>
+<ul><li>Regular plan TER is typically 0.5–1.5% higher than direct plan per year.</li><li>Over 20 years, this difference compounds to 15–25% more final corpus in direct plan.</li><li>Many online platforms (Zerodha Coin, Groww, MFU) offer direct plans with ₹0 transaction fee.</li></ul>
+<div class="example-box"><div class="ex-label">When regular plan makes sense</div><p>If you have a SEBI-registered Investment Advisor (RIA) charging a flat fee for advice and using regular plan commissions to offset their fee — that can work. But most "advisors" in India are distributors earning commissions to recommend high-regular-plan funds. Know who you're working with before investing.</p></div>
+<br><span class="insight-chip">&#x1F4A1; For DIY investors: direct plan is always the right choice</span><span class="insight-chip">&#x23F1; Read time: 3 min</span>`
+          }
+        ]
+      },
+      realestate: {
+        label: "Real Estate",
+        title: "Real Estate Investing",
+        desc: "Property investment fundamentals for Indian markets.",
+        badge: "ASSET CLASS",
+        sub: "Property investment fundamentals for Indian markets.",
+        topics: [
+          {
+            id:"rentalyield", icon:"🏘️", title:"Rental Yield",
+            desc:"How much income your property generates relative to its cost.",
+            body:`<p>Rental yield = Annual rent ÷ Property value × 100. It measures the annual income return from a rental property. Indian rental yields are notoriously low — typically 2–3% in major metros — making "buy for rent income" a questionable strategy in most cities.</p>
+<h4>India Rental Yield Benchmarks</h4>
+<ul><li><strong>Mumbai:</strong> 1.5–2.5% gross yield</li><li><strong>Bengaluru:</strong> 2.5–3.5% gross yield</li><li><strong>Hyderabad:</strong> 2.5–3.5% gross yield</li><li><strong>Tier 2 cities:</strong> 3–5% gross yield (higher yield, lower appreciation)</li></ul>
+<div class="example-box"><div class="ex-label">Comparison</div><p>₹1 Cr Mumbai apartment renting for ₹25,000/month = 3% annual yield. The same ₹1 Cr in a Nifty 50 index fund historically earns 12% CAGR + you avoid property taxes, maintenance, vacancy risk, and illiquidity. The "real estate is always good" belief needs data scrutiny.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Buy real estate for appreciation + lifestyle, not rental yield</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"buyrent", icon:"🤔", title:"Buy vs Rent Decision",
+            desc:"The real financial math behind India's biggest household decision.",
+            body:`<p>The buy vs rent decision is one of the most consequential financial choices. Conventional wisdom says "buy always" — but the math often suggests otherwise, especially in expensive metros where property yields are low and EMIs are high.</p>
+<h4>Total Cost of Ownership (TCO) of Buying</h4>
+<ul><li>EMI interest paid over 20 years on ₹75L loan at 8.5%: approximately ₹90L additional interest</li><li>Registration + stamp duty: 5–7% of property value</li><li>Annual maintenance: ₹50,000–2,00,000</li><li>Property tax: ₹10,000–50,000/year</li><li>Opportunity cost: returns foregone on down payment invested elsewhere</li></ul>
+<div class="example-box"><div class="ex-label">When buying makes sense</div><p>You plan to stay 10+ years, stable income, property in a high-appreciation corridor, and rental equivalent exceeds 70% of EMI. When renting makes sense: career phase, city uncertainty, high property prices vs. rent, and if you can invest the rent-vs-EMI difference in equity systematically.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Run your own numbers — don't follow cultural defaults</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"homeloan", icon:"🏦", title:"Home Loan Basics",
+            desc:"Interest rates, EMIs, and how to reduce the total interest paid.",
+            body:`<p>A home loan is typically the largest financial commitment of most Indians' lives. Understanding how it works — specifically how interest is charged — can save lakhs in total payment.</p>
+<h4>How Home Loan Interest Works</h4>
+<ul><li>Home loans are on reducing balance: interest is calculated on outstanding principal each month.</li><li>In early years, 70–80% of EMI goes to interest. In later years, more goes to principal.</li><li>Floating rate loans (linked to REPO rate): rate changes with RBI policy. Most current loans are floating.</li></ul>
+<h4>Prepayment Strategy</h4>
+<p>Even small extra payments in early years dramatically reduce total interest. ₹1L extra in Year 1 can save ₹3–4L in interest over the loan tenure. Always prepay when bonuses or windfalls arrive — the guaranteed return equals your loan interest rate (8–9%).</p>
+<div class="example-box"><div class="ex-label">Amortization reality</div><p>₹75L loan at 8.5% for 20 years: EMI ≈ ₹65,000. Total paid over 20 years: ₹1.56 Cr. Interest paid: ₹81L — more than the original loan! Understanding this makes prepayment feel urgent.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Prepay home loan aggressively in the first 5 years</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"appreciation", icon:"📈", title:"Property Appreciation",
+            desc:"Where and why real estate values actually grow in India.",
+            body:`<p>Property appreciation is driven by infrastructure development, employment hubs, supply-demand dynamics, and city master plans. Not all locations appreciate equally — tier 2 cities near IT/manufacturing hubs have significantly outperformed stagnant tier 1 micro-markets.</p>
+<h4>Appreciation Drivers</h4>
+<ul><li><strong>Infrastructure:</strong> Metro lines, highways, airports significantly boost nearby property values.</li><li><strong>Employment:</strong> IT parks, SEZs, manufacturing clusters create sustained housing demand.</li><li><strong>Supply constraint:</strong> Limited land + high regulation = faster appreciation (South Mumbai, South Delhi).</li><li><strong>Smart city projects:</strong> Government investment in tier 2 cities creating new appreciation corridors.</li></ul>
+<div class="example-box"><div class="ex-label">Recent examples</div><p>Hyderabad's Gachibowli-Kondapur belt: 8% CAGR over 15 years. Bengaluru's Whitefield: 9% CAGR. Tier 2 cities near Pune (Chakan, Talegaon): 10–12% CAGR due to manufacturing growth. Compare these to stagnant areas in Mumbai suburbs: 3–4% CAGR.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Location + infrastructure pipeline = appreciation prediction</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"rera", icon:"📋", title:"RERA & Buyer Protection",
+            desc:"Your legal rights as a property buyer in India.",
+            body:`<p>RERA (Real Estate Regulation and Development Act, 2016) transformed Indian real estate by making developers accountable, registering projects mandatorily, and giving buyers legal recourse against delays and fraud.</p>
+<h4>Key RERA Protections</h4>
+<ul><li>Developers must deposit 70% of buyer money in escrow — only usable for that project's construction.</li><li>Carpet area (not super built-up area) is the legal measurement standard.</li><li>Delivery delays: developer must pay monthly interest (SBI MCLR + 2%) on invested amount.</li><li>Every state has a RERA portal — verify your project registration before booking.</li></ul>
+<div class="example-box"><div class="ex-label">Before you book</div><p>Check maharera.mahaonline.gov.in (Maharashtra), HRERA, KRERA, RERA Karnataka etc. See: registration status, completion date, litigation history, and developer track record. Never book an unregistered project. Many "pre-RERA" projects are still stuck — verify everything before signing.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Always verify RERA registration before booking any property</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          }
+        ]
+      },
+      tax: {
+        label: "Tax",
+        title: "Tax & Compliance",
+        desc: "Reduce your tax legally and file without stress.",
+        badge: "MUST KNOW",
+        sub: "Reduce your tax legally and file without stress.",
+        topics: [
+          {
+            id:"oldnew", icon:"🔄", title:"Old vs New Tax Regime",
+            desc:"Which regime saves you more tax and when to switch.",
+            body:`<p>India now has two tax regimes. The old regime offers many deductions (80C, HRA, LTA, etc.) but has higher base rates. The new regime has lower rates but almost no deductions. The right choice depends entirely on your individual situation.</p>
+<h4>New Regime Slabs (FY 2024–25)</h4>
+<ul><li>₹0–3L: Nil</li><li>₹3L–7L: 5% (effectively 0% after rebate up to ₹7L income)</li><li>₹7L–10L: 10%</li><li>₹10L–12L: 15%</li><li>₹12L–15L: 20%</li><li>Above ₹15L: 30%</li></ul>
+<h4>When Old Regime Wins</h4>
+<p>If you have home loan interest + 80C + HRA + NPS deductions totaling ₹4–5L+, old regime often saves more tax. If your deductions are below ₹2.5L, new regime usually wins at most income levels.</p>
+<div class="example-box"><div class="ex-label">Quick check</div><p>If total deductions under old regime > ₹3.75L (for 30% bracket taxpayer): old regime saves more. Below this: new regime wins. Always compute both before filing — you can switch every year for salary income.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Compute both regimes — don't assume one is always better</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"capitalgains", icon:"💰", title:"Capital Gains Tax (STCG / LTCG)",
+            desc:"Tax on investment profits — rates, thresholds, and planning.",
+            body:`<p>When you sell an investment at a profit, the gain is taxed. Tax rate depends on the type of asset and how long you held it.</p>
+<h4>Equity STCG vs LTCG (Post Budget 2024)</h4>
+<ul><li><strong>STCG (held under 1 year):</strong> 20% flat (increased from 15% in Budget 2024)</li><li><strong>LTCG (held 1+ year):</strong> 12.5% on gains above ₹1.25L per year (increased from ₹1L exempt)</li><li>For debt funds (post April 2023): all gains taxed at your slab rate regardless of holding period</li></ul>
+<h4>Tax Harvesting Strategy</h4>
+<p>Sell and rebuy equity positions with long-term gains just below ₹1.25L each year to reset cost basis. This "harvests" gains tax-free and can save significant tax over a long holding period.</p>
+<div class="example-box"><div class="ex-label">Tax harvesting example</div><p>You hold Nifty index fund with ₹1L unrealized gain in December. Sell → realize ₹1L LTCG (tax-free as below ₹1.25L) → rebuy immediately. New cost basis is higher. Over 10 years of annual harvesting, this strategy can save ₹5–15L in taxes on a growing equity portfolio.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Tax harvest LTCG annually to use the ₹1.25L exemption</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"80c", icon:"🎁", title:"80C / 80D Deductions",
+            desc:"The most popular tax-saving sections every salaried person must use.",
+            body:`<p>Section 80C allows deduction up to ₹1.5L per year from taxable income for specified investments. 80D allows deduction for health insurance premiums. These are available only in the old tax regime.</p>
+<h4>80C Instruments</h4>
+<ul><li><strong>ELSS (Equity Linked Savings Scheme):</strong> 3-year lock-in, market-linked returns. Best 80C option for long-term wealth.</li><li><strong>EPF (Employee Provident Fund):</strong> Automatic for salaried employees. 8.15% guaranteed.</li><li><strong>PPF (Public Provident Fund):</strong> 7.1% rate, 15-year tenure, fully tax-free maturity.</li><li><strong>NPS:</strong> Additional ₹50,000 deduction under 80CCD(1B) over and above 80C limit.</li><li><strong>Home loan principal repayment:</strong> Qualifies under 80C.</li></ul>
+<h4>80D — Health Insurance</h4>
+<ul><li>₹25,000 deduction for self + family health insurance premium</li><li>₹50,000 for parents' premium if parents are senior citizens</li><li>Total maximum: ₹75,000 deduction</li></ul>
+<div class="example-box"><div class="ex-label">Optimization strategy</div><p>Don't buy LIC endowment or ULIP just for 80C — the returns are terrible (3–5% post-fee). Use EPF + ELSS (₹50,000 in ELSS fund tops up 80C if EPF covers the rest). Add NPS for extra ₹50,000 deduction. Then 80D for health insurance. Total tax savings for 30% bracket: ₹62,500+ annually.</p></div>
+<br><span class="insight-chip">&#x1F4A1; ELSS > LIC for 80C — better returns, shorter lock-in</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"hra", icon:"🏠", title:"HRA — House Rent Allowance",
+            desc:"Claim tax exemption on rent paid, if you know the rules.",
+            body:`<p>HRA is a salary component that allows employees living in rented accommodation to claim tax exemption on rent paid. It's one of the largest tax-saving opportunities for salaried individuals in metro cities.</p>
+<h4>HRA Exemption Calculation</h4>
+<p>Exemption = lowest of these three:</p>
+<ul><li>Actual HRA received from employer</li><li>50% of basic salary (for metro cities) or 40% (non-metro)</li><li>Actual rent paid minus 10% of basic salary</li></ul>
+<h4>Key Rules</h4>
+<ul><li>You must actually live in rented accommodation (not own the house you're living in).</li><li>Rent to parents: allowed — but parents must show rental income in their ITR.</li><li>Above ₹1L/year rent: landlord's PAN mandatory.</li><li>No HRA from employer? Claim under Section 80GG (₹60,000/year max).</li></ul>
+<div class="example-box"><div class="ex-label">Rent to parents strategy</div><p>You live in your parents' house. Pay them ₹15,000/month rent via bank transfer. Get rent receipt. Claim HRA exemption worth ₹1.8L/year. Parents (if in lower tax bracket) pay minimal tax on rental income. Net family tax saving: ₹40,000–55,000/year on a 30% slab. Perfectly legal.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Document everything — rent receipt + bank transfer proof</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"gst", icon:"🧾", title:"GST Basics for Individuals",
+            desc:"Understanding India's consumption tax and when it affects your investments.",
+            body:`<p>GST (Goods and Services Tax) replaced VAT, service tax, and excise duty in 2017. It's a value-added tax applied at each stage of production and sale. The final consumer bears the tax burden.</p>
+<h4>GST Slabs</h4>
+<ul><li><strong>0%:</strong> Essential items — rice, wheat, milk, books, healthcare services</li><li><strong>5%:</strong> Packaged foods, economy hotels, transport</li><li><strong>12%:</strong> Processed foods, business-class flights, restaurants</li><li><strong>18%:</strong> Most services, electronics, financial services including mutual fund management fees</li><li><strong>28%:</strong> Luxury items, automobiles, tobacco, gambling</li></ul>
+<h4>Investment Relevance</h4>
+<p>Mutual fund expense ratios include 18% GST on fund management fees. When comparing expense ratios, they are quoted inclusive of GST. Trading brokerage and advisory fees also attract 18% GST.</p>
+<div class="example-box"><div class="ex-label">For business owners / freelancers</div><p>If annual turnover > ₹20L (services) or ₹40L (goods), GST registration is mandatory. Registered businesses can claim Input Tax Credit (ITC) — offsetting GST paid on purchases against GST collected on sales. This significantly reduces the net tax outflow for businesses.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Financial services attract 18% GST — factor into cost calculations</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          }
+        ]
+      },
+      insurance: {
+        label: "Insurance",
+        title: "Insurance & Risk",
+        desc: "Protect what you build — understanding insurance correctly.",
+        badge: "ESSENTIAL",
+        sub: "Protect what you build — understanding insurance correctly.",
+        topics: [
+          {
+            id:"termins", icon:"🛡️", title:"Term Insurance — Your Financial Safety Net",
+            desc:"The only insurance most people actually need.",
+            body:`<p>Term insurance pays a large sum (sum assured) to your nominees if you die during the policy term. That's it. No investment component, no maturity benefit — which is exactly why it's dirt cheap and extremely powerful.</p>
+<h4>How Much Cover Do You Need?</h4>
+<ul><li>Rule of thumb: 10–15× your annual income</li><li>Salary ₹12L/year → ₹1.2–1.8 Cr cover minimum</li><li>Also account for outstanding loans, children's education, spouse's income replacement</li><li>For a 30-year-old, ₹1 Cr term cover typically costs ₹8,000–12,000/year — essentially nothing</li></ul>
+<h4>Key Features to Check</h4>
+<ul><li><strong>Claim settlement ratio:</strong> Above 97% is good. LIC: 98.7%, HDFC Life: 99.4%.</li><li><strong>Term:</strong> Cover until age 65–75. Not "30-year plan" if you're 45 — check coverage end date.</li><li><strong>Riders:</strong> Critical illness rider and accidental death benefit rider are worth the extra premium.</li></ul>
+<div class="example-box"><div class="ex-label">The term insurance priority rule</div><p>If you haven't bought term insurance and have dependents: stop everything and buy it today. Before any investment. Before any savings scheme. A ₹1 Cr equity portfolio does nothing for your family if you die tomorrow without insurance. Term insurance is the foundation of every financial plan.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Buy term before you invest — it's the financial safety net</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"healthins", icon:"🏥", title:"Health Insurance",
+            desc:"Medical costs are the #1 cause of financial ruin in India.",
+            body:`<p>A single major illness or accident can cost ₹10–50L in India's private healthcare system. Health insurance protects against this catastrophic financial risk. It is non-negotiable for everyone, including the young and healthy.</p>
+<h4>What Cover Do You Need?</h4>
+<ul><li><strong>Minimum:</strong> ₹5L cover in smaller cities, ₹10L in metros</li><li><strong>Ideal:</strong> ₹20–25L family floater for a family of 3–4 in metros</li><li><strong>Super top-up:</strong> Add ₹50–90L super top-up on a ₹10L base plan for very low additional premium</li></ul>
+<h4>Critical Policy Features</h4>
+<ul><li><strong>No sub-limits:</strong> Avoid policies with room rent or doctor fee sub-limits</li><li><strong>No co-payment:</strong> Avoid paying a percentage of every claim</li><li><strong>Network hospitals:</strong> Ensure your preferred hospitals are in the insurer's network</li><li><strong>Pre-existing disease waiting period:</strong> 1–4 years depending on policy; important to know</li></ul>
+<div class="example-box"><div class="ex-label">Company insurance is NOT enough</div><p>Your employer's group health cover (typically ₹3–5L) lapses when you leave the job — often exactly when you're between jobs and most stressed. Buy personal health insurance independently, regardless of employer cover. Portability of health insurance ensures continuity even when you change insurers.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Personal health insurance is mandatory — employer cover is not enough</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"notinvestment", icon:"❌", title:"Why Insurance is NOT Investment",
+            desc:"The most common and costly financial mistake in India.",
+            body:`<p>ULIPs, endowment plans, money-back policies, and whole life insurance are marketed as "insurance + investment" products. In reality, they do both poorly — insufficient insurance cover and poor investment returns, while generating high commissions for distributors.</p>
+<h4>The Math Behind Endowment Plans</h4>
+<ul><li>Premium: ₹1L/year for 20 years = ₹20L total investment</li><li>Maturity amount: ~₹28–35L after 20 years (approximately 5–6% CAGR)</li><li>Same ₹1L/year in term insurance (₹8,000) + mutual fund SIP (₹92,000): ₹8,500+ maturity value (12% CAGR) with 100× the insurance cover</li></ul>
+<p>The "savings" in an endowment plan are actually your own money returned with minimal interest — after the insurer took a large cut as agent commission and charges.</p>
+<div class="example-box"><div class="ex-label">The surrender problem</div><p>Most LIC endowment policies return only 30–50% of premiums paid if surrendered before 10 years. Millions of Indians are trapped in policies they can't exit profitably. If you have such a policy: complete IRDA premium illustration, calculate actual IRR, and decide whether to continue or surrender based on math — not emotion.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Separate insurance and investment — always, forever</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"claimratio", icon:"📊", title:"Claim Settlement Ratio",
+            desc:"The metric that tells you if an insurer will actually pay when you need it.",
+            body:`<p>Claim Settlement Ratio (CSR) = Claims settled ÷ Total claims received × 100. It tells you what percentage of death claims an insurer paid in a given year. Higher is always better. IRDA publishes this annually.</p>
+<h4>FY 2022–23 CSR (Life Insurance)</h4>
+<ul><li>LIC: 98.76%</li><li>HDFC Life: 99.36%</li><li>Max Life: 99.51%</li><li>ICICI Prudential: 97.82%</li><li>SBI Life: 97.05%</li></ul>
+<h4>What CSR Doesn't Tell You</h4>
+<p>CSR doesn't show claim dispute rates or partial settlement rates. A higher CSR with many disputes can be misleading. Always read policy exclusions carefully — most legitimate claim rejections are due to non-disclosure of pre-existing conditions during policy purchase. Full disclosure is your responsibility and protection.</p>
+<div class="example-box"><div class="ex-label">The disclosure rule</div><p>Never hide medical history when buying insurance. Even if you have diabetes or hypertension, disclose it — the insurer may load the premium slightly, but future claims will be paid. An undisclosed condition is a legal ground for claim rejection, leaving your family without protection when they need it most.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Choose CSR > 97% and ALWAYS disclose pre-existing conditions</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          }
+        ]
+      },
+      advanced: {
+        label: "Advanced",
+        title: "Advanced Wealth",
+        desc: "Strategies for those serious about financial independence.",
+        badge: "ADVANCED",
+        sub: "Strategies for those serious about financial independence.",
+        topics: [
+          {
+            id:"fire", icon:"🔥", title:"FIRE Movement — Financial Independence",
+            desc:"Retire early by reaching 25× your annual expenses in invested assets.",
+            body:`<p>FIRE (Financial Independence, Retire Early) is a financial movement focused on extreme saving and investing to reach a point where investment returns cover all living expenses — making paid work optional, not required.</p>
+<h4>The 4% Rule</h4>
+<ul><li>FIRE number = Annual expenses × 25</li><li>Annual expenses ₹6L → FIRE number = ₹1.5 Cr</li><li>Annual expenses ₹15L → FIRE number = ₹3.75 Cr</li><li>At this corpus, withdrawing 4%/year (inflation-adjusted) historically lasts 30+ years (Trinity Study)</li></ul>
+<h4>FIRE Variants</h4>
+<ul><li><strong>Lean FIRE:</strong> Minimal lifestyle, very low expenses, earlier target</li><li><strong>Fat FIRE:</strong> Comfortable lifestyle, higher target, usually 30–40× expenses</li><li><strong>Coast FIRE:</strong> Invest heavily early, then let compounding do the rest without adding more</li><li><strong>Barista FIRE:</strong> Reach partial FIRE, do part-time fulfilling work for extras</li></ul>
+<div class="example-box"><div class="ex-label">FIRE in India context</div><p>The 4% rule was calibrated on US market data. Indian equity historically returns 12–14% CAGR vs 7–8% US. A slightly higher withdrawal rate (4.5–5%) may be sustainable. But sequence of returns risk — a major crash early in retirement — is the primary risk to plan against, typically via 3–5 years of expenses in debt.</p></div>
+<br><span class="insight-chip">&#x1F4A1; FIRE number = annual expenses × 25</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"passiveincome", icon:"🌊", title:"Passive Income Streams",
+            desc:"Income that continues working while you sleep.",
+            body:`<p>Passive income is money earned with minimal ongoing effort after an initial investment of time or capital. Building multiple passive income streams is the foundation of financial independence.</p>
+<h4>Passive Income Sources</h4>
+<ul><li><strong>Dividend income:</strong> Equity holdings in high-dividend stocks/funds. ₹1 Cr at 2% dividend yield = ₹2L/year passive.</li><li><strong>Rental income:</strong> Real estate. Requires capital and management but provides inflation-linked income.</li><li><strong>SWP (Systematic Withdrawal Plan):</strong> Withdraw monthly from a mutual fund corpus while remaining invested. The cleanest passive income for equity investors.</li><li><strong>Interest income:</strong> Senior citizen savings scheme, RBI bonds (7.75%), etc.</li><li><strong>Digital assets:</strong> YouTube monetization, online courses, SaaS revenue, content businesses.</li><li><strong>P2P lending:</strong> Higher yield (10–14%) with credit risk. Use only with a portion of portfolio.</li></ul>
+<div class="example-box"><div class="ex-label">SWP as pension</div><p>₹2 Cr corpus in balanced advantage fund. SWP of ₹70,000/month (4.2% annual withdrawal). At 10–11% expected fund return: corpus grows even while withdrawing. This is the most tax-efficient, inflation-adjustable "pension" available to Indian investors without employer backing.</p></div>
+<br><span class="insight-chip">&#x1F4A1; SWP from mutual funds is India's best DIY pension solution</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"wealthpyramid", icon:"🔺", title:"The Wealth Pyramid",
+            desc:"Build your finances in the right order — foundation first.",
+            body:`<p>The Wealth Pyramid describes the hierarchy of financial decisions. Many people invest before protecting, or grow before saving — the pyramid ensures you build in the correct order for resilience.</p>
+<h4>The Pyramid Layers (Bottom to Top)</h4>
+<ul><li><strong>Layer 1 — Foundation:</strong> Emergency fund (6 months expenses in liquid funds), Term insurance, Health insurance. Non-negotiable first steps.</li><li><strong>Layer 2 — Debt Freedom:</strong> Pay off high-interest debt (credit cards, personal loans). 18–36% guaranteed return by eliminating interest.</li><li><strong>Layer 3 — Security:</strong> EPF/PPF/NPS contributions. Guaranteed, tax-advantaged retirement corpus.</li><li><strong>Layer 4 — Growth:</strong> Equity mutual funds, index funds, direct stocks via SIP. Long-term wealth creation.</li><li><strong>Layer 5 — Optimization:</strong> Real estate, gold, international diversification, alternative investments.</li><li><strong>Layer 6 — Legacy:</strong> Estate planning, will, trust structures for wealth transfer.</li></ul>
+<div class="example-box"><div class="ex-label">The most common mistake</div><p>Starting with Layer 5 (buying real estate) before completing Layer 1 (no term insurance). A medical emergency depletes the EMI fund, the loan defaults, and the "asset" becomes a liability. The pyramid order is not optional — it's determined by the mathematics of risk and return.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Never skip layers — build the pyramid bottom-up</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"allocation", icon:"🗺️", title:"Advanced Asset Allocation",
+            desc:"Beyond basic allocation — factor investing, alternatives, and risk parity.",
+            body:`<p>Advanced asset allocation goes beyond the simple equity-debt split to include factor tilts, alternative assets, international diversification, and dynamic rebalancing strategies used by institutional investors.</p>
+<h4>Factor Investing</h4>
+<ul><li><strong>Value:</strong> Companies trading below intrinsic value. Long-term premium over market.</li><li><strong>Quality:</strong> High ROE, low debt, stable earnings. Downside protection + steady returns.</li><li><strong>Momentum:</strong> Recent outperformers tend to continue. High turnover, cyclical.</li><li><strong>Low volatility:</strong> Less volatile stocks with competitive long-term returns. Defensive positioning.</li></ul>
+<h4>The All-Weather Portfolio (Ray Dalio)</h4>
+<ul><li>30% stocks (equity)</li><li>40% long-term bonds</li><li>15% intermediate bonds</li><li>7.5% gold</li><li>7.5% commodities</li></ul>
+<p>India adaptation: 40% equity (Nifty 50 + Midcap index), 30% debt funds, 20% gold ETF, 10% international fund (US/global ETF).</p>
+<div class="example-box"><div class="ex-label">Why this matters</div><p>The All-Weather Portfolio's India variant has historically given 10–11% CAGR with maximum drawdown of only 12–15% vs equity-only drawdown of 40–60% in bear markets. For those in accumulation phase, it's too conservative. For those near financial independence, it's the right balance.</p></div>
+<br><span class="insight-chip">&#x1F4A1; All-weather allocation reduces drawdowns without sacrificing much return</span><span class="insight-chip">&#x23F1; Read time: 6 min</span>`
+          }
+        ]
+      },
+      global: {
+        label: "Global Finance",
+        title: "Global Finance",
+        desc: "How global markets, currency, and geopolitics affect your money.",
+        badge: "WORLD VIEW",
+        sub: "How global markets, currency, and geopolitics affect your money.",
+        topics: [
+          {
+            id:"usindia", icon:"🌍", title:"US vs India Markets",
+            desc:"How the world's two growth stories compare.",
+            body:`<p>The US stock market (S&P 500) and India's Nifty 50 are the two most investable markets for long-term global investors. They have different return profiles, risks, and correlation with each other.</p>
+<h4>Historical Returns Comparison</h4>
+<ul><li><strong>S&P 500 (USD):</strong> ~10% CAGR over 30 years. In INR terms, add ~2–3% due to USD appreciation = ~12–13% INR returns.</li><li><strong>Nifty 50 (INR):</strong> ~12–14% CAGR over 30 years.</li><li>Both markets have delivered similar long-term INR returns — but through very different paths.</li></ul>
+<h4>Why Hold Both?</h4>
+<ul><li>Low correlation: they don't always fall and rise together</li><li>USD hedge: US funds provide currency diversification against rupee depreciation</li><li>Sector exposure: US market is 30% technology (Apple, NVIDIA, Google) — very different sector weights than India</li></ul>
+<div class="example-box"><div class="ex-label">Simple allocation</div><p>For most Indian investors: 80% India equity (Nifty 50 + Midcap), 20% US/global fund (Motilal Nasdaq 100 FOF or Mirae Asset S&P 500 FOF). This gives global diversification without complexity. LRS limit: $250,000/year for direct international investing.</p></div>
+<br><span class="insight-chip">&#x1F4A1; 10–20% international allocation adds significant portfolio resilience</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"dollar", icon:"💵", title:"The Dollar's Impact on Your Wealth",
+            desc:"Why the USD-INR rate matters for every Indian investor.",
+            body:`<p>The Indian Rupee has depreciated against the US Dollar consistently — averaging ~3–4% annually over the past 30 years. This has significant implications for imports, inflation, foreign investments, and international travel costs.</p>
+<h4>USD-INR Impact on Investments</h4>
+<ul><li><strong>International funds:</strong> Rupee depreciation automatically boosts returns of US-invested funds in INR terms. $10,000 invested when USD=₹50 is worth more even if S&P 500 stays flat when USD=₹85.</li><li><strong>Gold ETF:</strong> Gold is priced in USD globally. Gold ETF returns in India = global gold return + USD appreciation. This double effect has made Indian gold ETFs excellent inflation hedges.</li><li><strong>Imports (electronics, oil):</strong> Depreciation makes imports more expensive, fueling inflation.</li></ul>
+<div class="example-box"><div class="ex-label">The rupee depreciation math</div><p>In 2000, ₹1 = $0.022 (USD/INR = ~45). In 2024, ₹1 = $0.012 (USD/INR = ~84). The rupee lost ~45% of its dollar value in 24 years — roughly 2.4% annually. Every Indian holding only INR assets is slowly losing global purchasing power. International assets are a hedge against this structural depreciation.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Gold ETFs and US funds both hedge rupee depreciation</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"globaldiv", icon:"🌐", title:"Global Diversification for Indians",
+            desc:"How and why to invest beyond India's borders.",
+            body:`<p>India is ~3% of global GDP and ~3% of global market capitalization. If you invest only in India, you're missing 97% of the world's investment opportunity. Global diversification is not speculation — it's risk management.</p>
+<h4>Ways to Invest Globally from India</h4>
+<ul><li><strong>International mutual funds:</strong> Motilal Nasdaq 100 FOF, Mirae S&P 500 FOF, Franklin Feeder US Opportunities. No LRS/currency hassle.</li><li><strong>LRS route:</strong> $250,000/year limit. Invest in Vanguard ETFs (VTI, VXUS) via platforms like Vested, IndMoney, or direct US brokers. TCS (Tax Collected at Source) of 20% applies above ₹7L/year.</li><li><strong>Passive global ETFs:</strong> Nifty 50 + Global ETF in ratio is a simple, low-cost portfolio for most investors.</li></ul>
+<div class="example-box"><div class="ex-label">What global diversification protects against</div><p>India-specific risks: political uncertainty, regulatory changes (demonetization, LTCG tax changes), sector bans, governance issues. These risks are real and periodic. A 20% global allocation ensures your entire wealth isn't subject to any single country's policy decisions — including India's.</p></div>
+<br><span class="insight-chip">&#x1F4A1; India is 3% of global market — invest in the other 97% too</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          }
+        ]
+      },
+      ai: {
+        label: "AI + Money",
+        title: "AI + Money — Future Ready",
+        desc: "How artificial intelligence is transforming personal finance.",
+        badge: "FUTURE",
+        sub: "How artificial intelligence is transforming personal finance.",
+        topics: [
+          {
+            id:"aiinvesting", icon:"🤖", title:"AI in Investing",
+            desc:"How machine learning is changing how money is managed.",
+            body:`<p>Artificial intelligence is transforming every layer of investing — from stock selection and portfolio optimization to risk management and trade execution. Understanding how AI is used helps investors both benefit from it and avoid its risks.</p>
+<h4>AI Applications in Finance</h4>
+<ul><li><strong>Algorithmic trading:</strong> 60–70% of equity market volume in India is now algorithmic. AI systems execute thousands of trades per second based on real-time signals.</li><li><strong>Credit scoring:</strong> AI uses alternative data (spending patterns, mobile usage, GPS data) to assess creditworthiness beyond traditional CIBIL.</li><li><strong>Fraud detection:</strong> Banks use ML to flag unusual transaction patterns in real time — a significant improvement over rule-based systems.</li><li><strong>Research and screening:</strong> AI can analyze hundreds of financial reports simultaneously, identify patterns, and flag investment ideas faster than human analysts.</li></ul>
+<div class="example-box"><div class="ex-label">What AI can't do (yet)</div><p>AI models trained on historical data can fail spectacularly in genuinely novel situations (COVID-2020, Global Financial Crisis patterns). Black swan events break quantitative models that worked perfectly in normal conditions. Human judgment — understanding macroeconomics, geopolitics, and business quality — remains irreplaceable for long-term investing decisions.</p></div>
+<br><span class="insight-chip">&#x1F4A1; AI augments investors — it doesn't replace judgment</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          },
+          {
+            id:"roboadvisor", icon:"🦾", title:"Robo-Advisors",
+            desc:"Automated investing platforms that manage portfolios algorithmically.",
+            body:`<p>Robo-advisors are automated platforms that build and manage investment portfolios based on your risk profile, goals, and timeline — using algorithms instead of human advisors. They charge much lower fees than traditional advisors.</p>
+<h4>Robo-Advisors in India</h4>
+<ul><li><strong>Smallcase:</strong> Thematic basket portfolios of stocks/ETFs. Low cost, transparent.</li><li><strong>Groww, Zerodha Coin:</strong> Low-cost mutual fund platforms with basic goal-based tools.</li><li><strong>INDmoney, ET Money:</strong> Portfolio tracking + automated SIP management + tax optimization features.</li><li><strong>Scripbox, Fisdom:</strong> Goal-based mutual fund advisory platforms with algorithmic fund selection.</li></ul>
+<h4>Limitations</h4>
+<ul><li>Cannot handle complex financial situations (business income, multiple properties, cross-border assets)</li><li>Limited personalization in emotional or life-event-driven decisions</li><li>Algorithm quality varies significantly across platforms</li></ul>
+<div class="example-box"><div class="ex-label">Who should use robo-advisors</div><p>Best for: investors with simple financial situations (salary income, one property, clear goal) who want low-cost, disciplined, automated investing. Not ideal for: complex tax situations, business owners, high-net-worth individuals with multi-asset portfolios needing holistic planning.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Robo-advisors work best for simple, consistent investing goals</span><span class="insight-chip">&#x23F1; Read time: 4 min</span>`
+          },
+          {
+            id:"futurefinance", icon:"🔭", title:"Future of Finance",
+            desc:"Blockchain, CBDCs, and what the next decade of money looks like.",
+            body:`<p>Finance is undergoing its most significant transformation since the invention of banking. Multiple converging technologies — AI, blockchain, digital currencies, open banking — are restructuring how money is stored, transferred, invested, and regulated.</p>
+<h4>Key Trends Shaping the Next Decade</h4>
+<ul><li><strong>CBDC (Digital Rupee):</strong> RBI's e-Rupee is live in pilot phase. Programmable money with spending conditions — potential to transform government transfers, cross-border payments, and financial inclusion.</li><li><strong>Embedded finance:</strong> Financial services built into non-financial platforms. Pay EMI within a shopping app, buy insurance within a travel booking — finance becomes invisible infrastructure.</li><li><strong>DeFi (Decentralized Finance):</strong> Financial services (lending, borrowing, trading) without intermediaries on blockchain. Still high-risk, regulatory uncertainty, but the technology is transformative.</li><li><strong>Open banking + Account Aggregator:</strong> India's AA framework (live since 2021) lets users share financial data with advisors/lenders with one-click consent. AI can then provide genuinely personalized financial advice.</li></ul>
+<div class="example-box"><div class="ex-label">What this means for you</div><p>The investor of 2030 will have AI financial advisors that know their complete financial picture in real time — every account, every investment, every expense, every goal. They'll receive proactive alerts: "Your SIP is underperforming its benchmark by 2% over 3 years — here's an alternative." The gap between informed and uninformed investors will widen. Learning today is your edge for tomorrow.</p></div>
+<br><span class="insight-chip">&#x1F4A1; Open banking + AI = your personal CFO in your pocket</span><span class="insight-chip">&#x23F1; Read time: 5 min</span>`
+          }
+        ]
+      }
+    };
+
+    const CATEGORY_KEYS = Object.keys(CATEGORIES);
+    let activeCategory = 'basics';
+    let searchMode = false;
+
+    function switchCategory(key){
+      activeCategory = key;
+      searchMode = false;
+      $('searchInput').value = '';
+      $('searchCount').textContent = '';
+      renderTabs();
+      renderContent();
+    }
+
+    function renderTabs(){
+      $('tabs').innerHTML = CATEGORY_KEYS.map(key=>{
+        const cfg = CATEGORIES[key];
+        return `<button class="tab ${key===activeCategory&&!searchMode?'active':''}" onclick="switchCategory('${key}')">${cfg.label}</button>`;
+      }).join('');
+    }
+
+    function renderContent(){
+      const cfg = CATEGORIES[activeCategory];
+      $('metricCategory').textContent  = cfg.title;
+      $('metricSub').textContent       = cfg.sub;
+      $('metricTopics').textContent    = cfg.topics.length;
+      $('panelTitle').textContent      = cfg.title;
+      $('panelDesc').textContent       = cfg.desc;
+      $('panelBadge').textContent      = cfg.badge;
+      renderTopics(cfg.topics);
+      renderProgress();
+    }
+
+    function renderTopics(topics){
+      $('noResults').classList.add('hidden');
+      if(!topics.length){
+        $('topicsGrid').innerHTML = '';
+        $('noResults').classList.remove('hidden');
+        return;
+      }
+      $('topicsGrid').innerHTML = topics.map(t=>`
+        <div class="topic-card" id="card-${t.id}">
+          <div class="topic-header" onclick="toggleTopic('${t.id}')">
+            <div class="topic-left">
+              <div class="topic-icon">${t.icon}</div>
+              <div class="topic-meta">
+                <div class="topic-title">${t.title}</div>
+                <div class="topic-desc">${t.desc}</div>
+              </div>
+            </div>
+            <div class="topic-toggle">+</div>
+          </div>
+          <div class="topic-body">
+            <div class="topic-content">${t.body}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleTopic(id){
+      const card = document.getElementById('card-'+id);
+      if(!card) return;
+      const isOpen = card.classList.contains('open');
+      document.querySelectorAll('.topic-card.open').forEach(c => c.classList.remove('open'));
+      if(!isOpen) card.classList.add('open');
+    }
+
+    function handleSearch(){
+      const query = $('searchInput').value.trim().toLowerCase();
+      if(!query){
+        searchMode = false;
+        $('searchCount').textContent = '';
+        renderTabs();
+        renderContent();
+        return;
+      }
+      searchMode = true;
+      renderTabs();
+      const results = [];
+      CATEGORY_KEYS.forEach(key=>{
+        CATEGORIES[key].topics.forEach(t=>{
+          const inTitle = t.title.toLowerCase().includes(query);
+          const inDesc  = t.desc.toLowerCase().includes(query);
+          const inBody  = t.body.toLowerCase().includes(query);
+          if(inTitle || inDesc || inBody) results.push(t);
+        });
+      });
+      $('searchCount').textContent = results.length ? `${results.length} result${results.length>1?'s':''}` : 'No results';
+      $('panelTitle').textContent = `Search: "${$('searchInput').value.trim()}"`;
+      $('panelDesc').textContent  = results.length ? `Found ${results.length} topic${results.length>1?'s':''} matching your search.` : 'No topics found. Try a different keyword.';
+      $('panelBadge').textContent = 'SEARCH';
+      $('metricCategory').textContent = 'Search Results';
+      $('metricTopics').textContent   = results.length;
+      renderTopics(results);
+    }
+
+    function renderProgress(){
+      $('progressList').innerHTML = CATEGORY_KEYS.map(key=>{
+        const cfg = CATEGORIES[key];
+        const count = cfg.topics.length;
+        const pct   = Math.round((count / 10) * 100);
+        const isActive = key === activeCategory;
+        return `
+          <div class="progress-row">
+            <div class="progress-label" style="${isActive?'color:var(--cyan)':''}">${cfg.label}</div>
+            <div class="progress-count">${count} topics</div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" style="width:${pct}%;${isActive?'':'opacity:.5'}"></div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    renderTabs();
+    renderContent();
+  </script>
+  <script>
+    function $$(id){ return document.getElementById(id); }
+    function $(id){ return document.getElementById(id); }
+    fetch("components/navbar.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+        const currentPath = window.location.pathname.split("/").pop() || "index.html";
+        const links = document.querySelectorAll(".nav a, .mobile-drawer a");
+        links.forEach(link => {
+          const href = link.getAttribute("href");
+          if(href === currentPath) link.classList.add("active");
+        });
+      });
+    function toggleMenu(){
+      document.getElementById("mobileDrawer")?.classList.toggle("open");
+    }
+  </script>
 </body>
 </html>
