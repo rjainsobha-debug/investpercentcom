@@ -1258,19 +1258,66 @@ function update(){
     renderMilestones(cfg.timelineTitle,cfg.timelineMeta,qMs.map(m=>{const v=cD[m-1]||0,mn=nD[m-1]||0;return{label:'Month '+m,value:fmtShort(v),note:`Net: ${fmtShort(mn)}/mo | ${v>=0?'Positive':'NEGATIVE CASH'}`};}));
   }
 
-  /* ══ 7. UNIT ECONOMICS ════════════════════════════════════ */
-  else if(active==='unitEconomics'){
-    const churnRate=Math.max(0.1,safe(s.churn))/100;
-    const avgLife=safeDiv(1,churnRate,200);
-    const realCac=safe(s.cac*(1+safe(s.commission)/100));
-    const contribPerUser=safe(s.revPerUser*safe(s.grossMgn)/100-safe(s.supportCost));
-    const grossProfitUser=safe(s.revPerUser*safe(s.grossMgn)/100);
-    const expansionMo=safe(safe(s.ltv)*(safe(s.expansion)/100)/12);
-    const adjLtv=Math.max(0,safe(contribPerUser*avgLife+expansionMo*avgLife));
-    const ltvCacRatio=safeDiv(adjLtv,realCac);
-    const paybackMonths=contribPerUser>0?Math.ceil(safeDiv(realCac,contribPerUser)):9999;
-    const annualChurnPct=Math.min(100,(1-Math.pow(1-churnRate,12))*100);
-    lastMetrics={...lastMetrics,ltvCacRatio,paybackMonths,adjLtv,contribPerUser,annualChurnPct,avgLife,realCac,grossProfitUser,s};
+  /* ══ 7. UNIT ECONOMICS (FINAL SAFE VERSION) ═══════════════════ */
+else if(active==='unitEconomics'){
+
+  // SAFE CHURN (minimum 0.5%)
+  const churnPercent = Math.max(0.5, safe(s.churn, 1));
+  const churnRate = churnPercent / 100;
+
+  // SAFE CUSTOMER LIFETIME (cap at 120 months)
+  const avgLife = Math.min(1 / churnRate, 120);
+
+  // CAC including commission
+  const realCac = safe(s.cac * (1 + safe(s.commission)/100));
+
+  // Contribution per user (after costs)
+  const contribPerUser = safe(
+    (s.revPerUser * safe(s.grossMgn)/100) - safe(s.supportCost)
+  );
+
+  // Gross profit per user
+  const grossProfitUser = safe(
+    s.revPerUser * safe(s.grossMgn)/100
+  );
+
+  // Expansion revenue per month (based on revenue, NOT s.ltv)
+  const expansionMo = safe(
+    s.revPerUser * (safe(s.expansion)/100)
+  );
+
+  // Adjusted LTV (core fix)
+  const adjLtv = Math.max(0,
+    (contribPerUser + expansionMo) * avgLife
+  );
+
+  // LTV / CAC ratio
+  const ltvCacRatio = safeDiv(adjLtv, realCac);
+
+  // Payback period
+  const paybackMonths = contribPerUser > 0
+    ? Math.ceil(safeDiv(realCac, contribPerUser))
+    : 9999;
+
+  // Annual churn
+  const annualChurnPct = Math.min(
+    100,
+    (1 - Math.pow(1 - churnRate, 12)) * 100
+  );
+
+  lastMetrics = {
+    ...lastMetrics,
+    ltvCacRatio,
+    paybackMonths,
+    adjLtv,
+    contribPerUser,
+    annualChurnPct,
+    avgLife,
+    realCac,
+    grossProfitUser,
+    s
+  };
+}
 
     const mth=36,lbs=Array.from({length:mth},(_,i)=>'M'+(i+1));
     const ccD=lbs.map((_,i)=>Math.round(safe(contribPerUser)*(i+1)*Math.pow(1-churnRate,i+1)-realCac+expansionMo*(i+1)*Math.pow(1-churnRate,i+1)));
