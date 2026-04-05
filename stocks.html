@@ -459,9 +459,9 @@
           <table class="screener-table">
             <thead>
               <tr>
-                <th>Stock</th><th>Sector</th><th onclick="setSortBy('pe')" style="cursor:pointer">P/E <span class="sort-arrow">↕</span></th>
-                <th onclick="setSortBy('cap')" style="cursor:pointer">Mkt Cap <span class="sort-arrow">↕</span></th>
-                <th onclick="setSortBy('div')" style="cursor:pointer">Div Yield <span class="sort-arrow">↕</span></th>
+                <th>Stock</th><th>Sector</th><th id="th-pe" onclick="setSortBy('pe')" style="cursor:pointer">P/E <span class="sort-arrow" id="arrow-pe">↕</span></th>
+                  <th id="th-cap" onclick="setSortBy('cap')" style="cursor:pointer">Mkt Cap <span class="sort-arrow" id="arrow-cap">↕</span></th>
+                  <th id="th-div" onclick="setSortBy('div')" style="cursor:pointer">Div Yield <span class="sort-arrow" id="arrow-div">↕</span></th>
                 <th>Signal</th>
               </tr>
             </thead>
@@ -534,11 +534,10 @@ function inrShort(v){
 }
 // Market cap formatter — input is already in ₹ Crore
 function capFmt(crVal){
-  crVal = Number(crVal);
-  if(crVal >= 100000) return '₹' + (crVal/100).toFixed(2).replace(/\.00$/,'') + ' Trillion';
-  if(crVal >= 1000)   return '₹' + (crVal/1000).toFixed(2).replace(/\.00$/,'') + 'k Cr';
-  return '₹' + crVal.toFixed(0) + ' Cr';
-}
+    crVal = Number(crVal);
+    if(crVal >= 100000) return '₹' + (crVal/100).toFixed(2).replace(/.00$/,'') + ' Trillion';
+    return '₹' + Math.round(crVal).toLocaleString('en-IN') + ' Cr';
+  }
 function pct(v,d=1){ return Number(v).toFixed(d) + '%'; }
 function num(v){ return Math.round(Number(v)).toLocaleString('en-IN'); }
 
@@ -1595,16 +1594,32 @@ function calcRights(){
    CALCULATOR: SCREENER
 ════════════════════════════════════════════════════════════ */
 function applyScreener(){
-  // Sector and sort dropdowns live inside the screener card —
-  // just re-run update() so calcScreener() reads them fresh.
-  update();
-}
+    update();
+  }
+  function updateSortArrows(sortKey){
+    ['pe','cap','div'].forEach(k=>{
+      const th=$('th-'+k), arr=$('arrow-'+k);
+      if(th) th.style.color='';
+      if(arr){ arr.textContent='↕'; arr.style.opacity='.5'; arr.style.color=''; }
+    });
+    const colMap={pe:'pe',pe_desc:'pe',div:'div',cap:'cap'};
+    const col=colMap[sortKey];
+    if(!col) return;
+    const th=$('th-'+col), arr=$('arrow-'+col);
+    if(th) th.style.color='var(--cyan)';
+    if(arr){
+      arr.textContent=sortKey==='pe_desc'?'↓':'↑';
+      arr.style.opacity='1';
+      arr.style.color='var(--cyan)';
+    }
+  }
 function setSortBy(col){
-  // col can be: pe | pe_desc | div | cap | name
-  const el=$('sortBy'); if(!el) return;
-  el.value = col;
-  applyScreener();
-}
+    const el=$('sortBy'); if(!el) return;
+    if(col==='pe' && el.value==='pe') col='pe_desc';
+    else if(col==='pe' && el.value==='pe_desc') col='pe';
+    el.value = col;
+    applyScreener();
+  }
 
 function calcScreener(){
   const s=state.screener;
@@ -1629,6 +1644,7 @@ function calcScreener(){
   else if(sortKey==='div') filtered.sort((a,b)=>b.div-a.div);
   else if(sortKey==='cap') filtered.sort((a,b)=>b.capCr-a.capCr);
   else filtered.sort((a,b)=>a.name.localeCompare(b.name));
+  updateSortArrows(sortKey);
 
   const count=filtered.length;
   const buyCnt=filtered.filter(st=>st.tag==='buy').length;
@@ -2013,6 +2029,35 @@ function updateAdvisor(){
     const ctxPrefix=prefixMap[active]||'Based on your inputs, ';
     const alreadyCtx=/^(Based on|At this|With (your|this)|For this)/.test(r.summary);
     $('advisorSummary').textContent=alreadyCtx?r.summary:ctxPrefix+r.summary.charAt(0).toLowerCase()+r.summary.slice(1);
+
+    // Append FD/Nifty context line to make output more human
+    (function(){
+      const s2=state[active];
+      let bench='';
+      if(active==='stockreturn'){
+        const invested=s2.buyPrice*s2.qty, finalVal=s2.sellPrice*s2.qty, totalDiv=s2.divPS*s2.qty;
+        const cagr=((Math.pow((finalVal+totalDiv)/invested,1/Math.max(s2.holdYears,0.25))-1)*100);
+        if(cagr>12) bench='Compared to Nifty 50 average (~12% CAGR), this position is outperforming. Equity risk is being rewarded here.';
+        else if(cagr>7) bench='Compared to FD returns (~6-7%), this still offers a positive premium — though equity risk should command at least 4-5% alpha.';
+        else bench='This is below typical FD returns (~6-7%). The equity risk is not being compensated at this CAGR.';
+      } else if(active==='pevaluation'){
+        const curPE=s2.curPrice/s2.eps, fair=s2.eps*s2.industryPE;
+        const gap=((fair-s2.curPrice)/fair)*100;
+        if(gap>15) bench='Compared to Nifty average P/E (~22x), this looks attractively priced with meaningful upside to fair value.';
+        else if(gap<-15) bench='Compared to Nifty index returns, paying a premium above fair value reduces your margin of safety significantly.';
+        else bench='At current P/E, this is fairly priced relative to industry peers. Compare with Nifty index P/E (~22x) for macro context.';
+      } else if(active==='dividend'){
+        if(s2.divYield>7) bench='Compared to FD rates (~6-7%), this dividend yield offers a higher income floor — though capital risk differs significantly.';
+        else if(s2.divYield>4) bench='Compared to FD returns, the yield is lower but equity upside adds to total return potential.';
+        else bench='Compared to FD rates (~6-7%), the dividend yield alone does not justify equity risk — focus on capital appreciation thesis.';
+      } else if(active==='portfolio'){
+        bench='Compared to a Nifty index fund (low cost, ~12% CAGR historically), active stock selection requires meaningful alpha to justify the added complexity.';
+      }
+      if(bench){
+        const el=$('advisorSummary');
+        el.textContent = el.textContent + ' ' + bench;
+      }
+    })();
 
   // Outputs
   $('advGood').textContent=r.good;
