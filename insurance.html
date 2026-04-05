@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="css/navbar.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insurance Dashboard — investpercent</title>
+  <meta name="description" content="Premium insurance and life planning dashboard with term cover, health insurance, vehicle insurance, disability protection, child education, critical illness, HLV and milestone funding calculators." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --bg:#060915;
+      --bg2:#0b1224;
+      --panel:#0f1830;
+      --panel2:#121e3c;
+      --soft:#18284d;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.13);
+      --text:#f7fbff;
+      --muted:#9da9c6;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --red:#ff607d;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
+      --hero:
+        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
+        linear-gradient(180deg,#070c18 0%,#091224 100%);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
+      z-index:0;
+    }
+    a{text-decoration:none;color:inherit}
+    button,input,select{font:inherit}
+    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:18px 18px 38px}
+    .hero{
+      background:var(--hero);border:1px solid var(--line);border-radius:32px;padding:28px;
+      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:18px
+    }
+    .hero::after{
+      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);pointer-events:none
+    }
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+    .hero-copy h1{
+      margin:0;font-family:Poppins,sans-serif;font-size:clamp(34px,5vw,58px);
+      line-height:1.02;letter-spacing:-.045em;max-width:840px
+    }
+    .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy p{margin:14px 0 0;color:var(--muted);font-size:18px;max-width:760px;line-height:1.6}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:none;cursor:pointer;border-radius:14px;padding:13px 18px;font-weight:800;transition:.2s ease
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .btn.sm{padding:9px 14px;font-size:13px;border-radius:11px}
+    .tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .tab{
+      background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
+      padding:11px 15px;font-weight:800;cursor:pointer;transition:.2s ease;font-size:13px
+    }
+    .tab:hover{color:var(--text);border-color:var(--line2)}
+    .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
+    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:14px}
+    .metric-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:18px;min-height:110px;position:relative;overflow:hidden
+    }
+    .metric-card::before{
+      content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
+      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
+    }
+    .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+    .metric-value{font-size:clamp(26px,3vw,42px);font-weight:800;letter-spacing:-.04em;line-height:1}
+    .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)} .metric-value.red{color:var(--red)}
+    .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
+    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:18px;margin-top:18px}
+    .panel{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
+    .controls{padding:22px;position:relative;overflow:hidden}
+    .controls::after{
+      content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
+    }
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+    .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+    .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
+    .control-group{
+      margin-bottom:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
+    }
+    .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .control-name{font-size:13px;font-weight:700;color:var(--text)}
+    .control-value{min-width:100px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em;font-size:13px}
+    input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer;margin-top:2px}
+    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-webkit-slider-thumb{
+      appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
+      border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-moz-range-thumb{
+      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    .ctrl-select{
+      width:100%;margin-top:6px;padding:9px 12px;border-radius:12px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+      color:var(--text);font-size:13px;font-weight:700;appearance:none;cursor:pointer;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239da9c6' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 10px center;padding-right:32px
+    }
+    .ctrl-select:focus{outline:none;border-color:var(--cyan)}
+    .ctrl-select option{background:#0f1830;color:var(--text)}
+    .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+    .chip{
+      padding:7px 11px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;
+      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--muted);
+      transition:.18s ease
+    }
+    .chip:hover{color:var(--text);border-color:var(--line2)}
+    .chip.on{background:rgba(0,212,255,.12);border-color:var(--cyan);color:var(--cyan)}
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+    .toggle-label{font-size:13px;color:var(--muted);font-weight:600}
+    .toggle{position:relative;width:40px;height:22px;flex-shrink:0}
+    .toggle input{opacity:0;width:0;height:0}
+    .toggle-slider{
+      position:absolute;inset:0;background:rgba(255,255,255,.1);border-radius:999px;cursor:pointer;transition:.2s
+    }
+    .toggle-slider:before{
+      content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;
+      background:#fff;transition:.2s
+    }
+    .toggle input:checked + .toggle-slider{background:var(--cyan)}
+    .toggle input:checked + .toggle-slider:before{transform:translateX(18px)}
+    .ctrl-input{
+      width:100%;margin-top:6px;padding:9px 12px;border-radius:12px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+      color:var(--text);font-size:13px;font-weight:700;
+    }
+    .ctrl-input:focus{outline:none;border-color:var(--cyan)}
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+    .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+    .mini .v{font-size:17px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card{
+      margin-top:18px;padding:18px;border-radius:20px;
+      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
+      border:1px solid rgba(255,255,255,.1)
+    }
+    .advisor-card h4{margin:0 0 8px;font-size:17px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:13px;line-height:1.6}
+    .advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .advisor-actions .btn{flex:1;min-width:140px}
+    .panel-actions{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+    .scenario-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+    .scenario-tag{
+      padding:6px 10px;border-radius:8px;font-size:11px;font-weight:800;
+      background:rgba(255,215,106,.12);border:1px solid rgba(255,215,106,.22);color:var(--gold);
+      display:none
+    }
+    .scenario-tag.show{display:inline-block}
+    .dashboard{padding:18px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:780px}
+    .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
+    .wealth-card,.insight-card,.chart-card,.timeline-card{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
+    }
+    .wealth-card{
+      padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:188px;
+      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
+    }
+    .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+    .wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
+    .wealth-number{
+      font-size:clamp(36px,4vw,60px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff
+    }
+    .wealth-number .grad{
+      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .wealth-sub{color:var(--muted);font-size:14px;line-height:1.6;max-width:660px}
+    .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+    .wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .wealth-stat .s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+    .wealth-stat .s-value{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .insight-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:188px}
+    .insight-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .insight-box strong{display:block;font-size:14px;margin-bottom:6px;letter-spacing:-.02em}
+    .insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
+    .chart-card{padding:18px;min-height:390px;display:flex;flex-direction:column}
+    .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+    .chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
+    .legend{display:flex;gap:10px;flex-wrap:wrap}
+    .legend-item{
+      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:8px 12px;border-radius:999px
+    }
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .chart-wrap{position:relative;flex:1;min-height:280px;margin-top:8px}
+    .timeline-card{padding:18px}
+    .timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+    .timeline-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .milestone{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+    .m-amount{font-size:22px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
+    .m-note{color:#8390b1;font-size:13px;line-height:1.45}
+    .score-bar-wrap{margin-top:10px}
+    .score-bar-label{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;font-weight:700;color:var(--muted)}
+    .score-bar{height:8px;border-radius:999px;background:rgba(255,255,255,.08)}
+    .score-bar-fill{height:100%;border-radius:999px;background:var(--grad);transition:width .4s ease}
+    .hidden{display:none !important}
+    @media(max-width:1180px){
+      .top-metrics{grid-template-columns:1fr 1fr}
+      .layout{grid-template-columns:1fr}
+      .dashboard{min-height:auto}
+      .dash-top{grid-template-columns:1fr}
+      .timeline-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:760px){
+      .page{padding:12px 12px 28px}
+      .hero{padding:18px}
+      .controls,.dashboard{padding:14px}
+      .wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
+      .hero-copy p{font-size:15px}
+      .metric-value{font-size:28px}
+      .wealth-number{font-size:38px}
+      .tab{padding:9px 12px;font-size:12px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div id="navbar"></div>
+
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>Insurance &amp; Life <span class="grad">Protection Dashboard</span></h1>
+          <p>Model your protection needs, future family goals, medical cover, disability risk, and life-stage funding through one premium planning dashboard.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="scrollToControls()">Start Planning</button>
+          <button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
+        </div>
+      </div>
+
+      <div class="tabbar" id="tabs"></div>
+
+      <div class="top-metrics">
+        <div class="metric-card">
+          <div class="metric-label">Current mode</div>
+          <div class="metric-value cyan" id="modeHeadline">Term Cover Engine</div>
+          <div class="metric-sub" id="modeSub">Build a realistic family protection estimate using HLV or DIME method.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label" id="topLabel2">Recommended Cover</div>
+          <div class="metric-value green" id="topVal2">₹1.2 Cr</div>
+          <div class="metric-sub">At current settings</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label" id="topLabel3">Annual Premium Est.</div>
+          <div class="metric-value cyan" id="topVal3">₹18,000</div>
+          <div class="metric-sub">Indicative range</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label" id="topLabel4">Policy Term</div>
+          <div class="metric-value gold" id="topVal4">30 Yrs</div>
+          <div class="metric-sub">Till retirement age</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="panel controls" id="controlsAnchor">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Control Panel</div>
+            <div class="panel-desc" id="controlDesc">Adjust inputs below. Your protection dashboard updates instantly.</div>
+          </div>
+          <div class="badge" id="panelBadge">TERM COVER</div>
+        </div>
+
+        <div class="panel-actions">
+          <button class="btn secondary sm" onclick="resetMode()">Reset Mode</button>
+          <button class="btn secondary sm" onclick="copySummary()">Copy Summary</button>
+        </div>
+
+        <div class="scenario-tags" id="scenarioTags">
+          <span class="scenario-tag" id="tagYoungFamily">Young Family</span>
+          <span class="scenario-tag" id="tagHighLiability">High Liability</span>
+          <span class="scenario-tag" id="tagMedRisk">Medical Inflation Risk</span>
+          <span class="scenario-tag" id="tagUnderfunded">Goal Underfunded</span>
+          <span class="scenario-tag" id="tagStrong">Strong Protection</span>
+        </div>
+
+        <div id="dynamicControls"></div>
+
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="k">Protection status</div>
+            <div class="v" id="miniMood">Adequate</div>
+          </div>
+          <div class="mini">
+            <div class="k">Key insight</div>
+            <div class="v" id="miniInsight">Cover Gap: Zero</div>
+          </div>
+        </div>
+
+        <div class="advisor-card">
+          <h4 id="advisorTitle">Ready to lock in real protection?</h4>
+          <p id="advisorDesc">Use this estimate as a starting point, then get a personalised policy recommendation from a qualified advisor.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="openAdvisor()" id="advisorBtn">Review with Advisor</button>
+            <button class="btn secondary" onclick="copySummary()">Copy Summary</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title" id="wealthTitle">Recommended Life Cover</div>
+                <div class="pill" id="wealthPill">Term Cover</div>
+              </div>
+              <div class="wealth-number"><span class="grad" id="wealthNumber">₹1,20,00,000</span></div>
+              <div class="wealth-sub" id="wealthNarrative">Based on your income, liabilities and dependents, this is the estimated protection your family needs.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label" id="stat1Label">HLV Cover</div>
+                <div class="s-value" id="stat1Value">₹1.2 Cr</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat2Label">Cover Gap</div>
+                <div class="s-value" id="stat2Value">₹1.2 Cr</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat3Label">Protection Score</div>
+                <div class="s-value" id="stat3Value">72/100</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-card">
+            <div class="insight-title">Protection insights</div>
+            <div class="insight-box"><strong id="insight1Title"></strong><span id="insight1Text"></span></div>
+            <div class="insight-box"><strong id="insight2Title"></strong><span id="insight2Text"></span></div>
+            <div class="insight-box"><strong id="insight3Title"></strong><span id="insight3Text"></span></div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title" id="chartTitle">Protection need breakdown</div>
+              <div class="chart-meta" id="chartMeta">Estimated breakdown of your total family protection requirement.</div>
+            </div>
+            <div class="legend" id="chartLegend"></div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="mainChart"></canvas>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title" id="timelineTitle">Protection Milestones</div>
+              <div class="chart-meta" id="timelineMeta">Key stages of your protection journey.</div>
+            </div>
+          </div>
+          <div class="timeline-grid" id="timelineGrid"></div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+<script>
+  /* ===== ADVISOR URL ===== */
+  const ADVISOR_URL = 'https://justinvesting.in';
+
+  /* ===== FORMATTERS ===== */
+  const $ = id => document.getElementById(id);
+  function fmtCurrency(v){ return '₹' + Math.round(v).toLocaleString('en-IN'); }
+  function fmtShort(v){
+    v = Number(v) || 0;
+    const a = Math.abs(v);
+    if(a >= 10000000) return '₹' + (v/10000000).toFixed(2).replace(/\.?0+$/,'') + ' Cr';
+    if(a >= 100000)   return '₹' + (v/100000).toFixed(2).replace(/\.?0+$/,'') + ' L';
+    if(a >= 1000)     return '₹' + (v/1000).toFixed(1).replace(/\.0$/,'') + 'K';
+    return fmtCurrency(v);
+  }
+  function fmtPct(v){ return Number(v).toFixed(1).replace(/\.0$/,'') + '%'; }
+  function fmtYears(v){ return Math.round(v) + ' Yrs'; }
+  function safe(v){ return isFinite(v) ? v : 0; }
+  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+
+  /* ===== STATE ===== */
+  let active = 'term';
+  let mainChart = null;
+
+  const defaults = {
+    term:     { age:32, retireAge:65, income:1200000, expenses:600000, loans:1500000, savings:500000, existingCover:0, eduGoal:1000000, marriageGoal:500000, otherGoals:300000, inflation:6, returnRate:8, incomeGrowth:5, smoker:false, method:'max', planType:'level', adRider:false, ciRider:false, wpRider:false },
+    health:   { age:35, adults:2, children:1, cityTier:'metro', coverType:'floater', sumInsured:1000000, ped:false, roomType:'standard', policyType:'comprehensive', lifestyle:'medium', maternity:false, opd:false, restoration:true, ciBundle:false, ncbShield:false },
+    car:      { carValue:800000, vehicleAge:3, fuelType:'petrol', zone:'metro', claimHistory:0, policyType:'comprehensive', ncbPct:20, antiTheft:false, zeroDep:true, engineProtect:false, rsa:true, returnInvoice:false, consumables:false, ncbProtect:false },
+    disability: { age:35, occClass:'medium', monthlyIncome:100000, monthlyExpenses:60000, emerFund:300000, existingCover:0, replaceRatio:70, benefitPeriod:5, waitDays:90, permRisk:'medium' },
+    bike:     { bikeValue:120000, bikeAge:2, ccBand:'150-350', zone:'metro', claimHistory:0, policyType:'comprehensive', ncbPct:20, antiTheft:false, zeroDep:false, rsa:false, engineProtect:false, consumables:false },
+    childedu: { childAge:5, goalAge:18, currentCost:200000, eduInflation:10, portfolioReturn:12, existingSavings:200000, monthlySIP:5000, oneTime:0, courseType:'indiaug', courseDuration:4 },
+    hlv:      { income:1200000, personalExpPct:30, workingYears:30, incomeGrowth:5, discountRate:8, inflation:6, taxDrag:10, existingAssets:1000000, existingInsurance:0 },
+    marriage: { weddingBudget:2000000, yearsLeft:8, weddingInflation:8, existingSavings:200000, monthlySIP:8000, oneTime:0, weddingScale:'standard', cityType:'metro' },
+    ci:       { age:35, income:1200000, existingHealthCover:500000, existingCiCover:0, dependents:2, liability:1500000, recoveryMonths:12, lifestyle:'medium', familyHistory:false, cityTier:'metro', desiredCover:2000000, premStyle:'comprehensive' },
+    incshield:{ monthlyIncome:100000, replaceRatio:70, waitDays:90, benefitPeriod:5, occClass:'medium', age:35, passiveIncome:0, emerFundMonths:3, existingCover:0, inflation:6 }
+  };
+
+  let state = JSON.parse(JSON.stringify(defaults));
+
+  /* ===== TAB CONFIG ===== */
+  const TABS = [
+    { key:'term',      label:'Term Cover' },
+    { key:'health',    label:'Health' },
+    { key:'car',       label:'Car' },
+    { key:'disability',label:'Disability' },
+    { key:'bike',      label:'Bike' },
+    { key:'childedu',  label:'Child Edu' },
+    { key:'hlv',       label:'HLV' },
+    { key:'marriage',  label:'Marriage' },
+    { key:'ci',        label:'Critical Illness' },
+    { key:'incshield', label:'Income Shield' }
+  ];
+
+  /* ===== RENDER TABS ===== */
+  function renderTabs(){
+    $('tabs').innerHTML = TABS.map(t =>
+      `<button class="tab ${t.key===active?'active':''}" data-key="${t.key}">${t.label}</button>`
+    ).join('');
+    document.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', ()=>{ active = btn.dataset.key; renderTabs(); renderControls(); compute(); });
+    });
+  }
+
+  /* ===== CHIP HELPER ===== */
+  function makeChips(groupKey, field, options, currentVal){
+    const id = `chips-${groupKey}-${field}`;
+    return `<div class="chips" id="${id}">${options.map(o =>
+      `<span class="chip ${currentVal===o.v?'on':''}" data-field="${field}" data-val="${o.v}" data-group="${groupKey}">${o.l}</span>`
+    ).join('')}</div>`;
+  }
+  function makeToggle(groupKey, field, label, currentVal){
+    const id = `tog-${groupKey}-${field}`;
+    return `<div class="toggle-row"><span class="toggle-label">${label}</span>
+      <label class="toggle"><input type="checkbox" id="${id}" data-field="${field}" data-group="${groupKey}" ${currentVal?'checked':''}><span class="toggle-slider"></span></label></div>`;
+  }
+  function makeSelect(groupKey, field, options, currentVal){
+    const id = `sel-${groupKey}-${field}`;
+    return `<select class="ctrl-select" id="${id}" data-field="${field}" data-group="${groupKey}">
+      ${options.map(o=>`<option value="${o.v}" ${currentVal===o.v?'selected':''}>${o.l}</option>`).join('')}
+    </select>`;
+  }
+  function makeSlider(groupKey, field, label, min, max, step, val, fmt){
+    const id = `sl-${groupKey}-${field}`;
+    const display = fmtControlVal(val, fmt);
+    return `<div class="control-group">
+      <div class="control-top"><div class="control-name">${label}</div><div class="control-value" id="view-${id}">${display}</div></div>
+      <input type="range" id="${id}" data-field="${field}" data-group="${groupKey}" data-fmt="${fmt}" min="${min}" max="${max}" step="${step}" value="${val}">
+    </div>`;
+  }
+  function fmtControlVal(v, fmt){
+    if(fmt==='currency') return fmtShort(v);
+    if(fmt==='pct') return fmtPct(v);
+    if(fmt==='years') return fmtYears(v);
+    if(fmt==='months') return Math.round(v)+' Mo';
+    return v;
+  }
+  function cgroupStart(label){ return `<div class="control-group"><div class="control-top"><div class="control-name">${label}</div></div>`; }
+  function cgroupEnd(){ return `</div>`; }
+
+  /* ===== BIND DYNAMIC CONTROLS ===== */
+  function bindControls(){
+    document.querySelectorAll(`input[type=range][data-group="${active}"]`).forEach(el=>{
+      el.addEventListener('input', e=>{
+        const f = e.target.dataset.field;
+        state[active][f] = Number(e.target.value);
+        const viewEl = $(`view-sl-${active}-${f}`);
+        if(viewEl) viewEl.textContent = fmtControlVal(state[active][f], e.target.dataset.fmt);
+        compute();
+      });
+    });
+    document.querySelectorAll(`.chip[data-group="${active}"]`).forEach(el=>{
+      el.addEventListener('click', e=>{
+        const f = e.target.dataset.field;
+        const v = e.target.dataset.val;
+        const parsed = isNaN(v) ? v : Number(v);
+        state[active][f] = parsed;
+        const container = e.target.closest('.chips');
+        if(container) container.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c.dataset.val===v));
+        compute();
+      });
+    });
+    document.querySelectorAll(`input[type=checkbox][data-group="${active}"]`).forEach(el=>{
+      el.addEventListener('change', e=>{
+        state[active][e.target.dataset.field] = e.target.checked;
+        compute();
+      });
+    });
+    document.querySelectorAll(`select[data-group="${active}"]`).forEach(el=>{
+      el.addEventListener('change', e=>{
+        state[active][e.target.dataset.field] = e.target.value;
+        compute();
+      });
+    });
+  }
+
+  /* ===== RENDER CONTROLS PER MODE ===== */
+  function renderControls(){
+    const s = state[active];
+    let html = '';
+    if(active==='term'){
+      html += makeSlider('term','age','Current Age',18,60,1,s.age,'years');
+      html += makeSlider('term','retireAge','Retirement Age',50,70,1,s.retireAge,'years');
+      html += makeSlider('term','income','Annual Income',300000,10000000,100000,s.income,'currency');
+      html += makeSlider('term','expenses','Annual Household Expenses',100000,5000000,50000,s.expenses,'currency');
+      html += makeSlider('term','loans','Existing Loans & Liabilities',0,10000000,100000,s.loans,'currency');
+      html += makeSlider('term','savings','Existing Savings / Investments',0,10000000,100000,s.savings,'currency');
+      html += makeSlider('term','existingCover','Existing Life Cover',0,10000000,500000,s.existingCover,'currency');
+      html += makeSlider('term','eduGoal','Education Goal Corpus',0,5000000,100000,s.eduGoal,'currency');
+      html += makeSlider('term','marriageGoal','Marriage Goal Corpus',0,5000000,100000,s.marriageGoal,'currency');
+      html += makeSlider('term','otherGoals','Other Future Goals',0,3000000,100000,s.otherGoals,'currency');
+      html += makeSlider('term','inflation','Expected Inflation',3,12,0.5,s.inflation,'pct');
+      html += makeSlider('term','returnRate','Expected Return on Corpus',5,14,0.5,s.returnRate,'pct');
+      html += makeSlider('term','incomeGrowth','Income Growth Rate',2,15,0.5,s.incomeGrowth,'pct');
+      html += cgroupStart('Calculation Method');
+      html += makeChips('term','method',[{v:'hlv',l:'HLV'},{v:'dime',l:'DIME'},{v:'max',l:'Max of Both'}], s.method);
+      html += cgroupEnd();
+      html += cgroupStart('Plan Type');
+      html += makeChips('term','planType',[{v:'level',l:'Level'},{v:'increasing',l:'Increasing'},{v:'decreasing',l:'Decreasing'},{v:'rop',l:'RoP'},{v:'whole',l:'Whole Life'},{v:'joint',l:'Joint Life'}], s.planType);
+      html += cgroupEnd();
+      html += cgroupStart('Smoker');
+      html += makeToggle('term','smoker','I am a smoker',s.smoker);
+      html += cgroupEnd();
+      html += cgroupStart('Optional Riders');
+      html += makeToggle('term','adRider','Accidental Death Rider',s.adRider);
+      html += makeToggle('term','ciRider','Critical Illness Rider',s.ciRider);
+      html += makeToggle('term','wpRider','Waiver of Premium Rider',s.wpRider);
+      html += cgroupEnd();
+      $('panelBadge').textContent = 'TERM COVER';
+      $('controlDesc').textContent = 'Build a realistic family protection estimate using HLV or DIME method.';
+      $('modeHeadline').textContent = 'Term Cover Engine';
+      $('modeSub').textContent = 'Estimate the life cover your family needs and the premium range for it.';
+      $('advisorTitle').textContent = 'Ready to lock in real protection?';
+      $('advisorDesc').textContent = 'Use this estimate as a starting point, then get a personalised term policy recommendation.';
+      $('advisorBtn').textContent = 'Review Protection with Advisor';
+    } else if(active==='health'){
+      html += makeSlider('health','age','Primary Member Age',18,80,1,s.age,'years');
+      html += makeSlider('health','adults','Number of Adults',1,4,1,s.adults,'years');
+      html += makeSlider('health','children','Number of Children',0,4,1,s.children,'years');
+      html += cgroupStart('Cover Type');
+      html += makeChips('health','coverType',[{v:'individual',l:'Individual'},{v:'floater',l:'Family Floater'}], s.coverType);
+      html += cgroupEnd();
+      html += makeSlider('health','sumInsured','Sum Insured',300000,10000000,100000,s.sumInsured,'currency');
+      html += cgroupStart('City Tier');
+      html += makeChips('health','cityTier',[{v:'metro',l:'Metro'},{v:'tier2',l:'Tier 2'},{v:'tier3',l:'Tier 3'}], s.cityTier);
+      html += cgroupEnd();
+      html += cgroupStart('Policy Type');
+      html += makeChips('health','policyType',[{v:'basic',l:'Basic'},{v:'comprehensive',l:'Comprehensive'},{v:'supertopup',l:'Super Top-Up'},{v:'senior',l:'Senior Citizen'}], s.policyType);
+      html += cgroupEnd();
+      html += cgroupStart('Lifestyle Risk');
+      html += makeChips('health','lifestyle',[{v:'low',l:'Low'},{v:'medium',l:'Medium'},{v:'high',l:'High'}], s.lifestyle);
+      html += cgroupEnd();
+      html += cgroupStart('Pre-Existing Illness');
+      html += makeToggle('health','ped','Pre-existing illness declared',s.ped);
+      html += cgroupEnd();
+      html += cgroupStart('Add-ons');
+      html += makeToggle('health','maternity','Maternity Benefit',s.maternity);
+      html += makeToggle('health','opd','OPD Cover',s.opd);
+      html += makeToggle('health','restoration','Restoration Benefit',s.restoration);
+      html += makeToggle('health','ciBundle','Critical Illness Bundle',s.ciBundle);
+      html += makeToggle('health','ncbShield','No-Claim Shield',s.ncbShield);
+      html += cgroupEnd();
+      $('panelBadge').textContent = 'HEALTH';
+      $('controlDesc').textContent = 'Stress-test your medical cover against rising healthcare inflation.';
+      $('modeHeadline').textContent = 'Health Insurance Estimator';
+      $('modeSub').textContent = 'Estimate annual premium and optimal sum insured for your family.';
+      $('advisorTitle').textContent = 'Want the right health plan?';
+      $('advisorDesc').textContent = 'Compare comprehensive health plans with a qualified insurance advisor.';
+      $('advisorBtn').textContent = 'Review Medical Cover Options';
+    } else if(active==='car'){
+      html += makeSlider('car','carValue','Current Car Value / IDV',100000,5000000,50000,s.carValue,'currency');
+      html += makeSlider('car','vehicleAge','Vehicle Age',0,15,1,s.vehicleAge,'years');
+      html += cgroupStart('Fuel Type');
+      html += makeChips('car','fuelType',[{v:'petrol',l:'Petrol'},{v:'diesel',l:'Diesel'},{v:'cng',l:'CNG'},{v:'ev',l:'EV'}], s.fuelType);
+      html += cgroupEnd();
+      html += cgroupStart('Zone / City');
+      html += makeChips('car','zone',[{v:'metro',l:'Metro Zone A'},{v:'tier2',l:'Zone B'},{v:'tier3',l:'Zone C'}], s.zone);
+      html += cgroupEnd();
+      html += cgroupStart('Claim History');
+      html += makeChips('car','claimHistory',[{v:0,l:'0 Claims'},{v:1,l:'1 Claim'},{v:2,l:'2+ Claims'}], s.claimHistory);
+      html += cgroupEnd();
+      html += cgroupStart('Policy Type');
+      html += makeChips('car','policyType',[{v:'thirdparty',l:'Third Party'},{v:'comprehensive',l:'Comprehensive'},{v:'owndamage',l:'Own Damage'}], s.policyType);
+      html += cgroupEnd();
+      html += makeSlider('car','ncbPct','No Claim Bonus %',0,50,5,s.ncbPct,'pct');
+      html += cgroupStart('Add-ons');
+      html += makeToggle('car','zeroDep','Zero Depreciation',s.zeroDep);
+      html += makeToggle('car','engineProtect','Engine Protection',s.engineProtect);
+      html += makeToggle('car','rsa','Roadside Assistance',s.rsa);
+      html += makeToggle('car','returnInvoice','Return to Invoice',s.returnInvoice);
+      html += makeToggle('car','consumables','Consumables Cover',s.consumables);
+      html += makeToggle('car','ncbProtect','NCB Protect',s.ncbProtect);
+      html += makeToggle('car','antiTheft','Anti-Theft Device',s.antiTheft);
+      html += cgroupEnd();
+      $('panelBadge').textContent = 'CAR INSURANCE';
+      $('controlDesc').textContent = 'Model premium, IDV, add-ons and renewal cost trend for your car.';
+      $('modeHeadline').textContent = 'Car Insurance Estimator';
+      $('modeSub').textContent = 'Get a transparent premium estimate based on IDV, age, zone and add-ons.';
+      $('advisorTitle').textContent = 'Find the best car policy?';
+      $('advisorDesc').textContent = 'Compare real car insurance plans to lock in the best coverage for your vehicle.';
+      $('advisorBtn').textContent = 'Compare Car Plans';
+    } else if(active==='disability'){
+      html += makeSlider('disability','age','Your Age',20,60,1,s.age,'years');
+      html += makeSlider('disability','monthlyIncome','Monthly Income',20000,500000,5000,s.monthlyIncome,'currency');
+      html += makeSlider('disability','monthlyExpenses','Monthly Expenses',10000,300000,5000,s.monthlyExpenses,'currency');
+      html += makeSlider('disability','emerFund','Emergency Fund',0,3000000,50000,s.emerFund,'currency');
+      html += makeSlider('disability','existingCover','Existing Disability Cover',0,2000000,50000,s.existingCover,'currency');
+      html += makeSlider('disability','replaceRatio','Desired Income Replacement %',40,100,5,s.replaceRatio,'pct');
+      html += cgroupStart('Occupation Risk');
+      html += makeChips('disability','occClass',[{v:'low',l:'Low Risk'},{v:'medium',l:'Medium Risk'},{v:'high',l:'High Risk'}], s.occClass);
+      html += cgroupEnd();
+      html += cgroupStart('Benefit Period');
+      html += makeChips('disability','benefitPeriod',[{v:2,l:'2 Yrs'},{v:5,l:'5 Yrs'},{v:10,l:'10 Yrs'},{v:25,l:'Till 60'}], s.benefitPeriod);
+      html += cgroupEnd();
+      html += cgroupStart('Waiting Period (Days)');
+      html += makeChips('disability','waitDays',[{v:30,l:'30'},{v:60,l:'60'},{v:90,l:'90'},{v:180,l:'180'}], s.waitDays);
+      html += cgroupEnd();
+      html += cgroupStart('Permanent Disability Risk');
+      html += makeChips('disability','permRisk',[{v:'low',l:'Low'},{v:'medium',l:'Medium'},{v:'high',l:'High'}], s.permRisk);
+      html += cgroupEnd();
+      $('panelBadge').textContent = 'DISABILITY';
+      $('controlDesc').textContent = 'Model the protection gap before life forces the question.';
+      $('modeHeadline').textContent = 'Disability Insurance Planner';
+      $('modeSub').textContent = 'Estimate disability cover needed to replace lost income during incapacity.';
+      $('advisorTitle').textContent = 'Income protection planning?';
+      $('advisorDesc').textContent = 'A disability income plan is often overlooked. Get a personalised recommendation.';
+      $('advisorBtn').textContent = 'Review Disability Cover';
+    } else if(active==='bike'){
+      html += makeSlider('bike','bikeValue','Bike Value / IDV',20000,1000000,5000,s.bikeValue,'currency');
+      html += makeSlider('bike','bikeAge','Bike Age',0,15,1,s.bikeAge,'years');
+      html += cgroupStart('Engine CC Band');
+      html += makeChips('bike','ccBand',[{v:'<75',l:'<75 CC'},{v:'75-150',l:'75-150 CC'},{v:'150-350',l:'150-350 CC'},{v:'>350',l:'>350 CC'}], s.ccBand);
+      html += cgroupEnd();
+      html += cgroupStart('Zone / City');
+      html += makeChips('bike','zone',[{v:'metro',l:'Metro Zone A'},{v:'tier2',l:'Zone B'},{v:'tier3',l:'Zone C'}], s.zone);
+      html += cgroupEnd();
+      html += cgroupStart('Claim History');
+      html += makeChips('bike','claimHistory',[{v:0,l:'0 Claims'},{v:1,l:'1 Claim'},{v:2,l:'2+ Claims'}], s.claimHistory);
+      html += cgroupEnd();
+      html += cgroupStart('Policy Type');
+      html += makeChips('bike','policyType',[{v:'thirdparty',l:'Third Party'},{v:'comprehensive',l:'Comprehensive'},{v:'owndamage',l:'Own Damage'}], s.policyType);
+      html += cgroupEnd();
+      html += makeSlider('bike','ncbPct','No Claim Bonus %',0,50,5,s.ncbPct,'pct');
+      html += cgroupStart('Add-ons');
+      html += makeToggle('bike','zeroDep','Zero Depreciation',s.zeroDep);
+      html += makeToggle('bike','rsa','Roadside Assistance',s.rsa);
+      html += makeToggle('bike','engineProtect','Engine Protection',s.engineProtect);
+      html += makeToggle('bike','consumables','Consumables Cover',s.consumables);
+      html += makeToggle('bike','antiTheft','Anti-Theft Device',s.antiTheft);
+      html += cgroupEnd();
+      $('panelBadge').textContent = '2-WHEELER';
+      $('controlDesc').textContent = 'Estimate your bike insurance premium, IDV and add-on costs.';
+      $('modeHeadline').textContent = '2-Wheeler Insurance Estimator';
+      $('modeSub').textContent = 'Get a premium estimate for your motorcycle or scooter.';
+      $('advisorTitle').textContent = 'Best bike insurance?';
+      $('advisorDesc').textContent = 'Find the best coverage plan for your two-wheeler at the right price.';
+      $('advisorBtn').textContent = 'Compare Bike Plans';
+    } else if(active==='childedu'){
+      html += makeSlider('childedu','childAge','Child\'s Current Age',0,15,1,s.childAge,'years');
+      html += makeSlider('childedu','goalAge','Target Age for Higher Education',17,25,1,s.goalAge,'years');
+      html += makeSlider('childedu','currentCost','Current Annual Education Cost',50000,2000000,50000,s.currentCost,'currency');
+      html += makeSlider('childedu','eduInflation','Education Inflation Rate',5,15,0.5,s.eduInflation,'pct');
+      html += makeSlider('childedu','portfolioReturn','Expected Portfolio Return',6,18,0.5,s.portfolioReturn,'pct');
+      html += makeSlider('childedu','existingSavings','Existing Savings for Child',0,5000000,50000,s.existingSavings,'currency');
+      html += makeSlider('childedu','monthlySIP','Monthly SIP for Goal',0,100000,1000,s.monthlySIP,'currency');
+      html += makeSlider('childedu','oneTime','One-Time Investment',0,2000000,50000,s.oneTime,'currency');
+      html += cgroupStart('Course Type');
+      html += makeChips('childedu','courseType',[{v:'indiaug',l:'India UG'},{v:'indiapg',l:'India PG'},{v:'overseasug',l:'Overseas UG'},{v:'overseaspg',l:'Overseas PG'},{v:'professional',l:'Professional'}], s.courseType);
+      html += cgroupEnd();
+      html += makeSlider('childedu','courseDuration','Course Duration (Years)',1,5,1,s.courseDuration,'years');
+      $('panelBadge').textContent = 'CHILD EDU';
+      $('controlDesc').textContent = 'See whether your current plan can actually fund the milestone.';
+      $('modeHeadline').textContent = 'Child Education Cost Planner';
+      $('modeSub').textContent = 'Model future education corpus, inflation impact and funding gap.';
+      $('advisorTitle').textContent = 'Plan your child\'s education fund?';
+      $('advisorDesc').textContent = 'A well-funded education plan takes consistent effort. Start today with a goal-based strategy.';
+      $('advisorBtn').textContent = 'Plan Goal Funding Strategy';
+    } else if(active==='hlv'){
+      html += makeSlider('hlv','income','Annual Income',300000,10000000,100000,s.income,'currency');
+      html += makeSlider('hlv','personalExpPct','Personal Expenses % of Income',10,60,5,s.personalExpPct,'pct');
+      html += makeSlider('hlv','workingYears','Working Years Left',1,45,1,s.workingYears,'years');
+      html += makeSlider('hlv','incomeGrowth','Income Growth Rate',2,15,0.5,s.incomeGrowth,'pct');
+      html += makeSlider('hlv','discountRate','Discount / Investment Return',4,14,0.5,s.discountRate,'pct');
+      html += makeSlider('hlv','inflation','Inflation Rate',3,10,0.5,s.inflation,'pct');
+      html += makeSlider('hlv','taxDrag','Tax Drag on Income',0,30,1,s.taxDrag,'pct');
+      html += makeSlider('hlv','existingAssets','Existing Assets',0,10000000,100000,s.existingAssets,'currency');
+      html += makeSlider('hlv','existingInsurance','Existing Insurance Cover',0,10000000,500000,s.existingInsurance,'currency');
+      $('panelBadge').textContent = 'HLV';
+      $('controlDesc').textContent = 'Quantify the economic value of your life for your family\'s planning.';
+      $('modeHeadline').textContent = 'Human Life Value Calculator';
+      $('modeSub').textContent = 'Estimate the present value of your future earning potential.';
+      $('advisorTitle').textContent = 'Understand your life value?';
+      $('advisorDesc').textContent = 'Use HLV to build a scientifically backed protection strategy with an advisor.';
+      $('advisorBtn').textContent = 'Discuss HLV with Advisor';
+    } else if(active==='marriage'){
+      html += makeSlider('marriage','weddingBudget','Estimated Wedding Budget Today',500000,20000000,200000,s.weddingBudget,'currency');
+      html += makeSlider('marriage','yearsLeft','Years to Wedding',1,20,1,s.yearsLeft,'years');
+      html += makeSlider('marriage','weddingInflation','Wedding Inflation Rate',5,15,0.5,s.weddingInflation,'pct');
+      html += makeSlider('marriage','existingSavings','Existing Savings for Wedding',0,5000000,100000,s.existingSavings,'currency');
+      html += makeSlider('marriage','monthlySIP','Monthly SIP for Goal',0,200000,2000,s.monthlySIP,'currency');
+      html += makeSlider('marriage','oneTime','One-Time Investment',0,3000000,100000,s.oneTime,'currency');
+      html += cgroupStart('Wedding Scale');
+      html += makeChips('marriage','weddingScale',[{v:'intimate',l:'Intimate'},{v:'standard',l:'Standard'},{v:'premium',l:'Premium'},{v:'luxury',l:'Luxury'}], s.weddingScale);
+      html += cgroupEnd();
+      html += cgroupStart('City Type');
+      html += makeChips('marriage','cityType',[{v:'metro',l:'Metro'},{v:'tier2',l:'Tier 2'},{v:'destination',l:'Destination'}], s.cityType);
+      html += cgroupEnd();
+      $('panelBadge').textContent = 'MARRIAGE';
+      $('controlDesc').textContent = 'Build a realistic marriage cost and funding estimate for your goal.';
+      $('modeHeadline').textContent = 'Marriage Cost Planner';
+      $('modeSub').textContent = 'Model future wedding corpus, inflation, and whether your current plan is enough.';
+      $('advisorTitle').textContent = 'Planning a wedding fund?';
+      $('advisorDesc').textContent = 'A goal-based savings plan ensures you are ready when the time comes.';
+      $('advisorBtn').textContent = 'Plan Wedding Fund Strategy';
+    } else if(active==='ci'){
+      html += makeSlider('ci','age','Your Age',18,65,1,s.age,'years');
+      html += makeSlider('ci','income','Annual Income',300000,10000000,100000,s.income,'currency');
+      html += makeSlider('ci','existingHealthCover','Existing Health Cover',0,5000000,100000,s.existingHealthCover,'currency');
+      html += makeSlider('ci','existingCiCover','Existing CI Cover',0,5000000,100000,s.existingCiCover,'currency');
+      html += makeSlider('ci','dependents','Number of Dependents',0,6,1,s.dependents,'years');
+      html += makeSlider('ci','liability','Major Liability Amount',0,10000000,100000,s.liability,'currency');
+      html += makeSlider('ci','recoveryMonths','Recovery Period (Months)',3,24,1,s.recoveryMonths,'months');
+      html += cgroupStart('Lifestyle Risk');
+      html += makeChips('ci','lifestyle',[{v:'low',l:'Low'},{v:'medium',l:'Medium'},{v:'high',l:'High'}], s.lifestyle);
+      html += cgroupEnd();
+      html += cgroupStart('Family History of Critical Illness');
+      html += makeToggle('ci','familyHistory','Family history exists',s.familyHistory);
+      html += cgroupEnd();
+      html += cgroupStart('City Tier');
+      html += makeChips('ci','cityTier',[{v:'metro',l:'Metro'},{v:'tier2',l:'Tier 2'},{v:'tier3',l:'Tier 3'}], s.cityTier);
+      html += cgroupEnd();
+      html += makeSlider('ci','desiredCover','Desired CI Cover',500000,10000000,200000,s.desiredCover,'currency');
+      html += cgroupStart('Premium Style');
+      html += makeChips('ci','premStyle',[{v:'basic',l:'Basic'},{v:'comprehensive',l:'Comprehensive'}], s.premStyle);
+      html += cgroupEnd();
+      $('panelBadge').textContent = 'CRITICAL ILLNESS';
+      $('controlDesc').textContent = 'Estimate the lump sum you\'d need to recover from a critical illness without financial shock.';
+      $('modeHeadline').textContent = 'Critical Illness Planner';
+      $('modeSub').textContent = 'Model CI cover, treatment buffer, recovery income need and premium estimate.';
+      $('advisorTitle').textContent = 'Worried about critical illness?';
+      $('advisorDesc').textContent = 'A CI plan provides a lump sum payout at diagnosis — when it matters most.';
+      $('advisorBtn').textContent = 'Review CI Cover Options';
+    } else if(active==='incshield'){
+      html += makeSlider('incshield','monthlyIncome','Monthly Income',20000,500000,5000,s.monthlyIncome,'currency');
+      html += makeSlider('incshield','replaceRatio','Desired Income Replacement %',40,100,5,s.replaceRatio,'pct');
+      html += makeSlider('incshield','age','Your Age',20,60,1,s.age,'years');
+      html += makeSlider('incshield','emerFundMonths','Emergency Fund (Months)',0,12,1,s.emerFundMonths,'months');
+      html += makeSlider('incshield','passiveIncome','Monthly Passive Income',0,100000,2000,s.passiveIncome,'currency');
+      html += makeSlider('incshield','existingCover','Existing Disability Income Cover',0,200000,5000,s.existingCover,'currency');
+      html += makeSlider('incshield','inflation','Benefit Inflation Rate',3,10,0.5,s.inflation,'pct');
+      html += cgroupStart('Occupation Class');
+      html += makeChips('incshield','occClass',[{v:'low',l:'Low Risk'},{v:'medium',l:'Medium Risk'},{v:'high',l:'High Risk'}], s.occClass);
+      html += cgroupEnd();
+      html += cgroupStart('Waiting Period (Days)');
+      html += makeChips('incshield','waitDays',[{v:30,l:'30'},{v:60,l:'60'},{v:90,l:'90'},{v:180,l:'180'}], s.waitDays);
+      html += cgroupEnd();
+      html += cgroupStart('Benefit Period');
+      html += makeChips('incshield','benefitPeriod',[{v:2,l:'2 Yrs'},{v:5,l:'5 Yrs'},{v:10,l:'10 Yrs'},{v:25,l:'Till 60'}], s.benefitPeriod);
+      html += cgroupEnd();
+      $('panelBadge').textContent = 'INCOME SHIELD';
+      $('controlDesc').textContent = 'Quantify the exact income protection gap if disability strikes.';
+      $('modeHeadline').textContent = 'Disability Income Shield';
+      $('modeSub').textContent = 'Model the monthly benefit, premium and protection runway for income replacement.';
+      $('advisorTitle').textContent = 'Protect your income stream?';
+      $('advisorDesc').textContent = 'Disability income insurance is the most underutilized protection tool. Start planning now.';
+      $('advisorBtn').textContent = 'Explore Income Shield Plans';
+    }
+    $('dynamicControls').innerHTML = html;
+    bindControls();
+  }
+
+  /* ===== CHART RENDERER ===== */
+  function renderChart(type, labels, series, title, meta){
+    $('chartTitle').textContent = title;
+    $('chartMeta').textContent = meta;
+    $('chartLegend').innerHTML = series.map(s =>
+      `<div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>`
+    ).join('');
+    const ctx = $('mainChart').getContext('2d');
+    if(mainChart){ mainChart.destroy(); mainChart = null; }
+    const gradient = ctx.createLinearGradient(0,0,0,360);
+    gradient.addColorStop(0,'rgba(0,212,255,.28)');
+    gradient.addColorStop(.55,'rgba(79,163,255,.12)');
+    gradient.addColorStop(1,'rgba(79,163,255,0)');
+    const chartType = type === 'doughnut' ? 'doughnut' : type === 'bar' ? 'bar' : 'line';
+    const datasets = series.map((s,idx) => {
+      if(chartType==='doughnut') return { label:s.label, data:s.data, backgroundColor:series.map(x=>x.color), borderWidth:0 };
+      if(chartType==='bar') return { label:s.label, data:s.data, backgroundColor:s.color+'bb', borderColor:s.color, borderWidth:1.5, borderRadius:5 };
+      return {
+        label:s.label, data:s.data, borderColor:s.color,
+        backgroundColor:idx===0?gradient:'transparent',
+        fill:idx===0, borderWidth:idx===0?3:2.2,
+        pointRadius:idx===0?2:0, pointHoverRadius:5,
+        pointBackgroundColor:s.color, pointBorderColor:'#08111f', tension:.38
+      };
+    });
+    mainChart = new Chart(ctx, {
+      type: chartType,
+      data: chartType==='doughnut' ? { labels, datasets:[datasets[0]] } : { labels, datasets },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction: chartType!=='doughnut' ? {mode:'index',intersect:false} : {},
+        plugins:{
+          legend:{ display: chartType==='doughnut', position:'right', labels:{ color:'rgba(220,230,255,.8)', font:{size:12}, padding:12 } },
+          tooltip:{
+            backgroundColor:'rgba(7,12,28,.96)', borderColor:'rgba(255,255,255,.08)', borderWidth:1,
+            titleColor:'#fff', bodyColor:'#dce6ff', padding:12,
+            callbacks:{ label:(ctx)=> chartType==='doughnut' ? `${ctx.label}: ${fmtShort(ctx.raw)}` : `${ctx.dataset.label}: ${fmtShort(ctx.raw)}` }
+          }
+        },
+        scales: chartType==='doughnut' ? {} : {
+          x:{ grid:{display:false}, ticks:{color:'rgba(220,230,255,.55)',font:{size:12}} },
+          y:{ beginAtZero:true, grid:{color:'rgba(255,255,255,.06)'}, stacked: type==='stacked',
+              ticks:{color:'rgba(220,230,255,.55)',font:{size:12},callback:(v)=>fmtShort(v)} }
+        }
+      }
+    });
+  }
+
+  /* ===== INSIGHTS RENDERER ===== */
+  function setInsights(a,b,c){
+    $('insight1Title').textContent = a.title; $('insight1Text').textContent = a.text;
+    $('insight2Title').textContent = b.title; $('insight2Text').textContent = b.text;
+    $('insight3Title').textContent = c.title; $('insight3Text').textContent = c.text;
+  }
+
+  /* ===== MILESTONES RENDERER ===== */
+  function renderMilestones(title, meta, items){
+    $('timelineTitle').textContent = title;
+    $('timelineMeta').textContent = meta;
+    $('timelineGrid').innerHTML = items.map(item =>
+      `<div class="milestone">
+        <div class="m-year">${item.stage}</div>
+        <div class="m-amount">${item.value}</div>
+        <div class="m-note">${item.note}</div>
+      </div>`
+    ).join('');
+  }
+
+  /* ===== WEALTH CARD RENDERER ===== */
+  function setWealthCard({title,pill,value,narrative,stat1,stat2,stat3}){
+    $('wealthTitle').textContent = title;
+    $('wealthPill').textContent = pill;
+    $('wealthNumber').textContent = value;
+    $('wealthNarrative').textContent = narrative;
+    $('stat1Label').textContent = stat1.label; $('stat1Value').textContent = stat1.value;
+    $('stat2Label').textContent = stat2.label; $('stat2Value').textContent = stat2.value;
+    $('stat3Label').textContent = stat3.label; $('stat3Value').textContent = stat3.value;
+  }
+
+  /* ===== TOP METRIC CARDS ===== */
+  function setTop(label2, val2, label3, val3, label4, val4){
+    $('topLabel2').textContent = label2; $('topVal2').textContent = val2;
+    $('topLabel3').textContent = label3; $('topVal3').textContent = val3;
+    $('topLabel4').textContent = label4; $('topVal4').textContent = val4;
+  }
+
+  /* ===== MINI GRID ===== */
+  function setMini(mood, insight){
+    $('miniMood').textContent = mood;
+    $('miniInsight').textContent = insight;
+  }
+
+  /* ===== SCENARIO TAGS ===== */
+  function setTags(tags){
+    ['tagYoungFamily','tagHighLiability','tagMedRisk','tagUnderfunded','tagStrong'].forEach(id => $('scenarioTags').querySelector('#'+id).classList.remove('show'));
+    (tags||[]).forEach(id => { const el = $(id); if(el) el.classList.add('show'); });
+  }
+
+  /* ===== SCENARIO COPY ===== */
+  function copySummary(){
+    const lines = [
+      `Insurance Planning Summary — ${TABS.find(t=>t.key===active).label}`,
+      `Mode: ${$('modeHeadline').textContent}`,
+      `${$('topLabel2').textContent}: ${$('topVal2').textContent}`,
+      `${$('topLabel3').textContent}: ${$('topVal3').textContent}`,
+      `${$('topLabel4').textContent}: ${$('topVal4').textContent}`,
+      `Key Result: ${$('wealthNumber').textContent}`,
+      `Insight 1: ${$('insight1Title').textContent} — ${$('insight1Text').textContent}`,
+      `Insight 2: ${$('insight2Title').textContent} — ${$('insight2Text').textContent}`,
+      `Note: Estimates are illustrative. Final insurer pricing varies.`,
+      `Generated via investpercent.in`
+    ];
+    navigator.clipboard.writeText(lines.join('\n')).catch(()=>{});
+  }
+
+  /* ===== RESET MODE ===== */
+  function resetMode(){
+    state[active] = JSON.parse(JSON.stringify(defaults[active]));
+    renderControls();
+    compute();
+  }
+
+  /* ===== HELPERS ===== */
+  function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smooth'}); }
+  function openAdvisor(){ window.open(ADVISOR_URL, '_blank'); }
+
+  /* ===== FV HELPER ===== */
+  function fvSIP(monthly, annualRate, months){
+    const r = annualRate / 12 / 100;
+    if(r===0) return monthly * months;
+    return monthly * (Math.pow(1+r, months) - 1) / r * (1+r);
+  }
+  function fvLump(principal, annualRate, years){
+    return principal * Math.pow(1 + annualRate/100, years);
+  }
+
+  /* ===== COMPUTE FUNCTIONS ===== */
+
+  function computeTerm(){
+    const s = state.term;
+    const yearsLeft = Math.max(1, s.retireAge - s.age);
+    const policyTerm = yearsLeft;
+
+    // HLV: PV of net income stream
+    const netIncomeRatio = 1 - (s.expenses / Math.max(s.income,1)) - 0.1; // personal consumption estimate
+    const nominalGrowth = s.incomeGrowth / 100;
+    const discountRate = s.returnRate / 100;
+    let hlv = 0;
+    let incomeNow = s.income * Math.max(netIncomeRatio, 0.2);
+    for(let y=1; y<=yearsLeft; y++){
+      const futureIncome = incomeNow * Math.pow(1+nominalGrowth, y-1);
+      hlv += futureIncome / Math.pow(1+discountRate, y);
+    }
+
+    // DIME: Debt + Income + Mortgage + Education + Marriage + Other - Savings - Existing cover
+    const incomeReplacement = s.income * yearsLeft * 0.7; // 70% replacement
+    const dime = Math.max(0, s.loans + incomeReplacement + s.eduGoal + s.marriageGoal + s.otherGoals - s.savings);
+
+    let recommendedCover = 0;
+    let methodUsed = '';
+    if(s.method==='hlv'){ recommendedCover = hlv; methodUsed = 'HLV'; }
+    else if(s.method==='dime'){ recommendedCover = dime; methodUsed = 'DIME'; }
+    else { recommendedCover = Math.max(hlv, dime); methodUsed = hlv > dime ? 'HLV' : 'DIME'; }
+
+    // Plan type multiplier
+    const planMult = {level:1, increasing:1.15, decreasing:0.9, rop:1.3, whole:1.5, joint:1.25}[s.planType] || 1;
+    recommendedCover = Math.round(recommendedCover);
+
+    const coverGap = Math.max(0, recommendedCover - s.existingCover);
+    const termCoverForPremium = Math.max(coverGap, 1000000);
+
+    // Age band premium base (per lakh per year)
+    const ageBands = [[25,200],[30,260],[35,350],[40,500],[45,750],[50,1200],[60,2500]];
+    let basePrem = 2500;
+    for(const [a,p] of ageBands){ if(s.age <= a){ basePrem = p; break; } }
+    const annualPremBase = (termCoverForPremium / 100000) * basePrem * planMult;
+    const smokerMult = s.smoker ? 1.5 : 1;
+    const riderAdd = (s.adRider?0.05:0) + (s.ciRider?0.08:0) + (s.wpRider?0.03:0);
+    const annualPremLow = Math.round(annualPremBase * smokerMult);
+    const annualPremHigh = Math.round(annualPremLow * (1.25 + riderAdd));
+    const monthlyPremLow = Math.round(annualPremLow / 12);
+    const monthlyPremHigh = Math.round(annualPremHigh / 12);
+
+    const incomeRepYears = s.income > 0 ? (recommendedCover / s.income).toFixed(1) : 0;
+    const protScore = clamp(Math.round(70 + (s.savings/recommendedCover)*15 - (coverGap>0?25:0) + (s.existingCover/Math.max(recommendedCover,1))*20), 10, 100);
+
+    const planNotes = {
+      level: 'Level cover provides a fixed sum assured throughout the policy term — stable and straightforward.',
+      increasing: 'Increasing cover compensates for inflation by growing the sum assured annually.',
+      decreasing: 'Decreasing cover aligns with reducing liabilities like a home loan.',
+      rop: 'Return of Premium returns all premiums at maturity if no claim is made.',
+      whole: 'Whole life style cover provides lifelong protection beyond the traditional term.',
+      joint: 'Joint life cover protects both partners under a single policy structure.'
+    };
+
+    $('modeHeadline').textContent = 'Term Cover Engine';
+    $('modeSub').textContent = `Using ${methodUsed} method — ${s.planType.charAt(0).toUpperCase()+s.planType.slice(1)} plan selected.`;
+    setTop('Recommended Cover', fmtShort(recommendedCover), `Est. Annual Premium`, `₹${annualPremLow.toLocaleString('en-IN')} – ₹${annualPremHigh.toLocaleString('en-IN')}`, 'Policy Term', fmtYears(policyTerm));
+    setWealthCard({
+      title:'Recommended Life Cover', pill:'Term Cover',
+      value: fmtShort(recommendedCover),
+      narrative:`Based on your income, liabilities and goals, your family needs approximately ${fmtShort(recommendedCover)} in life cover. Your cover gap after existing insurance is ${fmtShort(coverGap)}.`,
+      stat1:{ label:'Cover Gap', value: fmtShort(coverGap) },
+      stat2:{ label:`Est. Monthly Prem.`, value: `₹${monthlyPremLow.toLocaleString('en-IN')}–${monthlyPremHigh.toLocaleString('en-IN')}` },
+      stat3:{ label:'Protection Score', value: protScore+'/100' }
+    });
+    setMini(protScore>=75?'Strongly Protected':protScore>=50?'Moderately Covered':'Underinsured', `Income cover: ${incomeRepYears}× income`);
+    setInsights(
+      { title: coverGap > 0 ? 'Cover gap detected.' : 'Fully protected.', text: coverGap > 0 ? `Your existing cover falls short by ${fmtShort(coverGap)}. Adding a new term plan can close this gap.` : 'Your existing cover meets or exceeds the estimated protection requirement.' },
+      { title: planNotes[s.planType].split(' — ')[0], text: planNotes[s.planType] },
+      { title: s.smoker ? 'Smoker loading applies.' : 'Non-smoker advantage.', text: s.smoker ? 'Smoker premiums are typically 40–60% higher. Quitting can significantly reduce future renewal costs.' : 'As a non-smoker, you qualify for lower premium rates across most insurer bands.' }
+    );
+
+    const needsBreakdown = ['Income Replacement','Loan Clearance','Education Goal','Marriage Goal','Other Goals','Existing Savings Offset'].map((l,i)=>[l,[incomeReplacement, s.loans, s.eduGoal, s.marriageGoal, s.otherGoals, -s.savings][i]]);
+    const posNeeds = needsBreakdown.filter(x=>x[1]>0);
+    renderChart('doughnut', posNeeds.map(x=>x[0]), [{ label:'Breakdown', data:posNeeds.map(x=>x[1]), color:'#00d4ff' }], 'Protection Need Breakdown', 'Estimated breakdown of your total family protection requirement.');
+
+    const ages = Array.from({length:Math.ceil(policyTerm/5)+1},(_, i)=>s.age+i*5).filter(a=>a<=s.retireAge+1);
+    const coverNeeds = ages.map(a=>{ const rem=Math.max(0,s.retireAge-a); return Math.round(recommendedCover*(rem/yearsLeft)); });
+    renderChart('line', ages.map(a=>`Age ${a}`), [
+      {label:'Cover Required', data:coverNeeds, color:'#00d4ff', fill:true},
+      {label:'Existing Cover', data:ages.map(()=>s.existingCover), color:'#4fa3ff', fill:false}
+    ], 'Cover Requirement vs Existing Cover', 'How your protection need changes as you age and liabilities reduce.');
+
+    const now = new Date().getFullYear();
+    renderMilestones('Protection Milestones','Key stages of your term cover journey.',[
+      { stage:'Now', value: fmtShort(recommendedCover), note:'Recommended cover at current life stage' },
+      { stage:'5 Years', value: fmtShort(recommendedCover*0.8), note:'Cover need reduces as loans are paid down' },
+      { stage:`Age ${Math.round((s.age+s.retireAge)/2)}`, value: fmtShort(recommendedCover*0.55), note:'Mid-point of policy — review and adjust' },
+      { stage:`Age ${s.retireAge}`, value: fmtShort(s.existingCover), note:'Policy nears end — assets should cover remaining needs' }
+    ]);
+
+    setTags([...(s.age<=35?['tagYoungFamily']:[]), ...(s.loans>3000000?['tagHighLiability']:[]), ...(coverGap<=0?['tagStrong']:['tagUnderfunded'])]);
+  }
+
+  function computeHealth(){
+    const s = state.health;
+    const ageMultiplier = s.age<30?0.6 : s.age<40?0.85 : s.age<50?1.2 : s.age<60?1.8 : 2.6;
+    const familyMult = 1 + (s.adults-1)*0.4 + s.children*0.18;
+    const cityMult = {metro:1.18, tier2:1, tier3:0.88}[s.cityTier] || 1;
+    const coverMult = Math.pow(s.sumInsured/500000, 0.55);
+    const pedMult = s.ped ? 1.25 : 1;
+    const typeMult = {basic:0.75, comprehensive:1, supertopup:0.6, senior:2.2}[s.policyType] || 1;
+    const lifestyleMult = {low:0.9, medium:1, high:1.3}[s.lifestyle] || 1;
+    const floaterMult = s.coverType==='floater' ? 1.15 : 1;
+    let addonLoading = 1;
+    if(s.maternity) addonLoading += 0.12;
+    if(s.opd) addonLoading += 0.08;
+    if(s.restoration) addonLoading += 0.06;
+    if(s.ciBundle) addonLoading += 0.14;
+    if(s.ncbShield) addonLoading += 0.05;
+    const basePremium = 6000;
+    const annualPrem = Math.round(basePremium * ageMultiplier * familyMult * cityMult * coverMult * pedMult * typeMult * lifestyleMult * floaterMult * addonLoading);
+    const monthlyEq = Math.round(annualPrem / 12);
+    const inflatedNeed10 = Math.round(s.sumInsured * Math.pow(1.10, 10));
+    const adequacyPct = clamp(Math.round((s.sumInsured / (s.sumInsured + 300000)) * 100), 20, 95);
+
+    setTop('Est. Annual Premium', fmtShort(annualPrem), 'Monthly Equivalent', fmtShort(monthlyEq), 'Sum Insured', fmtShort(s.sumInsured));
+    setWealthCard({
+      title:'Estimated Health Insurance Premium', pill:'Health Cover',
+      value: fmtShort(annualPrem)+' /yr',
+      narrative:`For ${s.adults} adult(s) and ${s.children} child(ren) with ${fmtShort(s.sumInsured)} cover, estimated annual premium is ${fmtShort(annualPrem)}. Medical inflation at 10% means you'll need ${fmtShort(inflatedNeed10)} in 10 years.`,
+      stat1:{ label:'Monthly Cost', value: fmtShort(monthlyEq) },
+      stat2:{ label:'Inflation-Adjusted Need (10Y)', value: fmtShort(inflatedNeed10) },
+      stat3:{ label:'Cover Adequacy', value: adequacyPct+'%' }
+    });
+    setMini(s.sumInsured>=1000000?'Well Covered':'Consider Upgrade', s.ped?'PED Loading Applied':'Clean Health History');
+    setInsights(
+      { title: s.policyType==='supertopup' ? 'Super top-up adds value.' : s.sumInsured<500000 ? 'Consider a higher sum insured.' : 'Cover amount looks reasonable.', text: s.policyType==='supertopup' ? 'A super top-up paired with a base plan is often the most cost-efficient way to build a large health cover.' : s.sumInsured<500000 ? 'Medical costs in metros can exhaust ₹5L cover in a single hospitalisation. Consider upgrading.' : 'Your current sum insured should handle most hospitalisation events at this stage.' },
+      { title: s.ped ? 'PED waiting period applies.' : 'No pre-existing declaration.', text: s.ped ? 'Most plans have a 2–4 year waiting period for pre-existing conditions. Choose plans with shorter waiting periods.' : 'Without pre-existing conditions, you qualify for faster claim settlement and lower premiums.' },
+      { title: 'Medical inflation is real.', text: 'Healthcare costs in India have been inflating at 8–12% annually. Your sum insured should ideally grow to match this trajectory.' }
+    );
+
+    const premComponents = [annualPrem*0.55, annualPrem*0.25, annualPrem*0.2];
+    renderChart('doughnut',['Base Premium','Age/PED Loading','Add-ons'],[{label:'Premium Mix',data:premComponents,color:'#00d4ff'}],'Premium Composition','Estimated split of your annual premium across base, loading and add-ons.');
+
+    const futureYears = Array.from({length:11},(_,i)=>i);
+    const futureInflated = futureYears.map(y=>Math.round(s.sumInsured*Math.pow(1.10,y)));
+    renderChart('line', futureYears.map(y=>`Yr ${y}`), [{label:'Required Cover', data:futureInflated, color:'#00d4ff',fill:true},{label:'Current Cover',data:futureYears.map(()=>s.sumInsured),color:'#ffd76a',fill:false}], 'Medical Inflation Impact','How your sum insured requirement grows at 10% healthcare inflation.');
+
+    renderMilestones('Health Cover Milestones','Key health planning checkpoints.',[
+      { stage:'Today', value: fmtShort(s.sumInsured), note:'Current cover' },
+      { stage:'3 Years', value: fmtShort(s.sumInsured*1.33), note:'Inflation-adjusted need' },
+      { stage:'5 Years', value: fmtShort(s.sumInsured*1.61), note:'Upgrade target' },
+      { stage:'10 Years', value: fmtShort(inflatedNeed10), note:'Long-term planning target' }
+    ]);
+    setTags(['tagMedRisk']);
+  }
+
+  function computeCar(){
+    const s = state.car;
+    // IDV depreciation by age
+    const depPct = [1,0.85,0.77,0.69,0.60,0.50,0.40,0.33,0.28,0.25,0.22,0.20,0.18,0.16,0.15][Math.min(s.vehicleAge,14)];
+    const idv = Math.round(s.carValue * depPct);
+    const zoneMult = {metro:1.18, tier2:1, tier3:0.88}[s.zone] || 1;
+    const fuelMult = {petrol:1, diesel:1.05, cng:1.02, ev:0.95}[s.fuelType] || 1;
+    const claimMult = [1, 1.2, 1.45][Math.min(Number(s.claimHistory),2)];
+    const antiTheftDisc = s.antiTheft ? 0.97 : 1;
+    const ncbDisc = 1 - (s.ncbPct/100)*0.85;
+
+    const tpBase = Math.round(idv * 0.004 * zoneMult * claimMult);
+    let odBase = 0;
+    if(s.policyType !== 'thirdparty'){
+      odBase = Math.round(idv * 0.022 * zoneMult * fuelMult * claimMult * antiTheftDisc * ncbDisc);
+    }
+
+    let addonsTotal = 0;
+    if(s.zeroDep) addonsTotal += Math.round(idv * 0.005);
+    if(s.engineProtect) addonsTotal += Math.round(idv * 0.003);
+    if(s.rsa) addonsTotal += 750;
+    if(s.returnInvoice) addonsTotal += Math.round(idv * 0.004);
+    if(s.consumables) addonsTotal += Math.round(idv * 0.002);
+    if(s.ncbProtect) addonsTotal += Math.round(tpBase * 0.05);
+
+    const totalPrem = (s.policyType==='thirdparty' ? tpBase : s.policyType==='owndamage' ? odBase : tpBase + odBase) + addonsTotal;
+
+    const idvMin = Math.round(idv * 0.95);
+    const idvMax = Math.round(idv * 1.05);
+
+    setTop('Est. Annual Premium', fmtShort(totalPrem), 'IDV (Insured Value)', fmtShort(idv), 'Vehicle Age', fmtYears(s.vehicleAge));
+    setWealthCard({
+      title:'Estimated Car Insurance Premium', pill:'Car Insurance',
+      value: fmtShort(totalPrem)+' /yr',
+      narrative:`Based on IDV of ${fmtShort(idv)}, your estimated annual premium is ${fmtShort(totalPrem)}. Ideal IDV range: ${fmtShort(idvMin)} – ${fmtShort(idvMax)}.`,
+      stat1:{ label:'Third Party Component', value: fmtShort(tpBase) },
+      stat2:{ label:'Own Damage Component', value: fmtShort(odBase) },
+      stat3:{ label:'Add-ons Total', value: fmtShort(addonsTotal) }
+    });
+    setMini(s.vehicleAge<=3?'Comprehensive Ideal':'Consider Policy Type', `NCB Saving: ${s.ncbPct}%`);
+    setInsights(
+      { title: s.policyType==='thirdparty' && s.vehicleAge<=5 ? 'Comprehensive strongly recommended.' : s.vehicleAge>=8 ? 'Third party may be sufficient.' : 'Comprehensive cover is appropriate.', text: s.vehicleAge<=5 ? 'For newer vehicles, comprehensive cover protects against own-damage losses which can be significant.' : 'For older vehicles, own-damage premium may not justify the claim value. Consider third party only.' },
+      { title: s.zeroDep && s.vehicleAge<=4 ? 'Zero dep is well-suited here.' : 'Evaluate zero dep value.', text: s.zeroDep ? 'Zero depreciation ensures full claim without deduction for tyre, plastic and rubber parts.' : 'For vehicles under 4 years, adding zero dep cover typically pays for itself within 1–2 claims.' },
+      { title: `NCB of ${s.ncbPct}% saves you money.`, text: 'Maintaining a claim-free record grows your no-claim bonus up to 50%, substantially reducing renewal premiums.' }
+    );
+
+    const policyYears = Array.from({length:6},(_,i)=>i+1);
+    const depValues = policyYears.map(y=>{
+      const d=[1,0.85,0.77,0.69,0.60,0.50][y-1]||0.5;
+      return Math.round(s.carValue*d);
+    });
+    const premTrend = policyYears.map(y=>{
+      const a = s.vehicleAge+y-1;
+      const dep=[1,0.85,0.77,0.69,0.60,0.50][Math.min(a,5)]||0.5;
+      const i = Math.round(s.carValue*dep*0.022*zoneMult+s.carValue*dep*0.004*zoneMult);
+      return i;
+    });
+
+    const premComps = [tpBase, odBase, addonsTotal].filter(x=>x>0);
+    const premLabels = ['Third Party','Own Damage','Add-ons'].filter((_,i)=>[tpBase,odBase,addonsTotal][i]>0);
+    renderChart('doughnut', premLabels, [{label:'Premium Split',data:premComps,color:'#00d4ff'}],'Premium Composition','Estimated split of your car insurance premium.');
+
+    renderChart('line', policyYears.map(y=>`Yr ${y}`), [
+      {label:'IDV Value',data:depValues,color:'#ffd76a',fill:true},
+      {label:'Estimated Premium',data:premTrend,color:'#00d4ff',fill:false}
+    ], '5-Year IDV & Premium Trend','How your car\'s value and insurance premium evolve over ownership years.');
+
+    renderMilestones('Insurance Milestones','Key checkpoints in your car ownership cycle.',[
+      { stage:'Year 1', value: fmtShort(totalPrem), note:'First year premium' },
+      { stage:'Year 2–3', value: fmtShort(Math.round(totalPrem*0.9)), note:'NCB builds, premium reduces' },
+      { stage:'Year 5', value: fmtShort(Math.round(totalPrem*0.65)), note:'50% NCB available' },
+      { stage:'Year 8+', value: fmtShort(Math.round(totalPrem*0.55)), note:'Consider switching to third-party only' }
+    ]);
+    setTags([]);
+  }
+
+  function computeDisability(){
+    const s = state.disability;
+    const monthlyBenefitNeeded = Math.round(s.monthlyIncome * s.replaceRatio / 100);
+    const coverGap = Math.max(0, monthlyBenefitNeeded - (s.existingCover/12 || 0));
+    const emerFundRunway = s.monthlyExpenses > 0 ? (s.emerFund / s.monthlyExpenses).toFixed(1) : 0;
+    const annualBenefit = monthlyBenefitNeeded * 12 * s.benefitPeriod;
+
+    const occMult = {low:0.8, medium:1, high:1.4}[s.occClass] || 1;
+    const waitMult = {30:1.2, 60:1, 90:0.85, 180:0.65}[s.waitDays] || 1;
+    const benefitMult = {2:0.7, 5:1, 10:1.4, 25:1.9}[Number(s.benefitPeriod)] || 1;
+    const permMult = {low:0.9, medium:1, high:1.3}[s.permRisk] || 1;
+    const annualPrem = Math.round((monthlyBenefitNeeded * 0.025) * occMult * waitMult * benefitMult * permMult * 12);
+    const protScore = clamp(Math.round(60 + (s.existingCover/Math.max(annualBenefit,1))*20 + (Number(emerFundRunway)>=6?15:0) - (s.occClass==='high'?10:0)), 10, 100);
+
+    setTop('Monthly Benefit Needed', fmtShort(monthlyBenefitNeeded)+'/mo', 'Est. Annual Premium', fmtShort(annualPrem), 'Emergency Fund Runway', emerFundRunway+' months');
+    setWealthCard({
+      title:'Disability Income Protection', pill:'Disability Cover',
+      value: fmtShort(monthlyBenefitNeeded)+'/mo',
+      narrative:`To replace ${s.replaceRatio}% of your income, you need ${fmtShort(monthlyBenefitNeeded)} per month in disability benefit. Emergency fund covers ${emerFundRunway} months.`,
+      stat1:{ label:'Monthly Gap', value: fmtShort(coverGap)+'/mo' },
+      stat2:{ label:'Total Benefit Pool', value: fmtShort(annualBenefit) },
+      stat3:{ label:'Protection Score', value: protScore+'/100' }
+    });
+    setMini(protScore>=70?'Well Protected':'Underprotected', `${s.waitDays}-day waiting period`);
+    setInsights(
+      { title: Number(emerFundRunway) < 3 ? 'Emergency fund is thin.' : 'Emergency fund provides a buffer.', text: Number(emerFundRunway) < 3 ? 'A thin emergency fund means income disruption hits immediately. Build at least 6 months of expenses as a buffer.' : `Your emergency fund covers ${emerFundRunway} months of expenses — a useful bridge during the waiting period.` },
+      { title: `${s.waitDays}-day waiting period selected.`, text: `A longer waiting period (90–180 days) significantly reduces premium. If your emergency fund is strong, a longer wait is feasible.` },
+      { title: s.occClass==='high' ? 'High-risk occupation premium loading.' : 'Standard occupation class applies.', text: s.occClass==='high' ? 'High-risk occupations attract higher disability insurance premiums due to elevated claim probability.' : 'Your occupation class attracts standard or preferred premium rates for disability income cover.' }
+    );
+
+    const months = Array.from({length:s.benefitPeriod*12+1},(_,i)=>i);
+    const incomeWithout = months.map(()=>s.monthlyIncome);
+    const withCover = months.map(()=>monthlyBenefitNeeded);
+    const gap = months.map(()=>s.monthlyIncome - monthlyBenefitNeeded);
+    renderChart('line', months.map(m=>`Mo ${m}`), [
+      {label:'Normal Income',data:incomeWithout,color:'#4fa3ff',fill:false},
+      {label:'With Disability Cover',data:withCover,color:'#00e676',fill:false},
+      {label:'Monthly Gap',data:gap,color:'#ff607d',fill:true}
+    ], 'Income Replacement Gap','Monthly income vs disability benefit over the benefit period.');
+
+    renderMilestones('Disability Protection Milestones','How disability cover supports you at each stage.',[
+      { stage:'Day 1', value: `${s.waitDays}-day wait`, note:'Waiting period — emergency fund bridges this' },
+      { stage:'Month 3', value: fmtShort(monthlyBenefitNeeded*3), note:'Early phase benefit accumulation' },
+      { stage:'Year 1', value: fmtShort(monthlyBenefitNeeded*12), note:'First year total benefit' },
+      { stage:`${s.benefitPeriod} Years`, value: fmtShort(annualBenefit), note:'Total benefit pool exhausted' }
+    ]);
+    setTags([...(s.occClass==='high'?['tagHighLiability']:[]),...(protScore>=75?['tagStrong']:['tagUnderfunded'])]);
+  }
+
+  function computeBike(){
+    const s = state.bike;
+    const depPct = [1,0.88,0.80,0.72,0.63,0.55,0.48,0.42,0.37,0.33,0.30,0.27,0.25][Math.min(s.bikeAge,12)];
+    const idv = Math.round(s.bikeValue * depPct);
+    const zoneMult = {metro:1.12, tier2:1, tier3:0.88}[s.zone] || 1;
+    const ccMult = {'<75':0.75,'75-150':1,'150-350':1.2,'>350':1.6}[s.ccBand] || 1;
+    const claimMult = [1, 1.2, 1.45][Math.min(Number(s.claimHistory),2)];
+    const ncbDisc = 1 - (s.ncbPct/100)*0.85;
+    const antiTheftDisc = s.antiTheft ? 0.97 : 1;
+
+    const tpBase = Math.round(Math.max(720, idv * 0.006 * zoneMult * ccMult * claimMult));
+    let odBase = 0;
+    if(s.policyType !== 'thirdparty'){
+      odBase = Math.round(idv * 0.025 * zoneMult * ccMult * claimMult * ncbDisc * antiTheftDisc);
+    }
+    let addonsTotal = 0;
+    if(s.zeroDep) addonsTotal += Math.round(idv * 0.008);
+    if(s.rsa) addonsTotal += 300;
+    if(s.engineProtect) addonsTotal += Math.round(idv * 0.004);
+    if(s.consumables) addonsTotal += Math.round(idv * 0.003);
+
+    const totalPrem = (s.policyType==='thirdparty' ? tpBase : s.policyType==='owndamage' ? odBase : tpBase + odBase) + addonsTotal;
+
+    setTop('Est. Annual Premium', fmtShort(totalPrem), 'IDV (Insured Value)', fmtShort(idv), 'Bike Age', fmtYears(s.bikeAge));
+    setWealthCard({
+      title:'Estimated Bike Insurance Premium', pill:'2-Wheeler',
+      value: fmtShort(totalPrem)+' /yr',
+      narrative:`Estimated annual premium for your bike (IDV: ${fmtShort(idv)}) is ${fmtShort(totalPrem)}.`,
+      stat1:{ label:'Third Party', value: fmtShort(tpBase) },
+      stat2:{ label:'Own Damage', value: fmtShort(odBase) },
+      stat3:{ label:'Add-ons', value: fmtShort(addonsTotal) }
+    });
+    setMini(s.bikeAge<=3?'Comprehensive Ideal':'Review Cover Type', `NCB: ${s.ncbPct}%`);
+    setInsights(
+      { title: s.bikeAge<=4 ? 'Comprehensive is the right choice.' : 'Third-party may suffice.', text: s.bikeAge<=4 ? 'Newer bikes lose significant value quickly. Comprehensive cover with zero dep protects this investment.' : 'Older bikes with lower IDV may only justify mandatory third-party liability coverage.' },
+      { title: `CC band affects premium.`, text: `Higher CC bikes attract proportionally higher own-damage premiums due to greater repair costs and replacement part prices.` },
+      { title: 'Build your NCB carefully.', text: 'Even one small own-damage claim can reset your NCB. For minor damage, consider self-funding repairs to protect your renewal bonus.' }
+    );
+
+    const policyYears = Array.from({length:6},(_,i)=>i+1);
+    const depValues = policyYears.map(y=>{
+      const dep=[1,0.88,0.80,0.72,0.63,0.55][y-1]||0.5;
+      return Math.round(s.bikeValue*dep);
+    });
+    renderChart('line',policyYears.map(y=>`Yr ${y}`),[
+      {label:'IDV Depreciation',data:depValues,color:'#ffd76a',fill:true},
+      {label:'Estimated Premium',data:policyYears.map(y=>Math.round(totalPrem*Math.pow(0.92,y-1))),color:'#00d4ff',fill:false}
+    ],'Bike Value & Premium Trend','IDV depreciation and estimated premium trend over 5 years.');
+
+    renderMilestones('Bike Insurance Milestones','Key renewal checkpoints for your bike.',[
+      { stage:'Year 1', value: fmtShort(totalPrem), note:'First year premium with current IDV' },
+      { stage:'Year 2', value: fmtShort(Math.round(totalPrem*0.9)), note:'NCB starts reducing premium' },
+      { stage:'Year 4', value: fmtShort(Math.round(totalPrem*0.72)), note:'Evaluate if comprehensive still makes sense' },
+      { stage:'Year 6+', value: fmtShort(tpBase), note:'Third party only may be optimal' }
+    ]);
+    setTags([]);
+  }
+
+  function computeChildEdu(){
+    const s = state.childedu;
+    const yearsToGoal = Math.max(1, s.goalAge - s.childAge);
+    const courseMultipliers = {indiaug:1, indiapg:1.4, overseasug:6, overseaspg:8, professional:2.2};
+    const courseMult = courseMultipliers[s.courseType] || 1;
+    const annualCurrentCost = s.currentCost * courseMult;
+    const annualFutureCost = annualCurrentCost * Math.pow(1 + s.eduInflation/100, yearsToGoal);
+    const totalFutureCorpus = annualFutureCost * s.courseDuration;
+    const totalCurrentCost = annualCurrentCost * s.courseDuration;
+
+    // Corpus from existing savings + SIP
+    const existingSavingsGrown = fvLump(s.existingSavings, s.portfolioReturn, yearsToGoal);
+    const sipCorpus = fvSIP(s.monthlySIP, s.portfolioReturn, yearsToGoal * 12);
+    const oneTimeGrown = fvLump(s.oneTime, s.portfolioReturn, yearsToGoal);
+    const totalCorpusPlan = existingSavingsGrown + sipCorpus + oneTimeGrown;
+
+    const fundingGap = Math.max(0, totalFutureCorpus - totalCorpusPlan);
+    const readinessScore = clamp(Math.round((totalCorpusPlan / Math.max(totalFutureCorpus,1)) * 100), 0, 100);
+
+    // Required SIP to fully fund
+    const r = s.portfolioReturn / 12 / 100;
+    const n = yearsToGoal * 12;
+    const remainingNeed = Math.max(0, totalFutureCorpus - existingSavingsGrown - oneTimeGrown);
+    const reqSIP = r > 0 ? Math.round(remainingNeed / ((Math.pow(1+r,n)-1)/r*(1+r))) : Math.round(remainingNeed/n);
+
+    setTop('Future Education Corpus', fmtShort(totalFutureCorpus), 'Funding Gap', fmtShort(fundingGap), 'Goal Readiness', readinessScore+'%');
+    setWealthCard({
+      title:'Child Education Corpus', pill:'Education Goal',
+      value: fmtShort(totalFutureCorpus),
+      narrative:`${s.courseType.toUpperCase()} education starting at age ${s.goalAge} will cost approximately ${fmtShort(totalFutureCorpus)} in ${yearsToGoal} years. Your current plan builds ${fmtShort(totalCorpusPlan)}.`,
+      stat1:{ label:'Plan Corpus', value: fmtShort(totalCorpusPlan) },
+      stat2:{ label:'Funding Gap', value: fmtShort(fundingGap) },
+      stat3:{ label:'Required SIP', value: fmtShort(reqSIP)+'/mo' }
+    });
+    setMini(readinessScore>=80?'On Track':readinessScore>=50?'Needs Boost':'Significantly Underfunded', `Years to goal: ${yearsToGoal}`);
+    setInsights(
+      { title: fundingGap > 0 ? `Funding gap of ${fmtShort(fundingGap)} exists.` : 'Education goal is fully funded!', text: fundingGap > 0 ? `To close the gap, you need a monthly SIP of approximately ${fmtShort(reqSIP)}. Starting early makes a significant difference.` : 'Your current savings and SIP plan is on track to fully fund the education corpus.' },
+      { title: 'Education inflation is persistent.', text: `At ${s.eduInflation}% education inflation, costs will grow from ${fmtShort(totalCurrentCost)} today to ${fmtShort(totalFutureCorpus)} over ${yearsToGoal} years.` },
+      { title: s.courseType.includes('overseas') ? 'Overseas education: currency risk exists.' : 'Domestic education cost planning.', text: s.courseType.includes('overseas') ? 'Overseas costs are also subject to currency risk. Consider a portion in USD/EUR-denominated assets for the education corpus.' : 'For domestic education, index-linked savings or equity mutual funds over 5+ years are well suited.' }
+    );
+
+    const years = Array.from({length:yearsToGoal+1},(_,i)=>i);
+    const sipBuild = years.map(y=>fvSIP(s.monthlySIP, s.portfolioReturn, y*12));
+    const savingsBuild = years.map(y=>fvLump(s.existingSavings, s.portfolioReturn, y));
+    const totalBuild = years.map(y=>sipBuild[y]+savingsBuild[y]+fvLump(s.oneTime, s.portfolioReturn, y));
+    const targetLine = years.map(y=>y<yearsToGoal?0:totalFutureCorpus);
+
+    renderChart('line',years.map(y=>`Yr ${y}`),[
+      {label:'Plan Corpus',data:totalBuild,color:'#00e676',fill:true},
+      {label:'Target Corpus',data:targetLine.map(()=>totalFutureCorpus),color:'#ffd76a',fill:false}
+    ],'Education Fund Build-Up','How your savings and SIP grow toward the education goal.');
+
+    renderMilestones('Education Goal Milestones','Key funding checkpoints for your child\'s education.',[
+      { stage:'Now', value: fmtShort(s.existingSavings+s.oneTime), note:'Starting corpus' },
+      { stage:`Year ${Math.round(yearsToGoal*0.33)}`, value: fmtShort(totalBuild[Math.round(yearsToGoal*0.33)]||0), note:'Early growth phase' },
+      { stage:`Year ${Math.round(yearsToGoal*0.66)}`, value: fmtShort(totalBuild[Math.round(yearsToGoal*0.66)]||0), note:'Compounding accelerates' },
+      { stage:`Age ${s.goalAge}`, value: fmtShort(totalCorpusPlan), note:`Available vs ${fmtShort(totalFutureCorpus)} needed` }
+    ]);
+    setTags([...(fundingGap>totalFutureCorpus*0.3?['tagUnderfunded']:[]),...(readinessScore>=80?['tagStrong']:[])]);
+  }
+
+  function computeHLV(){
+    const s = state.hlv;
+    const netIncomeRatio = 1 - s.personalExpPct/100 - s.taxDrag/100;
+    const nominalGrowth = s.incomeGrowth / 100;
+    const discount = s.discountRate / 100;
+    let hlv = 0;
+    for(let y=1; y<=s.workingYears; y++){
+      const futureIncome = s.income * Math.pow(1+nominalGrowth, y-1) * netIncomeRatio;
+      hlv += futureIncome / Math.pow(1+discount, y);
+    }
+    hlv = Math.round(hlv);
+    const netProtectionNeed = Math.max(0, hlv - s.existingAssets - s.existingInsurance);
+    const incomeRepEquiv = Math.round(hlv / Math.max(s.income,1));
+    const wealthMult = (hlv / Math.max(s.income,1)).toFixed(1);
+    const protScore = clamp(Math.round(100 - (netProtectionNeed/Math.max(hlv,1))*100), 5, 100);
+
+    setTop('Human Life Value', fmtShort(hlv), 'Net Protection Need', fmtShort(netProtectionNeed), 'Income Multiples', wealthMult+'×');
+    setWealthCard({
+      title:'Your Human Life Value', pill:'HLV Estimate',
+      value: fmtShort(hlv),
+      narrative:`Your total economic contribution to your family over ${s.workingYears} working years is estimated at ${fmtShort(hlv)}. After deducting assets and existing insurance, the protection gap is ${fmtShort(netProtectionNeed)}.`,
+      stat1:{ label:'Income Multiple', value: wealthMult+'× income' },
+      stat2:{ label:'Net Protection Gap', value: fmtShort(netProtectionNeed) },
+      stat3:{ label:'Protection Score', value: protScore+'/100' }
+    });
+    setMini(protScore>=70?'Strong Life Value':'Gap Exists', `${s.workingYears} working years`);
+    setInsights(
+      { title: `Your life value is ${wealthMult}× your annual income.`, text: `The HLV method values your economic contribution to your dependents. This is what your family would lose if you were no longer around.` },
+      { title: netProtectionNeed>0 ? `Net gap: ${fmtShort(netProtectionNeed)}.` : 'Fully covered by assets and insurance.', text: netProtectionNeed>0 ? 'After accounting for assets and existing insurance, a protection gap remains. A term plan can efficiently close this gap.' : 'Your existing assets and insurance cover adequately fund your human life value.' },
+      { title: `Discount rate drives the HLV number.`, text: `A lower discount rate increases HLV (your income is more valuable), a higher one decreases it. Use your expected long-term return assumption.` }
+    );
+
+    const years = Array.from({length:s.workingYears+1},(_,i)=>i);
+    const pvCurve = years.map(y=>{
+      let pv=0;
+      for(let r=y+1;r<=s.workingYears;r++){
+        const fi=s.income*Math.pow(1+nominalGrowth,r-1)*netIncomeRatio;
+        pv+=fi/Math.pow(1+discount,r-y);
+      }
+      return Math.round(pv);
+    });
+
+    renderChart('line',years.map(y=>`Yr ${y}`),[
+      {label:'Remaining HLV',data:pvCurve,color:'#7b61ff',fill:true},
+      {label:'Existing Coverage',data:years.map(()=>s.existingAssets+s.existingInsurance),color:'#00e676',fill:false}
+    ],'Human Life Value Over Time','How your economic value declines as working years reduce — and how coverage compares.');
+
+    renderMilestones('HLV Milestones','Key stages of your earning and protection journey.',[
+      { stage:'Now', value: fmtShort(hlv), note:'Full human life value at current age' },
+      { stage:`Year ${Math.round(s.workingYears*0.25)}`, value: fmtShort(pvCurve[Math.round(s.workingYears*0.25)]||0), note:'HLV after first quarter of career' },
+      { stage:`Year ${Math.round(s.workingYears*0.5)}`, value: fmtShort(pvCurve[Math.round(s.workingYears*0.5)]||0), note:'Mid-career protection still significant' },
+      { stage:`Year ${s.workingYears}`, value: fmtShort(s.existingAssets), note:'Retirement — assets replace life value' }
+    ]);
+    setTags([...(netProtectionNeed>hlv*0.5?['tagHighLiability']:[]),...(protScore>=75?['tagStrong']:[])]);
+  }
+
+  function computeMarriage(){
+    const s = state.marriage;
+    const scaleMult = {intimate:0.7, standard:1, premium:1.6, luxury:2.8}[s.weddingScale] || 1;
+    const cityMult = {metro:1.2, tier2:1, destination:1.8}[s.cityType] || 1;
+    const adjustedBudget = s.weddingBudget * scaleMult * cityMult;
+    const futureCost = Math.round(adjustedBudget * Math.pow(1+s.weddingInflation/100, s.yearsLeft));
+
+    const existingSavingsGrown = fvLump(s.existingSavings, 10, s.yearsLeft);
+    const sipCorpus = fvSIP(s.monthlySIP, 10, s.yearsLeft*12);
+    const oneTimeGrown = fvLump(s.oneTime, 10, s.yearsLeft);
+    const totalPlan = Math.round(existingSavingsGrown + sipCorpus + oneTimeGrown);
+    const fundingGap = Math.max(0, futureCost - totalPlan);
+
+    const r = 10/12/100;
+    const n = s.yearsLeft * 12;
+    const remainingNeed = Math.max(0, futureCost - existingSavingsGrown - oneTimeGrown);
+    const reqSIP = r>0 ? Math.round(remainingNeed / ((Math.pow(1+r,n)-1)/r*(1+r))) : Math.round(remainingNeed/n);
+    const readinessScore = clamp(Math.round((totalPlan/Math.max(futureCost,1))*100),0,100);
+
+    // Category split
+    const cats = {Venue:0.25, Catering:0.20, Jewellery:0.18, Decor:0.12, Photography:0.08, Travel:0.07, Gifts:0.06, Misc:0.04};
+    const catValues = Object.entries(cats).map(([k,v])=>({label:k,value:Math.round(futureCost*v)}));
+
+    setTop('Future Wedding Corpus', fmtShort(futureCost), 'Funding Gap', fmtShort(fundingGap), 'Years to Goal', fmtYears(s.yearsLeft));
+    setWealthCard({
+      title:'Marriage Funding Planner', pill:'Wedding Goal',
+      value: fmtShort(futureCost),
+      narrative:`A ${s.weddingScale} wedding in ${s.cityType} in ${s.yearsLeft} years will cost approximately ${fmtShort(futureCost)}. Your current plan funds ${fmtShort(totalPlan)}.`,
+      stat1:{ label:'Plan Corpus', value: fmtShort(totalPlan) },
+      stat2:{ label:'Funding Gap', value: fmtShort(fundingGap) },
+      stat3:{ label:'Required SIP', value: fmtShort(reqSIP)+'/mo' }
+    });
+    setMini(readinessScore>=80?'On Track':readinessScore>=50?'Boost Needed':'Significantly Short', `${s.yearsLeft} years to goal`);
+    setInsights(
+      { title: fundingGap>0 ? `₹${(fundingGap/100000).toFixed(1)}L gap to close.` : 'Wedding goal is fully funded!', text: fundingGap>0 ? `To close the funding gap, a monthly SIP of approximately ${fmtShort(reqSIP)} is needed from today.` : 'Your savings and SIP are on track to fully cover the estimated wedding corpus.' },
+      { title: `Wedding inflation at ${s.weddingInflation}% is significant.`, text: `What costs ${fmtShort(adjustedBudget)} today will cost ${fmtShort(futureCost)} in ${s.yearsLeft} years. Starting to invest early is crucial.` },
+      { title: `${s.weddingScale.charAt(0).toUpperCase()+s.weddingScale.slice(1)} scale — ${s.cityType} city.`, text: `Venue and catering typically account for 45% of total costs. Setting a clear budget today helps goal-based investing stay on track.` }
+    );
+
+    renderChart('doughnut', catValues.map(c=>c.label), [{label:'Wedding Budget',data:catValues.map(c=>c.value),color:'#00d4ff'}],'Wedding Category Breakdown','Estimated cost distribution across wedding categories.');
+
+    const yrSeries = Array.from({length:s.yearsLeft+1},(_,i)=>i);
+    const planGrowth = yrSeries.map(y=>Math.round(fvLump(s.existingSavings,10,y)+fvSIP(s.monthlySIP,10,y*12)+fvLump(s.oneTime,10,y)));
+    renderChart('line',yrSeries.map(y=>`Yr ${y}`),[
+      {label:'Plan Corpus',data:planGrowth,color:'#00e676',fill:true},
+      {label:'Wedding Cost Target',data:yrSeries.map(()=>futureCost),color:'#ffd76a',fill:false}
+    ],'Wedding Fund Growth vs Target','How your savings and SIP grow toward the wedding cost target.');
+
+    renderMilestones('Wedding Goal Milestones','Key funding checkpoints for your wedding goal.',[
+      { stage:'Now', value: fmtShort(s.existingSavings+s.oneTime), note:'Starting corpus' },
+      { stage:`Year ${Math.round(s.yearsLeft*0.33)}`, value: fmtShort(planGrowth[Math.round(s.yearsLeft*0.33)]||0), note:'Early growth' },
+      { stage:`Year ${Math.round(s.yearsLeft*0.66)}`, value: fmtShort(planGrowth[Math.round(s.yearsLeft*0.66)]||0), note:'Compounding kicks in' },
+      { stage:`Year ${s.yearsLeft}`, value: fmtShort(totalPlan), note:`Vs ${fmtShort(futureCost)} needed` }
+    ]);
+    setTags([...(fundingGap>futureCost*0.3?['tagUnderfunded']:[]),...(readinessScore>=80?['tagStrong']:[])]);
+  }
+
+  function computeCI(){
+    const s = state.ci;
+    const treatmentCost = {metro:1500000, tier2:1000000, tier3:700000}[s.cityTier] || 1000000;
+    const incomeLoss = s.income/12 * s.recoveryMonths;
+    const liabilityCover = s.liability * 0.5;
+    const rawNeed = Math.round(treatmentCost + incomeLoss + liabilityCover);
+    const existingCoverage = s.existingHealthCover + s.existingCiCover;
+    const ciGap = Math.max(0, rawNeed - existingCoverage);
+    const suggestedCover = Math.max(s.desiredCover, ciGap);
+
+    const ageMultiplier = s.age<30?0.5:s.age<40?0.75:s.age<50?1.1:s.age<60?1.6:2.3;
+    const lifestyleMult = {low:0.85, medium:1, high:1.35}[s.lifestyle]||1;
+    const histMult = s.familyHistory ? 1.3 : 1;
+    const depMult = 1 + s.dependents * 0.05;
+    const policyMult = {basic:0.75, comprehensive:1}[s.premStyle]||1;
+    const annualPrem = Math.round((suggestedCover/100000)*650*ageMultiplier*lifestyleMult*histMult*depMult*policyMult);
+    const adequacyScore = clamp(Math.round((existingCoverage/Math.max(rawNeed,1))*100),0,100);
+
+    setTop('Suggested CI Cover', fmtShort(suggestedCover), 'Est. Annual Premium', fmtShort(annualPrem), 'Adequacy Score', adequacyScore+'%');
+    setWealthCard({
+      title:'Critical Illness Cover Estimate', pill:'CI Shield',
+      value: fmtShort(suggestedCover),
+      narrative:`Treatment + income replacement + liability buffer suggests a CI cover of ${fmtShort(suggestedCover)}. Your current coverage of ${fmtShort(existingCoverage)} leaves a gap of ${fmtShort(ciGap)}.`,
+      stat1:{ label:'Treatment Buffer', value: fmtShort(treatmentCost) },
+      stat2:{ label:'Recovery Income Gap', value: fmtShort(incomeLoss) },
+      stat3:{ label:'Cover Gap', value: fmtShort(ciGap) }
+    });
+    setMini(adequacyScore>=70?'Adequately Covered':'CI Gap Exists', s.familyHistory?'Family History Risk':'Standard Risk');
+    setInsights(
+      { title: ciGap>0 ? `Critical illness cover gap: ${fmtShort(ciGap)}.` : 'CI cover appears sufficient.', text: ciGap>0 ? 'A CI plan provides a lump sum at diagnosis — covering treatment, income replacement and loan repayment simultaneously.' : 'Your existing health and CI cover appears sufficient to handle a critical illness event.' },
+      { title: s.familyHistory ? 'Family history increases CI risk.' : 'No family history declared.', text: s.familyHistory ? 'Family history of cancer, heart disease or stroke can affect both premium and insurability. Choose plans with broader CI coverage.' : 'Without family history, you may qualify for preferred premium rates on CI policies.' },
+      { title: `Recovery period of ${s.recoveryMonths} months accounted for.`, text: 'Critical illness recovery often means 6–18 months of reduced income or inability to work. The CI lump sum covers this bridge period.' }
+    );
+
+    const splitData = [treatmentCost, incomeLoss, liabilityCover];
+    renderChart('doughnut',['Treatment Cost','Income Loss','Liability Buffer'],[{label:'CI Need',data:splitData,color:'#00d4ff'}],'CI Cover Requirement Split','Estimated breakdown of your critical illness protection need.');
+
+    const ages = Array.from({length:11},(_,i)=>s.age+i*3);
+    const premTrend = ages.map(a=>{
+      const am=a<30?0.5:a<40?0.75:a<50?1.1:a<60?1.6:2.3;
+      return Math.round((suggestedCover/100000)*650*am*lifestyleMult*histMult*policyMult);
+    });
+    renderChart('line',ages.map(a=>`Age ${a}`),[{label:'CI Premium Trend',data:premTrend,color:'#ff607d',fill:true}],'CI Premium Growth with Age','How critical illness insurance premiums increase as you age.');
+
+    renderMilestones('CI Protection Milestones','Key stages of your critical illness coverage journey.',[
+      { stage:'Now', value: fmtShort(suggestedCover), note:'Recommended CI cover at current age' },
+      { stage:'5 Years', value: fmtShort(suggestedCover*1.15), note:'CI need grows with income and lifestyle' },
+      { stage:'Year of Recovery', value: fmtShort(incomeLoss+treatmentCost), note:'Lump sum deployed during recovery' },
+      { stage:'Post-recovery', value: fmtShort(s.existingCiCover), note:'Existing cover provides ongoing buffer' }
+    ]);
+    setTags([...(s.familyHistory?['tagHighLiability']:[]),(ciGap>0?'tagUnderfunded':'tagStrong')]);
+  }
+
+  function computeIncShield(){
+    const s = state.incshield;
+    const monthlyBenefitNeeded = Math.round(s.monthlyIncome * s.replaceRatio/100);
+    const netGap = Math.max(0, monthlyBenefitNeeded - s.passiveIncome - (s.existingCover||0));
+    const emerFundBridge = s.monthlyIncome * s.emerFundMonths;
+    const benefitYears = Number(s.benefitPeriod) || 5;
+    const totalBenefitPool = netGap * 12 * benefitYears;
+    const inflatedBenefit = Math.round(netGap * Math.pow(1+s.inflation/100, 5));
+
+    const occMult = {low:0.8, medium:1, high:1.4}[s.occClass]||1;
+    const waitMult = {30:1.2, 60:1, 90:0.85, 180:0.65}[s.waitDays]||1;
+    const benefitMult = {2:0.7, 5:1, 10:1.4, 25:1.9}[Number(s.benefitPeriod)]||1;
+    const ageLoad = s.age<35?0.9:s.age<45?1:s.age<55?1.3:1.7;
+    const annualPrem = Math.round((netGap * 0.025) * occMult * waitMult * benefitMult * ageLoad * 12);
+    const protRunway = netGap>0 ? (totalBenefitPool/Math.max(s.monthlyIncome,1)).toFixed(1)+' months' : 'N/A';
+
+    setTop('Monthly Benefit Needed', fmtShort(monthlyBenefitNeeded)+'/mo', 'Est. Annual Premium', fmtShort(annualPrem), 'Benefit Period', fmtYears(benefitYears));
+    setWealthCard({
+      title:'Disability Income Shield', pill:'Income Shield',
+      value: fmtShort(netGap)+'/mo',
+      narrative:`To replace ${s.replaceRatio}% of your income, you need ${fmtShort(monthlyBenefitNeeded)}/month. Passive income covers ${fmtShort(s.passiveIncome)}/month, leaving a net gap of ${fmtShort(netGap)}/month.`,
+      stat1:{ label:'Total Benefit Pool', value: fmtShort(totalBenefitPool) },
+      stat2:{ label:'5-Yr Inflation-Adj Need', value: fmtShort(inflatedBenefit)+'/mo' },
+      stat3:{ label:'Protection Runway', value: protRunway }
+    });
+    setMini(netGap<=0?'Passive Income Covers Gap':'Income Gap Exists', `${s.waitDays}-day waiting period`);
+    setInsights(
+      { title: netGap>0 ? `Monthly income gap: ${fmtShort(netGap)}.` : 'Passive income covers the gap.', text: netGap>0 ? `During disability, your passive income leaves a gap of ${fmtShort(netGap)} per month. A disability income policy fills this gap.` : 'Your passive income source adequately covers the income replacement need during disability.' },
+      { title: `Emergency fund covers ${s.emerFundMonths} months.`, text: `The emergency fund bridges the waiting period of ${s.waitDays} days. ${s.emerFundMonths*30>s.waitDays ? 'Your fund is sufficient.' : 'Consider strengthening your emergency reserve.'}` },
+      { title: `Benefit period: ${benefitYears} years.`, text: `A ${benefitYears}-year benefit period means total income support of ${fmtShort(totalBenefitPool)}. Choose longer periods for complete peace of mind.` }
+    );
+
+    const months = Array.from({length:Math.min(benefitYears*12+1,61)},(_,i)=>i);
+    renderChart('line', months.map(m=>`Mo ${m}`),[
+      {label:'Normal Monthly Income',data:months.map(()=>s.monthlyIncome),color:'#4fa3ff',fill:false},
+      {label:'Disability Income Shield',data:months.map(m=>m<s.waitDays/30?0:netGap),color:'#00e676',fill:false},
+      {label:'Income Shortfall',data:months.map(m=>m<s.waitDays/30?s.monthlyIncome:s.monthlyIncome-netGap-s.passiveIncome),color:'#ff607d',fill:true}
+    ],'Income Gap Visualization','Monthly income vs disability cover and shortfall during benefit period.');
+
+    renderMilestones('Income Shield Milestones','Key stages of your income protection journey.',[
+      { stage:`Day 1–${s.waitDays}`, value: fmtShort(emerFundBridge), note:`Waiting period — emergency fund of ${fmtYears(s.emerFundMonths)} bridges this gap` },
+      { stage:'Month 6', value: fmtShort(netGap*6), note:'Cumulative benefit received' },
+      { stage:'Year 2', value: fmtShort(netGap*24), note:'Two-year benefit milestone' },
+      { stage:`Year ${benefitYears}`, value: fmtShort(totalBenefitPool), note:'Full benefit pool exhausted' }
+    ]);
+    setTags([...(netGap>0?['tagHighLiability']:[]),...(s.emerFundMonths>=6?['tagStrong']:[])]);
+  }
+
+  /* ===== MASTER COMPUTE ===== */
+  function compute(){
+    const fns = { term:computeTerm, health:computeHealth, car:computeCar, disability:computeDisability, bike:computeBike, childedu:computeChildEdu, hlv:computeHLV, marriage:computeMarriage, ci:computeCI, incshield:computeIncShield };
+    if(fns[active]) fns[active]();
+  }
+
+  /* ===== NAVBAR LOADER ===== */
+  (function loadNavbar(){
+    const navEl = document.getElementById('navbar');
+    if(!navEl) return;
+    fetch('components/navbar.html')
+      .then(r => r.ok ? r.text() : Promise.reject())
+      .then(html => {
+        navEl.innerHTML = html;
+        document.querySelectorAll('.nav-link, .mobile-nav-link, [data-nav]').forEach(el => {
+          const href = el.getAttribute('href') || '';
+          if(href.includes('insurance.html') || el.dataset.page === 'insurance'){
+            el.classList.add('active');
+          }
+        });
+      })
+      .catch(()=>{ navEl.innerHTML = ''; });
+  })();
+
+  /* ===== INIT ===== */
+  renderTabs();
+  renderControls();
+  compute();
+</script>
+</body>
+</html>
