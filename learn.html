@@ -1824,8 +1824,22 @@
           card.querySelectorAll('.decision-callout').forEach(el=>el.classList.add('visible'));
         }
         setTimeout(()=>card.scrollIntoView({behavior:'smooth', block:'nearest'}), 60);
+        onTopicOpen(id);
         updateProgress(activeCategory, id);
       }
+    }
+
+    /* +5 XP the first time a topic is opened (separate from the full progress save) */
+    function onTopicOpen(topicId){
+      const openedKey = 'opened_topics';
+      const opened    = JSON.parse(localStorage.getItem(openedKey) || '{}');
+      if(opened[topicId]) return; /* already earned XP for this topic open */
+      opened[topicId] = true;
+      localStorage.setItem(openedKey, JSON.stringify(opened));
+      xp += 5;
+      localStorage.setItem('xp', xp);
+      showXPToast(5, 'Learning a new topic');
+      updateLevelUI();
     }
 
     /* ── PROGRESS ── */
@@ -2108,12 +2122,20 @@
       updateXPUI();
       showXPToast(points, label || '');
     }
-    function updateXPUI(){
-      const el = $('xpValue'); if(el) el.textContent = xp;
-      const pct = Math.min(100, (xp % XP_PER_LEVEL) / XP_PER_LEVEL * 100);
-      const fill = $('xpFill'); if(fill) fill.style.width = pct + '%';
+    function updateLevelUI(){
+      const el   = $('xpValue');  if(el)   el.textContent  = xp;
       const lvEl = $('levelName'); if(lvEl) lvEl.textContent = getLevelName();
+      /* XP bar shows progress within current level band (100→300→700→∞) */
+      const bands = [0, 100, 300, 700, 1100];
+      let bandStart = 0, bandEnd = 100;
+      for(let i = 0; i < bands.length-1; i++){
+        if(xp >= bands[i] && xp < bands[i+1]){ bandStart = bands[i]; bandEnd = bands[i+1]; break; }
+      }
+      if(xp >= 1100){ bandStart = 700; bandEnd = 1100; }
+      const pct  = Math.min(100, Math.round((xp - bandStart) / (bandEnd - bandStart) * 100));
+      const fill = $('xpFill'); if(fill) fill.style.width = pct + '%';
     }
+    function updateXPUI(){ updateLevelUI(); } /* alias */
     function showXPToast(pts, label){
       const t = $('xpToast'); if(!t) return;
       t.textContent = `⚡ +${pts} XP${label ? ' — '+label : ''}`;
@@ -2304,11 +2326,11 @@
       const earned = score * 10;
       const pct    = Math.round(score/total*100);
       const grade  = pct === 100 ? '🏆 Perfect!' : pct >= 70 ? '🎉 Great job!' : pct >= 40 ? '👍 Good effort!' : '📚 Keep learning!';
-      /* show toast first with the score*10 format, then add XP */
+      /* show toast and update XP */
       showXPToast(earned, `Quiz: ${score}/${total}`);
       xp += earned;
       localStorage.setItem('xp', xp);
-      updateXPUI();
+      updateLevelUI();
       quizCount++;
       localStorage.setItem('quizCount', quizCount);
       if(quizCount >= 1) unlockBadge('Starter', '🌱');
@@ -2332,7 +2354,7 @@
        CERTIFICATION
     ══════════════════════════════════════ */
     function generateCert(){
-      if(xp < 100){
+      if(xp < 150){
         showXPToast(0, '❌ Complete more topics to unlock certificate');
         const t = $('xpToast'); if(t){ t.style.borderColor='rgba(255,96,125,.4)'; t.style.color='#ff607d'; setTimeout(()=>{ t.style.borderColor=''; t.style.color=''; },2400); }
         return;
@@ -2375,7 +2397,7 @@
     /* gamification */
     initStreak();
     initDailyGoal();
-    updateXPUI();
+    updateLevelUI();
     renderBadges();
   </script>
   <script>
