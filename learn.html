@@ -338,6 +338,157 @@
     }
     .rec-chip:hover{background:rgba(123,97,255,.2);border-color:rgba(123,97,255,.4)}
 
+    /* ── GAMIFICATION BAR ── */
+    .gamebar{
+      display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+      padding:12px 18px;border-radius:18px;margin-bottom:10px;
+      background:linear-gradient(135deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid rgba(255,255,255,.09);box-shadow:var(--shadow2)
+    }
+    .gam-item{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;flex-shrink:0}
+    .gam-item .gi-icon{font-size:15px}
+    .gam-item .gi-val{color:var(--text)}
+    .gam-item .gi-label{color:var(--muted);font-size:12px;font-weight:700}
+    .xp-fill-wrap{flex:1;min-width:100px;max-width:200px;height:6px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+    .xp-fill{height:100%;border-radius:999px;background:var(--grad);transition:width .5s ease}
+    .gam-divider{width:1px;height:20px;background:rgba(255,255,255,.08);flex-shrink:0}
+    .badge-chips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+    .badge-chip{
+      display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;
+      font-size:11px;font-weight:800;
+      background:rgba(255,214,106,.12);border:1px solid rgba(255,214,106,.25);color:var(--gold)
+    }
+    .daily-goal-wrap{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--muted)}
+    .daily-goal-bar{width:60px;height:5px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}
+    .daily-goal-fill{height:100%;border-radius:999px;background:var(--green);transition:width .4s ease}
+
+    /* ── QUIZ BUTTON ── */
+    .quiz-btn{
+      display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;
+      background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.22);
+      font-size:13px;font-weight:800;color:#c4b5fd;cursor:pointer;transition:.2s ease
+    }
+    .quiz-btn:hover{background:rgba(123,97,255,.2);border-color:rgba(123,97,255,.4);color:#ddd8ff}
+
+    /* ── QUIZ MODAL ── */
+    .quiz-overlay{
+      position:fixed;inset:0;z-index:1100;
+      background:rgba(6,9,21,.82);backdrop-filter:blur(8px);
+      display:flex;align-items:center;justify-content:center;padding:20px
+    }
+    .quiz-overlay.hidden{display:none}
+    .quiz-box{
+      width:100%;max-width:520px;
+      background:linear-gradient(180deg, rgba(15,24,48,.99), rgba(9,16,34,.99));
+      border:1px solid rgba(255,255,255,.12);border-radius:28px;
+      box-shadow:0 32px 80px rgba(0,0,0,.65);overflow:hidden
+    }
+    .quiz-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.07)
+    }
+    .quiz-head h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em}
+    .quiz-close{
+      width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.07);
+      border:none;color:var(--muted);font-size:16px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;transition:.2s
+    }
+    .quiz-close:hover{background:rgba(255,255,255,.12);color:var(--text)}
+    .quiz-meta{padding:14px 22px 0;display:flex;align-items:center;gap:10px}
+    .quiz-prog{font-size:12px;font-weight:800;color:var(--muted)}
+    .quiz-prog-bar{flex:1;height:5px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+    .quiz-prog-fill{height:100%;border-radius:999px;background:var(--grad);transition:width .35s ease}
+    .quiz-body{padding:22px}
+    .quiz-q{font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1.4;margin-bottom:18px}
+    .quiz-options{display:flex;flex-direction:column;gap:10px}
+    .quiz-opt{
+      padding:13px 18px;border-radius:14px;font-size:14px;font-weight:700;
+      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+      color:var(--text);cursor:pointer;transition:.25s ease;text-align:left
+    }
+    .quiz-opt:hover{background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.25);color:var(--cyan)}
+    .quiz-opt.correct{background:rgba(0,230,118,.12);border-color:rgba(0,230,118,.3);color:var(--green);pointer-events:none}
+    .quiz-opt.wrong{background:rgba(255,96,125,.1);border-color:rgba(255,96,125,.3);color:var(--red);pointer-events:none}
+    .quiz-opt.disabled{pointer-events:none;opacity:.5}
+    .quiz-next{
+      display:block;width:100%;margin-top:16px;padding:13px;border-radius:14px;
+      background:var(--grad);border:none;color:#071120;font-weight:800;font-size:14px;
+      cursor:pointer;transition:.2s ease
+    }
+    .quiz-next:hover{transform:translateY(-1px)}
+    .quiz-next:disabled{opacity:.4;cursor:not-allowed;transform:none}
+    .quiz-result{padding:28px 22px;text-align:center}
+    .quiz-result .qr-score{font-size:48px;font-weight:800;letter-spacing:-.04em;color:var(--cyan);margin-bottom:8px}
+    .quiz-result .qr-label{font-size:15px;color:var(--muted);margin-bottom:18px}
+    .quiz-result .qr-xp{
+      display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;
+      background:rgba(255,214,106,.1);border:1px solid rgba(255,214,106,.25);
+      font-size:14px;font-weight:800;color:var(--gold);margin-bottom:18px
+    }
+    .quiz-result .qr-msg{color:#c8d4f0;font-size:14px;line-height:1.6;margin-bottom:20px}
+    .qr-actions{display:flex;gap:10px;justify-content:center}
+
+    /* ── XP NOTIFICATION TOAST ── */
+    .xp-toast{
+      position:fixed;bottom:90px;right:24px;z-index:1200;
+      padding:12px 18px;border-radius:16px;
+      background:linear-gradient(135deg, rgba(15,24,48,.98), rgba(10,18,37,.98));
+      border:1px solid rgba(255,214,106,.3);box-shadow:0 16px 48px rgba(0,0,0,.5);
+      font-size:14px;font-weight:800;color:var(--gold);
+      transform:translateY(20px);opacity:0;
+      transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none
+    }
+    .xp-toast.show{transform:translateY(0);opacity:1}
+
+    /* ── CERTIFICATE SECTION ── */
+    .cert-section{
+      margin-top:14px;padding:22px;border-radius:22px;
+      background:
+        radial-gradient(circle at 15% 50%, rgba(255,214,106,.12), transparent 40%),
+        radial-gradient(circle at 85% 50%, rgba(123,97,255,.12), transparent 40%),
+        linear-gradient(135deg, rgba(15,24,48,.98), rgba(10,18,37,.98));
+      border:1px solid rgba(255,255,255,.1);
+      display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap
+    }
+    .cert-copy h3{margin:0 0 6px;font-family:Poppins,sans-serif;font-size:clamp(16px,2vw,22px);font-weight:800;letter-spacing:-.03em}
+    .cert-copy p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+    .cert-actions{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
+
+    /* ── CERT MODAL ── */
+    .cert-overlay{
+      position:fixed;inset:0;z-index:1100;
+      background:rgba(6,9,21,.88);backdrop-filter:blur(10px);
+      display:flex;align-items:center;justify-content:center;padding:20px
+    }
+    .cert-overlay.hidden{display:none}
+    .cert-card{
+      width:100%;max-width:600px;padding:40px;border-radius:28px;text-align:center;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,214,106,.14), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(123,97,255,.14), transparent 40%),
+        linear-gradient(180deg, rgba(15,24,48,.99), rgba(9,16,34,.99));
+      border:1px solid rgba(255,214,106,.25);box-shadow:0 40px 100px rgba(0,0,0,.7)
+    }
+    .cert-emblem{font-size:52px;margin-bottom:12px}
+    .cert-title{font-family:Poppins,sans-serif;font-size:clamp(22px,4vw,32px);font-weight:800;letter-spacing:-.04em;margin-bottom:4px}
+    .cert-subtitle{color:var(--muted);font-size:14px;margin-bottom:22px}
+    .cert-name{
+      font-size:clamp(24px,5vw,40px);font-weight:800;letter-spacing:-.04em;
+      background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+      margin-bottom:16px;font-family:Poppins,sans-serif
+    }
+    .cert-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+    .cert-meta-item{padding:8px 16px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:13px;font-weight:800}
+    .cert-meta-item .cmi-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+    .cert-meta-item .cmi-val{color:var(--text)}
+    .cert-date{color:var(--muted);font-size:12px;margin-bottom:22px}
+    .cert-badge-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+    .cert-close-btn{
+      padding:12px 24px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+      color:var(--text);font-weight:800;font-size:14px;cursor:pointer;transition:.2s
+    }
+    .cert-close-btn:hover{background:rgba(255,255,255,.1)}
+
     /* CONTINUE LEARNING */
     .continue-bar{
       display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px;
@@ -519,6 +670,33 @@
         <span class="rec-chip" id="rec2" onclick="switchCategory('investing')">&#x2192; SIP &amp; Compounding</span>
         <span class="rec-chip" id="rec3" onclick="switchCategory('mf')">&#x2192; Mutual Funds</span>
       </div>
+      <!-- GAMIFICATION BAR -->
+      <div class="gamebar" id="gameBar">
+        <div class="gam-item">
+          <span class="gi-icon">&#x26A1;</span>
+          <span class="gi-val" id="xpValue">0</span>
+          <span class="gi-label">XP</span>
+        </div>
+        <div class="xp-fill-wrap"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+        <div class="gam-divider"></div>
+        <div class="gam-item">
+          <span class="gi-icon">&#x1F525;</span>
+          <span class="gi-val" id="streakValue">1</span>
+          <span class="gi-label">day streak</span>
+        </div>
+        <div class="gam-divider"></div>
+        <div class="daily-goal-wrap">
+          <span>&#x1F3AF; Goal:</span>
+          <div class="daily-goal-bar"><div class="daily-goal-fill" id="goalFill" style="width:0%"></div></div>
+          <span id="goalText">0/2 today</span>
+        </div>
+        <div class="gam-divider"></div>
+        <div class="badge-chips" id="badgeChips"></div>
+        <div class="gam-item" style="margin-left:auto">
+          <button class="quiz-btn" onclick="generateCert()" style="padding:6px 12px;font-size:12px">&#x1F393; Certificate</button>
+        </div>
+      </div>
+
       <div class="tabbar" id="tabs"></div>
 
       <div class="top-metrics">
@@ -1551,6 +1729,7 @@
               </div>
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px">
                 <button class="qs-btn" onclick="toggleQuickSummary('${t.id}',event)">&#x26A1; Quick Summary</button>
+                ${QUIZ[t.id] ? `<button class="quiz-btn" onclick="startQuiz('${t.id}')">&#x1F9E0; Take Quiz</button>` : ''}
               </div>
               <div class="qs-output" id="qs-${t.id}"></div>
               ${nextHtml}
@@ -1658,6 +1837,9 @@
       renderProgress();
       updateLevel();
       renderLearningPath();
+      if(typeof saveXP === 'function')        saveXP(15, 'Topic studied');
+      if(typeof bumpDailyGoal === 'function') bumpDailyGoal();
+      if(typeof checkTopicBadges === 'function') checkTopicBadges();
     }
     function getProgressPct(key){
       const raw   = JSON.parse(localStorage.getItem('learn_progress') || '{}');
@@ -1909,6 +2091,253 @@
       chips.innerHTML = aiHistory.map(h=>`<span class="ai-hist-chip" onclick="askFromExample('${h}')">${h}</span>`).join('');
     }
 
+    /* ══════════════════════════════════════
+       GAMIFICATION — XP / STREAK / GOAL
+    ══════════════════════════════════════ */
+    let xp      = parseInt(localStorage.getItem('xp')     || '0');
+    let streak  = parseInt(localStorage.getItem('streak') || '1');
+    let badges  = JSON.parse(localStorage.getItem('badges')    || '[]');
+    let todayGoal = parseInt(localStorage.getItem('todayGoal') || '0');
+    const DAILY_GOAL = 2;
+    const XP_PER_LEVEL = 500;
+
+    function saveXP(points, label){
+      xp += points;
+      localStorage.setItem('xp', xp);
+      updateXPUI();
+      showXPToast(points, label || '');
+    }
+    function updateXPUI(){
+      const el = $('xpValue'); if(el) el.textContent = xp;
+      const pct = Math.min(100, (xp % XP_PER_LEVEL) / XP_PER_LEVEL * 100);
+      const fill = $('xpFill'); if(fill) fill.style.width = pct + '%';
+    }
+    function showXPToast(pts, label){
+      const t = $('xpToast'); if(!t) return;
+      t.textContent = `⚡ +${pts} XP${label ? ' — '+label : ''}`;
+      t.classList.add('show');
+      setTimeout(()=> t.classList.remove('show'), 2200);
+    }
+    function getXPLevel(){
+      if(xp < 100) return 'Beginner';
+      if(xp < 300) return 'Learner';
+      if(xp < 600) return 'Intermediate';
+      if(xp < 1000) return 'Advanced';
+      return 'Pro Investor';
+    }
+
+    /* ── STREAK ── */
+    function initStreak(){
+      const today = new Date().toDateString();
+      const last  = localStorage.getItem('lastDay') || '';
+      const yesterday = new Date(Date.now()-86400000).toDateString();
+      if(last === today){
+        /* same day, no change */
+      } else if(last === yesterday){
+        streak++;
+        localStorage.setItem('streak', streak);
+      } else if(last !== today && last !== ''){
+        streak = 1; /* streak broken */
+        localStorage.setItem('streak', streak);
+      }
+      localStorage.setItem('lastDay', today);
+      const el = $('streakValue'); if(el) el.textContent = streak;
+    }
+
+    /* ── DAILY GOAL ── */
+    function initDailyGoal(){
+      const today = new Date().toDateString();
+      if(localStorage.getItem('goalDay') !== today){
+        localStorage.setItem('goalDay', today);
+        localStorage.setItem('todayGoal', '0');
+        todayGoal = 0;
+      }
+      updateGoalUI();
+    }
+    function bumpDailyGoal(){
+      if(todayGoal >= DAILY_GOAL) return;
+      todayGoal++;
+      localStorage.setItem('todayGoal', todayGoal);
+      updateGoalUI();
+      if(todayGoal >= DAILY_GOAL){
+        saveXP(50, 'Daily goal reached!');
+        unlockBadge('Daily Achiever', '🎯');
+      }
+    }
+    function updateGoalUI(){
+      const fill = $('goalFill'); if(fill) fill.style.width = Math.min(100, todayGoal/DAILY_GOAL*100) + '%';
+      const txt  = $('goalText'); if(txt) txt.textContent = `${Math.min(todayGoal, DAILY_GOAL)}/${DAILY_GOAL} today`;
+    }
+
+    /* ── BADGES ── */
+    const BADGE_DEFS = {
+      'Starter':        '🌱',
+      'Curious':        '🔍',
+      'Learner':        '📚',
+      'Quiz Ace':       '🎯',
+      'Finance Ready':  '💼',
+      'Daily Achiever': '🎯',
+      'Streak 7':       '🔥',
+      'Top Scorer':     '🏆',
+    };
+    function unlockBadge(name, icon){
+      if(badges.includes(name)) return;
+      badges.push(name);
+      localStorage.setItem('badges', JSON.stringify(badges));
+      renderBadges();
+      showXPToast(0, `🏆 Badge unlocked: ${name}`);
+    }
+    function renderBadges(){
+      const el = $('badgeChips'); if(!el) return;
+      el.innerHTML = badges.slice(-4).map(b=>{
+        const icon = BADGE_DEFS[b] || '🏅';
+        return `<span class="badge-chip">${icon} ${b}</span>`;
+      }).join('');
+    }
+    function checkTopicBadges(){
+      const total = getTotalDone();
+      if(total >= 1)  unlockBadge('Starter', '🌱');
+      if(total >= 5)  unlockBadge('Curious', '🔍');
+      if(total >= 15) unlockBadge('Learner', '📚');
+      const basics = Object.keys(JSON.parse(localStorage.getItem('learn_progress')||'{}').basics||{}).length;
+      if(basics >= 6) unlockBadge('Finance Ready', '💼');
+      if(streak >= 7) unlockBadge('Streak 7', '🔥');
+    }
+
+    /* ══════════════════════════════════════
+       QUIZ SYSTEM
+    ══════════════════════════════════════ */
+    const QUIZ = {
+      money:        [{q:"Money acts as a unit of account, meaning it:", opts:["Pays taxes","Measures value of goods","Earns interest"],ans:1},{q:"Fiat money has value because:",opts:["It's backed by gold","Government decree and trust","It's rare"],ans:1}],
+      inflation:    [{q:"Inflation at 6% means ₹1L today equals how much in 10 years?",opts:["₹1L","₹1.5L","₹55,000"],ans:2},{q:"Which investment reliably beats inflation long-term?",opts:["Savings account","Fixed deposit","Equity mutual funds"],ans:2}],
+      compounding:  [{q:"The Rule of 72 tells you:",opts:["Your tax liability","Years to double money","Your SIP returns"],ans:1},{q:"At 12% CAGR, ₹1L doubles in approximately:",opts:["10 years","6 years","4 years"],ans:1}],
+      riskreturn:   [{q:"Higher expected return in investing usually means:",opts:["More safety","Higher risk","Lower volatility"],ans:1},{q:"Best way to manage risk in a portfolio is:",opts:["Buy only gold","Diversify across asset classes","Hold cash"],ans:1}],
+      timeinvesting:[{q:"Investing early helps because:",opts:["Markets always go up","Compounding needs time","Fees are lower"],ans:1},{q:"₹5,000/month for 30 years at 12% grows to approximately:",opts:["₹50L","₹1.76 Cr","₹3 Cr"],ans:1}],
+      sip:          [{q:"SIP stands for:",opts:["Systematic Investment Plan","Standard Interest Plan","Safe Income Plan"],ans:0},{q:"SIP's main benefit is:",opts:["Timing the market","Rupee cost averaging","High short-term returns"],ans:1},{q:"Which is the best fund type to start SIP?",opts:["Small cap fund","Nifty 50 Direct Index Fund","Liquid fund"],ans:1}],
+      pe:           [{q:"P/E ratio is calculated as:",opts:["Price ÷ Earnings","Profit × Equity","Portfolio Exposure"],ans:0},{q:"Nifty 50 average historical P/E is approximately:",opts:["10–12×","20–22×","35–40×"],ans:1},{q:"P/E above 25 usually means:",opts:["Markets are cheap","Markets are expensive","Markets are neutral"],ans:1}],
+      mftypes:      [{q:"Index funds track:",opts:["A fund manager's picks","A market index like Nifty 50","Only government bonds"],ans:1},{q:"Direct Plan vs Regular Plan — which is better for investors?",opts:["Regular Plan","Direct Plan","Both equal"],ans:1}],
+      termins:      [{q:"Term insurance is:",opts:["Investment + insurance","Pure life protection","Savings scheme"],ans:1},{q:"For a 30-year-old, ₹1 Cr term cover costs roughly:",opts:["₹50,000/year","₹8,000–12,000/year","₹1 lakh/year"],ans:1}],
+      fire:         [{q:"FIRE number formula is:",opts:["Annual income × 10","Annual expenses × 25","Monthly expenses × 100"],ans:1},{q:"The 4% withdrawal rule assumes your corpus lasts:",opts:["10 years","20 years","30+ years"],ans:2}],
+      oldnew:       [{q:"New tax regime benefits whom most?",opts:["High deduction earners","Those with fewer deductions","Senior citizens only"],ans:1},{q:"Extra NPS deduction is available under:",opts:["80C","80CCD(1B)","80D"],ans:1}],
+      capitalgains: [{q:"LTCG on equity funds applies after holding for:",opts:["6 months","1 year","3 years"],ans:1},{q:"Annual LTCG exemption on equity is:",opts:["₹50,000","₹1 lakh","₹1.25 lakh"],ans:2}],
+      '80c':        [{q:"Maximum deduction under Section 80C is:",opts:["₹1 lakh","₹1.5 lakh","₹2 lakh"],ans:1},{q:"ELSS lock-in period is:",opts:["1 year","3 years","5 years"],ans:1}],
+      rentalyield:  [{q:"Mumbai residential rental yield is approximately:",opts:["5–6%","1.5–2.5%","8–10%"],ans:1},{q:"Nifty 50 historical CAGR vs Mumbai real estate:",opts:["Equal","Nifty 50 higher","Real estate higher"],ans:1}],
+    };
+    let currentQuiz = [];
+    let quizTopicId  = '';
+    let qIndex       = 0;
+    let score        = 0;
+    let quizAnswered = false;
+    let quizCount    = parseInt(localStorage.getItem('quizCount') || '0');
+
+    function startQuiz(topicId){
+      const qs = QUIZ[topicId];
+      if(!qs || !qs.length){ showXPToast(0,'No quiz for this topic yet — try another!'); return; }
+      currentQuiz  = qs;
+      quizTopicId  = topicId;
+      qIndex       = 0;
+      score        = 0;
+      quizAnswered = false;
+      $('quizModal').classList.remove('hidden');
+      const t = CATEGORIES[activeCategory]?.topics.find(t=>t.id===topicId);
+      $('quizTitle').textContent = `🧠 ${t ? t.title : 'Quiz'}`;
+      showQ();
+    }
+    function closeQuiz(){
+      $('quizModal').classList.add('hidden');
+      /* restore body if we showed result */
+      $('quizBody').innerHTML = `<div class="quiz-q" id="quizQ"></div><div class="quiz-options" id="quizOptions"></div><button class="quiz-next" id="quizNext" onclick="nextQ()" disabled>Next →</button>`;
+    }
+    function showQ(){
+      const q = currentQuiz[qIndex];
+      const total = currentQuiz.length;
+      $('quizProg').textContent = `${qIndex+1} / ${total}`;
+      $('quizProgFill').style.width = ((qIndex+1)/total*100) + '%';
+      $('quizQ').textContent = q.q;
+      quizAnswered = false;
+      const nxt = $('quizNext'); if(nxt){ nxt.disabled = true; nxt.textContent = qIndex === total-1 ? 'Finish 🎉' : 'Next →'; }
+      $('quizOptions').innerHTML = q.opts.map((opt,i)=>
+        `<button class="quiz-opt" onclick="checkAns(${i})">${opt}</button>`
+      ).join('');
+    }
+    function checkAns(i){
+      if(quizAnswered) return;
+      quizAnswered = true;
+      const q = currentQuiz[qIndex];
+      const btns = document.querySelectorAll('.quiz-opt');
+      btns.forEach((b,idx)=>{
+        b.classList.add(idx === q.ans ? 'correct' : 'disabled');
+        if(idx === i && i !== q.ans) b.classList.add('wrong');
+      });
+      if(i === q.ans) score++;
+      const nxt = $('quizNext'); if(nxt) nxt.disabled = false;
+    }
+    function nextQ(){
+      if(!quizAnswered) return;
+      qIndex++;
+      if(qIndex < currentQuiz.length){
+        showQ();
+      } else {
+        finishQuiz();
+      }
+    }
+    function finishQuiz(){
+      const total  = currentQuiz.length;
+      const earned = score * 20;
+      const pct    = Math.round(score/total*100);
+      const grade  = pct === 100 ? '🏆 Perfect!' : pct >= 70 ? '🎉 Great job!' : pct >= 40 ? '👍 Good effort!' : '📚 Keep learning!';
+      saveXP(earned, `Quiz: ${score}/${total}`);
+      quizCount++;
+      localStorage.setItem('quizCount', quizCount);
+      if(quizCount >= 1) unlockBadge('Starter', '🌱');
+      if(quizCount >= 5) unlockBadge('Learner', '📚');
+      if(pct === 100)    unlockBadge('Quiz Ace', '🎯');
+      if(pct === 100 && quizCount >= 3) unlockBadge('Top Scorer', '🏆');
+      $('quizBody').innerHTML = `
+        <div class="quiz-result">
+          <div class="qr-score">${score}/${total}</div>
+          <div class="qr-label">${grade}</div>
+          <div class="qr-xp">⚡ +${earned} XP earned</div>
+          <div class="qr-msg">You answered ${score} of ${total} questions correctly (${pct}%). ${pct>=70 ? 'Excellent understanding!' : 'Review the topic and try again for a higher score.'}</div>
+          <div class="qr-actions">
+            <button class="quiz-next" style="width:auto;padding:12px 22px" onclick="closeQuiz()">Done</button>
+            <button class="cert-close-btn" onclick="startQuiz('${quizTopicId}')">Retry</button>
+          </div>
+        </div>`;
+    }
+
+    /* ══════════════════════════════════════
+       CERTIFICATION
+    ══════════════════════════════════════ */
+    function generateCert(){
+      const name = prompt('Enter your name for the certificate:');
+      if(!name || !name.trim()) return;
+      const total   = getTotalDone();
+      const lvl     = getXPLevel();
+      const today   = new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+      $('certName').textContent   = name.trim();
+      $('certDate').textContent   = `Issued on ${today}`;
+      $('certMeta').innerHTML = `
+        <div class="cert-meta-item"><div class="cmi-label">Level</div><div class="cmi-val">${lvl}</div></div>
+        <div class="cert-meta-item"><div class="cmi-label">XP Earned</div><div class="cmi-val">${xp} XP</div></div>
+        <div class="cert-meta-item"><div class="cmi-label">Topics Completed</div><div class="cmi-val">${total}+</div></div>
+        <div class="cert-meta-item"><div class="cmi-label">Day Streak</div><div class="cmi-val">🔥 ${streak} days</div></div>`;
+      $('certBadges').innerHTML = badges.map(b=>`<span class="badge-chip">${BADGE_DEFS[b]||'🏅'} ${b}</span>`).join('');
+      $('certModal').classList.remove('hidden');
+      saveXP(25, 'Certificate generated!');
+    }
+    function closeCert(){
+      $('certModal').classList.add('hidden');
+    }
+    function printCert(){
+      const original = document.body.innerHTML;
+      const card     = $('certCard').outerHTML;
+      document.body.innerHTML = `<style>body{margin:0;background:#060915;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:Poppins,sans-serif}.cert-card{max-width:600px;padding:40px;border-radius:28px;text-align:center;background:linear-gradient(180deg,#0f1830,#090e22);border:1px solid rgba(255,214,106,.25)}.cert-name{font-size:36px;font-weight:800;background:linear-gradient(135deg,#00d4ff,#7b61ff);-webkit-background-clip:text;color:transparent}.cert-title{font-size:28px;font-weight:800;color:#e8f4ff;margin-bottom:4px}.cert-subtitle{color:#6b7fa3;font-size:14px;margin-bottom:18px}.cert-meta{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:16px}.cert-meta-item{padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:13px;font-weight:800;color:#e8f4ff}.cmi-label{color:#6b7fa3;font-size:11px;text-transform:uppercase;margin-bottom:2px}.cert-emblem{font-size:48px;margin-bottom:10px}.cert-date{color:#6b7fa3;font-size:12px;margin-bottom:14px}.cert-badge-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.badge-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;background:rgba(255,214,106,.12);border:1px solid rgba(255,214,106,.25);color:#ffd66a}</style>${card}`;
+      window.print();
+      document.body.innerHTML = original;
+      location.reload();
+    }
+
     /* ── INIT ── */
     renderTabs();
     renderContent();
@@ -1916,6 +2345,11 @@
     renderAIHistory();
     updateLevel();
     renderLearningPath();
+    /* gamification */
+    initStreak();
+    initDailyGoal();
+    updateXPUI();
+    renderBadges();
   </script>
   <script>
     function $$(id){ return document.getElementById(id); }
@@ -1935,5 +2369,46 @@
       document.getElementById("mobileDrawer")?.classList.toggle("open");
     }
   </script>
+  <!-- ── QUIZ MODAL ── -->
+  <div class="quiz-overlay hidden" id="quizModal">
+    <div class="quiz-box">
+      <div class="quiz-head">
+        <h3 id="quizTitle">&#x1F9E0; Knowledge Quiz</h3>
+        <button class="quiz-close" onclick="closeQuiz()">&#x2715;</button>
+      </div>
+      <div class="quiz-meta">
+        <span class="quiz-prog" id="quizProg">1 / 3</span>
+        <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quizProgFill" style="width:33%"></div></div>
+      </div>
+      <div class="quiz-body" id="quizBody">
+        <div class="quiz-q" id="quizQ"></div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <button class="quiz-next" id="quizNext" onclick="nextQ()" disabled>Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CERTIFICATE MODAL ── -->
+  <div class="cert-overlay hidden" id="certModal">
+    <div class="cert-card" id="certCard">
+      <div class="cert-emblem">&#x1F3C6;</div>
+      <div class="cert-title">Certificate of Completion</div>
+      <div class="cert-subtitle">InvestPercent Financial Education Platform</div>
+      <div class="cert-name" id="certName">Your Name</div>
+      <div style="color:var(--muted);font-size:14px;margin-bottom:16px">has successfully completed the</div>
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em;margin-bottom:18px;color:var(--cyan)">Financial Learning Program</div>
+      <div class="cert-meta" id="certMeta"></div>
+      <div class="cert-date" id="certDate"></div>
+      <div class="cert-badge-row" id="certBadges"></div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="quiz-next" style="width:auto;padding:12px 28px" onclick="closeCert()">Close</button>
+        <button class="cert-close-btn" onclick="printCert()">&#x1F5A8;&#xFE0F; Print / Save PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── XP TOAST ── -->
+  <div class="xp-toast" id="xpToast">&#x26A1; +0 XP earned!</div>
+
 </body>
 </html>
