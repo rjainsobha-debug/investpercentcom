@@ -291,6 +291,70 @@
       .profile-panel{gap:10px}
       .pp-field{min-width:calc(50% - 5px)}
     }
+
+    /* ── Recommendation Bar ── */
+    .rec-bar{
+      margin-bottom:14px;padding:14px 20px;border-radius:18px;
+      background:linear-gradient(135deg,rgba(0,230,118,.07),rgba(0,212,255,.07));
+      border:1px solid rgba(0,230,118,.2);
+      display:none;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    }
+    .rec-bar.visible{display:flex}
+    .rec-bar-text{font-size:14px;font-weight:600;color:#d8f5e8;flex:1;min-width:220px;line-height:1.6}
+    .rec-bar-text strong{color:var(--green);font-weight:800}
+    .rec-apply-btn{
+      background:linear-gradient(135deg,#00e676,#00d4ff);color:#071120;border:none;
+      border-radius:11px;padding:9px 20px;font-size:13px;font-weight:800;
+      cursor:pointer;white-space:nowrap;transition:.2s ease;
+    }
+    .rec-apply-btn:hover{transform:translateY(-1px);opacity:.9}
+
+    /* ── Optimize Button ── */
+    .opt-btn{
+      width:100%;margin-bottom:14px;padding:12px 16px;border-radius:14px;
+      background:linear-gradient(135deg,rgba(123,97,255,.1),rgba(79,163,255,.09));
+      border:1px solid rgba(123,97,255,.25);color:var(--violet);
+      font-size:14px;font-weight:800;cursor:pointer;transition:.2s ease;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+    .opt-btn:hover{background:linear-gradient(135deg,rgba(123,97,255,.2),rgba(79,163,255,.17));transform:translateY(-1px)}
+
+    /* ── Goal Progress Bar ── */
+    .goal-progress{
+      padding:14px;border-radius:16px;margin-bottom:14px;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+      display:none;
+    }
+    .goal-progress.visible{display:block}
+    .gp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+    .gp-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+    .gp-pct{font-size:13px;font-weight:800;color:var(--green)}
+    .gp-pct.over{color:var(--cyan)}
+    .gp-track{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+    .gp-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width .45s ease}
+    .gp-fill.over{background:linear-gradient(90deg,#00e676,#00d4ff)}
+    .gp-status{margin-top:8px;font-size:12px;color:var(--muted);font-weight:600}
+    .gp-status.hit{color:var(--green)}
+
+    /* ── Confidence Score Band ── */
+    .score-band{
+      padding:13px 15px;border-radius:16px;margin-bottom:14px;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .score-band .sb-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+    .score-bar-mini{height:5px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+    .score-bar-fill{height:100%;border-radius:999px;transition:width .45s ease}
+    .score-bar-fill.high{background:linear-gradient(90deg,#00d4ff,#00e676)}
+    .score-bar-fill.medium{background:linear-gradient(90deg,#ffd76a,#ff9f00)}
+    .score-bar-fill.low{background:linear-gradient(90deg,#ff607d,#ff9f00)}
+    .score-chip-lg{
+      padding:7px 16px;border-radius:999px;font-size:14px;font-weight:800;
+      border-width:1px;border-style:solid;white-space:nowrap;text-align:center;
+    }
+    .score-chip-lg.high{color:var(--green);border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.09)}
+    .score-chip-lg.medium{color:var(--gold);border-color:rgba(255,215,106,.3);background:rgba(255,215,106,.08)}
+    .score-chip-lg.low{color:var(--red);border-color:rgba(255,96,125,.3);background:rgba(255,96,125,.07)}
   </style>
 </head>
 <body>
@@ -372,6 +436,12 @@
       </div>
     </section>
 
+    <!-- ═══ LIVE AI RECOMMENDATION BAR ═══ -->
+    <div class="rec-bar" id="recBar">
+      <div class="rec-bar-text" id="recBarText">Analysing your profile…</div>
+      <button class="rec-apply-btn" id="recApplyBtn" onclick="applyRecPlan()">Apply Plan</button>
+    </div>
+
     <section class="layout">
       <aside class="panel controls" id="controlsAnchor">
         <div class="panel-head">
@@ -383,6 +453,15 @@
         </div>
 
         <div id="dynamicControls"></div>
+
+        <!-- ── Optimize My Plan button ── -->
+        <button class="opt-btn" id="optimizeBtn" onclick="optimizePlan()">⚡ Optimize My Plan</button>
+
+        <!-- ── Confidence Score ── -->
+        <div class="score-band" id="scoreBand"></div>
+
+        <!-- ── Goal Progress ── -->
+        <div class="goal-progress" id="goalProgress"></div>
 
         <div style="margin-bottom:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
@@ -633,6 +712,8 @@
     let taxRate    = 0;       /* 0 | 0.05 | 0.20 | 0.30 */
     let goalAmount = 0;       /* 0 = disabled */
     const INFLATION_REF = 6; /* reference inflation for real-return calcs */
+    let _lastProjected = 0;  /* last computed projected value, for goal progress */
+    let _recBarPlan    = null;/* last recommendation bar plan, for Apply Plan */
 
     /* ═══ USER PROFILE ═══ */
     let userProfile = {
@@ -679,6 +760,7 @@
 
     function onProfileChange(){
       Object.assign(userProfile, readProfileForm());
+      updateRecBar(); /* ADD 5: smart auto trigger on profile change */
     }
 
     /* ═══ RULE-BASED AI CHAT ENGINE ═══ */
@@ -1041,6 +1123,7 @@
     ═══════════════════════════════════════════ */
     function setTop(total, gain, rate, opts){
       opts = opts || {};
+      _lastProjected = total; /* capture for goal progress bar */
       $("topProjected").textContent = fmtShort(total);
       $("topGains").textContent     = fmtShort(gain);
       $("topRate").textContent      = typeof rate === "number" ? rate.toFixed(1).replace(/\.0$/,"") + "%" : rate;
@@ -1649,6 +1732,158 @@
       }
 
       runAutoAdvisor();
+
+      /* ADD 5: smart auto trigger on every slider/calc change */
+      updateRecBar();
+      renderGoalProgress();
+      renderConfidenceScore();
+    }
+
+    /* ═══════════════════════════════════════════
+       LEVEL 2.5 — VISIBLE AI MODE
+    ═══════════════════════════════════════════ */
+
+    /* ADD 1: Live Recommendation Bar */
+    function updateRecBar(){
+      const bar = $("recBar");
+      if(!bar) return;
+      const pro     = userProfile;
+      const s       = state[active];
+      const monthly = pro.savings || (pro.income ? Math.round(pro.income * 0.2) : null);
+      const hasData = monthly || pro.risk || pro.goal;
+
+      if(!hasData){
+        bar.classList.remove("visible");
+        return;
+      }
+      bar.classList.add("visible");
+
+      /* horizon from profile goal type + current slider */
+      const sliderYrs = s.years || s.tenure || 5;
+      const horizon = pro.goal === "Short" ? Math.min(sliderYrs, 3)
+                    : pro.goal === "Long"  ? Math.max(sliderYrs, 7)
+                    : sliderYrs;
+
+      /* risk from profile, or infer from active calc */
+      const riskInferred = ["scss","nsc","kvp","post","fd"].includes(active) ? "Low"
+                         : active === "compare" ? "Medium" : "Medium";
+      const risk = pro.risk || riskInferred;
+
+      /* allocation matrix */
+      let alloc;
+      if(risk === "High"){
+        alloc = horizon <= 3 ? {fd:40,rd:30,sip:20,nsc:10,scss:0}
+              : horizon <= 7 ? {fd:20,rd:20,sip:50,nsc:10,scss:0}
+              :                {fd:10,rd:10,sip:70,nsc:10,scss:0};
+      } else if(risk === "Low"){
+        const senior = pro.age && pro.age >= 60;
+        alloc = senior   ? {fd:30,rd:10,sip:0, nsc:20,scss:40}
+              :              {fd:40,rd:30,sip:10,nsc:20,scss:0};
+      } else {
+        alloc = horizon <= 3 ? {fd:35,rd:35,sip:20,nsc:10,scss:0}
+              : horizon <= 7 ? {fd:25,rd:25,sip:40,nsc:10,scss:0}
+              :                {fd:15,rd:15,sip:60,nsc:10,scss:0};
+      }
+
+      const inv = monthly || 10000;
+      const parts = [];
+      if(alloc.sip  > 0) parts.push(`SIP&nbsp;<strong>${alloc.sip}%</strong>&nbsp;(${fmtCurrency(Math.round(inv*alloc.sip/100))})`);
+      if(alloc.fd   > 0) parts.push(`FD&nbsp;<strong>${alloc.fd}%</strong>&nbsp;(${fmtCurrency(Math.round(inv*alloc.fd/100))})`);
+      if(alloc.rd   > 0) parts.push(`RD&nbsp;<strong>${alloc.rd}%</strong>&nbsp;(${fmtCurrency(Math.round(inv*alloc.rd/100))})`);
+      if(alloc.nsc  > 0) parts.push(`NSC&nbsp;<strong>${alloc.nsc}%</strong>`);
+      if(alloc.scss > 0) parts.push(`SCSS&nbsp;<strong>${alloc.scss}%</strong>`);
+
+      const riskLabel = risk;
+      $("recBarText").innerHTML = monthly
+        ? `Based on your profile (<strong>${riskLabel} risk</strong>, <strong>${horizon}&nbsp;yr</strong>): invest <strong>${fmtCurrency(inv)}/month</strong> → ${parts.join(" &nbsp;|&nbsp; ")}`
+        : `Profile hint (<strong>${riskLabel} risk</strong>, <strong>${horizon}&nbsp;yr</strong>): ${parts.join(" &nbsp;|&nbsp; ")}`;
+
+      /* store plan so Apply Plan button can use it */
+      _recBarPlan = {
+        alloc, monthly: inv, horizon,
+        recMode: alloc.sip >= 50 ? "compare" : alloc.scss >= 30 ? "scss" : alloc.nsc >= 20 ? "nsc" : "fd"
+      };
+    }
+
+    function applyRecPlan(){
+      if(!_recBarPlan) return;
+      _lastChatPlan = _recBarPlan;
+      applyAutoFill();
+      const btn = $("recApplyBtn");
+      if(btn){
+        btn.textContent = "Applied ✓";
+        btn.style.background = "rgba(0,230,118,.18)";
+        btn.style.color = "var(--green)";
+        setTimeout(()=>{
+          btn.textContent = "Apply Plan";
+          btn.style.background = "";
+          btn.style.color = "";
+        }, 2000);
+      }
+    }
+
+    /* ADD 2: Optimize My Plan button */
+    function optimizePlan(){
+      const pro = userProfile;
+      const s   = state[active];
+      const monthly  = pro.savings || (pro.income ? Math.round(pro.income * 0.2) : null) || (s.monthly || s.amount || 10000);
+      const riskWord = pro.risk  ? pro.risk.toLowerCase() + " risk" : "medium risk";
+      const goalWord = pro.goal  ? pro.goal.toLowerCase() + " term" : "";
+      const yrs      = s.years  || 5;
+      const synQ     = `${monthly} monthly investment ${riskWord} ${goalWord} ${yrs} years horizon`;
+      const advice   = generateChatAdvice(synQ);
+      _lastChatPlan  = advice;
+      applyAutoFill();
+      const btn = $("optimizeBtn");
+      if(btn){
+        btn.innerHTML = "⚡ Optimized!";
+        setTimeout(()=>{ btn.innerHTML = "⚡ Optimize My Plan"; }, 2200);
+      }
+    }
+
+    /* ADD 3: Goal Progress Bar */
+    function renderGoalProgress(){
+      const el = $("goalProgress");
+      if(!el) return;
+      if(!goalAmount || goalAmount <= 0 || _lastProjected <= 0){
+        el.classList.remove("visible");
+        return;
+      }
+      el.classList.add("visible");
+      const pct  = Math.min(150, (_lastProjected / goalAmount) * 100);
+      const pctD = Math.min(100, pct).toFixed(0);
+      const over = pct >= 100;
+      const pctFill = Math.min(100, pct).toFixed(1);
+      const status = over
+        ? `Goal reached — projected ${fmtShort(_lastProjected)} exceeds ${fmtShort(goalAmount)} ✓`
+        : `${fmtShort(_lastProjected)} of ${fmtShort(goalAmount)} — ${fmtShort(goalAmount - _lastProjected)} more to go`;
+      el.innerHTML = `
+        <div class="gp-header">
+          <div class="gp-label">Goal Progress</div>
+          <div class="gp-pct${over?" over":""}">${pctD}%</div>
+        </div>
+        <div class="gp-track"><div class="gp-fill${over?" over":""}" style="width:${pctFill}%"></div></div>
+        <div class="gp-status${over?" hit":""}">${status}</div>`;
+    }
+
+    /* ADD 4: Confidence Score Display */
+    function renderConfidenceScore(){
+      const el = $("scoreBand");
+      if(!el) return;
+      const s    = state[active];
+      const rate = s.rate || s.fdrate || s.siprate || 7;
+      const yrs  = s.years || 5;
+      const sc   = calcScore(rate, yrs, taxRate);
+      const tier = sc >= 70 ? "high" : sc >= 45 ? "medium" : "low";
+      const tlbl = tier === "high" ? "Strong Plan" : tier === "medium" ? "Solid — can improve" : "Review Inputs";
+      el.innerHTML = `
+        <div style="flex:1">
+          <div class="sb-label">Plan Score</div>
+          <div class="score-bar-mini" style="margin-top:6px">
+            <div class="score-bar-fill ${tier}" style="width:${sc}%"></div>
+          </div>
+        </div>
+        <div class="score-chip-lg ${tier}">${sc}<span style="font-size:10px;font-weight:700;opacity:.65">/100</span><br><span style="font-size:11px">${tlbl}</span></div>`;
     }
 
     /* ═══════════════════════════════════════════
