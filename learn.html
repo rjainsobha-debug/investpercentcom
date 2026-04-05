@@ -240,6 +240,88 @@
     .ba-copy p{margin:0;color:var(--muted);font-size:14px;line-height:1.6;max-width:560px}
     .ba-actions{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
 
+    /* USER PROGRESS LEVEL */
+    .user-progress{
+      display:flex;align-items:center;gap:10px;padding:10px 16px;margin-bottom:10px;
+      border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);
+      font-size:13px;font-weight:700;color:var(--muted)
+    }
+    .user-progress .level-badge{
+      padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800;
+      background:var(--grad);color:#071120
+    }
+    .user-progress .level-bar-wrap{flex:1;max-width:180px;height:5px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+    .user-progress .level-bar{height:100%;border-radius:999px;background:var(--grad);transition:width .5s ease}
+
+    /* LEARNING PATH */
+    .learning-path{
+      display:flex;align-items:center;gap:0;flex-wrap:nowrap;overflow-x:auto;
+      padding:12px 0 4px;margin-bottom:4px;
+      scrollbar-width:none
+    }
+    .learning-path::-webkit-scrollbar{display:none}
+    .lp-step{
+      display:flex;align-items:center;gap:0;flex-shrink:0
+    }
+    .lp-node{
+      padding:7px 14px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;transition:.2s ease;
+      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--muted)
+    }
+    .lp-node:hover{color:var(--text);border-color:var(--line2)}
+    .lp-node.done{background:rgba(0,230,118,.1);border-color:rgba(0,230,118,.25);color:var(--green)}
+    .lp-node.current{background:var(--grad);color:#071120;border-color:transparent}
+    .lp-arrow{color:var(--muted);font-size:14px;padding:0 6px;flex-shrink:0}
+
+    /* TRENDING NOW */
+    .trending-section{
+      margin-bottom:14px;padding:14px;border-radius:16px;
+      background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)
+    }
+    .trending-label{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+    .trending-items{display:flex;flex-wrap:wrap;gap:8px}
+    .trend-item{
+      display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:12px;cursor:pointer;transition:.2s ease;
+      background:rgba(255,214,106,.07);border:1px solid rgba(255,214,106,.15);
+      font-size:13px;font-weight:700;color:var(--gold)
+    }
+    .trend-item:hover{background:rgba(255,214,106,.14);border-color:rgba(255,214,106,.3)}
+
+    /* WHY THIS MATTERS BOX */
+    .why-box{
+      margin-top:16px;padding:16px;border-radius:14px;
+      background:radial-gradient(circle at top left, rgba(0,230,118,.08), transparent 45%), rgba(255,255,255,.025);
+      border:1px solid rgba(0,230,118,.14)
+    }
+    .why-box .why-title{font-size:13px;font-weight:800;color:var(--green);margin-bottom:6px}
+    .why-box .why-text{color:#c8f0dc;font-size:13px;line-height:1.65;margin:0 0 12px}
+    .why-box .warn-title{font-size:13px;font-weight:800;color:var(--gold);margin-bottom:6px}
+    .why-box .warn-text{color:#f5e4b0;font-size:13px;line-height:1.65;margin:0}
+
+    /* NEXT STEP NUDGE */
+    .next-step-box{
+      display:flex;align-items:center;gap:10px;margin-top:14px;padding:12px 14px;border-radius:14px;
+      background:rgba(79,163,255,.07);border:1px solid rgba(79,163,255,.18);cursor:pointer;transition:.2s ease
+    }
+    .next-step-box:hover{background:rgba(79,163,255,.13);border-color:rgba(79,163,255,.3)}
+    .next-step-box .ns-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--blue)}
+    .next-step-box .ns-title{font-size:14px;font-weight:800;color:var(--text)}
+    .next-step-box .ns-arrow{font-size:18px;margin-left:auto;color:var(--blue)}
+
+    /* EXPAND ANIMATION */
+    .topic-body{
+      display:none;padding:0 16px 18px;border-top:1px solid rgba(255,255,255,.05);
+      animation:expandIn .2s ease
+    }
+    @keyframes expandIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+    /* AI FOLLOW-UP */
+    .ai-followup{
+      display:flex;align-items:center;gap:7px;margin-top:8px;padding:8px 12px;border-radius:12px;
+      background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.14);
+      font-size:12px;font-weight:700;color:var(--cyan);cursor:pointer;transition:.2s ease
+    }
+    .ai-followup:hover{background:rgba(0,212,255,.12)}
+
     /* DECISION MODE TOGGLE */
     .mode-toggle{display:flex;align-items:center;gap:0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.03)}
     .mode-btn{padding:9px 14px;font-size:13px;font-weight:800;background:transparent;border:none;color:var(--muted);cursor:pointer;transition:.2s ease;border-radius:0}
@@ -424,6 +506,13 @@
         <span class="search-count" id="searchCount"></span>
       </div>
 
+      <div class="user-progress">
+        <span>&#x1F9E0; Your Financial Level:</span>
+        <span class="level-badge" id="userLevel">Beginner</span>
+        <div class="level-bar-wrap"><div class="level-bar" id="levelBar" style="width:8%"></div></div>
+        <span id="levelPct" style="font-size:11px;font-weight:800;color:var(--muted)">8%</span>
+      </div>
+
       <div class="rec-bar" id="recBar">
         <span class="rec-label">&#x1F3AF; Recommended:</span>
         <span class="rec-chip" id="rec1" onclick="switchCategory('basics')">&#x2192; Basics of Finance</span>
@@ -456,11 +545,25 @@
       </div>
     </section>
 
+    <div class="learning-path" id="learningPath"></div>
+
     <div class="learn-layout" id="learnContent">
       <div class="panel content-panel">
         <div id="continueBar" class="continue-bar" style="display:none">
           <span class="cl-label">&#x1F4DA; Continue:</span>
           <div id="continueItems"></div>
+        </div>
+
+        <div class="trending-section">
+          <div class="trending-label">&#x1F525; Trending Now</div>
+          <div class="trending-items">
+            <div class="trend-item" onclick="openTopicById('sip','investing')">&#x1F4C8; SIP Strategy 2025</div>
+            <div class="trend-item" onclick="openTopicById('oldnew','tax')">&#x1F9FE; Tax Saving Before March</div>
+            <div class="trend-item" onclick="openTopicById('mftypes','mf')">&#x1F4B0; Best Mutual Funds</div>
+            <div class="trend-item" onclick="openTopicById('whatisstock','stocks')">&#x1F680; How to Start Investing</div>
+            <div class="trend-item" onclick="openTopicById('fire','advanced')">&#x1F525; FIRE at 40</div>
+            <div class="trend-item" onclick="openTopicById('termins','insurance')">&#x1F6E1; Term Insurance Guide</div>
+          </div>
         </div>
 
         <div class="popular-strip">
@@ -1266,6 +1369,7 @@
       renderTabs();
       renderContent();
       updateRecommendations(key);
+      renderLearningPath();
     }
 
     /* ── RECOMMENDATIONS ── */
@@ -1337,6 +1441,68 @@
       loadContinueBar();
     }
 
+    /* ── WHY-BOX DATA per topic ── */
+    const WHY_DATA = {
+      money:        {why:'Money is the foundation of every financial decision you will ever make. Understanding it prevents you from being manipulated by bad products.',warn:'Without this clarity, you may hold cash that silently loses value every single year.'},
+      inflation:    {why:'Inflation is the #1 silent destroyer of Indian savings. Knowing this forces you to invest — not just save.',warn:'At 6% inflation, ₹10L today will feel like ₹5.5L in 10 years. FD at 4% means you\'re getting poorer every year.'},
+      tvm:          {why:'Time Value of Money is the formula behind every SIP, home loan, and retirement plan. Mastering it gives you a superpower.',warn:'Waiting 5 years to start investing at 25 can cost you ₹1–2 Cr in final corpus at retirement.'},
+      interest:     {why:'Compound interest is how real wealth is built. It\'s also how debt spirals out of control. Both sides matter.',warn:'Breaking a 10-year SIP after 5 years eliminates the compounding hockey stick — your returns reset to near-zero.'},
+      rule72:       {why:'This simple mental shortcut helps you evaluate any financial product in seconds — without a calculator.',warn:'Credit card debt at 36% doubles what you owe in 2 years. Without this knowledge, debt traps are invisible.'},
+      saveinvest:   {why:'Most Indians over-save and under-invest. Understanding the difference can create ₹40–75L extra wealth over 20 years.',warn:'₹10L sitting in a savings account at 4% for 20 years loses ₹74L vs the same money in equity MFs at 12%.'},
+      risk:         {why:'Matching risk to your timeline prevents panic-selling during market falls — the #1 cause of wealth destruction.',warn:'Taking too little risk means inflation wins. Too much risk means panic selling at the bottom locks in permanent losses.'},
+      assetclasses: {why:'Owning multiple asset classes means your portfolio survives market crashes, inflation spikes, and currency falls simultaneously.',warn:'100% in equity = possible 50% portfolio crash. 100% in FD = guaranteed inflation loss. Diversification is not optional.'},
+      sip:          {why:'SIP is the most accessible wealth-building tool for salaried Indians. ₹5,000/month consistently built over 30 years = ₹1.76 Cr.',warn:'Skipping SIP during market falls is the most common and most costly mistake. You miss the cheapest units.'},
+      lumpsum:      {why:'Knowing when to use lump sum vs SIP prevents both timing risk and missed opportunity.',warn:'Investing a large sum at a market peak without STP can set back your returns by 3–5 years.'},
+      compounding:  {why:'Compounding is the most powerful force in personal finance. Starting 10 years early can double your final corpus.',warn:'Every year you delay starting a SIP, you lose a compounding cycle. At 12%, that cycle is worth 12% of everything you\'ll accumulate.'},
+      portfolio:    {why:'Asset allocation is responsible for over 90% of long-term investment returns. Getting it right matters more than stock picking.',warn:'An unreviewed portfolio silently drifts from 60% equity to 80%+ equity during bull markets, dramatically increasing risk.'},
+      diversification:{why:'Diversification reduces portfolio risk without reducing expected returns — the only free lunch in finance.',warn:'10 large-cap funds is not diversification. If Nifty falls 40%, all 10 fall 40%. True diversification requires multiple asset classes.'},
+      goalbased:    {why:'Goal-based investing removes emotion and gives every rupee a purpose, dramatically improving discipline and outcomes.',warn:'Without goal clarity, you will redeem investments for wrong reasons and never build meaningful wealth.'},
+      behavioral:   {why:'Your psychology controls your investment returns more than any market factor. This is the hardest but highest-leverage knowledge.',warn:'DALBAR study: the average investor earns 5% when markets return 10% — purely due to emotional buy-high-sell-low behavior.'},
+      whatisstock:  {why:'Understanding stocks as business ownership changes how you think. You stop chasing price moves and start evaluating companies.',warn:'Treating stocks like lottery tickets leads to speculative losses. 90%+ of day traders lose money over 3-year periods.'},
+      nsebse:       {why:'Knowing how exchanges work helps you understand settlement risks, trading hours, and index-based investing.',warn:'Confusing BSE and NSE products, or misunderstanding T+1 settlement, can lead to failed trades and unexpected charges.'},
+      marketcap:    {why:'Market cap classification determines risk level. Choosing small caps without understanding the risk profile can cause 60–70% drawdowns.',warn:'Overweighting small caps without a long enough horizon forces panic selling during inevitable downturns.'},
+      pe:           {why:'P/E ratio is the single most used valuation metric. Buying at high P/E without growth justification is the most common overpaying mistake.',warn:'Buying Nifty at P/E of 30+ has historically led to flat or negative returns over the next 2–3 years.'},
+      fundamental:  {why:'Fundamental analysis separates quality businesses from value traps. Without it, you\'re guessing.',warn:'Most retail losses in direct stocks come from buying declining businesses purely because price dropped — without reading financials.'},
+      technical:    {why:'Technical analysis helps time entries and exits. Combined with fundamentals, it improves your average buying price significantly.',warn:'Relying on technical patterns alone without understanding business quality leads to buying deteriorating businesses at "support" levels.'},
+      ipo:          {why:'IPOs can be great opportunities — but most retail investors apply blindly based on grey market premium without reading the DRHP.',warn:'40% of India IPOs (2010–2023) were below issue price after 2 years. Blind IPO investing destroys capital systematically.'},
+      mftypes:      {why:'Choosing the right fund category for your goal is more important than choosing the right fund within a category.',warn:'A debt fund for a 15-year retirement goal and an equity fund for a 1-year goal are both wrong. Category mismatch destroys wealth.'},
+      equitydebt:   {why:'The equity-debt balance determines how much volatility you experience and how fast you grow. Getting this wrong is costly.',warn:'100% equity in a bear market can cause 40–50% portfolio loss. Without debt as buffer, panic selling locks in those losses.'},
+      expenseratio: {why:'Over 20 years, a 1% higher expense ratio costs you ₹17L+ on a ₹10L investment. It compounds silently against you.',warn:'Regular plan investors unknowingly lose 15–25% of their final corpus to distributor commissions vs direct plan investors.'},
+      nav:          {why:'Chasing low NAV is one of the most common and completely avoidable mutual fund mistakes.',warn:'Choosing a fund with NAV ₹10 over NAV ₹500 based on "cheapness" has no mathematical basis and leads to suboptimal fund selection.'},
+      directregular:{why:'Switching to direct plans is one of the highest-return, zero-risk actions available to any mutual fund investor.',warn:'Every year you stay in a regular plan, you donate 0.5–1.5% of your wealth to a distributor for no additional service.'},
+      rentalyield:  {why:'Understanding rental yield prevents the common mistake of buying property for income when better alternatives exist.',warn:'Locking ₹1 Cr in a Mumbai flat for 2% yield when Nifty gives 12% means losing ₹10L+ in opportunity cost every year.'},
+      buyrent:      {why:'The buy-vs-rent decision is one of the biggest financial decisions of your life. Getting it wrong has decades-long consequences.',warn:'Buying a home primarily as an "investment" in a city with >20× price-to-rent ratio destroys wealth vs renting and investing the difference.'},
+      homeloan:     {why:'Home loans are the largest liabilities most Indians ever take. Understanding interest math and prepayment saves lakhs.',warn:'Paying minimum EMI without prepayment on a ₹50L loan can cost ₹40–60L extra in interest over the full tenure.'},
+      appreciation: {why:'Location selection determines 80% of real estate returns. Infrastructure research before buying can 3–5× appreciation vs wrong locations.',warn:'Buying in areas without infrastructure development based on "gut feel" or agent advice often results in flat or negative real returns.'},
+      rera:         {why:'RERA protection has recovered billions for homebuyers. Not checking RERA before booking is pure avoidable risk.',warn:'Non-RERA projects have caused thousands of crores in homebuyer losses. There is no legal recourse without registration.'},
+      oldnew:       {why:'Choosing the wrong tax regime can cost ₹20,000–1,50,000+ in excess taxes annually — money that could compound for decades.',warn:'Most people file the wrong regime because they don\'t calculate both. This is the easiest tax mistake to avoid.'},
+      capitalgains: {why:'Tax-aware investing can legally save ₹12,500–1,50,000 per year in capital gains tax through simple sell-rebuy strategies.',warn:'Selling a 3-year investment held for 11 months costs 20% STCG vs 12.5% LTCG — a meaningful, completely avoidable difference.'},
+      '80c':        {why:'80C, 80D, and NPS together can save ₹75,000–1,50,000 in annual taxes — which, invested wisely, compounds to significant wealth.',warn:'Not using 80C deductions is equivalent to paying ₹45,000–1,50,000 in voluntary excess tax every financial year.'},
+      hra:          {why:'HRA exemption is one of the most underused tax benefits for salaried employees — can save ₹40,000–1,00,000+ annually.',warn:'Many employees don\'t submit rent receipts or pay in cash — disqualifying them from HRA and paying excess tax unnecessarily.'},
+      gst:          {why:'GST literacy helps you make smarter purchasing decisions and reduce unnecessary tax leakage on financial products.',warn:'18% GST on mutual fund expense ratios and financial services quietly increases your effective cost of investing.'},
+      termins:      {why:'Term insurance is the cheapest way to protect your family from financial catastrophe. It is non-negotiable for any earning member.',warn:'Dying without term insurance can leave dependents with zero income and unresolved loans. ₹1 Cr cover costs just ₹8,000–12,000/year.'},
+      healthins:    {why:'Medical costs are the #1 cause of financial emergencies in India. Health insurance is the only protection.',warn:'A single hospitalisation without insurance can wipe out 5–10 years of savings. Employer cover is not portable — it lapses when you leave.'},
+      notinvestment:{why:'Understanding the insurance-investment trap can save you lakhs in mis-sold products and unlock better returns.',warn:'Keeping a mis-sold LIC endowment plan for 20 years when the IRR is 4–5% costs you ₹30–60L vs ELSS + term insurance.'},
+      claimratio:   {why:'Claim settlement ratio is the ultimate test of an insurance company. Choosing right saves financial disaster at the worst moment.',warn:'A company with 90% CSR means 10% of valid claims are rejected. At ₹1 Cr cover, that\'s a ₹10L expected loss per rejection.'},
+      fire:         {why:'FIRE gives you a mathematical target for financial freedom — not just vague aspirations.',warn:'Without a FIRE number, "retiring early" remains a dream with no plan. Most people underestimate required corpus by 50–100%.'},
+      passiveincome:{why:'Passive income streams are the only sustainable way to decouple time from money — the definition of financial freedom.',warn:'100% reliance on salary income means one job loss = financial emergency. Passive income is the buffer that prevents panic.'},
+      wealthpyramid:{why:'The pyramid framework prevents the common mistake of investing before protecting — which causes catastrophic losses.',warn:'Investing ₹5L in stocks before building emergency fund means one job loss or medical emergency forces selling at the worst time.'},
+      allocation:   {why:'Strategic asset allocation is the highest-leverage portfolio decision you can make — responsible for 90%+ of long-term returns.',warn:'Ignoring allocation and just picking random funds results in unpredictable, low risk-adjusted returns over the long term.'},
+      usindia:      {why:'The US market is 50%+ of global equity. Ignoring it means ignoring the world\'s most profitable companies.',warn:'India-only portfolios miss Apple, NVIDIA, Google, and Microsoft — the four companies that have created the most wealth in 20 years.'},
+      dollar:       {why:'Rupee depreciation of 3–4%/year is an invisible tax on every rupee you hold. Gold and US assets offset this completely.',warn:'₹100L held purely in INR assets loses ₹3–4L/year in real value vs global purchasing power. This is a 30-year compounding loss.'},
+      globaldiv:    {why:'Geographic diversification is the simplest way to reduce country-specific policy and currency risk in your portfolio.',warn:'100% India portfolio is vulnerable to policy changes, RBI decisions, and India-specific economic cycles that can last years.'},
+      aiinvesting:  {why:'AI is already reshaping markets. Understanding it prevents being caught on the wrong side of algorithmic trading.',warn:'Retail traders who don\'t understand algorithmic and high-frequency trading are routinely disadvantaged in price discovery.'},
+      roboadvisor:  {why:'Robo-advisors remove emotional decision-making and provide low-cost portfolio management for most financial situations.',warn:'Choosing the wrong robo-advisor (high fees, poor rebalancing) or blindly trusting algorithms without understanding allocations leads to subpar outcomes.'},
+      futurefinance:{why:'Staying ahead of financial technology trends means early access to better tools, lower costs, and new asset opportunities.',warn:'Ignoring open banking, CBDC, and AI tools means missing out on platforms that can save or earn you significantly more.'}
+    };
+
+    /* ── NEXT STEP MAP ── */
+    const NEXT_FLOW = {
+      basics:'investing', investing:'mf', mf:'stocks', stocks:'advanced',
+      advanced:'global', global:'ai', realestate:'tax', tax:'insurance',
+      insurance:'advanced', ai:'advanced'
+    };
+
     /* ── RENDER TOPICS ── */
     function renderTopics(topics, highlight){
       $('noResults').classList.add('hidden');
@@ -1346,9 +1512,17 @@
         return;
       }
       $('topicsGrid').innerHTML = topics.map(t=>{
-        const dd = DECISION_DATA[t.id] || {b:'Consider your current financial stage before acting.',a:'Build a systematic framework to evaluate this concept.'};
+        const dd  = DECISION_DATA[t.id] || {b:'Consider your current financial stage before acting.',a:'Build a systematic framework to evaluate this concept.'};
+        const wd  = WHY_DATA[t.id] || {why:'This concept directly impacts your wealth decisions. Ignoring it can cost lakhs over time.',warn:'You may make poor financial decisions, lose returns, or take unnecessary risks.'};
         const titleHl = highlight ? hlText(t.title, highlight) : t.title;
         const descHl  = highlight ? hlText(t.desc, highlight)  : t.desc;
+        const nextKey  = NEXT_FLOW[t.catKey || activeCategory];
+        const nextCfg  = nextKey && CATEGORIES[nextKey];
+        const nextHtml = nextCfg ? `
+          <div class="next-step-box" onclick="switchCategory('${nextKey}')">
+            <div><div class="ns-label">&#x1F449; Next Step</div><div class="ns-title">${nextCfg.title}</div></div>
+            <span class="ns-arrow">&#x2192;</span>
+          </div>` : '';
         return `
         <div class="topic-card" id="card-${t.id}">
           <div class="topic-header" onclick="toggleTopic('${t.id}')">
@@ -1364,6 +1538,12 @@
           <div class="topic-body">
             <div class="topic-content">
               ${t.body}
+              <div class="why-box">
+                <div class="why-title">&#x1F525; Why this matters to YOU</div>
+                <p class="why-text">${wd.why}</p>
+                <div class="warn-title">&#x26A0;&#xFE0F; If you ignore this</div>
+                <p class="warn-text">${wd.warn}</p>
+              </div>
               <div class="decision-callout${decisionMode?' visible':''}">
                 <div class="dc-label">&#x1F3AF; What should YOU do?</div>
                 <div class="dc-beginner"><strong>&#x1F7E2; Beginner</strong>${dd.b}</div>
@@ -1373,6 +1553,7 @@
                 <button class="qs-btn" onclick="toggleQuickSummary('${t.id}',event)">&#x26A1; Quick Summary</button>
               </div>
               <div class="qs-output" id="qs-${t.id}"></div>
+              ${nextHtml}
             </div>
           </div>
         </div>`;
@@ -1475,12 +1656,52 @@
       localStorage.setItem('learn_progress', JSON.stringify(raw));
       loadContinueBar();
       renderProgress();
+      updateLevel();
+      renderLearningPath();
     }
     function getProgressPct(key){
       const raw   = JSON.parse(localStorage.getItem('learn_progress') || '{}');
       const done  = Object.keys(raw[key] || {}).length;
       const total = CATEGORIES[key].topics.length;
       return total ? Math.round((done/total)*100) : 0;
+    }
+    function getTotalDone(){
+      const raw = JSON.parse(localStorage.getItem('learn_progress') || '{}');
+      return Object.values(raw).reduce((a,b)=>a+Object.keys(b).length, 0);
+    }
+    function calculateLevel(){
+      const total = getTotalDone();
+      if(total < 5)  return {label:'Beginner',    pct: Math.max(8, total*5)};
+      if(total < 15) return {label:'Learner',      pct: 25 + (total-5)*3};
+      if(total < 30) return {label:'Intermediate', pct: 55 + (total-15)*2};
+      if(total < 50) return {label:'Advanced',     pct: 85 + Math.min(total-30, 12)};
+      return {label:'Expert', pct:100};
+    }
+    function updateLevel(){
+      const lv = calculateLevel();
+      const el = $('userLevel'); if(el) el.textContent = lv.label;
+      const bar = $('levelBar'); if(bar) bar.style.width = lv.pct + '%';
+      const pct = $('levelPct'); if(pct) pct.textContent = lv.pct + '%';
+    }
+    function renderLearningPath(){
+      const raw  = JSON.parse(localStorage.getItem('learn_progress') || '{}');
+      const path = [
+        {key:'basics',    label:'Basics'},
+        {key:'investing', label:'Investing'},
+        {key:'mf',        label:'Mutual Funds'},
+        {key:'stocks',    label:'Stocks'},
+        {key:'advanced',  label:'Wealth'},
+      ];
+      const el = $('learningPath');
+      if(!el) return;
+      el.innerHTML = path.map((step, i)=>{
+        const done    = Object.keys(raw[step.key]||{}).length > 0;
+        const current = step.key === activeCategory;
+        const cls     = current ? 'lp-node current' : done ? 'lp-node done' : 'lp-node';
+        const check   = done && !current ? ' ✓' : '';
+        const arrow   = i < path.length-1 ? '<span class="lp-arrow">→</span>' : '';
+        return `<div class="lp-step"><span class="${cls}" onclick="switchCategory('${step.key}')">${step.label}${check}</span>${arrow}</div>`;
+      }).join('');
     }
     function loadContinueBar(){
       const raw = JSON.parse(localStorage.getItem('learn_progress') || '{}');
@@ -1586,49 +1807,83 @@
       addAIMessage(query, 'user');
       input.value = '';
       setTimeout(()=>{
-        const response = askAI(query);
+        const {response, followup} = getBestAnswer(query);
         addAIMessage(response, 'bot');
-      }, 280);
+        if(followup){
+          setTimeout(()=>{
+            const fu = document.createElement('div');
+            fu.className = 'ai-followup';
+            fu.innerHTML = `&#x1F449; You should also read: <strong>${followup.title}</strong>`;
+            fu.onclick = ()=>{ toggleAIPanel(); openTopicById(followup.id, followup.cat); };
+            $('aiMessages').appendChild(fu);
+            $('aiMessages').scrollTop = $('aiMessages').scrollHeight;
+          }, 400);
+        }
+      }, 260);
       addAIHistory(query);
     }
 
-    function askAI(query){
-      const q = query.toLowerCase();
+    /* ── SMART AI ENGINE ── */
+    function getBestAnswer(query){
+      const q = query.toLowerCase().trim();
       const allTopics = [];
       CATEGORY_KEYS.forEach(key=> CATEGORIES[key].topics.forEach(t=> allTopics.push({...t, catKey:key})));
 
-      const match = allTopics.find(t=>{
-        const kws = t.title.toLowerCase().split(' ');
-        return kws.some(kw=> kw.length>2 && q.includes(kw)) ||
-               q.includes(t.id.toLowerCase()) ||
-               t.title.toLowerCase().includes(q) ||
-               q.includes(t.title.toLowerCase());
-      });
+      /* 1 — exact or close title/id/desc match (returns full topic body) */
+      let match = allTopics.find(t=>
+        t.title.toLowerCase().includes(q) ||
+        t.id.toLowerCase().includes(q) ||
+        t.desc.toLowerCase().includes(q)
+      );
 
-      if(match){
-        const d = DECISION_DATA[match.id];
-        const q2 = QS_DATA[match.id];
-        let resp = `<strong>${match.title}</strong><br><br>${match.desc}.`;
-        if(q2 && q2.pts) resp += `<br><br><strong>Key points:</strong><br>• ${q2.pts.slice(0,2).join('<br>• ')}`;
-        if(q2 && q2.act) resp += `<br><br><strong>Action:</strong> ${q2.act}`;
-        if(d){ resp += `<br><br><strong>Beginner:</strong> ${d.b}<br><strong>Advanced:</strong> ${d.a}`; }
-        return resp;
+      /* 2 — keyword fallback for category-level searches */
+      if(!match){
+        if(q.includes('sip') || q.includes('systematic'))
+          match = CATEGORIES.investing.topics.find(t=>t.id==='sip');
+        else if(q.includes('tax') || q.includes('80c') || q.includes('itr') || q.includes('income tax'))
+          match = CATEGORIES.tax.topics.find(t=>t.id==='oldnew') || CATEGORIES.tax.topics[0];
+        else if(q.includes('stock') || q.includes('pe') || q.includes('p/e') || q.includes('nifty'))
+          match = CATEGORIES.stocks.topics.find(t=>t.id==='pe') || CATEGORIES.stocks.topics[0];
+        else if(q.includes('mutual') || q.includes('fund') || q.includes('mf'))
+          match = CATEGORIES.mf.topics.find(t=>t.id==='mftypes') || CATEGORIES.mf.topics[0];
+        else if(q.includes('insurance') || q.includes('term'))
+          match = CATEGORIES.insurance.topics.find(t=>t.id==='termins') || CATEGORIES.insurance.topics[0];
+        else if(q.includes('inflation'))
+          match = CATEGORIES.basics.topics.find(t=>t.id==='inflation');
+        else if(q.includes('compound') || q.includes('compounding'))
+          match = CATEGORIES.investing.topics.find(t=>t.id==='compounding');
+        else if(q.includes('fire') || q.includes('retire') || q.includes('financial freedom'))
+          match = CATEGORIES.advanced.topics.find(t=>t.id==='fire');
+        else if(q.includes('real estate') || q.includes('property') || q.includes('house') || q.includes('flat'))
+          match = CATEGORIES.realestate.topics[0];
+        else if(q.includes('gold') || q.includes('etf'))
+          match = CATEGORIES.global ? CATEGORIES.global.topics.find(t=>t.id==='dollar') : null;
       }
 
-      if(q.includes('sip') || q.includes('invest')) return 'SIP (Systematic Investment Plan) means investing a fixed amount monthly in a mutual fund, regardless of market levels. It uses Rupee Cost Averaging to reduce timing risk. ₹5,000/month at 12% for 30 years grows to ₹1.76 Cr.<br><br><strong>Action:</strong> Start a SIP in a Nifty 50 Direct Index Fund today.';
-      if(q.includes('tax') || q.includes('80c') || q.includes('save')) return 'Key tax-saving moves for salaried Indians:<br>• 80C: ₹1.5L via ELSS, EPF, PPF<br>• 80CCD(1B): ₹50,000 extra via NPS<br>• 80D: ₹25,000 health insurance premium<br>• HRA exemption on rent paid<br><br>Compute both old and new tax regimes before filing every year.';
-      if(q.includes('mutual') || q.includes('fund') || q.includes('mf')) return 'Mutual funds pool money from investors and invest in securities. Start with:<br>• Nifty 50 Direct Index Fund (core equity)<br>• Nifty Midcap 150 Index Fund (growth)<br>• Short Duration Debt Fund (stability)<br><br>Always choose Direct Plan to save 0.5–1% in annual fees.';
-      if(q.includes('insurance') || q.includes('term')) return 'Term insurance is pure protection — pays sum assured if you die during policy term. For a 30-year-old: ₹1 Cr cover costs only ₹8,000–12,000/year.<br><br>Buy health insurance separately. Never mix insurance with investment (avoid ULIPs, endowment plans).';
-      if(q.includes('inflation')) return 'Inflation averages 5–6% in India. At 6%, ₹1L today = ₹55,000 in purchasing power after 10 years. This is why parking money in savings accounts (4% interest) causes real wealth loss.<br><br>Equity mutual funds average 12–14% CAGR — the only reliable long-term inflation beater.';
-      if(q.includes('fd') || q.includes('fixed') || q.includes('deposit')) return 'Fixed Deposits earn 6–8% — barely above inflation, and taxed at your slab rate. For a 30% taxpayer: post-tax FD return = ~4.5%.<br><br>Better alternatives: Debt mutual funds (6–8%, more tax-efficient), Short-term goal funds, or Arbitrage funds for near-term parking.';
-      if(q.includes('gold')) return 'Gold averages 8–10% CAGR long-term and acts as an inflation hedge. Best ways to invest: Gold ETF (listed on NSE/BSE, low cost) or Sovereign Gold Bonds (SGBs — 2.5% annual interest + price appreciation + tax-free on maturity).<br><br>Ideal allocation: 10–15% of total portfolio.';
-      if(q.includes('real estate') || q.includes('property') || q.includes('flat') || q.includes('house')) return 'Mumbai rental yield: 1.5–2.5%. Bengaluru: 2.5–3.5%. Compare to Nifty 50\'s 12% CAGR. Buy real estate for appreciation and lifestyle, not rental yield.<br><br>Always verify RERA registration. Calculate total cost of ownership before buying.';
-      if(q.includes('fire') || q.includes('retire')) return 'FIRE number = annual expenses × 25. At 4% withdrawal rate, this corpus lasts 30+ years.<br><br>Annual expenses ₹6L → FIRE at ₹1.5 Cr. Annual expenses ₹15L → FIRE at ₹3.75 Cr.<br><br>Coast FIRE: invest early and heavily, then let compounding reach the target.';
-      if(q.includes('nifty') || q.includes('stock') || q.includes('market') || q.includes('sensex')) return 'Nifty 50 tracks India\'s top 50 listed companies by market cap. It is the primary equity benchmark.<br><br>Nifty P/E history: Average 20–22×. Above 25× = markets are expensive. Below 17× = attractive entry.<br><br>Best way to invest: Nifty 50 Direct Index Fund via Zerodha Coin or AMC website.';
-      if(q.includes('compound')) return 'Compounding = earning returns on your returns. It starts slow, then accelerates exponentially.<br><br>Example: ₹1L at 12% for 30 years = ₹29.9L — without adding a single rupee. The longer you stay invested, the faster compounding works. Never interrupt it for short-term needs.';
-      if(q.includes('pe') || q.includes('ratio') || q.includes('valuation')) return 'P/E ratio = Stock Price ÷ Earnings Per Share. It tells you how much you\'re paying per rupee of profit.<br><br>Nifty 50 average P/E: 20–22×. Above 25× = expensive, reduce equity. Below 17× = attractive, increase equity. Always compare to sector peers, not just market average.';
+      if(match){
+        /* Build a clean, rich response from the matched topic data */
+        const qs  = QS_DATA[match.id];
+        const dd  = DECISION_DATA[match.id];
+        const wd  = WHY_DATA[match.id];
+        let resp  = `<strong>${match.title}</strong><br><br>${match.desc}.`;
+        if(qs && qs.pts) resp += `<br><br>• ${qs.pts.join('<br>• ')}`;
+        if(qs && qs.act) resp += `<br><br><strong>&#x26A1; Action:</strong> ${qs.act}`;
+        if(dd) resp += `<br><br><strong>&#x1F7E2; Beginner step:</strong> ${dd.b}`;
+        if(wd) resp += `<br><br><strong>&#x26A0;&#xFE0F; Risk if ignored:</strong> ${wd.warn}`;
 
-      return 'I couldn\'t find an exact match, but try searching for: SIP, inflation, mutual funds, tax saving, P/E ratio, term insurance, FIRE, compounding, or real estate. You can also use the search bar above to find any topic instantly.';
+        /* suggest a follow-up topic from the same category */
+        const siblings = CATEGORIES[match.catKey]?.topics || [];
+        const idx      = siblings.findIndex(t=>t.id===match.id);
+        const next     = siblings[idx+1] || siblings[0];
+        const followup = (next && next.id !== match.id) ? {id:next.id, title:next.title, cat:match.catKey} : null;
+
+        return {response: resp, followup};
+      }
+
+      return {
+        response: 'Try asking about SIP, inflation, mutual funds, tax saving, P/E ratio, term insurance, FIRE, compounding, real estate, or any topic you see on this page.',
+        followup: {id:'sip', title:'SIP Explained', cat:'investing'}
+      };
     }
 
     function addAIMessage(html, type){
@@ -1659,6 +1914,8 @@
     renderContent();
     updateRecommendations('basics');
     renderAIHistory();
+    updateLevel();
+    renderLearningPath();
   </script>
   <script>
     function $$(id){ return document.getElementById(id); }
