@@ -454,6 +454,77 @@
     .cert-copy p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
     .cert-actions{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
 
+    /* ── LEAD POPUP ── */
+    .lead-overlay{
+      position:fixed;inset:0;z-index:1300;
+      background:rgba(6,9,21,.88);backdrop-filter:blur(10px);
+      display:flex;align-items:center;justify-content:center;padding:20px
+    }
+    .lead-box{
+      width:100%;max-width:460px;padding:36px;border-radius:28px;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(0,212,255,.1), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(123,97,255,.1), transparent 40%),
+        linear-gradient(180deg, rgba(15,24,48,.99), rgba(9,16,34,.99));
+      border:1px solid rgba(255,255,255,.12);box-shadow:0 40px 100px rgba(0,0,0,.7)
+    }
+    .lead-box .lb-icon{font-size:36px;margin-bottom:12px}
+    .lead-box h3{font-family:Poppins,sans-serif;font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.03em;margin:0 0 6px}
+    .lead-box .lb-sub{color:var(--muted);font-size:13px;margin-bottom:20px;line-height:1.5}
+    .lead-input{
+      width:100%;padding:12px 16px;border-radius:14px;margin-bottom:10px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+      color:var(--text);font-family:Poppins,sans-serif;font-size:14px;font-weight:600;
+      outline:none;transition:.2s;box-sizing:border-box
+    }
+    .lead-input:focus{border-color:rgba(0,212,255,.4);background:rgba(255,255,255,.09)}
+    .lead-input::placeholder{color:var(--muted)}
+    .lead-submit{
+      width:100%;padding:14px;border-radius:14px;margin-top:6px;
+      background:var(--grad);border:none;color:#071120;font-weight:800;font-size:15px;
+      cursor:pointer;transition:.2s ease;font-family:Poppins,sans-serif
+    }
+    .lead-submit:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,212,255,.25)}
+    .lead-skip{
+      display:block;text-align:center;margin-top:12px;font-size:12px;
+      color:var(--muted);cursor:pointer;transition:.2s
+    }
+    .lead-skip:hover{color:var(--text)}
+
+    /* ── SMART CTA ── */
+    .smart-cta{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+      padding:16px 22px;border-radius:18px;margin-bottom:14px;
+      background:
+        radial-gradient(circle at 10% 50%, rgba(123,97,255,.12), transparent 40%),
+        linear-gradient(135deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid rgba(123,97,255,.2)
+    }
+    .smart-cta .sc-left{display:flex;flex-direction:column;gap:4px}
+    .smart-cta .sc-level{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+    .smart-cta .sc-action{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.02em}
+    .smart-cta .sc-btn{
+      padding:10px 18px;border-radius:12px;border:none;
+      background:var(--grad);color:#071120;font-weight:800;font-size:13px;
+      cursor:pointer;white-space:nowrap;transition:.2s
+    }
+    .smart-cta .sc-btn:hover{transform:translateY(-1px)}
+
+    /* ── WHATSAPP FLOAT ── */
+    .whatsapp-fab{
+      position:fixed;bottom:84px;left:22px;z-index:900;
+      display:flex;align-items:center;gap:8px;
+      padding:11px 16px;border-radius:999px;
+      background:linear-gradient(135deg,#25d366,#128c7e);
+      color:#fff;font-size:13px;font-weight:800;
+      text-decoration:none;box-shadow:0 8px 24px rgba(37,211,102,.35);
+      transition:.25s cubic-bezier(.34,1.56,.64,1)
+    }
+    .whatsapp-fab:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 14px 32px rgba(37,211,102,.45)}
+    .whatsapp-fab .wf-icon{font-size:18px}
+    .whatsapp-fab .wf-txt{display:none}
+    @media(min-width:640px){ .whatsapp-fab .wf-txt{display:block} }
+
     /* ── CERT MODAL ── */
     .cert-overlay{
       position:fixed;inset:0;z-index:1100;
@@ -812,6 +883,15 @@
           </div>
         </div>
       </aside>
+    </div>
+
+    <!-- SMART PROGRESS CTA -->
+    <div class="smart-cta" id="smartCTA">
+      <div class="sc-left">
+        <div class="sc-level">&#x1F9E0; Your Level: <span id="ctaLevel">Beginner</span></div>
+        <div class="sc-action" id="ctaAction">&#x1F680; Next Step: Start with Basics of Finance</div>
+      </div>
+      <button class="sc-btn" id="ctaBtn" onclick="handleCTAClick()">Get Personalized Plan</button>
     </div>
 
     <div class="bottom-advisor">
@@ -1831,6 +1911,7 @@
 
     /* +5 XP the first time a topic is opened (separate from the full progress save) */
     function onTopicOpen(topicId){
+      track('topic_open_' + topicId);
       const openedKey = 'opened_topics';
       const opened    = JSON.parse(localStorage.getItem(openedKey) || '{}');
       if(opened[topicId]) return; /* already earned XP for this topic open */
@@ -1840,6 +1921,7 @@
       localStorage.setItem('xp', xp);
       showXPToast(5, 'Learning a new topic');
       updateLevelUI();
+      updateSmartCTA();
     }
 
     /* ── PROGRESS ── */
@@ -2003,7 +2085,15 @@
       if(!query) return;
       addAIMessage(query, 'user');
       input.value = '';
+      track('ai_query');
       setTimeout(()=>{
+        /* 2 — AI lead intercept */
+        if(typeof isAILeadQuery === 'function' && isAILeadQuery(query)){
+          track('ai_lead_trigger');
+          addAIMessage(`I can create a personalized financial plan for you based on your income, goals, and risk appetite.<br><br><strong>&#x1F449; <span style="color:var(--cyan);cursor:pointer" onclick="showLeadPopup('ai')">Click here to get your plan →</span></strong>`, 'bot');
+          addAIHistory(query);
+          return;
+        }
         const {response, followup} = getBestAnswer(query);
         addAIMessage(response, 'bot');
         if(followup){
@@ -2256,6 +2346,7 @@
     let quizCount    = parseInt(localStorage.getItem('quizCount') || '0');
 
     function startQuiz(topicId){
+      track('quiz_start_' + topicId);
       let qs = QUIZ[topicId];
       if(!qs || !qs.length){
         /* Build a generic 2-question fallback from topic metadata */
@@ -2326,11 +2417,13 @@
       const earned = score * 10;
       const pct    = Math.round(score/total*100);
       const grade  = pct === 100 ? '🏆 Perfect!' : pct >= 70 ? '🎉 Great job!' : pct >= 40 ? '👍 Good effort!' : '📚 Keep learning!';
+      track('quiz_complete_score_' + score);
       /* show toast and update XP */
       showXPToast(earned, `Quiz: ${score}/${total}`);
       xp += earned;
       localStorage.setItem('xp', xp);
       updateLevelUI();
+      updateSmartCTA();
       quizCount++;
       localStorage.setItem('quizCount', quizCount);
       if(quizCount >= 1) unlockBadge('Starter', '🌱');
@@ -2359,6 +2452,7 @@
         const t = $('xpToast'); if(t){ t.style.borderColor='rgba(255,96,125,.4)'; t.style.color='#ff607d'; setTimeout(()=>{ t.style.borderColor=''; t.style.color=''; },2400); }
         return;
       }
+      track('cert_unlock');
       const name = prompt('Enter your name for the certificate:');
       if(!name || !name.trim()) return;
       const total   = getTotalDone();
@@ -2387,6 +2481,106 @@
       location.reload();
     }
 
+    /* ══════════════════════════════════════
+       CONVERSION ENGINE — 10 FEATURES
+    ══════════════════════════════════════ */
+
+    /* 3 — ENGAGEMENT TRACKING */
+    function track(event){
+      const logs = JSON.parse(localStorage.getItem('events') || '[]');
+      logs.push({event, time: Date.now()});
+      localStorage.setItem('events', JSON.stringify(logs));
+      checkHighIntent();
+    }
+
+    /* 4 — HIGH INTENT USER DETECTION */
+    function checkHighIntent(){
+      if(localStorage.getItem('leadCaptured')) return;
+      const events = JSON.parse(localStorage.getItem('events') || '[]');
+      if(events.length > 10) showLeadPopup('high_intent');
+    }
+
+    /* 1 — LEAD POPUP */
+    let leadTimeout = null;
+    function showLeadPopup(source){
+      if(localStorage.getItem('leadCaptured')) return;
+      const el = document.getElementById('leadOverlay');
+      if(!el || el.style.display === 'flex') return;
+      el.style.display = 'block';
+      track('lead_popup_shown_' + (source || 'timer'));
+    }
+    function closeLead(){
+      const el = document.getElementById('leadOverlay');
+      if(el) el.style.display = 'none';
+      /* allow popup again after 5 min */
+      setTimeout(()=>{ if(el) el.style.display='none'; }, 300000);
+    }
+    function saveLead(){
+      const name   = (document.getElementById('leadName')   || {}).value || '';
+      const income = (document.getElementById('leadIncome') || {}).value || '';
+      const phone  = (document.getElementById('leadPhone')  || {}).value || '';
+      if(!name.trim() || !phone.trim()){
+        const inp = document.getElementById('leadName');
+        if(inp){ inp.style.borderColor='rgba(255,96,125,.5)'; setTimeout(()=>inp.style.borderColor='',1500); }
+        return;
+      }
+      const lead = { name, income, phone, xp, level: getLevelName(), date: new Date().toISOString() };
+      const leads = JSON.parse(localStorage.getItem('leads') || '[]');
+      leads.push(lead);
+      localStorage.setItem('leads', JSON.stringify(leads));
+      localStorage.setItem('leadCaptured', 'true');
+      track('lead_submitted');
+      closeLead();
+      showXPToast(50, 'Plan requested — +50 bonus XP!');
+      xp += 50; localStorage.setItem('xp', xp); updateLevelUI();
+      unlockBadge('Finance Ready', '💼');
+    }
+
+    /* 7 — EXIT INTENT */
+    document.addEventListener('mouseleave', function(e){
+      if(e.clientY < 0) showLeadPopup('exit_intent');
+    });
+
+    /* Timed popup — 20s after load */
+    setTimeout(()=> showLeadPopup('timer'), 20000);
+
+    /* 2 — AI → LEAD CONVERSION (checked inside sendAI before getBestAnswer) */
+    const AI_LEAD_KEYWORDS = ['plan','advice','help me','suggest','recommend','should i','best way','guide me','roadmap'];
+    function isAILeadQuery(q){ return AI_LEAD_KEYWORDS.some(k=> q.toLowerCase().includes(k)); }
+
+    /* 5 — SMART RECOMMENDATION ENGINE */
+    function smartRecommend(){
+      if(xp < 50)  return {action:'Start with Basics of Finance',  btn:'Begin Learning', cat:'basics'};
+      if(xp < 150) return {action:'Explore Mutual Funds & SIP',     btn:'Learn MF',       cat:'mf'};
+      if(xp < 300) return {action:'Master Stock Market Analysis',   btn:'Study Stocks',   cat:'stocks'};
+      return                {action:'Build Your Wealth Portfolio',   btn:'Go Advanced',    cat:'advanced'};
+    }
+    function updateSmartCTA(){
+      const rec    = smartRecommend();
+      const action = document.getElementById('ctaAction');
+      const level  = document.getElementById('ctaLevel');
+      const btn    = document.getElementById('ctaBtn');
+      if(action) action.textContent = '🚀 Next Step: ' + rec.action;
+      if(level)  level.textContent  = getLevelName();
+      if(btn)    btn.textContent    = rec.btn;
+    }
+    function handleCTAClick(){
+      track('smart_cta_click');
+      const rec = smartRecommend();
+      if(xp >= 300){ showLeadPopup('cta'); }
+      else { switchCategory(rec.cat); }
+    }
+
+    /* 9 / 10 — LEADS DASHBOARD & EXPORT */
+    function downloadLeads(){
+      const data = localStorage.getItem('leads') || '[]';
+      const blob = new Blob([data], {type:'application/json'});
+      const a    = document.createElement('a');
+      a.href     = URL.createObjectURL(blob);
+      a.download = 'investpercent_leads_' + new Date().toISOString().split('T')[0] + '.json';
+      a.click();
+    }
+
     /* ── INIT ── */
     renderTabs();
     renderContent();
@@ -2399,6 +2593,9 @@
     initDailyGoal();
     updateLevelUI();
     renderBadges();
+    /* conversion */
+    if(typeof updateSmartCTA === 'function') updateSmartCTA();
+    checkHighIntent();
   </script>
   <script>
     function $$(id){ return document.getElementById(id); }
@@ -2458,6 +2655,28 @@
 
   <!-- ── XP TOAST ── -->
   <div class="xp-toast" id="xpToast">&#x26A1; +0 XP earned!</div>
+
+  <!-- ── WHATSAPP FLOATING BUTTON ── -->
+  <a href="https://wa.me/919999999999?text=Hi%2C%20I%20want%20a%20personalized%20financial%20plan%20from%20InvestPercent." class="whatsapp-fab" target="_blank" rel="noopener" onclick="track('whatsapp_click')">
+    <span class="wf-icon">&#x1F4AC;</span>
+    <span class="wf-txt">Chat on WhatsApp</span>
+  </a>
+
+  <!-- ── LEAD CAPTURE POPUP ── -->
+  <div id="leadOverlay" style="display:none">
+    <div class="lead-overlay">
+      <div class="lead-box">
+        <div class="lb-icon">&#x1F4CB;</div>
+        <h3>Get Your Personalized Financial Plan</h3>
+        <p class="lb-sub">Tell us a bit about yourself — we'll map the right next steps for your financial journey.</p>
+        <input class="lead-input" id="leadName"   placeholder="Your Name" />
+        <input class="lead-input" id="leadIncome" placeholder="Monthly Income (e.g. ₹60,000)" />
+        <input class="lead-input" id="leadPhone"  placeholder="WhatsApp Number" type="tel" />
+        <button class="lead-submit" onclick="saveLead()">&#x1F4E8; Get My Plan</button>
+        <span class="lead-skip" onclick="closeLead()">Skip for now &rarr;</span>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
