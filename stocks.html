@@ -294,7 +294,16 @@
       .wealth-number{font-size:36px}
       .screener-controls{flex-direction:column;align-items:stretch}
       .screener-count{margin-left:0}
-    }
+    
+        .screener-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .ai-chips{flex-wrap:wrap;gap:6px}
+        .ai-chip{font-size:11px;padding:6px 10px}
+        .tabbar{gap:6px}
+        .tab{padding:9px 11px;font-size:12px}
+        .advisor-ai-actions{flex-direction:column}
+        .advisor-ai-actions .btn{min-width:unset;width:100%}
+        .ctrl-actions{flex-wrap:wrap}
+      }
   </style>
 </head>
 <body>
@@ -526,7 +535,7 @@ function inrShort(v){
 // Market cap formatter — input is already in ₹ Crore
 function capFmt(crVal){
   crVal = Number(crVal);
-  if(crVal >= 100000) return '₹' + (crVal/100000).toFixed(2).replace(/\.00$/,'') + ' L Cr';
+  if(crVal >= 100000) return '₹' + (crVal/100).toFixed(2).replace(/\.00$/,'') + ' Trillion';
   if(crVal >= 1000)   return '₹' + (crVal/1000).toFixed(2).replace(/\.00$/,'') + 'k Cr';
   return '₹' + crVal.toFixed(0) + ' Cr';
 }
@@ -1122,51 +1131,59 @@ function calcPE(){
      x:upDown>15?`A ${pct(upDown,1)} upside to fair value offers a meaningful margin of safety for a long-horizon investor.`:upDown>0?'Mild undervaluation. Look for catalysts before committing capital.':'The stock is priced above peer multiples. Elevated return expectations are already baked in.'}
   );
 
-  // Upgraded P/E chart: current price vs fair value across P/E scenarios
-  // X-axis = multiples of industry P/E (0.5x to 1.75x), show fair value band
-  const peMultiples=[0.5,0.75,1.0,1.25,1.5,1.75];
-  const fvAtMultiple=peMultiples.map(m=>Math.round(s.eps*s.industryPE*m));
-  const curPriceLine=peMultiples.map(()=>Math.round(s.curPrice));
-  $('chartTitle').textContent='Fair Value vs Current Price across P/E multiples';
-  $('chartMeta').textContent=`Each bar = fair value at that P/E multiple. Red line = current price (${inr(s.curPrice)}). Where bars exceed the line = upside.`;
-  $('chartLegend').innerHTML=`
-    <div class="legend-item"><span class="dot" style="background:rgba(0,212,255,.7)"></span>Fair Value</div>
-    <div class="legend-item"><span class="dot" style="background:#ff607d"></span>Current Price</div>`;
-  $('chartToggle').innerHTML='';
-  destroyChart();
-  const peCtx=$('wealthChart').getContext('2d');
-  chart=new Chart(peCtx,{
-    type:'bar',
-    data:{
-      labels:peMultiples.map(m=>(m*s.industryPE).toFixed(1)+'x P/E'),
-      datasets:[
-        {label:'Fair Value',data:fvAtMultiple,backgroundColor:fvAtMultiple.map(fv=>fv>s.curPrice?'rgba(0,230,118,.7)':'rgba(255,96,125,.5)'),borderRadius:8,borderSkipped:false,order:2},
-        {label:'Current Price',data:curPriceLine,type:'line',borderColor:'#ff607d',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:4,tension:0,order:1,borderDash:[6,4]}
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:'rgba(7,12,28,.96)',borderColor:'rgba(255,255,255,.08)',borderWidth:1,
-          titleColor:'#fff',bodyColor:'#dce6ff',padding:12,
-          callbacks:{label:c=>{
-            if(c.dataset.label==='Current Price') return `Current Price: ${inr(c.raw)}`;
-            const gap=c.raw-s.curPrice;
-            return `Fair Value @ ${c.label}: ${inr(c.raw)} (${gap>=0?'+':''}${inr(gap)})`;
-          }}
-        }
+  // Elite P/E chart with colored zones (green=undervalued, blue=fair, red=overvalued)
+    const peMultiples=[0.5,0.75,1.0,1.25,1.5,1.75];
+    const fvAtMultiple=peMultiples.map(m=>Math.round(s.eps*s.industryPE*m));
+    const curPriceLine=peMultiples.map(()=>Math.round(s.curPrice));
+    const zoneColors=fvAtMultiple.map(fv=>{
+      const diff=((fv-s.curPrice)/s.curPrice)*100;
+      if(diff>10)  return 'rgba(0,230,118,.75)';
+      if(diff>-10) return 'rgba(79,163,255,.75)';
+      return 'rgba(255,96,125,.7)';
+    });
+    $('chartTitle').textContent='Fair Value Zones vs Current Price';
+    $('chartMeta').textContent=`Green = undervalued, Blue = fairly valued, Red = overvalued. Yellow line = current price (${inr(s.curPrice)}).`;
+    $('chartLegend').innerHTML=`
+      <div class="legend-item"><span class="dot" style="background:#00e676"></span>Undervalued</div>
+      <div class="legend-item"><span class="dot" style="background:#4fa3ff"></span>Fair Value</div>
+      <div class="legend-item"><span class="dot" style="background:#ff607d"></span>Overvalued</div>`;
+    $('chartToggle').innerHTML='';
+    destroyChart();
+    const peCtx=$('wealthChart').getContext('2d');
+    chart=new Chart(peCtx,{
+      type:'bar',
+      data:{
+        labels:peMultiples.map(m=>(m*s.industryPE).toFixed(1)+'x P/E'),
+        datasets:[
+          {label:'Fair Value',data:fvAtMultiple,backgroundColor:zoneColors,borderRadius:8,borderSkipped:false,order:2},
+          {label:'Current Price',data:curPriceLine,type:'line',borderColor:'#ffd76a',backgroundColor:'transparent',borderWidth:2.5,pointRadius:0,pointHoverRadius:4,tension:0,order:1,borderDash:[6,4]}
+        ]
       },
-      scales:{
-        x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:11}}},
-        y:{beginAtZero:false,grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)',font:{size:11},callback:v=>inrShort(v)}}
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{
+          legend:{display:false},
+          tooltip:{
+            backgroundColor:'rgba(7,12,28,.96)',borderColor:'rgba(255,255,255,.08)',borderWidth:1,
+            titleColor:'#fff',bodyColor:'#dce6ff',padding:12,
+            callbacks:{label:c=>{
+              if(c.dataset.label==='Current Price') return `Current Price: ${inr(c.raw)}`;
+              const gap=c.raw-s.curPrice;
+              const diff=((c.raw-s.curPrice)/s.curPrice)*100;
+              const zone=diff>10?'Undervalued ✓':diff>-10?'Fair Value':'Overvalued ⚠';
+              return `FV @ ${c.label}: ${inr(c.raw)} | ${zone} (${gap>=0?'+':''}${inr(gap)})`;
+            }}
+          }
+        },
+        scales:{
+          x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:11}}},
+          y:{beginAtZero:false,grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)',font:{size:11},callback:v=>inrShort(v)}}
+        }
       }
-    }
-  });
+    });
 
-  setScenario('Valuation Sensitivity','Fair value and upside at different EPS levels.',[
+    setScenario('Valuation Sensitivity','Fair value and upside at different EPS levels.',[
     {label:'EPS −20%',   value:inrShort(s.eps*0.8*s.industryPE), color:'var(--muted)', note:`FV at EPS ${inr(s.eps*0.8)}`},
     {label:'EPS Base',   value:inrShort(fairValue), color:'var(--cyan)',  note:`FV at current EPS`},
     {label:'EPS +20%',   value:inrShort(s.eps*1.2*s.industryPE), color:'var(--green)', note:`FV at EPS ${inr(s.eps*1.2)}`},
@@ -1245,18 +1262,27 @@ function calcPortfolio(){
   else if(eq >= 30) { style='Moderate';      pillCls='blue'; }
   else              { style='Conservative';  pillCls='green'; }
 
-  // Validation note — always set (to clear stale warnings when total returns to 100)
-  const noteEls = ['equity','debt','gold','others'].map(id=>$(`note-${id}`));
-  noteEls.forEach(el=>{
-    if(!el) return;
-    if(total !== 100){
-      el.textContent = `Total: ${total}% — allocations should sum to 100%.`;
-      el.className = 'ctrl-warning';
-    } else {
-      el.textContent = '';
-      el.className = 'ctrl-note';
+  // Single global warning at top, remove per-field warnings
+    let globalWarn = $('portfolioGlobalWarn');
+    if(!globalWarn){
+      globalWarn = document.createElement('div');
+      globalWarn.id = 'portfolioGlobalWarn';
+      globalWarn.style.cssText = 'margin-bottom:14px;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:700;border:1px solid;';
+      const dynCtrl = $('dynamicControls');
+      if(dynCtrl) dynCtrl.insertAdjacentElement('afterend', globalWarn);
     }
-  });
+    if(total !== 100){
+      globalWarn.textContent = `Total allocation must equal 100% (Current: ${total}%)`;
+      globalWarn.style.background = 'rgba(255,215,106,.1)';
+      globalWarn.style.borderColor = 'rgba(255,215,106,.3)';
+      globalWarn.style.color = 'var(--gold)';
+      globalWarn.style.display = 'block';
+    } else {
+      globalWarn.style.display = 'none';
+    }
+    ['equity','debt','gold','others'].forEach(id=>{
+      const el=$(`note-${id}`); if(el){ el.textContent=''; el.className='ctrl-note'; }
+    });
 
   setTop(
     'Risk Score', riskScore+'/100', riskScore>70?'red':riskScore>45?'gold':'green',
@@ -1590,10 +1616,10 @@ function calcScreener(){
     const peOk  = st.pe >= s.peMin && st.pe <= s.peMax;
     const divOk = st.div >= s.divYield;
     let capOk=true;
-    if(s.capFilter==='Small Cap (<₹5k Cr)')            capOk=st.capCr<500000;
-    else if(s.capFilter==='Mid Cap (₹5k–₹20k Cr)')    capOk=st.capCr>=500000&&st.capCr<2000000;
-    else if(s.capFilter==='Large Cap (₹20k–₹1L Cr)')  capOk=st.capCr>=2000000&&st.capCr<10000000;
-    else if(s.capFilter==='Mega Cap (>₹1L Cr)')       capOk=st.capCr>=10000000;
+    if(s.capFilter==='Small Cap (<₹5k Cr)')            capOk=st.capCr<5000;
+    else if(s.capFilter==='Mid Cap (₹5k–₹20k Cr)')    capOk=st.capCr>=5000&&st.capCr<20000;
+    else if(s.capFilter==='Large Cap (₹20k–₹1L Cr)')  capOk=st.capCr>=20000&&st.capCr<100000;
+    else if(s.capFilter==='Mega Cap (>₹1L Cr)')       capOk=st.capCr>=100000;
     const secOk = sectorFilter===''||st.sector===sectorFilter;
     return peOk && divOk && capOk && secOk;
   });
@@ -1933,10 +1959,10 @@ const ADVISOR_RULES = {
       const peOk=st.pe>=s.peMin&&st.pe<=s.peMax;
       const divOk=st.div>=s.divYield;
       let capOk=true;
-      if(s.capFilter==='Small Cap (<₹5k Cr)')capOk=st.capCr<500000;
-      else if(s.capFilter==='Mid Cap (₹5k–₹20k Cr)')capOk=st.capCr>=500000&&st.capCr<2000000;
-      else if(s.capFilter==='Large Cap (₹20k–₹1L Cr)')capOk=st.capCr>=2000000&&st.capCr<10000000;
-      else if(s.capFilter==='Mega Cap (>₹1L Cr)')capOk=st.capCr>=10000000;
+      if(s.capFilter==='Small Cap (<₹5k Cr)')capOk=st.capCr<5000;
+      else if(s.capFilter==='Mid Cap (₹5k–₹20k Cr)')capOk=st.capCr>=5000&&st.capCr<20000;
+      else if(s.capFilter==='Large Cap (₹20k–₹1L Cr)')capOk=st.capCr>=20000&&st.capCr<100000;
+      else if(s.capFilter==='Mega Cap (>₹1L Cr)')capOk=st.capCr>=100000;
       return peOk&&divOk&&capOk&&(sectorFilter===''||st.sector===sectorFilter);
     });
     const count=filtered.length, buyCnt=filtered.filter(st=>st.tag==='buy').length;
@@ -1972,19 +1998,37 @@ function updateAdvisor(){
   stanceEl.textContent=r.stance.charAt(0).toUpperCase()+r.stance.slice(1);
   stanceEl.className='advisor-stance stance-'+r.stance;
 
-  // Summary
-  $('advisorSummary').textContent=r.summary;
+  // Summary — contextual prefix
+    const prefixMap={
+      stockreturn:'Based on your current inputs, ',
+      pevaluation:'At this valuation, ',
+      marketcap:'With this market cap, ',
+      portfolio:'With your current allocation, ',
+      brokerage:'Based on your trade setup, ',
+      dividend:'With your DRIP settings, ',
+      ipo:'For this IPO structure, ',
+      rights:'Based on these rights terms, ',
+      screener:'With your screening filters, '
+    };
+    const ctxPrefix=prefixMap[active]||'Based on your inputs, ';
+    const alreadyCtx=/^(Based on|At this|With (your|this)|For this)/.test(r.summary);
+    $('advisorSummary').textContent=alreadyCtx?r.summary:ctxPrefix+r.summary.charAt(0).toLowerCase()+r.summary.slice(1);
 
   // Outputs
   $('advGood').textContent=r.good;
   $('advCaution').textContent=r.caution;
   $('advAction').textContent=r.action;
 
-  // Confidence
-  const confFill=$('confFill'), confText=$('confText');
-  confFill.style.width=r.conf+'%';
-  confFill.style.background=r.conf>=80?'var(--green)':r.conf>=65?'var(--blue)':'var(--gold)';
-  confText.textContent=r.conf>=80?'High':r.conf>=65?'Medium':'Low';
+  // Dynamic confidence — boosts based on inputs adjusted from defaults
+    const confFill=$('confFill'), confText=$('confText');
+    const ctrlDefs=CALCS[active].controls;
+    const curSt=state[active];
+    let changedCtrls=0;
+    ctrlDefs.forEach(c=>{ if(c.type!=='select'&&Math.abs(Number(curSt[c.id])-Number(c.value))>0.01) changedCtrls++; });
+    const dynConf=Math.min(95,r.conf+(changedCtrls*2));
+    confFill.style.width=dynConf+'%';
+    confFill.style.background=dynConf>=80?'var(--green)':dynConf>=65?'var(--blue)':'var(--gold)';
+    confText.textContent=dynConf>=85?'High':dynConf>=68?'Medium':'Low'
 
   // Chip response
   if(activeChip!==null) updateChipResponse(r);
@@ -2118,15 +2162,16 @@ function copyToClipboard(txt, successCb){
   }
 }
 function fallbackCopy(txt, successCb){
-  try{
-    const ta=document.createElement('textarea');
-    ta.value=txt; ta.style.cssText='position:fixed;left:-9999px;top:-9999px';
-    document.body.appendChild(ta); ta.focus(); ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    successCb();
-  }catch(e){}
-}
+    try{
+      const ta=document.createElement('textarea');
+      ta.value=txt; ta.style.cssText='position:fixed;left:-9999px;top:-9999px';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      const ok=document.execCommand('copy');
+      document.body.removeChild(ta);
+      if(ok) successCb();
+      else alert('Copy failed. Please copy manually.');
+    }catch(e){ alert('Copy failed. Please copy manually.'); }
+  }
 
 function copySummary(){
   const txt=`investpercent — Stock Dashboard
