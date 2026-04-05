@@ -435,6 +435,70 @@
     /* ── CTA subtext ── */
     .cta-subtext{font-size:11px;color:rgba(7,17,32,.55);font-weight:600;margin-top:4px;text-align:center;letter-spacing:.01em}
 
+    /* ── Level 4: User Score Panel (ADD 1+2+3) ── */
+    .user-score-panel{padding:16px;border-radius:18px;margin-bottom:14px;
+      background:linear-gradient(135deg,rgba(123,97,255,.08),rgba(79,163,255,.06));
+      border:1px solid rgba(123,97,255,.2)}
+    .usp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .usp-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+    .usp-score{font-size:24px;font-weight:800;color:var(--violet)}
+    .usp-score span{font-size:13px;opacity:.55;font-weight:600}
+    .usp-bar-track{height:8px;border-radius:999px;background:rgba(255,255,255,.08);margin-bottom:9px;overflow:hidden}
+    .usp-bar-fill{height:100%;border-radius:999px;transition:width .65s ease}
+    .usp-bar-fill.low{background:linear-gradient(90deg,#ff607d,#ff9f00)}
+    .usp-bar-fill.improving{background:linear-gradient(90deg,#ffd76a,#00d4ff)}
+    .usp-bar-fill.strong{background:linear-gradient(90deg,#00d4ff,#00e676)}
+    .usp-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:7px}
+    .usp-label-chip{padding:4px 11px;border-radius:999px;font-size:11px;font-weight:800;border:1px solid transparent}
+    .usp-label-chip.low{color:var(--red);border-color:rgba(255,96,125,.3);background:rgba(255,96,125,.08)}
+    .usp-label-chip.improving{color:var(--gold);border-color:rgba(255,215,106,.3);background:rgba(255,215,106,.08)}
+    .usp-label-chip.strong{color:var(--green);border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.09)}
+    .usp-comparison{font-size:12px;color:var(--muted);font-weight:600}
+    .usp-streak{font-size:12px;font-weight:800;color:var(--gold);margin-top:2px}
+
+    /* ── Level 4: Achievements (ADD 4) ── */
+    .achievement-section{margin-bottom:14px}
+    .achievement-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+    .badge-row{display:flex;gap:8px;flex-wrap:wrap}
+    .badge-item{display:flex;flex-direction:column;align-items:center;gap:4px;
+      padding:8px 10px;border-radius:12px;min-width:70px;
+      background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);transition:.2s}
+    .badge-item.locked{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.07);opacity:.45;filter:grayscale(1)}
+    .badge-icon{font-size:18px}
+    .badge-label{font-size:10px;font-weight:700;color:var(--green);text-align:center;line-height:1.3}
+    .badge-item.locked .badge-label{color:var(--muted)}
+
+    /* ── Level 4: Next Action (ADD 6) ── */
+    .next-action-card{padding:14px 16px;border-radius:18px;margin-bottom:14px;
+      background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07)}
+    .next-action-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+    .next-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+    .next-row:last-child{margin-bottom:0}
+    .next-num{min-width:20px;height:20px;border-radius:50%;background:rgba(0,212,255,.14);
+      color:var(--cyan);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .next-text{font-size:13px;color:#c8d8ff;line-height:1.5}
+
+    /* ── Level 4: Hook line (ADD 9) ── */
+    .hook-line{margin-top:10px;font-size:13px;font-weight:600;color:rgba(200,216,255,.72);line-height:1.55}
+    .hook-line strong{color:var(--cyan)}
+
+    /* ── Level 4: Return hook (ADD 10) ── */
+    .return-hook{padding:14px 16px;border-radius:18px;margin-bottom:14px;text-align:center;
+      background:rgba(255,215,106,.04);border:1px solid rgba(255,215,106,.14)}
+    .return-hook-text{font-size:13px;font-weight:700;color:var(--gold);line-height:1.55}
+    .return-hook-sub{font-size:11px;color:var(--muted);margin-top:4px;font-weight:600}
+
+    /* ── Level 4: Toast (ADD 7) ── */
+    .toast-msg{
+      position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);
+      background:#0b1224;border:1px solid rgba(0,230,118,.35);
+      color:var(--green);font-size:14px;font-weight:800;
+      padding:12px 22px;border-radius:14px;
+      box-shadow:0 12px 36px rgba(0,0,0,.55);z-index:9998;
+      opacity:0;transition:opacity .3s ease,transform .3s ease;pointer-events:none;white-space:nowrap;
+    }
+    .toast-msg.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+
     /* ── Count-up / first impression ── */
     @keyframes countFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
     .wealth-card{animation:countFadeIn .5s ease .2s both}
@@ -490,6 +554,8 @@
           <p>All safe savings tools in one place — Fixed Deposits, Government Schemes, and Inflation-adjusted planning.</p>
           <!-- STEP 1: dynamic advisor greeting -->
           <div class="advisor-greeting" id="advisorGreeting"></div>
+          <!-- ADD 9: Hook line -->
+          <div class="hook-line">💡 <strong>Small changes today</strong> can create big wealth tomorrow.</div>
         </div>
         <div class="hero-cta">
           <div>
@@ -547,6 +613,9 @@
         <!-- ── Optimize My Plan button ── -->
         <button class="opt-btn" id="optimizeBtn" onclick="optimizePlan()">⚡ Optimize My Plan</button>
 
+        <!-- ── Level 4: User Financial Score + Streak (ADD 1+2+3) ── -->
+        <div class="user-score-panel" id="userScorePanel"></div>
+
         <!-- ── Confidence Score ── -->
         <div class="score-band" id="scoreBand"></div>
 
@@ -579,6 +648,18 @@
             <div class="k">Key insight</div>
             <div class="v" id="miniInsight">Stable</div>
           </div>
+        </div>
+
+        <!-- ── Level 4: Achievements (ADD 4) ── -->
+        <div class="achievement-section" id="achievementSection">
+          <div class="achievement-title">Your Badges</div>
+          <div class="badge-row" id="achievementRow"></div>
+        </div>
+
+        <!-- ── Level 4: Next Action Engine (ADD 6) ── -->
+        <div class="next-action-card" id="nextActionCard">
+          <div class="next-action-title">What should you do next?</div>
+          <div id="nextActionBody"></div>
         </div>
 
         <div class="advisor-card">
@@ -618,6 +699,12 @@
             <button class="chat-ask-btn" onclick="runChat()">Ask AI</button>
           </div>
           <div class="chat-output" id="chatOutput"></div>
+        </div>
+
+        <!-- ── Level 4: Return Hook (ADD 10) ── -->
+        <div class="return-hook">
+          <div class="return-hook-text">📅 Come back tomorrow to improve your plan further</div>
+          <div class="return-hook-sub">Your planning streak grows with every daily visit 🔥</div>
         </div>
       </aside>
 
@@ -852,8 +939,9 @@
 
     function onProfileChange(){
       Object.assign(userProfile, readProfileForm());
-      updateRecBar();           /* ADD 5: smart auto trigger */
-      updateAdvisorGreeting();  /* STEP 1: refresh greeting when profile changes */
+      updateRecBar();
+      updateAdvisorGreeting();
+      checkAchievements(); /* ADD 4: unlock on profile fill */
     }
 
     /* ═══ RULE-BASED AI CHAT ENGINE ═══ */
@@ -1046,6 +1134,12 @@
            </button>`
         ];
         out.innerHTML = rows.join("");
+        /* ADD 4+7: AI advisor achievement unlock + toast */
+        const isNewAI = unlockAchievement("ai_used");
+        renderAchievements();
+        renderUserScore();
+        renderNextAction();
+        if(isNewAI) showToast("🧠 \"Used AI Advisor\" badge unlocked!");
       }, 380);
     }
 
@@ -1221,7 +1315,8 @@
     ═══════════════════════════════════════════ */
     function setTop(total, gain, rate, opts){
       opts = opts || {};
-      _lastProjected = total; /* capture for goal progress bar */
+      _lastProjected = total;                                    /* capture for goal progress */
+      _lastRate      = typeof rate === "number" ? rate : _lastRate; /* ADD 5: capture for countdown */
       $("topProjected").textContent = fmtShort(total);
       $("topGains").textContent     = fmtShort(gain);
       $("topRate").textContent      = typeof rate === "number" ? rate.toFixed(1).replace(/\.0$/,"") + "%" : rate;
@@ -1831,11 +1926,14 @@
 
       runAutoAdvisor();
 
-      /* ADD 5 + STEP 1: smart auto triggers on every slider/calc change */
+      /* ADD 5 + STEP 1 + LEVEL 4: smart auto triggers on every slider/calc change */
       updateRecBar();
       renderGoalProgress();
       renderConfidenceScore();
-      updateAdvisorGreeting(); /* STEP 1: refresh projection when sliders move */
+      updateAdvisorGreeting();  /* STEP 1: refresh projection when sliders move */
+      renderUserScore();        /* ADD 1+2+3: financial score + streak */
+      renderNextAction();       /* ADD 6: next action engine */
+      checkAchievements();      /* ADD 4: unlock "started" achievement */
     }
 
     /* ═══════════════════════════════════════════
@@ -1926,9 +2024,8 @@
       }
     }
 
-    /* ADD 2: Optimize My Plan button */
+    /* ADD 2 (L2.5) / Optimize My Plan */
     function optimizePlan(){
-      /* ADD 2: gate behind lead modal */
       if(!_leadCaptured){ openLeadModal(optimizePlan); return; }
       const pro = userProfile;
       const s   = state[active];
@@ -1945,6 +2042,12 @@
         btn.innerHTML = "⚡ Optimized!";
         setTimeout(()=>{ btn.innerHTML = "⚡ Optimize My Plan"; }, 2200);
       }
+      /* ADD 4+7: achievement unlock + toast feedback */
+      const isNew = unlockAchievement("optimized");
+      renderAchievements();
+      renderUserScore();
+      renderNextAction();
+      showToast(isNew ? "⚡ Plan Optimized! +\"Optimized Plan\" badge unlocked 🏆" : "⚡ Plan Optimized! Your financial score improved.");
     }
 
     /* ADD 3: Goal Progress Bar */
@@ -1960,6 +2063,20 @@
       const pctD = Math.min(100, pct).toFixed(0);
       const over = pct >= 100;
       const pctFill = Math.min(100, pct).toFixed(1);
+      /* ADD 5: goal countdown — estimate years to reach goal */
+      let countdownHtml = "";
+      if(!over && _lastRate > 0){
+        const s = state[active];
+        const years = s.years || 5;
+        /* estimate extra years needed using log approximation */
+        const growthFactor = goalAmount / Math.max(_lastProjected, 1);
+        const extraYears   = Math.log(growthFactor) / Math.log(1 + _lastRate / 100);
+        const totalYears   = years + (isFinite(extraYears) && extraYears > 0 ? extraYears : 0);
+        const display      = totalYears < 100 ? totalYears.toFixed(1) : null;
+        if(display) countdownHtml = `<div style="margin-top:8px;font-size:12px;font-weight:700;color:var(--cyan)">🎯 At current pace you'll reach your goal in <strong>${display} years</strong></div>`;
+      } else if(over){
+        countdownHtml = `<div style="margin-top:8px;font-size:12px;font-weight:700;color:var(--green)">🎯 Goal already reached at current settings — consider raising it!</div>`;
+      }
       const status = over
         ? `Goal reached — projected ${fmtShort(_lastProjected)} exceeds ${fmtShort(goalAmount)} ✓`
         : `${fmtShort(_lastProjected)} of ${fmtShort(goalAmount)} — ${fmtShort(goalAmount - _lastProjected)} more to go`;
@@ -1969,7 +2086,8 @@
           <div class="gp-pct${over?" over":""}">${pctD}%</div>
         </div>
         <div class="gp-track"><div class="gp-fill${over?" over":""}" style="width:${pctFill}%"></div></div>
-        <div class="gp-status${over?" hit":""}">${status}</div>`;
+        <div class="gp-status${over?" hit":""}">${status}</div>
+        ${countdownHtml}`;
     }
 
     /* ADD 4: Confidence Score Display */
@@ -2543,6 +2661,158 @@ via justinvesting.in`;
           .then(()=>{ const old=$("miniInsight").textContent; $("miniInsight").textContent="Copied!"; setTimeout(()=>$("miniInsight").textContent=old,1500); })
           .catch(()=>alert("Copy failed. Please copy manually."));
       } else { alert("Clipboard not supported."); }
+    }
+
+    /* ═══════════════════════════════════════════
+       LEVEL 4 — ADDICTIVE UX + GAMIFICATION
+    ═══════════════════════════════════════════ */
+
+    /* ── ADD 3: Streak System ── */
+    let _jiStreak = 0;
+    (function initStreak(){
+      const today = new Date().toDateString();
+      const last  = localStorage.getItem("jiLastVisit") || "";
+      let   streak= parseInt(localStorage.getItem("jiStreak")) || 0;
+      if(last !== today){
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
+        streak = (last === yesterday) ? streak + 1 : 1;
+        localStorage.setItem("jiLastVisit", today);
+        localStorage.setItem("jiStreak", streak);
+      }
+      _jiStreak = Math.max(1, streak);
+    })();
+
+    /* ── ADD 4: Achievement System ── */
+    let jiAchievements = new Set(JSON.parse(localStorage.getItem("jiAchievements") || "[]"));
+
+    function unlockAchievement(id){
+      if(jiAchievements.has(id)) return false;
+      jiAchievements.add(id);
+      localStorage.setItem("jiAchievements", JSON.stringify([...jiAchievements]));
+      return true;
+    }
+
+    function checkAchievements(){
+      const pro = userProfile;
+      if(pro.age || pro.income || pro.savings || pro.risk) unlockAchievement("started");
+      if(goalAmount > 0) unlockAchievement("goal_set");
+      renderAchievements();
+    }
+
+    function renderAchievements(){
+      const el = $("achievementRow");
+      if(!el) return;
+      const all = [
+        { id:"started",   icon:"🌱", label:"Started Planning" },
+        { id:"optimized", icon:"⚡", label:"Optimized Plan"   },
+        { id:"ai_used",   icon:"🧠", label:"Used AI Advisor"  },
+        { id:"goal_set",  icon:"🎯", label:"Goal Set"         },
+      ];
+      el.innerHTML = all.map(a => {
+        const un = jiAchievements.has(a.id);
+        return `<div class="badge-item${un?"":" locked"}" title="${a.label}">
+          <div class="badge-icon">${a.icon}</div>
+          <div class="badge-label">${a.label}</div>
+        </div>`;
+      }).join("");
+    }
+
+    /* ── ADD 1+2+3: User Financial Score Panel ── */
+    function calcUserScore(){
+      const pro = userProfile;
+      let sc = 0;
+      /* savings rate → 0-30 pts */
+      if(pro.income && pro.savings)
+        sc += Math.min(30, Math.round((pro.savings / pro.income) * 150));
+      /* goal clarity → 0-20 pts */
+      if(goalAmount > 0) sc += 15;
+      if(pro.goal)       sc += 5;
+      /* diversification → 0-25 pts */
+      if(active === "compare") sc += 25;
+      else if(["nsc","scss"].includes(active)) sc += 15;
+      else sc += 5;
+      /* profile completeness → 0-25 pts */
+      if(pro.risk)   sc += 10;
+      if(pro.age)    sc += 5;
+      if(pro.savings && pro.income && pro.savings/pro.income >= 0.1) sc += 10;
+      return Math.min(100, Math.round(sc));
+    }
+
+    function renderUserScore(){
+      const el = $("userScorePanel");
+      if(!el) return;
+      const sc   = calcUserScore();
+      const tier = sc >= 70 ? "strong" : sc >= 40 ? "improving" : "low";
+      const label= sc >= 70 ? "Strong 💪" : sc >= 40 ? "Improving 📈" : "Just Starting 🌱";
+      /* ADD 2: comparison percentile (static mock table) */
+      const pct  = sc >= 80 ? 85 : sc >= 65 ? 72 : sc >= 50 ? 58 : sc >= 35 ? 43 : 28;
+      const streakHtml = _jiStreak > 1
+        ? `<div class="usp-streak">🔥 ${_jiStreak}-day planning streak</div>`
+        : `<div class="usp-streak">🔥 Day 1 — start your streak!</div>`;
+      el.innerHTML = `
+        <div class="usp-header">
+          <div class="usp-title">Your Financial Score</div>
+          <div class="usp-score">${sc}<span>/100</span></div>
+        </div>
+        <div class="usp-bar-track"><div class="usp-bar-fill ${tier}" style="width:${sc}%"></div></div>
+        <div class="usp-meta">
+          <div class="usp-label-chip ${tier}">${label}</div>
+          <div class="usp-comparison">Ahead of <strong>${pct}%</strong> of users</div>
+        </div>
+        ${streakHtml}`;
+    }
+
+    /* ── ADD 6: Next Action Engine ── */
+    function renderNextAction(){
+      const body = $("nextActionBody");
+      if(!body) return;
+      const pro = userProfile;
+      const s   = state[active];
+      const actions = [];
+      const savRate = (pro.income && pro.savings) ? pro.savings / pro.income : 0;
+
+      if(!pro.savings && !pro.income){
+        actions.push("Fill your Financial Profile above — it takes 20 seconds and unlocks personalised steps");
+      } else if(savRate < 0.10){
+        const boost = Math.round((pro.income * 0.10 - (pro.savings||0)) / 500) * 500;
+        if(boost > 0) actions.push(`Increase savings by ₹${boost.toLocaleString("en-IN")}/month to reach a 10% savings rate — a key milestone`);
+      } else if(savRate < 0.20){
+        const boost = Math.round((pro.income * 0.20 - pro.savings) / 500) * 500;
+        if(boost > 0) actions.push(`Push savings by ₹${boost.toLocaleString("en-IN")}/month to hit 20% — where real wealth building begins`);
+      }
+
+      if(!goalAmount) actions.push("Set a Target Goal amount — goals make plans 3× more effective");
+      else if(_lastProjected < goalAmount && (s.years||0) < 20)
+        actions.push(`Extend your tenure by 2 more years — it could close the remaining ₹${fmtShort(goalAmount - _lastProjected)} gap`);
+
+      if(active !== "compare" && active !== "inflation")
+        actions.push("Open the Compare tab — see FD vs RD vs SIP head-to-head in seconds");
+
+      if(!jiAchievements.has("ai_used"))
+        actions.push("Try the AI chat below — type your situation and get a tailored recommendation");
+
+      body.innerHTML = actions.slice(0, 3).map((a, i) =>
+        `<div class="next-row"><div class="next-num">${i+1}</div><div class="next-text">${a}</div></div>`
+      ).join("") || `<div class="next-row"><div class="next-num">✓</div><div class="next-text">Your plan looks solid. Review quarterly to stay on track.</div></div>`;
+    }
+
+    /* ── ADD 5: Goal Countdown (enhances renderGoalProgress) ── */
+    let _lastRate = 7;
+    /* _lastRate is updated in setTop below */
+
+    /* ── ADD 7: Toast notification ── */
+    function showToast(msg){
+      let t = document.getElementById("jiToast");
+      if(!t){
+        t = document.createElement("div");
+        t.id = "jiToast";
+        t.className = "toast-msg";
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.classList.add("visible");
+      clearTimeout(t._timer);
+      t._timer = setTimeout(()=> t.classList.remove("visible"), 3200);
     }
 
     /* ═══════════════════════════════════════════
