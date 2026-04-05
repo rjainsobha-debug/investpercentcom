@@ -990,42 +990,46 @@ function answerFX(idx) {
 function fxNext() { fxQ++; showFXQ(); }
 
 /* ═══ GAME 15: REAL ESTATE ROI ═══ */
+let reVals = { price:6000000, rent:20000, rate:8, years:5 };
 function renderRealEstateROI() {
+  reVals = { price:6000000, rent:20000, rate:8, years:5 };
   document.getElementById('gameContent').innerHTML = `
-    <p style="color:var(--muted);font-size:14px;margin-bottom:18px">Enter property details to calculate your complete real estate investment return.</p>
-    <div class="gslider-group"><div class="gslider-top"><span class="gslider-name">Purchase Price</span><span class="gslider-val" id="re-buy">₹60,00,000</span></div><input type="range" min="1000000" max="50000000" step="500000" value="6000000" oninput="calcRE()"></div>
-    <div class="gslider-group"><div class="gslider-top"><span class="gslider-name">Monthly Rental Income</span><span class="gslider-val" id="re-rent">₹20,000</span></div><input type="range" min="0" max="200000" step="2000" value="20000" oninput="calcRE()"></div>
-    <div class="gslider-group"><div class="gslider-top"><span class="gslider-name">Selling Price (after 5 years)</span><span class="gslider-val" id="re-sell">₹80,00,000</span></div><input type="range" min="1000000" max="100000000" step="500000" value="8000000" oninput="calcRE()"></div>
-    <div class="gslider-group"><div class="gslider-top"><span class="gslider-name">Annual Maintenance Cost</span><span class="gslider-val" id="re-maint">₹60,000</span></div><input type="range" min="0" max="500000" step="10000" value="60000" oninput="calcRE()"></div>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:18px">Adjust the sliders to model your real estate investment and calculate total ROI.</p>
+    <div class="gslider-group"><div class="gslider-top"><span class="gslider-name">Purchase Price</span><span class="gslider-val" id="re-price">₹60 L</span></div><input type="range" min="1000000" max="50000000" step="500000" value="6000000" oninput="reUpdate('price',this.value)"></div>
+    <div class="gslider-group"><div class="gslider-top"><span class="gslider-name">Monthly Rental Income</span><span class="gslider-val" id="re-rent">₹20,000</span></div><input type="range" min="0" max="200000" step="1000" value="20000" oninput="reUpdate('rent',this.value)"></div>
+    <div class="gslider-group"><div class="gslider-top"><span class="gslider-name">Annual Appreciation %</span><span class="gslider-val" id="re-rate">8%</span></div><input type="range" min="0" max="20" step="0.5" value="8" oninput="reUpdate('rate',this.value)"></div>
+    <div class="gslider-group"><div class="gslider-top"><span class="gslider-name">Holding Period</span><span class="gslider-val" id="re-years">5 Years</span></div><input type="range" min="1" max="20" step="1" value="5" oninput="reUpdate('years',this.value)"></div>
     <div id="re-result"></div>`;
   calcRE();
 }
+function reUpdate(key, val) {
+  reVals[key] = parseFloat(val);
+  const labels = { price:'re-price', rent:'re-rent', rate:'re-rate', years:'re-years' };
+  const formats = { price:v=>fmtINR(v), rent:v=>fmtINR(v), rate:v=>v+'%', years:v=>v+' Years' };
+  const el = document.getElementById(labels[key]);
+  if (el) el.textContent = formats[key](reVals[key]);
+  calcRE();
+}
 function calcRE() {
-  const inputs = document.querySelectorAll('#gameContent input[type=range]');
-  const buy = parseInt(inputs[0].value), rent = parseInt(inputs[1].value);
-  const sell = parseInt(inputs[2].value), maint = parseInt(inputs[3].value);
-  document.getElementById('re-buy').textContent = fmtINR(buy);
-  document.getElementById('re-rent').textContent = fmtINR(rent);
-  document.getElementById('re-sell').textContent = fmtINR(sell);
-  document.getElementById('re-maint').textContent = fmtINR(maint);
-  const totalRent = rent * 12 * 5;
-  const totalMaint = maint * 5;
-  const capitalGain = sell - buy;
-  const totalReturn = capitalGain + totalRent - totalMaint;
-  const totalROI = (totalReturn / buy * 100).toFixed(1);
-  const annROI = (Math.pow(1 + totalReturn/buy, 1/5) - 1) * 100;
-  const rentalYield = (rent * 12 / buy * 100).toFixed(2);
-  const score = annROI > 12 ? 5 : annROI > 8 ? 4 : annROI > 5 ? 3 : annROI > 0 ? 2 : 1;
-  document.getElementById('re-result').innerHTML = `
+  const { price, rent, rate, years } = reVals;
+  const totalRental = rent * 12 * years;
+  const finalValue = price * Math.pow(1 + rate / 100, years);
+  const capitalGain = finalValue - price;
+  const totalProfit = totalRental + capitalGain;
+  const roi = (totalProfit / price * 100);
+  const score = roi > 100 ? 5 : roi > 70 ? 4 : roi > 40 ? 3 : roi > 20 ? 2 : 1;
+  const reResult = document.getElementById('re-result');
+  if (!reResult) return;
+  reResult.innerHTML = `
     <table class="result-table">
-      <tr><td>Total Rental Income (5yr)</td><td style="color:var(--green)">${fmtINR(totalRent)}</td></tr>
-      <tr><td>Capital Appreciation</td><td style="color:${capitalGain>=0?'var(--green)':'var(--red)'}">${fmtINR(capitalGain)}</td></tr>
-      <tr><td>Total Maintenance</td><td style="color:var(--red)">${fmtINR(totalMaint)}</td></tr>
-      <tr><td>Net Return</td><td style="color:${totalReturn>=0?'var(--cyan)':'var(--red)'}">${fmtINR(totalReturn)}</td></tr>
-      <tr><td>Gross Rental Yield</td><td>${rentalYield}%</td></tr>
-      <tr><td>Annualized ROI</td><td style="color:${annROI>8?'var(--green)':annROI>4?'var(--gold)':'var(--red)'}">${annROI.toFixed(1)}%</td></tr>
+      <tr><td>Total Investment</td><td>${fmtINR(price)}</td></tr>
+      <tr><td>Total Rental Income</td><td style="color:var(--green)">${fmtINR(totalRental)}</td></tr>
+      <tr><td>Final Property Value</td><td style="color:var(--cyan)">${fmtINR(finalValue)}</td></tr>
+      <tr><td>Capital Gain</td><td style="color:${capitalGain>=0?'var(--green)':'var(--red)'}">${fmtINR(capitalGain)}</td></tr>
+      <tr><td>Total Profit</td><td style="color:${totalProfit>=0?'var(--cyan)':'var(--red)'}">${fmtINR(totalProfit)}</td></tr>
+      <tr><td>Total ROI</td><td style="color:${roi>40?'var(--green)':roi>0?'var(--gold)':'var(--red)'}; font-size:20px; font-weight:800">${roi.toFixed(1)}%</td></tr>
     </table>
-    <div class="result-rec"><div class="rr-label">Benchmark</div><div class="rr-text">A good real estate investment yields 8-12% CAGR (rental + appreciation). Compare this to equity mutual funds: 12-15% CAGR with more liquidity and no maintenance headaches. The right choice depends on your goals.</div></div>
+    <div class="result-rec"><div class="rr-label">Benchmark</div><div class="rr-text">A healthy real estate investment delivers 40–80%+ ROI over 5 years, factoring rental yield and capital appreciation. Compare against equity mutual funds which typically deliver 12–15% CAGR (about 60–75% in 5 years) with far more liquidity.</div></div>
     <div style="text-align:right;margin-top:14px"><button class="btn primary" onclick="showModal(${score},5,'Real Estate ROI')">Get My Score →</button></div>`;
 }
 
@@ -1098,48 +1102,76 @@ const QUIZZES = {
 function openQuiz(id) {
   currentQuizId = id; quizQ = 0; quizScore = 0;
   const q = QUIZZES[id];
+  if (!q) return;
   document.getElementById('gameModalTitle').textContent = q.title;
   document.getElementById('gameContent').innerHTML = '';
-  showQuizQuestion();
+  renderQuiz();
   openModal('gameModal');
 }
-function showQuizQuestion() {
+function renderQuiz() {
   const q = QUIZZES[currentQuizId];
+  if (!q) return;
   const d = q.qs[quizQ];
   const pct = (quizQ / q.qs.length) * 100;
-  document.getElementById('gameContent').innerHTML = `
+  const gc = document.getElementById('gameContent');
+  if (!gc) return;
+  gc.innerHTML = `
     <div class="score-strip"><span class="score-lbl">Question ${quizQ+1} of ${q.qs.length}</span><span class="score-num">${quizScore}/${quizQ}</span></div>
     <div class="q-progress"><div class="q-prog-bar"><div class="q-prog-fill" style="width:${pct}%"></div></div><span class="q-prog-text">${quizQ}/${q.qs.length}</span></div>
     <div class="q-text">${d.q}</div>
-    <div class="q-options">${d.opts.map((o,i)=>`<button class="q-opt" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div>`;
+    <div class="q-options">${d.opts.map((o,i)=>`<button class="q-opt" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div>`;
 }
-function answerQuiz(idx) {
+function selectAnswer(idx) {
   const d = QUIZZES[currentQuizId].qs[quizQ];
   document.querySelectorAll('.q-opt').forEach(o => o.classList.add('locked'));
-  document.querySelectorAll('.q-opt')[d.ans].classList.add('correct');
-  if (idx !== d.ans) document.querySelectorAll('.q-opt')[idx].classList.add('wrong'); else quizScore++;
+  const opts = document.querySelectorAll('.q-opt');
+  if (opts[d.ans]) opts[d.ans].classList.add('correct');
+  if (idx !== d.ans && opts[idx]) opts[idx].classList.add('wrong'); else if (idx === d.ans) quizScore++;
+  const gc = document.getElementById('gameContent');
+  if (!gc) return;
   const fb = document.createElement('div');
   fb.className = idx === d.ans ? 'q-feedback fb-correct' : 'q-feedback fb-wrong';
   fb.textContent = idx === d.ans ? '✓ Correct!' : '✗ Best answer: ' + d.opts[d.ans];
-  document.getElementById('gameContent').appendChild(fb);
+  gc.appendChild(fb);
   const nxt = document.createElement('div');
   nxt.className = 'next-btn-row';
   const isLast = quizQ === QUIZZES[currentQuizId].qs.length - 1;
-  nxt.innerHTML = isLast ? `<button class="btn primary" onclick="finishQuiz()">See My Result →</button>` : `<button class="btn primary sm" onclick="quizQ++;showQuizQuestion()">Next Question →</button>`;
-  document.getElementById('gameContent').appendChild(nxt);
+  nxt.innerHTML = isLast
+    ? `<button class="btn primary" onclick="finishQuiz()">See My Result →</button>`
+    : `<button class="btn primary sm" onclick="nextQuestion()">Next Question →</button>`;
+  gc.appendChild(nxt);
+}
+function nextQuestion() {
+  quizQ++;
+  renderQuiz();
 }
 function finishQuiz() {
   const total = QUIZZES[currentQuizId].qs.length;
   showModal(quizScore, total, QUIZZES[currentQuizId].title);
 }
+/* Aliases kept for backward compatibility */
+function showQuizQuestion() { renderQuiz(); }
+function answerQuiz(idx) { selectAnswer(idx); }
 
 /* ─── NAVBAR LOADER ─────────────────────── */
-fetch('components/navbar.html').then(r=>r.text()).then(d=>{
-  const el = document.getElementById('navbar');
-  if (el) el.innerHTML = d;
-  const cur = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav a, .mobile-drawer a').forEach(l => { if (l.getAttribute('href') === cur) l.classList.add('active'); });
-}).catch(()=>{});
+(function loadNavbar() {
+  const paths = ['/components/header.html', 'components/navbar.html'];
+  function tryPath(i) {
+    if (i >= paths.length) return;
+    fetch(paths[i]).then(r => {
+      if (!r.ok) throw new Error('not found');
+      return r.text();
+    }).then(d => {
+      const el = document.getElementById('navbar');
+      if (el) el.innerHTML = d;
+      const cur = window.location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('.nav a, .mobile-drawer a').forEach(l => {
+        if (l.getAttribute('href') === cur) l.classList.add('active');
+      });
+    }).catch(() => tryPath(i + 1));
+  }
+  tryPath(0);
+})();
 function toggleMenu() { document.getElementById('mobileDrawer')?.classList.toggle('open'); }
 
 /* ─── GLOBAL INIT ───────────────────────── */
