@@ -643,7 +643,7 @@ function getAIDiagnosis(mode,s,M,score,warnings){
       D.ctaLabel=isUrgent?'Improve Profitability with an Advisor':'Consult Business Advisor';
     }
     else if(mode==='roi'){
-      const years=safe(s.timePeriod/12,1);
+     const years = Math.max(1, safe(s.timePeriod / 12, 1));
       D.diagnosis=`${Math.round(s.timePeriod)}-month investment with ${fmtPct(M.annualNetROI)} annualized net ROI — ${M.beatsInflation?'beats':'trails'} ${fmtPct(s.inflation)} inflation by ${fmtPct(Math.abs(M.realROI))} (real return: ${fmtPct(M.realROI)}).`;
       D.biggestRisk=M.multiple<1
         ?`Capital destruction — gross return ${fmtShort(s.returnAmt)} is below investment ${fmtShort(s.investment)}. You lose ${fmtShort(Math.abs(M.netGain))} even before inflation.`
