@@ -676,6 +676,7 @@
           <span class="gi-icon">&#x26A1;</span>
           <span class="gi-val" id="xpValue">0</span>
           <span class="gi-label">XP</span>
+          <span style="font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);color:var(--cyan);margin-left:4px" id="levelName">Beginner</span>
         </div>
         <div class="xp-fill-wrap"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
         <div class="gam-divider"></div>
@@ -1729,7 +1730,7 @@
               </div>
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px">
                 <button class="qs-btn" onclick="toggleQuickSummary('${t.id}',event)">&#x26A1; Quick Summary</button>
-                ${QUIZ[t.id] ? `<button class="quiz-btn" onclick="startQuiz('${t.id}')">&#x1F9E0; Take Quiz</button>` : ''}
+                <button class="quiz-btn" onclick="startQuiz('${t.id}')">&#x1F9E0; Take Quiz</button>
               </div>
               <div class="qs-output" id="qs-${t.id}"></div>
               ${nextHtml}
@@ -2111,6 +2112,7 @@
       const el = $('xpValue'); if(el) el.textContent = xp;
       const pct = Math.min(100, (xp % XP_PER_LEVEL) / XP_PER_LEVEL * 100);
       const fill = $('xpFill'); if(fill) fill.style.width = pct + '%';
+      const lvEl = $('levelName'); if(lvEl) lvEl.textContent = getLevelName();
     }
     function showXPToast(pts, label){
       const t = $('xpToast'); if(!t) return;
@@ -2118,13 +2120,14 @@
       t.classList.add('show');
       setTimeout(()=> t.classList.remove('show'), 2200);
     }
-    function getXPLevel(){
+    function getLevelName(){
       if(xp < 100) return 'Beginner';
-      if(xp < 300) return 'Learner';
-      if(xp < 600) return 'Intermediate';
-      if(xp < 1000) return 'Advanced';
+      if(xp < 300) return 'Investor';
+      if(xp < 700) return 'Advanced';
       return 'Pro Investor';
     }
+    /* alias kept for any internal callers */
+    function getXPLevel(){ return getLevelName(); }
 
     /* ── STREAK ── */
     function initStreak(){
@@ -2231,8 +2234,23 @@
     let quizCount    = parseInt(localStorage.getItem('quizCount') || '0');
 
     function startQuiz(topicId){
-      const qs = QUIZ[topicId];
-      if(!qs || !qs.length){ showXPToast(0,'No quiz for this topic yet — try another!'); return; }
+      let qs = QUIZ[topicId];
+      if(!qs || !qs.length){
+        /* Build a generic 2-question fallback from topic metadata */
+        const allTopics = [];
+        CATEGORY_KEYS.forEach(k=> CATEGORIES[k].topics.forEach(t=> allTopics.push({...t, catKey:k})));
+        const tp = allTopics.find(t=>t.id===topicId);
+        if(tp){
+          const dd = DECISION_DATA[topicId] || {};
+          qs = [
+            {q:`Which of the following best describes "${tp.title}"?`, opts:[tp.desc, 'A way to avoid taxes entirely', 'A type of insurance product'], ans:0},
+            {q:`What is the recommended beginner action for "${tp.title}"?`, opts:['Do nothing and wait', dd.b || 'Start small and stay consistent', 'Borrow money to invest'], ans:1}
+          ];
+        } else {
+          showXPToast(0,'No quiz available for this topic yet.');
+          return;
+        }
+      }
       currentQuiz  = qs;
       quizTopicId  = topicId;
       qIndex       = 0;
@@ -2283,10 +2301,14 @@
     }
     function finishQuiz(){
       const total  = currentQuiz.length;
-      const earned = score * 20;
+      const earned = score * 10;
       const pct    = Math.round(score/total*100);
       const grade  = pct === 100 ? '🏆 Perfect!' : pct >= 70 ? '🎉 Great job!' : pct >= 40 ? '👍 Good effort!' : '📚 Keep learning!';
-      saveXP(earned, `Quiz: ${score}/${total}`);
+      /* show toast first with the score*10 format, then add XP */
+      showXPToast(earned, `Quiz: ${score}/${total}`);
+      xp += earned;
+      localStorage.setItem('xp', xp);
+      updateXPUI();
       quizCount++;
       localStorage.setItem('quizCount', quizCount);
       if(quizCount >= 1) unlockBadge('Starter', '🌱');
@@ -2310,6 +2332,11 @@
        CERTIFICATION
     ══════════════════════════════════════ */
     function generateCert(){
+      if(xp < 100){
+        showXPToast(0, '❌ Complete more topics to unlock certificate');
+        const t = $('xpToast'); if(t){ t.style.borderColor='rgba(255,96,125,.4)'; t.style.color='#ff607d'; setTimeout(()=>{ t.style.borderColor=''; t.style.color=''; },2400); }
+        return;
+      }
       const name = prompt('Enter your name for the certificate:');
       if(!name || !name.trim()) return;
       const total   = getTotalDone();
