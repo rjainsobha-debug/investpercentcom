@@ -750,7 +750,7 @@ power:"Consistency"
 drawChart(
 Array.from({length:s.years},(_,i)=>"Year "+(i+1)),
 [
-{label:"RD Value",data:Array.from({length:s.years},(_,i)=>s.monthly*12*(i+1)),borderColor:"#00e676"},
+{label:"RD Value",data:Array.from({length:s.years},(_,i)=>v*(i+1)/s.years),borderColor:"#00e676"},
 {label:"Investment",data:Array.from({length:s.years},(_,i)=>s.monthly*12*(i+1)),borderColor:"#ffd76a"}
 ]
 );
