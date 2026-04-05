@@ -4,8 +4,8 @@
   <link rel="stylesheet" href="css/navbar.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <title>Savings & FD Tools — investpercent</title>
-  <meta name="description" content="Premium savings dashboard with FD, RD, NSC, KVP, SCSS, Post Office and inflation-adjusted calculators." />
+  <title>Savings Dashboard — investpercent</title>
+  <meta name="description" content="Premium savings dashboard with FD, RD, NSC, KVP, SCSS, Post Office, Compare and Inflation calculators." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -61,67 +61,66 @@
     }
     a{text-decoration:none;color:inherit}
     button,input{font:inherit}
-    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:18px 18px 38px}
-       
+    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:12px 14px 24px}
     .hero{
-      background:var(--hero);border:1px solid var(--line);border-radius:32px;padding:28px;
-      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:18px
+      background:var(--hero);border:1px solid var(--line);border-radius:24px;padding:18px 22px;
+      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:14px
     }
     .hero::after{
       content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
       background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
       filter:blur(14px);pointer-events:none
     }
-    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px}
     .hero-copy h1{
-      margin:0;font-family:Poppins,sans-serif;font-size:clamp(34px,5vw,58px);
-      line-height:1.02;letter-spacing:-.045em;max-width:840px
+      margin:0;font-family:Poppins,sans-serif;font-size:clamp(26px,3.5vw,42px);
+      line-height:1.1;letter-spacing:-.045em;max-width:840px
     }
     .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .hero-copy p{margin:14px 0 0;color:var(--muted);font-size:18px;max-width:760px;line-height:1.6}
+    .hero-copy p{margin:8px 0 0;color:var(--muted);font-size:15px;max-width:760px;line-height:1.6}
     .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
     .btn{
-      border:none;cursor:pointer;border-radius:14px;padding:13px 18px;font-weight:800;transition:.2s ease
+      border:none;cursor:pointer;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:800;transition:.2s ease
     }
     .btn:hover{transform:translateY(-1px)}
     .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
     .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
-    .tabbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
     .tab{
       background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
-      padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease
+      padding:11px 14px;font-weight:800;cursor:pointer;transition:.2s ease;font-size:13px
     }
     .tab:hover{color:var(--text);border-color:var(--line2)}
     .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
-    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:14px}
+    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}
     .metric-card{
       background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--line);border-radius:22px;padding:18px;min-height:110px;position:relative;overflow:hidden
+      border:1px solid var(--line);border-radius:22px;padding:14px;min-height:90px;position:relative;overflow:hidden
     }
     .metric-card::before{
       content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
       background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
     }
     .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
-    .metric-value{font-size:clamp(28px,3vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1}
+    .metric-value{font-size:clamp(22px,2.5vw,32px);font-weight:800;letter-spacing:-.04em;line-height:1}
     .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)}
     .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
-    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:18px;margin-top:18px}
+    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:14px;margin-top:12px}
     .panel{
       background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
       border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
     }
-    .controls{padding:22px;position:relative;overflow:hidden}
+    .controls{padding:16px;position:relative;overflow:hidden}
     .controls::after{
       content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
       background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
     }
-    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
     .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
     .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
     .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
     .control-group{
-      margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
+      margin-bottom:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
     }
     .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
     .control-name{font-size:14px;font-weight:700;color:var(--text)}
@@ -141,7 +140,7 @@
     .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
     .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
     .advisor-card{
-      margin-top:18px;padding:18px;border-radius:20px;
+      margin-top:16px;padding:16px;border-radius:20px;
       background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
       border:1px solid rgba(255,255,255,.1)
     }
@@ -149,13 +148,13 @@
     .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
     .advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
     .advisor-actions .btn{flex:1;min-width:150px}
-    .dashboard{padding:18px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:780px}
+    .dashboard{padding:14px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:auto}
     .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
     .wealth-card,.insight-card,.chart-card,.timeline-card{
       background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
     }
     .wealth-card{
-      padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:188px;
+      padding:18px;display:flex;flex-direction:column;justify-content:space-between;min-height:auto;
       background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
     }
     .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
@@ -169,16 +168,16 @@
       -webkit-background-clip:text;background-clip:text;color:transparent
     }
     .wealth-sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:660px}
-    .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+    .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
     .wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
     .wealth-stat .s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
-    .wealth-stat .s-value{font-size:24px;font-weight:800;letter-spacing:-.03em}
-    .insight-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:188px}
+    .wealth-stat .s-value{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .insight-card{padding:18px;display:flex;flex-direction:column;gap:10px}
     .insight-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
     .insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
     .insight-box strong{display:block;font-size:15px;margin-bottom:6px;letter-spacing:-.02em}
     .insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
-    .chart-card{padding:18px;min-height:390px;display:flex;flex-direction:column}
+    .chart-card{padding:18px;min-height:260px;display:flex;flex-direction:column}
     .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
     .chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
     .chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
@@ -188,14 +187,14 @@
       background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px
     }
     .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-    .chart-wrap{position:relative;flex:1;min-height:280px;margin-top:8px}
+    .chart-wrap{position:relative;flex:1;min-height:240px;margin-top:8px}
     .timeline-card{padding:18px}
     .timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
     .timeline-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
     .timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
     .milestone{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
     .m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
-    .m-amount{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
+    .m-amount{font-size:22px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
     .m-note{color:#8390b1;font-size:13px;line-height:1.45}
     .hidden{display:none !important}
     @media(max-width:1180px){
@@ -205,25 +204,26 @@
       .dash-top{grid-template-columns:1fr}
       .timeline-grid{grid-template-columns:1fr 1fr}
     }
-   @media(max-width:760px){
-  .page{padding:12px 12px 28px}
-  .nav{padding:14px}
-  .hero{padding:18px}
-  .controls,.dashboard{padding:16px}
-  .wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
-  .hero-copy p{font-size:15px}
-  .metric-value{font-size:30px}
-  .wealth-number{font-size:42px}
-}
-/* ✅ ADD HERE (OUTSIDE MEDIA QUERY) */
-
-</style>
+    @media(max-width:760px){
+      .hero{padding:14px}
+      .hero-copy h1{font-size:22px}
+      .hero-copy p{font-size:13px}
+      .btn{padding:8px 10px;font-size:13px}
+      .top-metrics{grid-template-columns:1fr}
+      .metric-card{padding:12px}
+      .dashboard{gap:10px}
+      .chart-card{min-height:220px}
+      .wealth-number{font-size:32px}
+      .wealth-split,.timeline-grid,.mini-grid{grid-template-columns:1fr}
+      .page{padding:10px 10px 20px}
+      .controls,.dashboard{padding:12px}
+      body{overflow-x:hidden}
+    }
+  </style>
 </head>
 <body>
   <div class="page">
     <div id="navbar"></div>
-    <!-- ONLY CHANGE DONE: NAVBAR UPDATED -->
-<!-- EVERYTHING ELSE SAME AS YOUR ORIGINAL FILE -->
 
     <section class="hero">
       <div class="hero-top">
@@ -242,22 +242,22 @@
       <div class="top-metrics">
         <div class="metric-card">
           <div class="metric-label">Current mode</div>
-          <div class="metric-value cyan" id="modeHeadline">Savings Calculator</div>
-        <div class="metric-sub" id="modeSub">Safe returns and government-backed savings planning</div>
+          <div class="metric-value cyan" id="modeHeadline">Fixed Deposit</div>
+          <div class="metric-sub" id="modeSub">Safe returns and government-backed savings planning</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Projected wealth</div>
-          <div class="metric-value green" id="topProjected">₹23.0 L</div>
+          <div class="metric-label">Projected value</div>
+          <div class="metric-value green" id="topProjected">—</div>
           <div class="metric-sub">At current settings</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Wealth gain</div>
-          <div class="metric-value cyan" id="topGains">₹11.0 L</div>
+          <div class="metric-value cyan" id="topGains">—</div>
           <div class="metric-sub">Above contributions</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Reference rate</div>
-          <div class="metric-value gold" id="topRate">12%</div>
+          <div class="metric-value gold" id="topRate">—</div>
           <div class="metric-sub">Selected assumption</div>
         </div>
       </div>
@@ -268,27 +268,27 @@
         <div class="panel-head">
           <div>
             <div class="panel-title">Control Panel</div>
-            <div class="panel-desc" id="controlDesc">Tune contribution, return and duration. Your dashboard updates instantly.</div>
+            <div class="panel-desc" id="controlDesc">Tune the inputs. Your dashboard updates instantly.</div>
           </div>
-          <div class="badge" id="panelBadge">SIP MODE</div>
+          <div class="badge" id="panelBadge">FD MODE</div>
         </div>
 
         <div id="dynamicControls"></div>
 
         <div class="mini-grid">
           <div class="mini">
-            <div class="k">Decision mood</div>
-            <div class="v" id="miniMood">Strong</div>
+            <div class="k">Risk profile</div>
+            <div class="v" id="miniMood">Safe</div>
           </div>
           <div class="mini">
-            <div class="k">Power insight</div>
-            <div class="v" id="miniInsight">Compounding On</div>
+            <div class="k">Key insight</div>
+            <div class="v" id="miniInsight">Stable</div>
           </div>
         </div>
 
         <div class="advisor-card">
-          <h4>Ready to move from simulation to action?</h4>
-          <p>Use the dashboard to explore possibilities, then take the next step with a guided investment conversation.</p>
+          <h4>Ready to take the next step?</h4>
+          <p>Use the dashboard to explore possibilities, then take the next step with a guided savings conversation.</p>
           <div class="advisor-actions">
             <button class="btn primary" onclick="openAdvisor()">Start with justinvesting.in</button>
             <button class="btn secondary" onclick="copySummary()">Copy summary</button>
@@ -302,23 +302,23 @@
             <div>
               <div class="wealth-head">
                 <div class="wealth-title" id="wealthTitle">Savings Projection</div>
-                <div class="pill" id="wealthPill">Savings Mode</div>
+                <div class="pill" id="wealthPill">Safe Mode</div>
               </div>
-              <div class="wealth-number"><span class="grad" id="wealthNumber">₹23,00,387</span></div>
-              <div class="wealth-sub" id="wealthNarrative">If you keep investing consistently, your capital compounds into a much larger future corpus over time.</div>
+              <div class="wealth-number"><span class="grad" id="wealthNumber">—</span></div>
+              <div class="wealth-sub" id="wealthNarrative">Your savings projection will appear here.</div>
             </div>
             <div class="wealth-split">
               <div class="wealth-stat">
-                <div class="s-label" id="stat1Label">Principal Amount</div>
-                <div class="s-value" id="stat1Value">₹12,00,000</div>
+                <div class="s-label" id="stat1Label">Principal</div>
+                <div class="s-value" id="stat1Value">—</div>
               </div>
               <div class="wealth-stat">
-                <div class="s-label" id="stat2Label">Interest Earned</div>
-                <div class="s-value" id="stat2Value">₹11,00,387</div>
+                <div class="s-label" id="stat2Label">Interest</div>
+                <div class="s-value" id="stat2Value">—</div>
               </div>
               <div class="wealth-stat">
-                <div class="s-label" id="stat3Label">Multiple</div>
-                <div class="s-value" id="stat3Value">1.92x</div>
+                <div class="s-label" id="stat3Label">Total</div>
+                <div class="s-value" id="stat3Value">—</div>
               </div>
             </div>
           </div>
@@ -334,8 +334,8 @@
         <div class="chart-card">
           <div class="chart-head">
             <div>
-              <div class="chart-title" id="chartTitle">Projected wealth curve</div>
-              <div class="chart-meta" id="chartMeta">Year-by-year view of corpus growth, invested capital and compounding effect.</div>
+              <div class="chart-title" id="chartTitle">Savings growth curve</div>
+              <div class="chart-meta" id="chartMeta">Year-by-year view of your savings growth.</div>
             </div>
             <div class="legend" id="chartLegend"></div>
           </div>
@@ -348,7 +348,7 @@
           <div class="timeline-head">
             <div>
               <div class="timeline-title" id="timelineTitle">Milestones</div>
-              <div class="chart-meta" id="timelineMeta">Key value checkpoints on your investing journey.</div>
+              <div class="chart-meta" id="timelineMeta">Key value checkpoints on your savings journey.</div>
             </div>
           </div>
           <div class="timeline-grid" id="timelineGrid"></div>
@@ -358,454 +358,688 @@
   </div>
 
   <script>
-  let state = {};
-let active = "fd";
-
-function init(){
-Object.keys(CALCS).forEach(k=>{
-state[k]={};
-CALCS[k].controls.forEach(c=>{
-state[k][c.id]=c.value;
-});
-});
-renderTabs();
-renderControls();
-update();
-}
-
-function renderTabs(){
-tabs.innerHTML = Object.keys(CALCS).map(k=>
-`<button class="tab ${k===active?'active':''}" onclick="switchTab('${k}')">${CALCS[k].label}</button>`
-).join('');
-}
-
-function switchTab(k){
-active=k;
-renderTabs();
-renderControls();
-update();
-}
-
-function renderControls(){
-const cfg = CALCS[active];
-
-panelBadge.textContent = cfg.badge;
-controlDesc.textContent = cfg.desc;
-
-dynamicControls.innerHTML = cfg.controls.map(c=>`
-<div class="control-group">
-<div class="control-top">
-<div class="control-name">${c.label}</div>
-<div class="control-value">${state[active][c.id]}</div>
-</div>
-<input type="range" min="${c.min}" max="${c.max}" value="${state[active][c.id]}"
-oninput="updateVal('${c.id}',this.value)">
-</div>
-`).join('');
-}
-
-function updateVal(id,val){
-state[active][id]=Number(val);
-update();
-}
-
-function fmtCurrency(v){
-return "₹"+Math.round(v).toLocaleString();
-}
-
-function setTop(total,gain,rate){
-topProjected.innerText = fmtCurrency(total);
-topGains.innerText = fmtCurrency(gain);
-topRate.innerText = rate+"%";
-}
-
-function setWealthArea(o){
-wealthNumber.innerText = fmtCurrency(o.value);
-wealthNarrative.innerText = o.narrative;
-stat1Label.innerText = o.stat1.label;
-stat1Value.innerText = o.stat1.value;
-stat2Label.innerText = o.stat2.label;
-stat2Value.innerText = o.stat2.value;
-stat3Label.innerText = o.stat3.label;
-stat3Value.innerText = o.stat3.value;
-miniMood.innerText = o.mood;
-miniInsight.innerText = o.power;
-}
-
-function update(){
-
-const s = state[active];
-
-if(active==="fd"){
-let v = s.amount * Math.pow(1 + s.rate/100, s.years);
-let gain = v - s.amount;
-
-setTop(v,gain,s.rate);
-
-setWealthArea({
-value:v,
-narrative:"Fixed deposit gives stable returns",
-stat1:{label:'Principal',value:fmtCurrency(s.amount)},
-stat2:{label:'Interest',value:fmtCurrency(gain)},
-stat3:{label:'Total',value:fmtCurrency(v)},
-mood:"Safe",
-power:"Stable"
-});
-}
-
-if(active==="rd"){
-let r = s.rate/12/100;
-let n = s.years*12;
-let v = s.monthly*((Math.pow(1+r,n)-1)/r)*(1+r);
-let invested = s.monthly*n;
-
-setTop(v,v-invested,s.rate);
-
-setWealthArea({
-value:v,
-narrative:"Monthly savings grow steadily",
-stat1:{label:'Invested',value:fmtCurrency(invested)},
-stat2:{label:'Interest',value:fmtCurrency(v-invested)},
-stat3:{label:'Total',value:fmtCurrency(v)},
-mood:"Stable",
-power:"Discipline"
-});
-}
-
-if(active==="inflation"){
-let real = s.amount / Math.pow(1 + s.inflation/100, s.years);
-
-setTop(real,s.amount-real,s.inflation);
-
-setWealthArea({
-value:real,
-narrative:"Inflation reduces value over time",
-stat1:{label:'Today',value:fmtCurrency(s.amount)},
-stat2:{label:'Future',value:fmtCurrency(real)},
-stat3:{label:'Loss',value:fmtCurrency(s.amount-real)},
-mood:"Awareness",
-power:"Inflation"
-});
-}
-
-}
-
-init();
-
-</script> = {
-fd:{label:"FD",badge:"FD",title:"Fixed Deposit",
-sub:"Safe returns",
-desc:"Calculate FD maturity",
-wealthTitle:"FD Maturity",
-wealthPill:"Safe",
-controls:[
-{id:"amount",label:"Amount",min:10000,max:5000000,value:100000,format:"currency"},
-{id:"rate",label:"Rate",min:3,max:10,value:7,format:"percent"},
-{id:"years",label:"Years",min:1,max:10,value:5,format:"years"}
-]},
-
-rd:{label:"RD",badge:"RD",title:"Recurring Deposit",
-sub:"Monthly savings",
-desc:"RD growth",
-wealthTitle:"RD Value",
-wealthPill:"Monthly",
-controls:[
-{id:"monthly",label:"Monthly",min:1000,max:100000,value:5000,format:"currency"},
-{id:"rate",label:"Rate",min:3,max:10,value:7,format:"percent"},
-{id:"years",label:"Years",min:1,max:10,value:5,format:"years"}
-]},
-
-nsc:{label:"NSC",badge:"NSC",title:"National Savings Certificate",
-sub:"Govt scheme",
-desc:"Secure investment",
-wealthTitle:"NSC Value",
-wealthPill:"Govt",
-controls:[
-{id:"amount",label:"Amount",min:1000,max:500000,value:50000,format:"currency"},
-{id:"rate",label:"Rate",min:6,max:8,value:7.7,format:"percent"},
-{id:"years",label:"Years",min:5,max:5,value:5,format:"years"}
-]},
-
-kvp:{label:"KVP",badge:"KVP",title:"Kisan Vikas Patra",
-sub:"Double money scheme",
-desc:"Time to double",
-wealthTitle:"KVP Value",
-wealthPill:"Double",
-controls:[
-{id:"amount",label:"Amount",min:1000,max:500000,value:50000,format:"currency"},
-{id:"years",label:"Years",min:8,max:10,value:9,format:"years"}
-]},
-
-scss:{label:"SCSS",badge:"SCSS",title:"Senior Citizen Scheme",
-sub:"High interest",
-desc:"Quarterly payout",
-wealthTitle:"SCSS Value",
-wealthPill:"Senior",
-controls:[
-{id:"amount",label:"Amount",min:10000,max:3000000,value:500000,format:"currency"},
-{id:"rate",label:"Rate",min:7,max:9,value:8.2,format:"percent"},
-{id:"years",label:"Years",min:5,max:5,value:5,format:"years"}
-]},
-
-post:{label:"Post Office",badge:"POST",title:"Post Office Savings",
-sub:"Safe deposit",
-desc:"Low risk",
-wealthTitle:"Savings Value",
-wealthPill:"Secure",
-controls:[
-{id:"amount",label:"Amount",min:1000,max:1000000,value:50000,format:"currency"},
-{id:"rate",label:"Rate",min:3,max:6,value:4,format:"percent"},
-{id:"years",label:"Years",min:1,max:10,value:5,format:"years"}
-]},
-
-compare:{label:"Compare",badge:"COMPARE",title:"FD vs SIP vs RD",
-sub:"Compare returns",
-desc:"Decision tool",
-wealthTitle:"Comparison",
-wealthPill:"Decision",
-controls:[
-{id:"amount",label:"Amount",min:10000,max:500000,value:100000,format:"currency"},
-{id:"years",label:"Years",min:1,max:10,value:5,format:"years"}
-]},
-
-inflation:{label:"Inflation",badge:"REAL",title:"Inflation Adjusted",
-sub:"Real value",
-desc:"Future value",
-wealthTitle:"Real Value",
-wealthPill:"Inflation",
-controls:[
-{id:"amount",label:"Amount",min:10000,max:10000000,value:100000,format:"currency"},
-{id:"inflation",label:"Inflation",min:1,max:10,value:6,format:"percent"},
-{id:"years",label:"Years",min:1,max:20,value:10,format:"years"}
-]}
-
-};
-</script>
- <script>
-fetch("components/navbar.html")
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById("navbar").innerHTML = data;
-
-    const currentPath = window.location.pathname.split("/").pop() || "index.html";
-    const links = document.querySelectorAll(".nav a, .mobile-drawer a");
-
-    links.forEach(link => {
-      const href = link.getAttribute("href");
-      if (href === currentPath) {
-        link.classList.add("active");
+    /* ═══════════════════════════════════════════
+       CALCS — single source of truth
+    ═══════════════════════════════════════════ */
+    const CALCS = {
+      fd: {
+        label: "FD",
+        badge: "FD MODE",
+        title: "Fixed Deposit",
+        sub: "Safe compounding on a lump sum deposit.",
+        desc: "Set principal, rate and tenure to see FD maturity value.",
+        wealthTitle: "FD Maturity Value",
+        wealthPill: "Safe Returns",
+        chartTitle: "FD growth curve",
+        chartMeta: "Year-by-year compounding of your fixed deposit.",
+        timelineTitle: "Milestones",
+        timelineMeta: "Key checkpoints in your FD journey.",
+        controls: [
+          { id:"amount",  label:"Principal amount", min:10000,   max:5000000,  step:5000,  value:100000, format:"currency" },
+          { id:"rate",    label:"Interest rate",    min:3,       max:10,       step:0.1,   value:7,      format:"percent" },
+          { id:"years",   label:"Tenure",           min:1,       max:10,       step:1,     value:5,      format:"years" }
+        ]
+      },
+      rd: {
+        label: "RD",
+        badge: "RD MODE",
+        title: "Recurring Deposit",
+        sub: "Monthly savings with quarterly compounding.",
+        desc: "Set monthly deposit, rate and tenure to see RD maturity.",
+        wealthTitle: "RD Maturity Value",
+        wealthPill: "Monthly Savings",
+        chartTitle: "RD growth curve",
+        chartMeta: "Year-by-year accumulation of your recurring deposit.",
+        timelineTitle: "Milestones",
+        timelineMeta: "Key checkpoints in your RD journey.",
+        controls: [
+          { id:"monthly", label:"Monthly deposit",  min:500,     max:100000,   step:500,   value:5000,   format:"currency" },
+          { id:"rate",    label:"Interest rate",    min:3,       max:10,       step:0.1,   value:7,      format:"percent" },
+          { id:"years",   label:"Tenure",           min:1,       max:10,       step:1,     value:5,      format:"years" }
+        ]
+      },
+      nsc: {
+        label: "NSC",
+        badge: "NSC MODE",
+        title: "National Savings Certificate",
+        sub: "Government-backed 5-year compounding scheme.",
+        desc: "NSC compounds annually at the government rate for 5 years.",
+        wealthTitle: "NSC Maturity Value",
+        wealthPill: "Govt Scheme",
+        chartTitle: "NSC compounding path",
+        chartMeta: "Annual compounding on your NSC investment.",
+        timelineTitle: "Milestones",
+        timelineMeta: "Key checkpoints in your NSC journey.",
+        controls: [
+          { id:"amount",  label:"Investment amount", min:1000,   max:500000,   step:1000,  value:50000,  format:"currency" },
+          { id:"rate",    label:"Interest rate",     min:6,      max:9,        step:0.1,   value:7.7,    format:"percent" },
+          { id:"years",   label:"Tenure",            min:5,      max:5,        step:1,     value:5,      format:"years" }
+        ]
+      },
+      kvp: {
+        label: "KVP",
+        badge: "KVP MODE",
+        title: "Kisan Vikas Patra",
+        sub: "Government scheme that doubles your investment.",
+        desc: "KVP doubles your principal in a fixed tenure.",
+        wealthTitle: "KVP Maturity Value",
+        wealthPill: "Double Money",
+        chartTitle: "KVP growth path",
+        chartMeta: "Linear path to doubling your investment.",
+        timelineTitle: "Milestones",
+        timelineMeta: "Key checkpoints in your KVP journey.",
+        controls: [
+          { id:"amount",  label:"Investment amount", min:1000,   max:500000,   step:1000,  value:50000,  format:"currency" },
+          { id:"years",   label:"Doubling period",   min:8,      max:10,       step:1,     value:9,      format:"years" }
+        ]
+      },
+      scss: {
+        label: "SCSS",
+        badge: "SCSS MODE",
+        title: "Senior Citizen Savings Scheme",
+        sub: "High-interest quarterly payout for senior citizens.",
+        desc: "SCSS pays quarterly interest at a high government rate.",
+        wealthTitle: "SCSS Total Payout",
+        wealthPill: "Senior Scheme",
+        chartTitle: "SCSS interest payout",
+        chartMeta: "Annual interest earned on your SCSS deposit.",
+        timelineTitle: "Milestones",
+        timelineMeta: "Cumulative interest milestones.",
+        controls: [
+          { id:"amount",  label:"Deposit amount",    min:10000,  max:3000000,  step:10000, value:500000, format:"currency" },
+          { id:"rate",    label:"Interest rate",     min:7,      max:9,        step:0.1,   value:8.2,    format:"percent" },
+          { id:"years",   label:"Tenure",            min:5,      max:5,        step:1,     value:5,      format:"years" }
+        ]
+      },
+      post: {
+        label: "Post Office",
+        badge: "POST MODE",
+        title: "Post Office Savings",
+        sub: "Simple secure savings with government backing.",
+        desc: "Post Office TD grows your deposit with annual simple interest.",
+        wealthTitle: "Post Office Value",
+        wealthPill: "Secure Deposit",
+        chartTitle: "Post Office growth path",
+        chartMeta: "Yearly growth of your post office deposit.",
+        timelineTitle: "Milestones",
+        timelineMeta: "Key value checkpoints.",
+        controls: [
+          { id:"amount",  label:"Deposit amount",    min:1000,   max:1000000,  step:1000,  value:50000,  format:"currency" },
+          { id:"rate",    label:"Interest rate",     min:3,      max:7,        step:0.1,   value:4,      format:"percent" },
+          { id:"years",   label:"Tenure",            min:1,      max:10,       step:1,     value:5,      format:"years" }
+        ]
+      },
+      compare: {
+        label: "Compare",
+        badge: "COMPARE",
+        title: "FD vs RD vs SIP",
+        sub: "Side-by-side comparison of three savings approaches.",
+        desc: "Compare the final value of FD, RD and basic SIP over the same horizon.",
+        wealthTitle: "Best Option Result",
+        wealthPill: "Decision Tool",
+        chartTitle: "FD vs RD vs SIP comparison",
+        chartMeta: "All three strategies modelled on the same amount and horizon.",
+        timelineTitle: "Comparison milestones",
+        timelineMeta: "How each strategy performs at key intervals.",
+        controls: [
+          { id:"amount",  label:"Lump sum / Monthly", min:10000, max:500000,   step:5000,  value:100000, format:"currency" },
+          { id:"fdrate",  label:"FD rate",            min:3,     max:10,       step:0.1,   value:7,      format:"percent" },
+          { id:"siprate", label:"SIP / equity rate",  min:6,     max:18,       step:0.5,   value:12,     format:"percent" },
+          { id:"years",   label:"Horizon",            min:1,     max:15,       step:1,     value:5,      format:"years" }
+        ]
+      },
+      inflation: {
+        label: "Inflation",
+        badge: "REAL VALUE",
+        title: "Inflation-Adjusted Value",
+        sub: "See how inflation erodes purchasing power over time.",
+        desc: "Enter today's amount and inflation rate to see future real value.",
+        wealthTitle: "Real Future Value",
+        wealthPill: "Inflation Lens",
+        chartTitle: "Purchasing power erosion",
+        chartMeta: "How the real value of your money declines year by year.",
+        timelineTitle: "Erosion milestones",
+        timelineMeta: "Purchasing power at key intervals.",
+        controls: [
+          { id:"amount",    label:"Today's amount",  min:10000,  max:10000000, step:10000, value:100000, format:"currency" },
+          { id:"inflation", label:"Inflation rate",  min:1,      max:12,       step:0.5,   value:6,      format:"percent" },
+          { id:"years",     label:"Years ahead",     min:1,      max:30,       step:1,     value:10,     format:"years" }
+        ]
       }
-    });
-  });
+    };
 
-function toggleMenu(){
-  document.getElementById("mobileDrawer")?.classList.toggle("open");
-}
-</script>
-<script>
+    /* ═══════════════════════════════════════════
+       STATE
+    ═══════════════════════════════════════════ */
+    let state  = {};
+    let active = "fd";
+    let chart;
 
-let state = {};
-let active = "fd";
-let chart;
+    const $  = id => document.getElementById(id);
 
-/* INIT */
-function init(){
-Object.keys(CALCS).forEach(k=>{
-state[k]={};
-CALCS[k].controls.forEach(c=>{
-state[k][c.id]=c.value;
-});
-});
-renderTabs();
-renderControls();
-update();
-}
+    /* ═══════════════════════════════════════════
+       FORMAT HELPERS
+    ═══════════════════════════════════════════ */
+    function fmtCurrency(v){
+      return "₹" + Math.round(v).toLocaleString("en-IN");
+    }
+    function fmtShort(v){
+      const a = Math.abs(v);
+      if(a >= 10000000) return "₹" + (v/10000000).toFixed(2).replace(/\.00$/,"") + " Cr";
+      if(a >= 100000)   return "₹" + (v/100000).toFixed(2).replace(/\.00$/,"")   + " L";
+      return fmtCurrency(v);
+    }
+    function fmtVal(v, fmt){
+      v = Number(v);
+      if(fmt === "currency") return fmtCurrency(v);
+      if(fmt === "percent")  return v.toFixed(1).replace(/\.0$/,"") + "%";
+      if(fmt === "years")    return Math.round(v) + " Yr";
+      return v;
+    }
 
-/* TABS */
-function renderTabs(){
-tabs.innerHTML = Object.keys(CALCS).map(k=>
-`<button class="tab ${k===active?'active':''}" onclick="switchTab('${k}')">${CALCS[k].label}</button>`
-).join('');
-}
+    /* ═══════════════════════════════════════════
+       INIT
+    ═══════════════════════════════════════════ */
+    function initState(){
+      Object.keys(CALCS).forEach(k => {
+        state[k] = {};
+        CALCS[k].controls.forEach(c => { state[k][c.id] = c.value; });
+      });
+    }
 
-function switchTab(k){
-active=k;
-renderTabs();
-renderControls();
-update();
-}
+    /* ═══════════════════════════════════════════
+       TABS
+    ═══════════════════════════════════════════ */
+    function renderTabs(){
+      $("tabs").innerHTML = Object.keys(CALCS).map(k =>
+        `<button class="tab ${k===active?"active":""}" onclick="switchTab('${k}')">${CALCS[k].label}</button>`
+      ).join("");
+    }
 
-/* CONTROLS */
-function renderControls(){
-const cfg = CALCS[active];
+    function switchTab(k){
+      active = k;
+      renderTabs();
+      renderControls();
+      update();
+    }
 
-panelBadge.textContent = cfg.badge;
-controlDesc.textContent = cfg.desc;
+    /* ═══════════════════════════════════════════
+       CONTROLS
+    ═══════════════════════════════════════════ */
+    function renderControls(){
+      const cfg = CALCS[active];
+      $("panelBadge").textContent  = cfg.badge;
+      $("controlDesc").textContent = cfg.desc;
+      $("modeHeadline").textContent = cfg.title;
+      $("modeSub").textContent      = cfg.sub;
 
-dynamicControls.innerHTML = cfg.controls.map(c=>`
-<div class="control-group">
-<div class="control-top">
-<div class="control-name">${c.label}</div>
-<div class="control-value">${state[active][c.id]}</div>
-</div>
-<input type="range" min="${c.min}" max="${c.max}" value="${state[active][c.id]}"
-oninput="updateVal('${c.id}',this.value)">
-</div>
-`).join('');
-}
+      $("dynamicControls").innerHTML = cfg.controls.map(c => `
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">${c.label}</div>
+            <div class="control-value" id="view-${c.id}">${fmtVal(state[active][c.id], c.format)}</div>
+          </div>
+          <input type="range" id="ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step||1}" value="${state[active][c.id]}">
+        </div>
+      `).join("");
 
-function updateVal(id,val){
-state[active][id]=Number(val);
-update();
-}
+      cfg.controls.forEach(c => {
+        $(`ctrl-${c.id}`).addEventListener("input", e => {
+          state[active][c.id] = Number(e.target.value);
+          $(`view-${c.id}`).textContent = fmtVal(state[active][c.id], c.format);
+          update();
+        });
+      });
+    }
 
-/* FORMAT */
-function fmtCurrency(v){
-return "₹"+Math.round(v).toLocaleString();
-}
+    /* ═══════════════════════════════════════════
+       TOP METRICS
+    ═══════════════════════════════════════════ */
+    function setTop(total, gain, rate){
+      $("topProjected").textContent = fmtShort(total);
+      $("topGains").textContent     = fmtShort(gain);
+      $("topRate").textContent      = typeof rate === "number" ? rate.toFixed(1).replace(/\.0$/,"") + "%" : rate;
+    }
 
-/* TOP METRICS */
-function setTop(total,gain,rate){
-topProjected.innerText = fmtCurrency(total);
-topGains.innerText = fmtCurrency(gain);
-topRate.innerText = rate+"%";
-}
+    /* ═══════════════════════════════════════════
+       WEALTH AREA
+    ═══════════════════════════════════════════ */
+    function setWealth(o){
+      const cfg = CALCS[active];
+      $("wealthTitle").textContent     = cfg.wealthTitle;
+      $("wealthPill").textContent      = cfg.wealthPill;
+      $("wealthNumber").textContent    = fmtCurrency(o.value);
+      $("wealthNarrative").textContent = o.narrative;
+      $("stat1Label").textContent      = o.stat1.label;
+      $("stat1Value").textContent      = o.stat1.value;
+      $("stat2Label").textContent      = o.stat2.label;
+      $("stat2Value").textContent      = o.stat2.value;
+      $("stat3Label").textContent      = o.stat3.label;
+      $("stat3Value").textContent      = o.stat3.value;
+      $("miniMood").textContent        = o.mood;
+      $("miniInsight").textContent     = o.power;
+    }
 
-/* MAIN DISPLAY */
-function setWealthArea(o){
-wealthNumber.innerText = fmtCurrency(o.value);
-wealthNarrative.innerText = o.narrative;
-stat1Label.innerText = o.stat1.label;
-stat1Value.innerText = o.stat1.value;
-stat2Label.innerText = o.stat2.label;
-stat2Value.innerText = o.stat2.value;
-stat3Label.innerText = o.stat3.label;
-stat3Value.innerText = o.stat3.value;
-miniMood.innerText = o.mood;
-miniInsight.innerText = o.power;
-}
+    /* ═══════════════════════════════════════════
+       INSIGHTS
+    ═══════════════════════════════════════════ */
+    function setInsights(a, b, c){
+      $("insight1Title").textContent = a.title; $("insight1Text").textContent = a.text;
+      $("insight2Title").textContent = b.title; $("insight2Text").textContent = b.text;
+      $("insight3Title").textContent = c.title; $("insight3Text").textContent = c.text;
+    }
 
-/* CHART */
-function drawChart(labels,datasets){
+    /* ═══════════════════════════════════════════
+       CHART
+    ═══════════════════════════════════════════ */
+    function renderChart(labels, series, title, meta){
+      const cfg = CALCS[active];
+      $("chartTitle").textContent = title || cfg.chartTitle;
+      $("chartMeta").textContent  = meta  || cfg.chartMeta;
+      $("chartLegend").innerHTML  = series.map(s =>
+        `<div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>`
+      ).join("");
 
-if(chart) chart.destroy();
+      const ctx = $("wealthChart").getContext("2d");
+      const grad = ctx.createLinearGradient(0, 0, 0, 320);
+      grad.addColorStop(0,   "rgba(0,212,255,.26)");
+      grad.addColorStop(.6,  "rgba(79,163,255,.1)");
+      grad.addColorStop(1,   "rgba(79,163,255,0)");
 
-chart=new Chart(document.getElementById("wealthChart"),{
-type:"line",
-data:{labels,datasets},
-options:{
-plugins:{legend:{display:true}},
-interaction:{mode:"index",intersect:false},
-scales:{
-x:{ticks:{color:"#9da9c6"}},
-y:{ticks:{color:"#9da9c6"}}
-}
-}
-});
-}
+      if(chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: series.map((s, i) => ({
+            label: s.label,
+            data: s.data,
+            borderColor: s.color,
+            backgroundColor: i === 0 ? grad : "transparent",
+            fill: i === 0,
+            borderWidth: i === 0 ? 3 : 2,
+            pointRadius: i === 0 ? 2 : 0,
+            pointHoverRadius: 5,
+            tension: .38
+          }))
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode:"index", intersect:false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: "rgba(7,12,28,.96)",
+              borderColor: "rgba(255,255,255,.08)",
+              borderWidth: 1,
+              titleColor: "#fff",
+              bodyColor: "#dce6ff",
+              padding: 12,
+              callbacks: { label: ctx => `${ctx.dataset.label}: ${fmtCurrency(ctx.raw)}` }
+            }
+          },
+          scales: {
+            x: { grid:{display:false}, ticks:{color:"rgba(220,230,255,.55)", font:{size:12}} },
+            y: {
+              beginAtZero: true,
+              grid: { color:"rgba(255,255,255,.06)" },
+              ticks: { color:"rgba(220,230,255,.55)", font:{size:12}, callback: v => fmtShort(v) }
+            }
+          }
+        }
+      });
+    }
 
-/* UPDATE ENGINE */
-function update(){
+    /* ═══════════════════════════════════════════
+       MILESTONES
+    ═══════════════════════════════════════════ */
+    function renderMilestones(labels, corpus, base){
+      const total = labels.length;
+      const picks = Array.from(new Set([1, Math.max(1,Math.ceil(total*.33)), Math.max(1,Math.ceil(total*.66)), total])).slice(0,4);
+      $("timelineGrid").innerHTML = picks.map(y => {
+        const idx = y - 1;
+        const val = corpus[idx] || 0;
+        const inv = base[idx]   || 0;
+        return `<div class="milestone">
+          <div class="m-year">Year ${y}</div>
+          <div class="m-amount">${fmtShort(val)}</div>
+          <div class="m-note">${val > inv ? fmtShort(val-inv) + " created beyond base" : "Capital still building"}</div>
+        </div>`;
+      }).join("");
+    }
 
-const s = state[active];
+    /* ═══════════════════════════════════════════
+       UPDATE ENGINE — one clean block per calculator
+    ═══════════════════════════════════════════ */
+    function update(){
+      const s   = state[active];
+      const cfg = CALCS[active];
 
-if(active==="fd"){
-let v = s.amount * Math.pow(1 + s.rate/100, s.years);
-let gain = v - s.amount;
+      /* ── FD ── */
+      if(active === "fd"){
+        const labels = [], corpus = [], base = [];
+        for(let y = 1; y <= s.years; y++){
+          labels.push("Year " + y);
+          corpus.push(Math.round(s.amount * Math.pow(1 + s.rate/100, y)));
+          base.push(s.amount);
+        }
+        const maturity = corpus[corpus.length - 1];
+        const gain     = maturity - s.amount;
 
-setTop(v,gain,s.rate);
-setWealthArea({
-value:v,
-narrative:"Fixed deposit gives stable returns",
-stat1:{label:'Principal',value:fmtCurrency(s.amount)},
-stat2:{label:'Interest',value:fmtCurrency(gain)},
-stat3:{label:'Total',value:fmtCurrency(v)},
-mood:"Safe",
-power:"Stable"
-});
-drawChart(
-Array.from({length:s.years},(_,i)=>"Year "+(i+1)),
-[
-{label:"FD Growth",data:Array.from({length:s.years},(_,i)=>s.amount*Math.pow(1+s.rate/100,i+1)),borderColor:"#00d4ff"},
-{label:"Principal",data:Array.from({length:s.years},()=>s.amount),borderColor:"#ffd76a"}
-]
-);
+        setTop(maturity, gain, s.rate);
+        setWealth({
+          value: maturity,
+          narrative: `A deposit of ${fmtCurrency(s.amount)} at ${s.rate}% for ${s.years} years grows to ${fmtShort(maturity)}.`,
+          stat1: { label:"Principal",     value: fmtCurrency(s.amount) },
+          stat2: { label:"Interest earned", value: fmtCurrency(gain) },
+          stat3: { label:"Multiple",      value: (maturity/s.amount).toFixed(2) + "x" },
+          mood: "Safe", power: "Guaranteed"
+        });
+        setInsights(
+          { title:"Fixed deposits offer capital protection.", text:"Your principal is guaranteed. The rate locks in at deposit time." },
+          { title:"Compounding beats simple interest.", text:"Each year's interest builds on the previous year's total, accelerating growth." },
+          { title:"Ladder FDs for liquidity.", text:"Breaking into multiple smaller FDs with different tenures gives you periodic access to funds." }
+        );
+        renderChart(labels, [
+          { label:"FD value",   data: corpus, color:"#00d4ff" },
+          { label:"Principal",  data: base,   color:"#ffd76a" }
+        ]);
+        renderMilestones(labels, corpus, base);
+      }
 
-if(active==="rd"){
-let r = s.rate/12/100;
-let n = s.years*12;
-let v = s.monthly*((Math.pow(1+r,n)-1)/r)*(1+r);
-let invested = s.monthly*n;
+      /* ── RD ── */
+      if(active === "rd"){
+        const r = s.rate / 12 / 100;
+        const labels = [], corpus = [], base = [];
+        for(let y = 1; y <= s.years; y++){
+          const n = y * 12;
+          const v = s.monthly * ((Math.pow(1+r,n)-1)/r) * (1+r);
+          labels.push("Year " + y);
+          corpus.push(Math.round(v));
+          base.push(s.monthly * n);
+        }
+        const maturity  = corpus[corpus.length - 1];
+        const invested  = base[base.length - 1];
+        const gain      = maturity - invested;
 
-setTop(v,v-invested,s.rate);
-setWealthArea({
-value:v,
-narrative:"Monthly saving grows steadily",
-stat1:{label:'Invested',value:fmtCurrency(invested)},
-stat2:{label:'Interest',value:fmtCurrency(v-invested)},
-stat3:{label:'Total',value:fmtCurrency(v)},
-mood:"Disciplined",
-power:"Consistency"
-});
-drawChart(
-Array.from({length:s.years},(_,i)=>"Year "+(i+1)),
-[
-{label:"RD Value",data:Array.from({length:s.years},(_,i)=>v*(i+1)/s.years),borderColor:"#00e676"},
-{label:"Investment",data:Array.from({length:s.years},(_,i)=>s.monthly*12*(i+1)),borderColor:"#ffd76a"}
-]
-);
+        setTop(maturity, gain, s.rate);
+        setWealth({
+          value: maturity,
+          narrative: `Depositing ${fmtCurrency(s.monthly)} every month at ${s.rate}% for ${s.years} years builds ${fmtShort(maturity)}.`,
+          stat1: { label:"Total invested", value: fmtCurrency(invested) },
+          stat2: { label:"Interest earned", value: fmtCurrency(gain) },
+          stat3: { label:"Multiple",        value: (maturity/invested).toFixed(2) + "x" },
+          mood: "Disciplined", power: "Consistency"
+        });
+        setInsights(
+          { title:"RD builds wealth through habit.", text:"Monthly deposits enforce saving discipline and generate steady compounded returns." },
+          { title:"Useful for goal-based saving.", text:"A specific target — vacation, appliance, down payment — pairs well with an RD." },
+          { title:"Compare with SIP for higher return goals.", text:"For long horizons, equity SIPs historically outperform RDs significantly." }
+        );
+        renderChart(labels, [
+          { label:"RD value",      data: corpus, color:"#00e676" },
+          { label:"Amount saved",  data: base,   color:"#ffd76a" }
+        ]);
+        renderMilestones(labels, corpus, base);
+      }
 
-if(active==="nsc" || active==="scss" || active==="post"){
-let v = s.amount*Math.pow(1+s.rate/100,s.years);
+      /* ── NSC ── */
+      if(active === "nsc"){
+        const labels = [], corpus = [], base = [];
+        for(let y = 1; y <= s.years; y++){
+          labels.push("Year " + y);
+          corpus.push(Math.round(s.amount * Math.pow(1 + s.rate/100, y)));
+          base.push(s.amount);
+        }
+        const maturity = corpus[corpus.length - 1];
+        const gain     = maturity - s.amount;
 
-setTop(v,v-s.amount,s.rate);
-setWealthArea({
-value:v,
-narrative:"Government-backed safe investment",
-stat1:{label:'Principal',value:fmtCurrency(s.amount)},
-stat2:{label:'Interest',value:fmtCurrency(v-s.amount)},
-stat3:{label:'Total',value:fmtCurrency(v)},
-mood:"Safe",
-power:"Security"
-});
-drawChart(s.years,v);
-}
+        setTop(maturity, gain, s.rate);
+        setWealth({
+          value: maturity,
+          narrative: `NSC investment of ${fmtCurrency(s.amount)} at ${s.rate}% compounded annually matures to ${fmtShort(maturity)}.`,
+          stat1: { label:"Invested",      value: fmtCurrency(s.amount) },
+          stat2: { label:"Interest",      value: fmtCurrency(gain) },
+          stat3: { label:"Maturity",      value: fmtShort(maturity) },
+          mood: "Secure", power: "Govt-Backed"
+        });
+        setInsights(
+          { title:"NSC offers tax deduction under 80C.", text:"Investments up to ₹1.5L per year qualify for income tax deduction." },
+          { title:"Interest is reinvested automatically.", text:"NSC interest is deemed reinvested, compounding your returns for the full 5-year term." },
+          { title:"No TDS on NSC interest.", text:"Tax is payable but no TDS is deducted, giving better cash flow during the tenure." }
+        );
+        renderChart(labels, [
+          { label:"NSC value",  data: corpus, color:"#4fa3ff" },
+          { label:"Invested",   data: base,   color:"#ffd76a" }
+        ]);
+        renderMilestones(labels, corpus, base);
+      }
 
-if(active==="kvp"){
-let v = s.amount*2;
+      /* ── KVP ── */
+      if(active === "kvp"){
+        const maturity = s.amount * 2;
+        const impliedRate = (Math.pow(2, 1/s.years) - 1) * 100;
+        const labels = [], corpus = [], base = [];
+        for(let y = 1; y <= s.years; y++){
+          labels.push("Year " + y);
+          corpus.push(Math.round(s.amount * Math.pow(1 + impliedRate/100, y)));
+          base.push(s.amount);
+        }
 
-setTop(v,v-s.amount,0);
-setWealthArea({
-value:v,
-narrative:"Money doubles in fixed tenure",
-stat1:{label:'Principal',value:fmtCurrency(s.amount)},
-stat2:{label:'Gain',value:fmtCurrency(v-s.amount)},
-stat3:{label:'Total',value:fmtCurrency(v)},
-mood:"Guaranteed",
-power:"Doubling"
-});
-drawChart(s.years,v);
-}
+        setTop(maturity, s.amount, impliedRate);
+        setWealth({
+          value: maturity,
+          narrative: `KVP doubles ${fmtCurrency(s.amount)} in ${s.years} years — equivalent to ${impliedRate.toFixed(2)}% CAGR.`,
+          stat1: { label:"Invested",    value: fmtCurrency(s.amount) },
+          stat2: { label:"Gain",        value: fmtCurrency(s.amount) },
+          stat3: { label:"Maturity",    value: fmtShort(maturity) },
+          mood: "Guaranteed", power: "Doubling"
+        });
+        setInsights(
+          { title:"KVP guarantees doubling.", text:"The principal doubles at a fixed government-set rate with no market risk." },
+          { title:"No upper limit on investment.", text:"Unlike many small savings schemes, KVP has no maximum investment cap." },
+          { title:"Freely transferable.", text:"KVP certificates can be transferred from one person to another, useful for gifting wealth." }
+        );
+        renderChart(labels, [
+          { label:"KVP value",  data: corpus, color:"#00e676" },
+          { label:"Principal",  data: base,   color:"#ffd76a" }
+        ]);
+        renderMilestones(labels, corpus, base);
+      }
 
-if(active==="inflation"){
-let real = s.amount/Math.pow(1+s.inflation/100,s.years);
+      /* ── SCSS ── */
+      if(active === "scss"){
+        const annualInterest = s.amount * s.rate / 100;
+        const labels = [], corpus = [], base = [];
+        for(let y = 1; y <= s.years; y++){
+          labels.push("Year " + y);
+          corpus.push(Math.round(s.amount + annualInterest * y));
+          base.push(s.amount);
+        }
+        const totalInterest = annualInterest * s.years;
+        const total         = s.amount + totalInterest;
 
-setTop(real,s.amount-real,s.inflation);
-setWealthArea({
-value:real,
-narrative:"Inflation reduces value over time",
-stat1:{label:'Today',value:fmtCurrency(s.amount)},
-stat2:{label:'Future',value:fmtCurrency(real)},
-stat3:{label:'Loss',value:fmtCurrency(s.amount-real)},
-mood:"Awareness",
-power:"Inflation"
-});
-drawChart(s.years,real);
-}
+        setTop(total, totalInterest, s.rate);
+        setWealth({
+          value: total,
+          narrative: `SCSS deposit of ${fmtCurrency(s.amount)} at ${s.rate}% earns ${fmtCurrency(annualInterest)} per year — ${fmtShort(totalInterest)} total over ${s.years} years.`,
+          stat1: { label:"Deposit",         value: fmtCurrency(s.amount) },
+          stat2: { label:"Total interest",  value: fmtCurrency(totalInterest) },
+          stat3: { label:"Quarterly payout", value: fmtCurrency(annualInterest/4) },
+          mood: "Income Phase", power: "Quarterly Cash"
+        });
+        setInsights(
+          { title:"SCSS is India's highest-rate small savings scheme.", text:"At 8.2%, it offers among the best guaranteed returns for senior citizens." },
+          { title:"Quarterly payouts give regular income.", text:"Interest is paid every quarter, providing a reliable cash flow stream post-retirement." },
+          { title:"Max deposit is ₹30 lakh.", text:"Individual SCSS limit is ₹30L. Joint accounts with spouses can allow higher allocation." }
+        );
+        renderChart(labels, [
+          { label:"Cumulative value",  data: corpus, color:"#7b61ff" },
+          { label:"Principal",         data: base,   color:"#ffd76a" }
+        ]);
+        renderMilestones(labels, corpus, base);
+      }
 
-}
+      /* ── POST OFFICE ── */
+      if(active === "post"){
+        const labels = [], corpus = [], base = [];
+        for(let y = 1; y <= s.years; y++){
+          labels.push("Year " + y);
+          corpus.push(Math.round(s.amount * Math.pow(1 + s.rate/100, y)));
+          base.push(s.amount);
+        }
+        const maturity = corpus[corpus.length - 1];
+        const gain     = maturity - s.amount;
 
-/* START */
-init();
+        setTop(maturity, gain, s.rate);
+        setWealth({
+          value: maturity,
+          narrative: `Post Office deposit of ${fmtCurrency(s.amount)} at ${s.rate}% grows to ${fmtShort(maturity)} in ${s.years} years.`,
+          stat1: { label:"Deposited",  value: fmtCurrency(s.amount) },
+          stat2: { label:"Interest",   value: fmtCurrency(gain) },
+          stat3: { label:"Maturity",   value: fmtShort(maturity) },
+          mood: "Very Safe", power: "Sovereign"
+        });
+        setInsights(
+          { title:"Backed by the Government of India.", text:"Post Office deposits carry a sovereign guarantee, making them among the safest instruments." },
+          { title:"Available across all pin codes.", text:"Post Office branches are in every corner of India, making them accessible everywhere." },
+          { title:"Compare rates before depositing.", text:"Post Office TD rates are revised quarterly — check current rates before locking in." }
+        );
+        renderChart(labels, [
+          { label:"Deposit value", data: corpus, color:"#00d4ff" },
+          { label:"Principal",     data: base,   color:"#ffd76a" }
+        ]);
+        renderMilestones(labels, corpus, base);
+      }
+
+      /* ── COMPARE ── */
+      if(active === "compare"){
+        const labels    = [];
+        const fdCorpus  = [], rdCorpus = [], sipCorpus = [];
+        const rdMonthly = s.amount / (s.years * 12);
+        const sipR      = s.siprate / 12 / 100;
+        const fdBase    = [], rdBase = [];
+
+        for(let y = 1; y <= s.years; y++){
+          labels.push("Year " + y);
+          fdCorpus.push(Math.round(s.amount * Math.pow(1 + s.fdrate/100, y)));
+          fdBase.push(s.amount);
+
+          const n   = y * 12;
+          const rdV = rdMonthly * ((Math.pow(1 + s.fdrate/12/100, n)-1)/(s.fdrate/12/100)) * (1 + s.fdrate/12/100);
+          rdCorpus.push(Math.round(rdV));
+          rdBase.push(Math.round(rdMonthly * n));
+
+          const sipV = rdMonthly * ((Math.pow(1+sipR,n)-1)/sipR) * (1+sipR);
+          sipCorpus.push(Math.round(sipV));
+        }
+
+        const fdFinal  = fdCorpus[fdCorpus.length - 1];
+        const rdFinal  = rdCorpus[rdCorpus.length - 1];
+        const sipFinal = sipCorpus[sipCorpus.length - 1];
+        const best     = Math.max(fdFinal, rdFinal, sipFinal);
+        const bestName = best === sipFinal ? "SIP" : best === fdFinal ? "FD" : "RD";
+
+        setTop(best, best - s.amount, s.fdrate);
+        setWealth({
+          value: best,
+          narrative: `Over ${s.years} years, ${bestName} produces the best outcome at ${fmtShort(best)}. FD: ${fmtShort(fdFinal)} | RD: ${fmtShort(rdFinal)} | SIP: ${fmtShort(sipFinal)}.`,
+          stat1: { label:"FD value",   value: fmtShort(fdFinal) },
+          stat2: { label:"RD value",   value: fmtShort(rdFinal) },
+          stat3: { label:"SIP value",  value: fmtShort(sipFinal) },
+          mood: bestName + " Wins", power: "Compare"
+        });
+        setInsights(
+          { title:`${bestName} leads over ${s.years} years.`, text:`At these assumptions, ${bestName} delivers the highest ending value.` },
+          { title:"SIP benefits from equity upside.", text:"Higher equity return assumption gives SIP a structural edge over longer horizons." },
+          { title:"FD offers certainty, SIP offers growth.", text:"The right choice depends on risk tolerance, time horizon and liquidity needs." }
+        );
+        renderChart(labels, [
+          { label:"FD",  data: fdCorpus,  color:"#ffd76a" },
+          { label:"RD",  data: rdCorpus,  color:"#4fa3ff" },
+          { label:"SIP", data: sipCorpus, color:"#00e676" }
+        ]);
+        renderMilestones(labels, sipCorpus, fdBase);
+      }
+
+      /* ── INFLATION ── */
+      if(active === "inflation"){
+        const labels = [], corpus = [], base = [];
+        for(let y = 1; y <= s.years; y++){
+          const real = s.amount / Math.pow(1 + s.inflation/100, y);
+          labels.push("Year " + y);
+          corpus.push(Math.round(real));
+          base.push(s.amount);
+        }
+        const finalReal = corpus[corpus.length - 1];
+        const loss      = s.amount - finalReal;
+
+        setTop(finalReal, loss, s.inflation);
+        setWealth({
+          value: finalReal,
+          narrative: `${fmtCurrency(s.amount)} today will have the purchasing power of only ${fmtShort(finalReal)} in ${s.years} years at ${s.inflation}% inflation.`,
+          stat1: { label:"Today's value",  value: fmtCurrency(s.amount) },
+          stat2: { label:"Future real value", value: fmtShort(finalReal) },
+          stat3: { label:"Power lost",     value: fmtShort(loss) },
+          mood: "Awareness", power: "Real Value"
+        });
+        setInsights(
+          { title:"Inflation silently erodes wealth.", text:"Money not deployed in inflation-beating instruments loses real value year by year." },
+          { title:"Even 6% inflation halves value in 12 years.", text:"The Rule of 72 works for inflation too — at 6%, purchasing power halves in 12 years." },
+          { title:"Beat inflation with equity and real assets.", text:"Historically, equity returns of 12–14% have comfortably beaten Indian inflation." }
+        );
+        renderChart(labels, [
+          { label:"Real value",         data: corpus, color:"#ff607d" },
+          { label:"Nominal (original)", data: base,   color:"rgba(255,255,255,.2)" }
+        ]);
+        renderMilestones(labels, corpus, base);
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       UTILITY
+    ═══════════════════════════════════════════ */
+    function scrollToControls(){ $("controlsAnchor").scrollIntoView({behavior:"smooth", block:"start"}); }
+    function openAdvisor(){ window.open("https://justinvesting.in", "_blank"); }
+    function copySummary(){
+      const txt = `investpercent Savings Dashboard
+Mode: ${CALCS[active].label}
+Result: ${$("wealthNumber").textContent}
+${$("stat1Label").textContent}: ${$("stat1Value").textContent}
+${$("stat2Label").textContent}: ${$("stat2Value").textContent}
+${$("stat3Label").textContent}: ${$("stat3Value").textContent}
+via justinvesting.in`;
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(txt)
+          .then(()=>{ const old=$("miniInsight").textContent; $("miniInsight").textContent="Copied!"; setTimeout(()=>$("miniInsight").textContent=old, 1500); })
+          .catch(()=>alert("Copy failed. Please copy manually."));
+      } else { alert("Clipboard not supported."); }
+    }
+
+    /* ═══════════════════════════════════════════
+       BOOT
+    ═══════════════════════════════════════════ */
+    initState();
+    renderTabs();
+    renderControls();
+    update();
+  </script>
+
+  <script>
+    fetch("components/navbar.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+        const currentPath = window.location.pathname.split("/").pop() || "index.html";
+        document.querySelectorAll(".nav a, .mobile-drawer a").forEach(link => {
+          if(link.getAttribute("href") === currentPath) link.classList.add("active");
+        });
+      });
+
+    function toggleMenu(){
+      document.getElementById("mobileDrawer")?.classList.toggle("open");
+    }
+  </script>
 </body>
 </html>
