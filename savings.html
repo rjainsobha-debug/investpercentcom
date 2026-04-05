@@ -208,11 +208,131 @@
       .page{padding:10px 10px 20px}
       .controls,.dashboard{padding:12px}
     }
+
+    /* ── User Profile Panel ── */
+    .profile-panel{
+      margin-bottom:14px;padding:16px 20px;border-radius:22px;
+      background:linear-gradient(135deg,rgba(0,212,255,.06),rgba(123,97,255,.08));
+      border:1px solid rgba(255,255,255,.09);display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;
+    }
+    .profile-panel .pp-title{
+      width:100%;font-size:14px;font-weight:800;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.06em;margin-bottom:-4px;
+    }
+    .pp-field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:130px}
+    .pp-field label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+    .pp-field input,.pp-field select{
+      background:#0b1224;color:var(--cyan);border:1px solid rgba(255,255,255,.13);
+      border-radius:10px;padding:8px 11px;font-size:13px;font-weight:700;
+      outline:none;width:100%;cursor:pointer;font-family:inherit;
+    }
+    .pp-field input::placeholder{color:#4d5a78}
+    .pp-field input:focus,.pp-field select:focus{border-color:var(--cyan)}
+    .pp-save-btn{
+      background:var(--grad);color:#071120;border:none;border-radius:11px;
+      padding:9px 18px;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap;
+      transition:.2s ease;align-self:flex-end;
+    }
+    .pp-save-btn:hover{transform:translateY(-1px);opacity:.9}
+    .pp-saved-badge{
+      font-size:11px;font-weight:800;color:var(--green);padding:4px 10px;
+      border:1px solid rgba(0,230,118,.3);border-radius:999px;background:rgba(0,230,118,.07);
+      align-self:flex-end;display:none;
+    }
+
+    /* ── AI Chat Box ── */
+    .chat-card{
+      margin-top:14px;padding:16px;border-radius:20px;
+      background:linear-gradient(135deg,rgba(123,97,255,.07),rgba(0,212,255,.06));
+      border:1px solid rgba(123,97,255,.2);
+    }
+    .chat-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .chat-icon{font-size:20px;line-height:1}
+    .chat-label{font-size:15px;font-weight:800;letter-spacing:-.02em}
+    .chat-sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .chat-input-row{display:flex;gap:8px}
+    .chat-input-row input{
+      flex:1;background:#0b1224;color:var(--text);border:1px solid rgba(255,255,255,.13);
+      border-radius:12px;padding:10px 13px;font-size:13px;font-weight:500;
+      outline:none;font-family:inherit;
+    }
+    .chat-input-row input::placeholder{color:#4d5a78}
+    .chat-input-row input:focus{border-color:var(--cyan)}
+    .chat-ask-btn{
+      background:var(--grad);color:#071120;border:none;border-radius:12px;
+      padding:10px 16px;font-size:13px;font-weight:800;cursor:pointer;
+      white-space:nowrap;transition:.2s ease;
+    }
+    .chat-ask-btn:hover{transform:translateY(-1px);opacity:.9}
+    .chat-output{margin-top:12px}
+    .chat-thinking{
+      color:var(--muted);font-size:13px;padding:10px 14px;border-radius:12px;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+      animation:chatPulse 1.2s ease-in-out infinite;
+    }
+    @keyframes chatPulse{0%,100%{opacity:.6}50%{opacity:1}}
+    .chat-row{
+      padding:12px 14px;border-radius:14px;background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.07);margin-bottom:9px;
+    }
+    .chat-row:last-child{margin-bottom:0}
+    .chat-row-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+    .chat-row-label.green{color:var(--green)}.chat-row-label.gold{color:var(--gold)}
+    .chat-row-label.cyan{color:var(--cyan)}.chat-row-label.violet{color:var(--violet)}
+    .chat-row-text{font-size:13px;color:#c8d8ff;line-height:1.55}
+    .chat-autofill-btn{
+      margin-top:10px;background:rgba(0,212,255,.09);color:var(--cyan);
+      border:1px solid rgba(0,212,255,.25);border-radius:10px;
+      padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;
+      transition:.2s ease;width:100%;
+    }
+    .chat-autofill-btn:hover{background:rgba(0,212,255,.16)}
+    @media(max-width:760px){
+      .profile-panel{gap:10px}
+      .pp-field{min-width:calc(50% - 5px)}
+    }
   </style>
 </head>
 <body>
   <div class="page">
     <div id="navbar"></div>
+
+    <!-- ═══ USER PROFILE PANEL ═══ -->
+    <div class="profile-panel" id="profilePanel">
+      <div class="pp-title">Your Financial Profile</div>
+      <div class="pp-field">
+        <label>Age</label>
+        <input type="number" id="pp_age" placeholder="e.g. 32" min="18" max="80" oninput="onProfileChange()">
+      </div>
+      <div class="pp-field">
+        <label>Monthly Income ₹</label>
+        <input type="number" id="pp_income" placeholder="e.g. 75000" oninput="onProfileChange()">
+      </div>
+      <div class="pp-field">
+        <label>Monthly Savings ₹</label>
+        <input type="number" id="pp_savings" placeholder="e.g. 15000" oninput="onProfileChange()">
+      </div>
+      <div class="pp-field">
+        <label>Risk Appetite</label>
+        <select id="pp_risk" onchange="onProfileChange()">
+          <option value="">Select</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+      <div class="pp-field">
+        <label>Goal Type</label>
+        <select id="pp_goal" onchange="onProfileChange()">
+          <option value="">Select</option>
+          <option value="Short">Short-term (&lt;3 yr)</option>
+          <option value="Medium">Medium (3–7 yr)</option>
+          <option value="Long">Long-term (7+ yr)</option>
+        </select>
+      </div>
+      <button class="pp-save-btn" onclick="saveProfile()">Save Profile</button>
+      <span class="pp-saved-badge" id="ppSavedBadge">Saved ✓</span>
+    </div>
 
     <section class="hero">
       <div class="hero-top">
@@ -310,6 +430,23 @@
             </div>
           </div>
           <div id="aiAutoOutput"></div>
+        </div>
+
+        <!-- ═══ AI CHAT BOX ═══ -->
+        <div class="chat-card">
+          <div class="chat-head">
+            <div class="chat-icon">💬</div>
+            <div>
+              <div class="chat-label">Ask the AI</div>
+              <div class="chat-sub">Type any savings question — get a structured plan</div>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Ask your financial question..."
+              onkeydown="if(event.key==='Enter')runChat()">
+            <button class="chat-ask-btn" onclick="runChat()">Ask AI</button>
+          </div>
+          <div class="chat-output" id="chatOutput"></div>
         </div>
       </aside>
 
@@ -496,6 +633,331 @@
     let taxRate    = 0;       /* 0 | 0.05 | 0.20 | 0.30 */
     let goalAmount = 0;       /* 0 = disabled */
     const INFLATION_REF = 6; /* reference inflation for real-return calcs */
+
+    /* ═══ USER PROFILE ═══ */
+    let userProfile = {
+      age:     null,
+      income:  null,
+      savings: null,
+      risk:    "",    /* Low | Medium | High */
+      goal:    ""     /* Short | Medium | Long */
+    };
+
+    /* ─── localStorage persistence ─── */
+    function saveProfile(){
+      const p = readProfileForm();
+      Object.assign(userProfile, p);
+      localStorage.setItem("ip_userProfile", JSON.stringify(userProfile));
+      const badge = $("ppSavedBadge");
+      badge.style.display = "inline-flex";
+      setTimeout(()=>{ badge.style.display="none"; }, 2200);
+    }
+
+    function loadProfile(){
+      const raw = localStorage.getItem("ip_userProfile");
+      if(!raw) return;
+      try {
+        const saved = JSON.parse(raw);
+        Object.assign(userProfile, saved);
+        if(saved.age)     $("pp_age").value     = saved.age;
+        if(saved.income)  $("pp_income").value  = saved.income;
+        if(saved.savings) $("pp_savings").value = saved.savings;
+        if(saved.risk)    $("pp_risk").value     = saved.risk;
+        if(saved.goal)    $("pp_goal").value     = saved.goal;
+      } catch(e){}
+    }
+
+    function readProfileForm(){
+      return {
+        age:     parseInt($("pp_age").value)     || null,
+        income:  parseInt($("pp_income").value)  || null,
+        savings: parseInt($("pp_savings").value) || null,
+        risk:    $("pp_risk").value,
+        goal:    $("pp_goal").value
+      };
+    }
+
+    function onProfileChange(){
+      Object.assign(userProfile, readProfileForm());
+    }
+
+    /* ═══ RULE-BASED AI CHAT ENGINE ═══ */
+
+    /* helper: render a single chat row */
+    function chatRow(color, label, text){
+      return `<div class="chat-row"><div class="chat-row-label ${color}">${label}</div><div class="chat-row-text">${text}</div></div>`;
+    }
+
+    /* helper: keyword extraction */
+    function parseQ(q){
+      const t = q.toLowerCase();
+      const nums = (t.match(/\d[\d,]*/g)||[]).map(n=>parseInt(n.replace(/,/g,""))).filter(Boolean);
+      return {
+        raw:     q,
+        lower:   t,
+        nums,
+        hasIncome:   /income|earn|salary|salary/i.test(t),
+        hasSavings:  /sav|spare|invest|monthly/i.test(t),
+        hasGoal:     /goal|target|need|want|buy|house|car|educ|retir|wedding/i.test(t),
+        hasYears:    /year|yr|month|time|horizon|long|when/i.test(t),
+        hasRisk:     /risk|safe|guaranteed|equity|market|sip|fd|rd|nsc|kvp|scss/i.test(t),
+        hasInflation:/inflation|erode|value|purchas/i.test(t),
+        isCompare:   /compare|vs|better|which|best/i.test(t),
+        isShort:     /short|quick|\b1\s*yr|\b2\s*yr|\b3\s*yr/i.test(t),
+        isLong:      /long|retire|10\s*yr|15\s*yr|20\s*yr/i.test(t),
+        riskHigh:    /high.*risk|aggress|equity|market|sip/i.test(t),
+        riskLow:     /low.*risk|safe|guaran|fd|rd|post|nsc/i.test(t),
+        firstNum:    nums[0] || null,
+        secondNum:   nums[1] || null
+      };
+    }
+
+    /* core: generate structured advice from question + profile */
+    function generateChatAdvice(q){
+      const p   = parseQ(q);
+      const pro = userProfile;
+
+      /* resolve effective values from question or profile */
+      const income   = p.nums.find(n=>n>=5000 && n<=500000)  || pro.income  || null;
+      const savings  = p.nums.find(n=>n>=500  && n<=200000)  || pro.savings || null;
+      const years    = p.nums.find(n=>n>=1    && n<=30)       || (pro.goal==="Short"?2 : pro.goal==="Medium"?5 : pro.goal==="Long"?10 : null);
+      const riskLvl  = p.riskHigh ? "High" : p.riskLow ? "Low" : pro.risk || "Medium";
+      const age      = p.nums.find(n=>n>=18 && n<=80) || pro.age || null;
+      const goalAmt  = p.nums.find(n=>n>=10000 && n<=100000000) || goalAmount || null;
+      const horizon  = years || 5;
+      const monthly  = savings || (income ? Math.round(income * 0.2) : null) || 5000;
+
+      /* ── SITUATION ── */
+      let situation = "";
+      if(income && savings){
+        const pct = ((savings/income)*100).toFixed(0);
+        situation = `Your monthly savings capacity is ${fmtCurrency(savings)} on ${fmtCurrency(income)} income — a ${pct}% savings rate. `;
+      } else if(income){
+        situation = `Based on your income of ${fmtCurrency(income)}, a healthy 20% savings rate would be ${fmtCurrency(Math.round(income*0.2))}/month. `;
+      } else if(savings){
+        situation = `You have ${fmtCurrency(savings)}/month to invest. `;
+      } else {
+        situation = "Based on your question, here is a personalised savings plan. ";
+      }
+      if(age){
+        if(age < 30) situation += `At ${age}, time is your biggest asset — equity SIPs benefit enormously from a long runway. `;
+        else if(age < 45) situation += `At ${age}, balance between growth (equity) and stability (FD/RD) is key. `;
+        else situation += `At ${age}, capital protection and regular income become more important — SCSS and NSC deserve attention. `;
+      }
+      if(goalAmt) situation += `Your target goal is ${fmtCurrency(goalAmt)}. `;
+
+      /* ── ALLOCATION based on risk + horizon ── */
+      let alloc = { fd:0, rd:0, sip:0, nsc:0, scss:0 };
+      let recMode = "fd";
+
+      if(riskLvl === "High" || p.riskHigh){
+        if(horizon <= 3){
+          alloc = { fd:40, rd:30, sip:20, nsc:10, scss:0 };
+          recMode = "rd";
+        } else if(horizon <= 7){
+          alloc = { fd:20, rd:20, sip:50, nsc:10, scss:0 };
+          recMode = "compare";
+        } else {
+          alloc = { fd:10, rd:10, sip:70, nsc:10, scss:0 };
+          recMode = "compare";
+        }
+      } else if(riskLvl === "Low" || p.riskLow){
+        if(age && age >= 60){
+          alloc = { fd:30, rd:10, sip:0,  nsc:20, scss:40 };
+          recMode = "scss";
+        } else {
+          alloc = { fd:40, rd:30, sip:10, nsc:20, scss:0 };
+          recMode = horizon <= 3 ? "fd" : "nsc";
+        }
+      } else { /* Medium */
+        if(horizon <= 3){
+          alloc = { fd:35, rd:35, sip:20, nsc:10, scss:0 };
+          recMode = "rd";
+        } else if(horizon <= 7){
+          alloc = { fd:25, rd:25, sip:40, nsc:10, scss:0 };
+          recMode = "compare";
+        } else {
+          alloc = { fd:15, rd:15, sip:60, nsc:10, scss:0 };
+          recMode = "compare";
+        }
+      }
+
+      /* override for specific keywords */
+      if(p.hasInflation) recMode = "inflation";
+      if(p.isCompare)    recMode = "compare";
+
+      /* ── RECOMMENDATION ── */
+      const sipAmt = Math.round(monthly * alloc.sip / 100);
+      const fdAmt  = Math.round(monthly * alloc.fd  / 100);
+      const rdAmt  = Math.round(monthly * alloc.rd  / 100);
+      const nscAmt = Math.round(monthly * alloc.nsc / 100);
+
+      let rec = `Suggested split of your ${fmtCurrency(monthly)}/month: `;
+      const parts = [];
+      if(alloc.sip >0) parts.push(`SIP ${alloc.sip}% (${fmtCurrency(sipAmt)})`);
+      if(alloc.fd  >0) parts.push(`FD ${alloc.fd}% (${fmtCurrency(fdAmt)})`);
+      if(alloc.rd  >0) parts.push(`RD ${alloc.rd}% (${fmtCurrency(rdAmt)})`);
+      if(alloc.nsc >0) parts.push(`NSC ${alloc.nsc}% (${fmtCurrency(nscAmt)})`);
+      if(alloc.scss>0) parts.push(`SCSS ${alloc.scss}%`);
+      rec += parts.join(" | ") + `. Switch the calculator to <strong>${CALCS[recMode].title}</strong> to model this scenario.`;
+
+      /* ── EXPECTED OUTCOME ── */
+      let outcome = "";
+      if(alloc.sip > 0 && sipAmt > 0){
+        const sipR  = 0.12/12;
+        const sipN  = horizon*12;
+        const sipM  = Math.round(sipAmt * ((Math.pow(1+sipR,sipN)-1)/sipR) * (1+sipR));
+        outcome += `SIP of ${fmtCurrency(sipAmt)}/month at 12% CAGR for ${horizon} year${horizon>1?"s":""} → ${fmtShort(sipM)}. `;
+      }
+      if(alloc.fd > 0 && fdAmt > 0){
+        const fdM = Math.round(fdAmt * 12 * horizon * (1 + 0.07 * horizon / 2));
+        outcome += `FD/RD corpus of ${fmtCurrency(fdAmt)}/month → approx ${fmtShort(fdM)} at 7%. `;
+      }
+      if(goalAmt){
+        const totalSIP = alloc.sip>0 && sipAmt>0
+          ? Math.round(sipAmt * ((Math.pow(1+0.12/12,horizon*12)-1)/(0.12/12)) * (1+0.12/12))
+          : 0;
+        const totalFD  = Math.round((fdAmt+rdAmt) * 12 * horizon * 1.2);
+        const totalEst = totalSIP + totalFD;
+        if(totalEst >= goalAmt){
+          outcome += `At this allocation, you're projected to reach or exceed your goal of ${fmtCurrency(goalAmt)} (est. ${fmtShort(totalEst)}).`;
+        } else {
+          const gap = goalAmt - totalEst;
+          outcome += `Your goal of ${fmtCurrency(goalAmt)} has an estimated gap of ${fmtShort(gap)} — consider increasing monthly savings or extending the horizon.`;
+        }
+      }
+      if(!outcome) outcome = `Over ${horizon} year${horizon>1?"s":""}, disciplined allocation at this split is estimated to build significant wealth — use the calculator to model exact figures.`;
+
+      /* ── RISK WARNING ── */
+      let warn = "";
+      if(alloc.sip >= 50){
+        warn = `SIP equity returns are market-linked — past CAGR of 12% is historical. In a volatile year, returns may be negative. Maintain a 6-month liquid emergency fund before deploying this allocation.`;
+      } else if(alloc.fd + alloc.rd >= 60){
+        warn = `Heavy fixed-income allocation protects capital but may not beat inflation after tax. Review annually — if rates fall below 6%, reallocate a portion to equity.`;
+      } else {
+        warn = `Balanced allocation across FD/RD and SIP hedges both risk and return. Rebalance every 12 months to maintain target percentages.`;
+      }
+
+      return { situation, rec, outcome, warn, recMode, alloc, monthly, horizon };
+    }
+
+    /* pending autofill plan from last chat response */
+    let _lastChatPlan = null;
+
+    function runChat(){
+      const inp = $("chatInput");
+      const out = $("chatOutput");
+      const q   = (inp.value || "").trim();
+      if(!q){ inp.focus(); return; }
+
+      out.innerHTML = `<div class="chat-thinking">Analysing your question…</div>`;
+
+      setTimeout(()=>{
+        const advice = generateChatAdvice(q);
+        _lastChatPlan = advice;
+
+        const rows = [
+          chatRow("cyan",   "Situation",      advice.situation),
+          chatRow("gold",   "Recommendation", advice.rec),
+          chatRow("green",  "Expected Outcome",advice.outcome),
+          chatRow("violet", "Risk / Warning",  advice.warn),
+          `<button class="chat-autofill-btn" onclick="applyAutoFill()">
+             Apply suggestion to dashboard →
+           </button>`
+        ];
+        out.innerHTML = rows.join("");
+      }, 380);
+    }
+
+    /* ── AUTO-FILL: apply chat advice to sliders / selects / goal ── */
+    function applyAutoFill(){
+      if(!_lastChatPlan) return;
+      const plan = _lastChatPlan;
+
+      /* 1. Switch calculator tab */
+      switchTab(plan.recMode);
+
+      /* 2. Update sliders for the new calc */
+      const s = state[plan.recMode];
+      const horizon = plan.horizon;
+
+      if(plan.recMode === "fd" || plan.recMode === "nsc" || plan.recMode === "kvp" || plan.recMode === "post" || plan.recMode === "scss"){
+        /* amount = estimated FD portion (annual × fd%) — clamp to control range */
+        const c = CALCS[plan.recMode];
+        const fdMonthly = Math.round(plan.monthly * plan.alloc.fd / 100);
+        const proposed  = fdMonthly * 12 * Math.max(1, horizon);
+        const amountCtrl= c.controls.find(x=>x.id==="amount");
+        if(amountCtrl){
+          const clamped = Math.min(Math.max(proposed, amountCtrl.min), amountCtrl.max);
+          setSlider("amount", clamped);
+        }
+        const yrsCtrl = c.controls.find(x=>x.id==="years");
+        if(yrsCtrl){
+          const clamped = Math.min(Math.max(horizon, yrsCtrl.min), yrsCtrl.max);
+          setSlider("years", clamped);
+        }
+      } else if(plan.recMode === "rd"){
+        const rdMonthly = Math.round(plan.monthly * plan.alloc.rd / 100);
+        const rdCtrl    = CALCS.rd.controls.find(x=>x.id==="monthly");
+        if(rdCtrl){
+          const clamped = Math.min(Math.max(rdMonthly, rdCtrl.min), rdCtrl.max);
+          setSlider("monthly", clamped);
+        }
+        const yrsCtrl = CALCS.rd.controls.find(x=>x.id==="years");
+        if(yrsCtrl){
+          const clamped = Math.min(Math.max(horizon, yrsCtrl.min), yrsCtrl.max);
+          setSlider("years", clamped);
+        }
+      } else if(plan.recMode === "compare"){
+        const fdAmt  = Math.round(plan.monthly * plan.alloc.fd  / 100) * 12 * horizon;
+        const rdM    = Math.round(plan.monthly * plan.alloc.rd  / 100);
+        const sipM   = Math.round(plan.monthly * plan.alloc.sip / 100);
+        const clampV = (ctrl, val) => Math.min(Math.max(val, ctrl.min), ctrl.max);
+        const cc     = CALCS.compare.controls;
+        setSlider("fdamount",   clampV(cc.find(x=>x.id==="fdamount"),   fdAmt));
+        setSlider("rdmonthly",  clampV(cc.find(x=>x.id==="rdmonthly"),  rdM));
+        setSlider("sipmonthly", clampV(cc.find(x=>x.id==="sipmonthly"), sipM));
+        const yCtrl = cc.find(x=>x.id==="years");
+        if(yCtrl) setSlider("years", clampV(yCtrl, horizon));
+      }
+
+      /* 3. Apply tax from profile (income-derived guess if none set) */
+      const income = userProfile.income || plan.monthly * 5;
+      let guessedTax = 0;
+      if(income >= 1000000)     guessedTax = 0.30;
+      else if(income >= 500000) guessedTax = 0.20;
+      else if(income >= 250000) guessedTax = 0.05;
+      if(guessedTax > taxRate){
+        taxRate = guessedTax;
+        $("taxSelect").value = String(guessedTax);
+      }
+
+      /* 4. Apply goal amount if derived */
+      const gAmt = plan.monthly * 12 * plan.horizon * 2;
+      if(!goalAmount && gAmt > 0){
+        goalAmount = gAmt;
+        $("goalInput").value = gAmt;
+      }
+
+      update();
+
+      /* 5. Feedback on chat button */
+      const btn = document.querySelector(".chat-autofill-btn");
+      if(btn){ btn.textContent = "Dashboard updated ✓"; btn.style.color = "var(--green)"; }
+    }
+
+    /* helper to update a slider and its state value */
+    function setSlider(id, val){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.value = val;
+      state[active][id] = val;
+      const display = document.getElementById("view-"+id);
+      if(display){
+        const ctrl = CALCS[active].controls.find(c=>c.id===id);
+        if(ctrl) display.textContent = fmtVal(val, ctrl.format);
+      }
+    }
     const $ = id => document.getElementById(id);
 
     /* ═══════════════════════════════════════════
@@ -1745,6 +2207,7 @@ via justinvesting.in`;
     renderTabs();
     renderControls();
     update();
+    loadProfile(); /* restore saved user profile */
   </script>
 
   <script>
