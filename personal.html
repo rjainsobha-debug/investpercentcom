@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="css/navbar.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Finance Dashboard — investpercent</title>
+  <meta name="description" content="Premium personal finance dashboard with In-Hand Salary, Net Worth, Budget Planner, Financial Health Score, Salary Hike, Cost of Living, Inflation Impact and Wealth Simulator." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --bg:#060915;
+      --bg2:#0b1224;
+      --panel:#0f1830;
+      --panel2:#121e3c;
+      --soft:#18284d;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.13);
+      --text:#f7fbff;
+      --muted:#9da9c6;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --red:#ff607d;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
+      --hero:
+        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
+        linear-gradient(180deg,#070c18 0%,#091224 100%);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
+      z-index:0;
+    }
+    a{text-decoration:none;color:inherit}
+    button,input{font:inherit}
+    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:18px 18px 38px}
+
+    .hero{
+      background:var(--hero);border:1px solid var(--line);border-radius:32px;padding:28px;
+      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:18px
+    }
+    .hero::after{
+      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);pointer-events:none
+    }
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+    .hero-copy h1{
+      margin:0;font-family:Poppins,sans-serif;font-size:clamp(34px,5vw,58px);
+      line-height:1.02;letter-spacing:-.045em;max-width:840px
+    }
+    .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy p{margin:14px 0 0;color:var(--muted);font-size:18px;max-width:760px;line-height:1.6}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:none;cursor:pointer;border-radius:14px;padding:13px 18px;font-weight:800;transition:.2s ease
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .tabbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .tab{
+      background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
+      padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease
+    }
+    .tab:hover{color:var(--text);border-color:var(--line2)}
+    .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
+    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:14px}
+    .metric-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:18px;min-height:110px;position:relative;overflow:hidden
+    }
+    .metric-card::before{
+      content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
+      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
+    }
+    .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+    .metric-value{font-size:clamp(28px,3vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1}
+    .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)}
+    .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
+    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:18px;margin-top:18px}
+    .panel{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
+    .controls{padding:22px;position:relative;overflow:hidden}
+    .controls::after{
+      content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
+    }
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+    .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+    .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
+    .control-group{
+      margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
+    }
+    .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .control-name{font-size:14px;font-weight:700;color:var(--text)}
+    .control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
+    input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
+    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-webkit-slider-thumb{
+      appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
+      border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-moz-range-thumb{
+      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+    .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+    .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card{
+      margin-top:18px;padding:18px;border-radius:20px;
+      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
+      border:1px solid rgba(255,255,255,.1)
+    }
+    .advisor-card h4{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
+    .advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .advisor-actions .btn{flex:1;min-width:150px}
+    .dashboard{padding:18px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:780px}
+    .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
+    .wealth-card,.insight-card,.chart-card,.timeline-card{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
+    }
+    .wealth-card{
+      padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:188px;
+      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
+    }
+    .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+    .wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
+    .wealth-number{
+      font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff
+    }
+    .wealth-number .grad{
+      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .wealth-sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:660px}
+    .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+    .wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .wealth-stat .s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+    .wealth-stat .s-value{font-size:24px;font-weight:800;letter-spacing:-.03em}
+    .insight-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:188px}
+    .insight-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .insight-box strong{display:block;font-size:15px;margin-bottom:6px;letter-spacing:-.02em}
+    .insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
+    .chart-card{padding:18px;min-height:390px;display:flex;flex-direction:column}
+    .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+    .chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
+    .legend{display:flex;gap:12px;flex-wrap:wrap}
+    .legend-item{
+      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px
+    }
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .chart-wrap{position:relative;flex:1;min-height:280px;margin-top:8px}
+    .timeline-card{padding:18px}
+    .timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+    .timeline-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .milestone{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+    .m-amount{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
+    .m-note{color:#8390b1;font-size:13px;line-height:1.45}
+    .hidden{display:none !important}
+    /* Health quiz styles */
+    .quiz-option{
+      padding:12px 16px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);
+      cursor:pointer;font-size:14px;font-weight:600;transition:.18s ease;margin-bottom:8px;display:block;width:100%;text-align:left;color:var(--text)
+    }
+    .quiz-option:hover{background:rgba(255,255,255,.06);border-color:var(--line2)}
+    .quiz-option.selected{background:rgba(0,212,255,.12);border-color:var(--cyan);color:var(--cyan)}
+    .quiz-nav{display:flex;gap:10px;margin-top:14px}
+    .score-bar-wrap{background:rgba(255,255,255,.05);border-radius:999px;height:10px;overflow:hidden;margin:8px 0}
+    .score-bar-fill{height:100%;border-radius:999px;background:var(--grad);transition:width .6s ease}
+    .city-btn{
+      padding:9px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);
+      color:var(--muted);font-weight:700;cursor:pointer;transition:.18s ease;font-size:13px
+    }
+    .city-btn:hover,.city-btn.active{background:rgba(0,212,255,.12);border-color:var(--cyan);color:var(--cyan)}
+    .city-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    @media(max-width:1180px){
+      .top-metrics{grid-template-columns:1fr 1fr}
+      .layout{grid-template-columns:1fr}
+      .dashboard{min-height:auto}
+      .dash-top{grid-template-columns:1fr}
+      .timeline-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:760px){
+      .page{padding:12px 12px 28px}
+      .hero{padding:18px}
+      .controls,.dashboard{padding:16px}
+      .wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
+      .hero-copy p{font-size:15px}
+      .metric-value{font-size:30px}
+      .wealth-number{font-size:42px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div id="navbar"></div>
+
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>Personal Finance <span class="grad">Super Dashboard</span></h1>
+          <p>One premium shell. Eight financial tools. Understand your salary, net worth, budget health, inflation impact and long-term wealth — all in one place.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="scrollToControls()">Analyse My Finances</button>
+          <button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
+        </div>
+      </div>
+
+      <div class="tabbar" id="tabs"></div>
+
+      <div class="top-metrics">
+        <div class="metric-card">
+          <div class="metric-label">Current mode</div>
+          <div class="metric-value cyan" id="modeHeadline">Salary Breakdown</div>
+          <div class="metric-sub" id="modeSub">See your exact monthly in-hand after all deductions.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Key figure</div>
+          <div class="metric-value green" id="topProjected">₹0</div>
+          <div class="metric-sub" id="topProjectedLabel">Primary result</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Secondary figure</div>
+          <div class="metric-value cyan" id="topGains">₹0</div>
+          <div class="metric-sub" id="topGainsLabel">Supporting metric</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Reference metric</div>
+          <div class="metric-value gold" id="topRate">—</div>
+          <div class="metric-sub" id="topRateLabel">Key ratio</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="panel controls" id="controlsAnchor">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Control Panel</div>
+            <div class="panel-desc" id="controlDesc">Adjust inputs and your financial snapshot updates instantly.</div>
+          </div>
+          <div class="badge" id="panelBadge">SALARY MODE</div>
+        </div>
+
+        <div id="dynamicControls"></div>
+
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="k">Financial mood</div>
+            <div class="v" id="miniMood">Healthy</div>
+          </div>
+          <div class="mini">
+            <div class="k">Key insight</div>
+            <div class="v" id="miniInsight">Analysing…</div>
+          </div>
+        </div>
+
+        <div class="advisor-card">
+          <h4>Ready to put your finances to work?</h4>
+          <p>Use this dashboard to understand your numbers, then take the next step with a personalised financial plan.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="openAdvisor()">Start with absolutemoney.in</button>
+            <button class="btn secondary" onclick="copySummary()">Copy summary</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title" id="wealthTitle">Financial Snapshot</div>
+                <div class="pill" id="wealthPill">Live View</div>
+              </div>
+              <div class="wealth-number"><span class="grad" id="wealthNumber">₹0</span></div>
+              <div class="wealth-sub" id="wealthNarrative">Your financial snapshot updates as you move the sliders.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label" id="stat1Label">Stat 1</div>
+                <div class="s-value" id="stat1Value">—</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat2Label">Stat 2</div>
+                <div class="s-value" id="stat2Value">—</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat3Label">Stat 3</div>
+                <div class="s-value" id="stat3Value">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-card">
+            <div class="insight-title">Decision insights</div>
+            <div class="insight-box"><strong id="insight1Title"></strong><span id="insight1Text"></span></div>
+            <div class="insight-box"><strong id="insight2Title"></strong><span id="insight2Text"></span></div>
+            <div class="insight-box"><strong id="insight3Title"></strong><span id="insight3Text"></span></div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title" id="chartTitle">Financial Breakdown</div>
+              <div class="chart-meta" id="chartMeta">Visual representation of your financial snapshot.</div>
+            </div>
+            <div class="legend" id="chartLegend"></div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="wealthChart"></canvas>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title" id="timelineTitle">Key Metrics</div>
+              <div class="chart-meta" id="timelineMeta">Important checkpoints and numbers from your current settings.</div>
+            </div>
+          </div>
+          <div class="timeline-grid" id="timelineGrid"></div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script>
+    // ─── CALCS CONFIG ───────────────────────────────────────────────────────────
+    const CALCS = {
+      salary: {
+        label: "In-Hand Salary",
+        badge: "SALARY MODE",
+        title: "Salary Breakdown Engine",
+        sub: "See your exact monthly in-hand salary after PF, tax, professional tax and HRA.",
+        desc: "Tune CTC, basic %, HRA % and deductions. Your take-home updates instantly.",
+        wealthTitle: "Monthly In-Hand Salary",
+        wealthPill: "Take-Home",
+        chartTitle: "Salary breakdown chart",
+        chartMeta: "Visualising your gross earnings split across take-home, PF, tax and professional tax.",
+        timelineTitle: "Salary Milestones",
+        timelineMeta: "Key breakpoints in your compensation structure.",
+        controls: [
+          {id:"ctc",      label:"Annual CTC",          min:300000,  max:10000000, step:50000,  value:1200000, format:"currency"},
+          {id:"basicpct", label:"Basic % of CTC",       min:30,      max:60,       step:1,      value:40,      format:"percent"},
+          {id:"hrapct",   label:"HRA % of Basic",       min:30,      max:50,       step:1,      value:50,      format:"percent"},
+          {id:"pfpct",    label:"PF % of Basic",        min:0,       max:12,       step:1,      value:12,      format:"percent"},
+          {id:"proftax",  label:"Professional Tax ₹/yr",min:0,       max:2500,     step:200,    value:2400,    format:"currency"}
+        ]
+      },
+      networth: {
+        label: "Net Worth",
+        badge: "NET WORTH MODE",
+        title: "Net Worth Calculator",
+        sub: "Map all your assets and liabilities to arrive at your true financial standing.",
+        desc: "Enter assets across all classes and liabilities. Net worth updates live.",
+        wealthTitle: "Net Worth Overview",
+        wealthPill: "Total Wealth",
+        chartTitle: "Asset vs Liability breakdown",
+        chartMeta: "Proportional view of your assets, liabilities and net worth position.",
+        timelineTitle: "Wealth Breakdown",
+        timelineMeta: "Key figures from your asset and liability inputs.",
+        controls: [
+          {id:"cash",       label:"Cash / FD / Savings",  min:0, max:20000000, step:50000,  value:500000,  format:"currency"},
+          {id:"mf",         label:"Mutual Funds / Stocks", min:0, max:50000000, step:50000,  value:800000,  format:"currency"},
+          {id:"gold",       label:"Gold / Jewellery",      min:0, max:20000000, step:25000,  value:300000,  format:"currency"},
+          {id:"realestate", label:"Real Estate Value",     min:0, max:200000000,step:500000, value:5000000, format:"currency"},
+          {id:"epfnps",     label:"EPF / NPS Balance",     min:0, max:20000000, step:50000,  value:400000,  format:"currency"},
+          {id:"homeloan",   label:"Home Loan Outstanding", min:0, max:100000000,step:100000, value:2000000, format:"currency"},
+          {id:"otherloan",  label:"Other Loans / CC",      min:0, max:5000000,  step:25000,  value:200000,  format:"currency"}
+        ]
+      },
+      budget: {
+        label: "Budget Planner",
+        badge: "BUDGET MODE",
+        title: "50/30/20 Budget Planner",
+        sub: "Allocate your income across Needs, Wants and Savings using the 50/30/20 framework.",
+        desc: "Adjust each category percentage. Your monthly allocations update instantly.",
+        wealthTitle: "Budget Allocation",
+        wealthPill: "Monthly Split",
+        chartTitle: "Budget allocation chart",
+        chartMeta: "How your monthly income is distributed across Needs, Wants and Savings.",
+        timelineTitle: "Budget Milestones",
+        timelineMeta: "Annual projections based on your current budget allocations.",
+        controls: [
+          {id:"income",   label:"Monthly Take-Home ₹", min:10000,  max:500000, step:5000,  value:80000, format:"currency"},
+          {id:"needspct", label:"Needs %",              min:20,     max:80,     step:5,     value:50,    format:"percent"},
+          {id:"wantspct", label:"Wants %",              min:5,      max:60,     step:5,     value:30,    format:"percent"},
+          {id:"savepct",  label:"Savings %",            min:5,      max:60,     step:5,     value:20,    format:"percent"}
+        ]
+      },
+      health: {
+        label: "Financial Health",
+        badge: "HEALTH MODE",
+        title: "Financial Health Score",
+        sub: "Answer 8 questions to get your personalised financial health score and grade.",
+        desc: "Each question is scored and weighted. Your total score and grade appear instantly.",
+        wealthTitle: "Financial Health Score",
+        wealthPill: "Score Report",
+        chartTitle: "Financial health breakdown",
+        chartMeta: "Your score across eight key financial health dimensions.",
+        timelineTitle: "Score Breakdown",
+        timelineMeta: "How you scored across each financial health dimension.",
+        controls: [
+          {id:"emergency",  label:"Emergency fund (months)", min:0, max:12,  step:1,   value:3,   format:"months"},
+          {id:"saverate",   label:"Savings rate %",          min:0, max:60,  step:5,   value:20,  format:"percent"},
+          {id:"debtpct",    label:"EMI % of income",         min:0, max:80,  step:5,   value:20,  format:"percent"},
+          {id:"assetcount", label:"Asset classes held",      min:1, max:6,   step:1,   value:3,   format:"count"},
+          {id:"hasinsure",  label:"Insurance (0=None,2=Both)",min:0,max:2,   step:1,   value:1,   format:"count"},
+          {id:"retireplan", label:"Retirement planning",     min:0, max:3,   step:1,   value:2,   format:"count"},
+          {id:"taxplan",    label:"Tax planning level",      min:0, max:3,   step:1,   value:2,   format:"count"},
+          {id:"nwgrowth",   label:"Net worth grew % this yr",min:0, max:30,  step:2,   value:10,  format:"percent"}
+        ]
+      },
+      hike: {
+        label: "Salary Hike",
+        badge: "HIKE MODE",
+        title: "Salary Hike Calculator",
+        sub: "See exactly how a salary increment changes your monthly and annual take-home.",
+        desc: "Tune your current salary and hike percentage to see the full impact.",
+        wealthTitle: "Post-Hike Projection",
+        wealthPill: "New Salary",
+        chartTitle: "Salary progression path",
+        chartMeta: "How your salary compounds year-on-year if the hike % is sustained annually.",
+        timelineTitle: "Hike Milestones",
+        timelineMeta: "Your salary at key years if this hike % is repeated annually.",
+        controls: [
+          {id:"cursalary", label:"Current Annual Salary",  min:200000, max:10000000, step:50000, value:1200000, format:"currency"},
+          {id:"hikepct",   label:"Hike Percentage",        min:1,      max:60,       step:1,     value:15,      format:"percent"},
+          {id:"years",     label:"Project over (years)",   min:1,      max:20,       step:1,     value:10,      format:"years"}
+        ]
+      },
+      cost: {
+        label: "Cost of Living",
+        badge: "COST MODE",
+        title: "City Cost Comparator",
+        sub: "Compare the cost of living between two major Indian cities using real lifestyle multipliers.",
+        desc: "Select base city and target city to instantly see the cost difference.",
+        wealthTitle: "Cost of Living Gap",
+        wealthPill: "City Compare",
+        chartTitle: "City cost index comparison",
+        chartMeta: "Relative cost of living index across all major Indian cities.",
+        timelineTitle: "City Breakdown",
+        timelineMeta: "Estimated monthly cost components across the two selected cities.",
+        controls: [
+          {id:"monthlyexp", label:"Monthly Expenses ₹ (Base City)", min:20000, max:500000, step:5000, value:80000, format:"currency"},
+          {id:"basecity",   label:"Base City Index (auto)",          min:70,    max:100,    step:1,    value:100,   format:"index"},
+          {id:"targetcity", label:"Target City Index (auto)",        min:70,    max:100,    step:1,    value:85,    format:"index"}
+        ]
+      },
+      inflation: {
+        label: "Inflation Impact",
+        badge: "INFLATION MODE",
+        title: "Inflation Impact Calculator",
+        sub: "See how inflation silently erodes purchasing power and what things will cost in future years.",
+        desc: "Adjust present value, inflation rate and years to see the real impact.",
+        wealthTitle: "Future Cost Projection",
+        wealthPill: "Inflation View",
+        chartTitle: "Purchasing power erosion",
+        chartMeta: "Year-by-year view of rising future cost and falling real purchasing power.",
+        timelineTitle: "Inflation Milestones",
+        timelineMeta: "What your current amount will cost at key future checkpoints.",
+        controls: [
+          {id:"amount",    label:"Present Amount / Expense", min:1000,  max:10000000, step:1000, value:100000, format:"currency"},
+          {id:"inflation", label:"Inflation Rate %",         min:1,     max:20,       step:0.5,  value:6,      format:"percent"},
+          {id:"years",     label:"Years into Future",        min:1,     max:40,       step:1,    value:15,     format:"years"}
+        ]
+      },
+      simulator: {
+        label: "Wealth Simulator",
+        badge: "SIMULATOR MODE",
+        title: "30-Year Wealth Simulator",
+        sub: "See how ₹10,000 monthly grows over 30 years under conservative, moderate and aggressive scenarios.",
+        desc: "Adjust monthly amount and risk profile. Watch the 30-year journey unfold.",
+        wealthTitle: "Simulated Wealth Corpus",
+        wealthPill: "Scenario View",
+        chartTitle: "30-year wealth simulation",
+        chartMeta: "All three scenarios plotted together — conservative 8%, moderate 12%, aggressive 15% p.a.",
+        timelineTitle: "Simulation Milestones",
+        timelineMeta: "Corpus checkpoints across the three growth scenarios.",
+        controls: [
+          {id:"monthly", label:"Monthly Investment",   min:1000,  max:200000, step:1000, value:10000, format:"currency"},
+          {id:"years",   label:"Simulation Duration",  min:5,     max:30,     step:1,    value:30,    format:"years"},
+          {id:"extra",   label:"Annual Increment ₹",   min:0,     max:50000,  step:1000, value:0,     format:"currency"}
+        ]
+      }
+    };
+
+    // ─── STATE ──────────────────────────────────────────────────────────────────
+    let state = {};
+    let active = 'salary';
+    let chart;
+    const $ = id => document.getElementById(id);
+
+    // ─── FORMAT HELPERS ─────────────────────────────────────────────────────────
+    function formatValue(v, kind){
+      v = Number(v);
+      if(kind === 'currency') return '₹' + Math.round(v).toLocaleString('en-IN');
+      if(kind === 'percent')  return Number(v).toFixed(1).replace('.0','') + '%';
+      if(kind === 'years')    return Math.round(v) + ' Years';
+      if(kind === 'months')   return Math.round(v) + ' mo';
+      if(kind === 'count')    return Math.round(v).toString();
+      if(kind === 'index')    return Math.round(v).toString();
+      return v;
+    }
+    function fmtCurrency(v){ return '₹' + Math.round(v).toLocaleString('en-IN'); }
+    function fmtShort(v){
+      if(Math.abs(v) >= 10000000) return '₹' + (v/10000000).toFixed(2).replace(/\.00$/,'') + ' Cr';
+      if(Math.abs(v) >= 100000)   return '₹' + (v/100000).toFixed(2).replace(/\.00$/,'') + ' L';
+      return fmtCurrency(v);
+    }
+
+    // ─── CITY DATA ──────────────────────────────────────────────────────────────
+    const CITIES = {
+      Mumbai:    {idx:100, rent:35000, food:12000, transport:4500, util:3500, edu:8000},
+      Delhi:     {idx:85,  rent:25000, food:10000, transport:3500, util:3000, edu:7000},
+      Bangalore: {idx:90,  rent:28000, food:11000, transport:4000, util:3200, edu:7500},
+      Pune:      {idx:78,  rent:20000, food:9000,  transport:3000, util:2800, edu:6500},
+      Hyderabad: {idx:80,  rent:22000, food:9500,  transport:3000, util:2900, edu:6800},
+      Chennai:   {idx:82,  rent:23000, food:10000, transport:3200, util:3000, edu:7000},
+      Kolkata:   {idx:72,  rent:18000, food:8500,  transport:2800, util:2600, edu:6000}
+    };
+    let baseCityKey   = 'Mumbai';
+    let targetCityKey = 'Delhi';
+
+    // ─── INIT STATE ─────────────────────────────────────────────────────────────
+    function initState(){
+      Object.keys(CALCS).forEach(key=>{
+        state[key]={};
+        CALCS[key].controls.forEach(c=> state[key][c.id]=c.value);
+      });
+    }
+
+    // ─── RENDER TABS ─────────────────────────────────────────────────────────────
+    function renderTabs(){
+      $('tabs').innerHTML = Object.entries(CALCS).map(([key, cfg]) =>
+        `<button class="tab ${key===active?'active':''}" data-key="${key}">${cfg.label}</button>`
+      ).join('');
+      document.querySelectorAll('.tab').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          active = btn.dataset.key;
+          renderTabs();
+          renderControls();
+          update();
+        });
+      });
+    }
+
+    // ─── RENDER CONTROLS ─────────────────────────────────────────────────────────
+    function renderControls(){
+      const cfg = CALCS[active];
+      $('panelBadge').textContent  = cfg.badge;
+      $('controlDesc').textContent = cfg.desc;
+      $('modeHeadline').textContent = cfg.title;
+      $('modeSub').textContent      = cfg.sub;
+
+      let html = cfg.controls.map(c=>`
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">${c.label}</div>
+            <div class="control-value" id="view-${c.id}">${formatValue(state[active][c.id], c.format)}</div>
+          </div>
+          <input type="range" id="ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${state[active][c.id]}">
+        </div>
+      `).join('');
+
+      // Cost of living extra city picker
+      if(active === 'cost'){
+        html += `
+          <div class="control-group">
+            <div class="control-top"><div class="control-name">Base City</div><div class="control-value" id="baseCityLabel">${baseCityKey}</div></div>
+            <div class="city-grid" id="baseCityGrid">${Object.keys(CITIES).map(c=>`<button class="city-btn ${c===baseCityKey?'active':''}" onclick="setBaseCity('${c}')">${c}</button>`).join('')}</div>
+          </div>
+          <div class="control-group">
+            <div class="control-top"><div class="control-name">Compare City</div><div class="control-value" id="targetCityLabel">${targetCityKey}</div></div>
+            <div class="city-grid" id="targetCityGrid">${Object.keys(CITIES).map(c=>`<button class="city-btn ${c===targetCityKey?'active':''}" onclick="setTargetCity('${c}')">${c}</button>`).join('')}</div>
+          </div>`;
+      }
+
+      $('dynamicControls').innerHTML = html;
+
+      cfg.controls.forEach(c=>{
+        const el = $(`ctrl-${c.id}`);
+        if(el) el.addEventListener('input', e=>{
+          state[active][c.id] = Number(e.target.value);
+          $(`view-${c.id}`).textContent = formatValue(state[active][c.id], c.format);
+          update();
+        });
+      });
+    }
+
+    function setBaseCity(city){
+      baseCityKey = city;
+      state.cost.basecity   = CITIES[city].idx;
+      $('baseCityLabel').textContent = city;
+      document.querySelectorAll('#baseCityGrid .city-btn').forEach(b=>b.classList.toggle('active', b.textContent===city));
+      update();
+    }
+    function setTargetCity(city){
+      targetCityKey = city;
+      state.cost.targetcity = CITIES[city].idx;
+      $('targetCityLabel').textContent = city;
+      document.querySelectorAll('#targetCityGrid .city-btn').forEach(b=>b.classList.toggle('active', b.textContent===city));
+      update();
+    }
+
+    // ─── CHART ───────────────────────────────────────────────────────────────────
+    function renderChart(labels, series, title, meta, type='line'){
+      $('chartTitle').textContent = title;
+      $('chartMeta').textContent  = meta;
+      $('chartLegend').innerHTML  = series.map(s=>`
+        <div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>
+      `).join('');
+
+      const ctx = $('wealthChart').getContext('2d');
+      const gradient = ctx.createLinearGradient(0,0,0,360);
+      gradient.addColorStop(0,  'rgba(0,212,255,.28)');
+      gradient.addColorStop(.55,'rgba(79,163,255,.12)');
+      gradient.addColorStop(1,  'rgba(79,163,255,0)');
+
+      if(chart) chart.destroy();
+
+      if(type === 'doughnut'){
+        chart = new Chart(ctx, {
+          type:'doughnut',
+          data:{
+            labels,
+            datasets:[{
+              data: series[0].data,
+              backgroundColor: series.map(s=>s.color),
+              borderColor:'#060915',
+              borderWidth:3,
+              hoverOffset:6
+            }]
+          },
+          options:{
+            responsive:true, maintainAspectRatio:false,
+            plugins:{
+              legend:{display:true, position:'right', labels:{color:'rgba(220,230,255,.7)', font:{size:12}, padding:14}},
+              tooltip:{
+                backgroundColor:'rgba(7,12,28,.96)', borderColor:'rgba(255,255,255,.08)', borderWidth:1,
+                titleColor:'#fff', bodyColor:'#dce6ff', padding:12,
+                callbacks:{ label:(ctx)=>`${ctx.label}: ${fmtShort(ctx.raw)}` }
+              }
+            }
+          }
+        });
+      } else {
+        chart = new Chart(ctx, {
+          type:'line',
+          data:{
+            labels,
+            datasets: series.map((s, idx)=>({
+              label:s.label, data:s.data,
+              borderColor:s.color,
+              backgroundColor: idx===0 ? gradient : 'transparent',
+              fill:!!s.fill, borderWidth:idx===0?3:2.2,
+              pointRadius:idx===0?2:0, pointHoverRadius:5,
+              pointBackgroundColor:s.color, pointBorderColor:'#08111f',
+              tension:.38
+            }))
+          },
+          options:{
+            responsive:true, maintainAspectRatio:false,
+            interaction:{mode:'index', intersect:false},
+            plugins:{
+              legend:{display:false},
+              tooltip:{
+                backgroundColor:'rgba(7,12,28,.96)', borderColor:'rgba(255,255,255,.08)', borderWidth:1,
+                titleColor:'#fff', bodyColor:'#dce6ff', padding:12,
+                callbacks:{ label:(ctx)=>`${ctx.dataset.label}: ${fmtCurrency(ctx.raw)}` }
+              }
+            },
+            scales:{
+              x:{grid:{display:false}, ticks:{color:'rgba(220,230,255,.55)', font:{size:12}}},
+              y:{beginAtZero:true, grid:{color:'rgba(255,255,255,.06)'}, ticks:{color:'rgba(220,230,255,.55)', font:{size:12}, callback:(v)=>fmtShort(v)}}
+            }
+          }
+        });
+      }
+    }
+
+    // ─── INSIGHTS & WEALTH AREA ───────────────────────────────────────────────────
+    function setInsights(a, b, c){
+      $('insight1Title').textContent = a.title; $('insight1Text').textContent = a.text;
+      $('insight2Title').textContent = b.title; $('insight2Text').textContent = b.text;
+      $('insight3Title').textContent = c.title; $('insight3Text').textContent = c.text;
+    }
+    function setWealthArea({title,pill,value,narrative,stat1,stat2,stat3,mood,power}){
+      $('wealthTitle').textContent    = title;
+      $('wealthPill').textContent     = pill;
+      $('wealthNumber').textContent   = value;
+      $('wealthNarrative').textContent = narrative;
+      $('stat1Label').textContent = stat1.label; $('stat1Value').textContent = stat1.value;
+      $('stat2Label').textContent = stat2.label; $('stat2Value').textContent = stat2.value;
+      $('stat3Label').textContent = stat3.label; $('stat3Value').textContent = stat3.value;
+      $('miniMood').textContent    = mood;
+      $('miniInsight').textContent = power;
+    }
+    function setTop(v1, v2, v3, l1='Key figure', l2='Secondary figure', l3='Reference metric'){
+      $('topProjected').textContent      = v1;
+      $('topGains').textContent          = v2;
+      $('topRate').textContent           = v3;
+      $('topProjectedLabel').textContent = l1;
+      $('topGainsLabel').textContent     = l2;
+      $('topRateLabel').textContent      = l3;
+    }
+    function renderMilestones(title, meta, items){
+      $('timelineTitle').textContent = title;
+      $('timelineMeta').textContent  = meta;
+      $('timelineGrid').innerHTML    = items.map(item=>`
+        <div class="milestone">
+          <div class="m-year">${item.label}</div>
+          <div class="m-amount">${item.value}</div>
+          <div class="m-note">${item.note}</div>
+        </div>
+      `).join('');
+    }
+
+    // ─── MODELS ───────────────────────────────────────────────────────────────────
+    function modelSalary(ctc, basicPct, hraPct, pfPct, profTax){
+      const basic     = ctc * basicPct / 100;
+      const hra       = basic * hraPct / 100;
+      const special   = ctc - basic - hra - (basic * pfPct / 100) - 21000; // ~gratuity
+      const pfAmt     = basic * pfPct / 100;
+      const grossAnn  = basic + hra + Math.max(0, special);
+      const taxableApprox = Math.max(0, grossAnn - 75000); // new regime std ded
+      let tax = 0;
+      if(taxableApprox > 1500000)      tax = 140000 + (taxableApprox-1500000)*0.30;
+      else if(taxableApprox > 1200000) tax = 80000  + (taxableApprox-1200000)*0.20;
+      else if(taxableApprox > 1000000) tax = 50000  + (taxableApprox-1000000)*0.15;
+      else if(taxableApprox > 700000)  tax = 20000  + (taxableApprox-700000)*0.10;
+      else if(taxableApprox > 300000)  tax = (taxableApprox-300000)*0.05;
+      if(taxableApprox <= 700000) tax = 0;
+      tax = tax * 1.04;
+      const totalDed  = pfAmt + tax + profTax;
+      const netAnn    = grossAnn - totalDed;
+      const netMon    = netAnn / 12;
+      return {basic, hra, special:Math.max(0,special), pfAmt, tax, profTax, grossAnn, totalDed, netAnn, netMon};
+    }
+
+    function modelNetWorth(cash, mf, gold, re, epf, homeloan, other){
+      const totalAssets = cash + mf + gold + re + epf;
+      const totalLiab   = homeloan + other;
+      const netWorth    = totalAssets - totalLiab;
+      return {totalAssets, totalLiab, netWorth};
+    }
+
+    function modelSIP(monthly, rate, years){
+      const r = rate/12/100;
+      let value=0, invested=0;
+      const labels=[], corpus=[], base=[], gains=[];
+      for(let y=1;y<=years;y++){
+        for(let m=1;m<=12;m++){value=value*(1+r)+monthly; invested+=monthly;}
+        labels.push('Year '+y); corpus.push(Math.round(value)); base.push(Math.round(invested)); gains.push(Math.round(value-invested));
+      }
+      return {labels, corpus, base, gains, value, invested};
+    }
+
+    // ─── MAIN UPDATE ──────────────────────────────────────────────────────────────
+    function update(){
+      const s   = state[active];
+      const cfg = CALCS[active];
+      $('modeHeadline').textContent = cfg.title;
+      $('modeSub').textContent      = cfg.sub;
+
+      // ── E1. SALARY ──
+      if(active === 'salary'){
+        const d = modelSalary(s.ctc, s.basicpct, s.hrapct, s.pfpct, s.proftax);
+        const monthlyCTC = s.ctc / 12;
+        const savingRate = Math.max(0, ((d.netMon - d.netMon*0.7)/d.netMon)*100).toFixed(0);
+        setTop(fmtShort(d.netMon), fmtShort(d.totalDed/12), ((d.totalDed/d.grossAnn)*100).toFixed(1)+'%', 'Monthly In-Hand', 'Monthly Deductions', 'Deduction Rate');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(d.netMon),
+          narrative:`Your CTC of ${fmtShort(s.ctc)} yields a monthly in-hand of ${fmtShort(d.netMon)} after PF, income tax and professional tax deductions.`,
+          stat1:{label:'Annual Take-Home', value:fmtShort(d.netAnn)},
+          stat2:{label:'Total Deductions/yr', value:fmtShort(d.totalDed)},
+          stat3:{label:'Take-Home %', value:((d.netAnn/s.ctc)*100).toFixed(1)+'%'},
+          mood: d.netMon > 100000 ? 'Strong Earner' : d.netMon > 50000 ? 'Stable Income' : 'Building Phase',
+          power:`In-hand ${((d.netAnn/s.ctc)*100).toFixed(0)}% of CTC`
+        });
+        setInsights(
+          {title:'Your PF builds long-term wealth.', text:`₹${Math.round(d.pfAmt/12).toLocaleString('en-IN')}/month in PF is invisible income — it quietly compounds into a retirement corpus over time.`},
+          {title:d.tax>0?'Tax is your biggest deduction.':'You pay zero income tax.', text:d.tax>0?`Annual income tax of ${fmtShort(d.tax)} can be reduced by claiming HRA, 80C and NPS deductions.`:'Your income falls within the zero-tax rebate limit under the new regime.'},
+          {title:'Negotiate basic salary wisely.', text:'Higher basic salary means higher PF and HRA exemption — but also higher TDS. Balance it based on your tax bracket.'}
+        );
+        renderChart(
+          ['Basic','HRA','Special Allowance','PF Deduction','Income Tax','Prof Tax','Net In-Hand'],
+          [
+            {label:'Basic',           color:'#00d4ff', data:[Math.round(d.basic/12)]},
+            {label:'HRA',             color:'#4fa3ff', data:[Math.round(d.hra/12)]},
+            {label:'Special Allowance',color:'#7b61ff',data:[Math.round(d.special/12)]},
+            {label:'PF Deduction',    color:'#ffd76a', data:[Math.round(d.pfAmt/12)]},
+            {label:'Income Tax',      color:'#ff607d', data:[Math.round(d.tax/12)]},
+            {label:'Prof Tax',        color:'#f97316', data:[Math.round(d.profTax/12)]},
+            {label:'Net In-Hand',     color:'#00e676', data:[Math.round(d.netMon)]}
+          ],
+          cfg.chartTitle, cfg.chartMeta, 'doughnut'
+        );
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {label:'Monthly CTC',      value:fmtShort(monthlyCTC),    note:'Total cost to company per month'},
+          {label:'Monthly In-Hand',  value:fmtShort(d.netMon),      note:'After all deductions'},
+          {label:'Annual PF',        value:fmtShort(d.pfAmt),       note:'Employee PF contribution'},
+          {label:'Annual Tax',       value:fmtShort(d.tax),         note:'Income tax + cess (new regime)'}
+        ]);
+      }
+
+      // ── E2. NET WORTH ──
+      if(active === 'networth'){
+        const d = modelNetWorth(s.cash, s.mf, s.gold, s.realestate, s.epfnps, s.homeloan, s.otherloan);
+        const debtRatio = d.totalAssets > 0 ? (d.totalLiab/d.totalAssets*100).toFixed(1) : 0;
+        setTop(fmtShort(d.netWorth), fmtShort(d.totalAssets), debtRatio+'%', 'Net Worth', 'Total Assets', 'Debt-to-Asset Ratio');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(d.netWorth),
+          narrative:`Your total assets of ${fmtShort(d.totalAssets)} minus liabilities of ${fmtShort(d.totalLiab)} gives a net worth of ${fmtShort(d.netWorth)}.`,
+          stat1:{label:'Total Assets', value:fmtShort(d.totalAssets)},
+          stat2:{label:'Total Liabilities', value:fmtShort(d.totalLiab)},
+          stat3:{label:'Debt Ratio', value:debtRatio+'%'},
+          mood: d.netWorth > 10000000 ? 'Wealth Builder' : d.netWorth > 2000000 ? 'Growing Strong' : 'Building Phase',
+          power: debtRatio < 30 ? 'Low Debt ✓' : debtRatio < 50 ? 'Moderate Debt' : 'High Debt ⚠'
+        });
+        setInsights(
+          {title:d.netWorth>0?'Positive net worth is a foundation.':'Liabilities exceed assets.', text:d.netWorth>0?'Every rupee of debt repaid and every rupee of asset accumulated improves your net worth.':'Focus on reducing high-interest debt first — it gives the highest guaranteed return.'},
+          {title:debtRatio<30?'Your debt ratio is healthy.':'High debt warrants attention.', text:debtRatio<30?'A debt-to-asset ratio below 30% indicates a strong financial position.':'Reducing liabilities faster than adding assets will improve this ratio over time.'},
+          {title:'Diversify your assets.', text:'A balanced mix of liquid, investment and physical assets ensures resilience across different economic conditions.'}
+        );
+        renderChart(
+          ['Cash/FD','MF/Stocks','Gold','Real Estate','EPF/NPS','Home Loan','Other Loans'],
+          [
+            {label:'Cash/FD',     color:'#00d4ff', data:[s.cash]},
+            {label:'MF/Stocks',   color:'#00e676', data:[s.mf]},
+            {label:'Gold',        color:'#ffd76a', data:[s.gold]},
+            {label:'Real Estate', color:'#7b61ff', data:[s.realestate]},
+            {label:'EPF/NPS',     color:'#4fa3ff', data:[s.epfnps]},
+            {label:'Home Loan',   color:'#ff607d', data:[s.homeloan]},
+            {label:'Other Loans', color:'#f97316', data:[s.otherloan]}
+          ],
+          cfg.chartTitle, cfg.chartMeta, 'doughnut'
+        );
+        const investRatio = d.totalAssets>0?(s.mf/d.totalAssets*100).toFixed(0):0;
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {label:'Net Worth',       value:fmtShort(d.netWorth),    note:'Assets minus all liabilities'},
+          {label:'Liquid Assets',   value:fmtShort(s.cash),        note:'Immediately accessible capital'},
+          {label:'Investment %',    value:investRatio+'%',          note:'Portfolio as % of total assets'},
+          {label:'Debt Ratio',      value:debtRatio+'%',            note:'Liabilities as % of assets'}
+        ]);
+      }
+
+      // ── E3. BUDGET ──
+      if(active === 'budget'){
+        const income = s.income;
+        const total  = s.needspct + s.wantspct + s.savepct;
+        const needs  = income * s.needspct / 100;
+        const wants  = income * s.wantspct  / 100;
+        const saves  = income * s.savepct   / 100;
+        const surplus= income - needs - wants - saves;
+        setTop(fmtShort(saves), fmtShort(needs), (s.savepct).toFixed(0)+'%', 'Monthly Savings', 'Monthly Needs', 'Savings Rate');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(income),
+          narrative:`Your ${fmtShort(income)} monthly income is split: ${fmtShort(needs)} Needs, ${fmtShort(wants)} Wants, ${fmtShort(saves)} Savings. ${surplus!==0?`${fmtShort(Math.abs(surplus))} ${surplus>0?'unallocated':'over-allocated'}.`:'Perfectly balanced.'}`,
+          stat1:{label:'Monthly Needs', value:fmtShort(needs)},
+          stat2:{label:'Monthly Wants', value:fmtShort(wants)},
+          stat3:{label:'Monthly Savings', value:fmtShort(saves)},
+          mood: s.savepct >= 20 ? 'Disciplined Saver' : s.savepct >= 10 ? 'Building Habit' : 'Saver in Progress',
+          power:`Saving ${s.savepct}% monthly`
+        });
+        setInsights(
+          {title:s.savepct>=20?'Your savings rate is strong.':'Increase your savings rate.', text:s.savepct>=20?'Saving 20%+ monthly keeps you on track for financial independence over a 25–30 year horizon.':'Even increasing savings by 5% can make a significant difference to long-term wealth creation.'},
+          {title:s.needspct<=50?'Needs are well-controlled.':'Needs are eating too much income.', text:s.needspct<=50?'Keeping essential expenses below 50% of income gives flexibility for growth and savings.':'Review rent, EMIs and subscriptions — small cuts here free up significant savings potential.'},
+          {title:'Annual savings projection.', text:`At ${fmtShort(saves)}/month, you accumulate ${fmtShort(saves*12)} annually. Invested at 12%, that is ${fmtShort(saves*12*Math.pow(1.12,10))} in 10 years.`}
+        );
+        renderChart(
+          ['Needs','Wants','Savings'],
+          [
+            {label:'Needs',   color:'#4fa3ff', data:[Math.round(needs)]},
+            {label:'Wants',   color:'#7b61ff', data:[Math.round(wants)]},
+            {label:'Savings', color:'#00e676', data:[Math.round(saves)]}
+          ],
+          cfg.chartTitle, cfg.chartMeta, 'doughnut'
+        );
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {label:'Annual Savings',    value:fmtShort(saves*12),         note:'If savings rate is maintained'},
+          {label:'Annual Needs',      value:fmtShort(needs*12),         note:'Essential expenses per year'},
+          {label:'10-Year Invested',  value:fmtShort(saves*12*Math.pow(1.12,10)), note:'If saved amount invested @12%'},
+          {label:'Monthly Surplus',   value:fmtShort(Math.abs(surplus)), note:surplus>=0?'Unallocated amount':'Over-allocated'}
+        ]);
+      }
+
+      // ── E4. HEALTH SCORE ──
+      if(active === 'health'){
+        const emScore  = s.emergency >= 6 ? 25 : s.emergency >= 3 ? 15 : s.emergency >= 1 ? 8 : 0;
+        const srScore  = s.saverate  >= 35 ? 25 : s.saverate  >= 20 ? 18 : s.saverate  >= 10 ? 10 : s.saverate >= 5 ? 5 : 0;
+        const dtScore  = s.debtpct   <= 10 ? 20 : s.debtpct   <= 20 ? 15 : s.debtpct   <= 40 ? 8 : 0;
+        const asScore  = s.assetcount >= 4 ? 20 : s.assetcount >= 3 ? 15 : s.assetcount >= 2 ? 10 : 5;
+        const inScore  = s.hasinsure === 2 ? 20 : s.hasinsure === 1 ? 10 : 0;
+        const rpScore  = s.retireplan >= 3 ? 20 : s.retireplan >= 2 ? 14 : s.retireplan >= 1 ? 7 : 0;
+        const tpScore  = s.taxplan   >= 3 ? 15 : s.taxplan   >= 2 ? 10 : s.taxplan   >= 1 ? 5 : 0;
+        const nwScore  = s.nwgrowth  >= 15 ? 20 : s.nwgrowth >= 8 ? 15 : s.nwgrowth >= 4 ? 8 : 0;
+        const raw      = emScore+srScore+dtScore+asScore+inScore+rpScore+tpScore+nwScore;
+        const maxRaw   = 165;
+        const score    = Math.round(raw/maxRaw*100);
+        const grade    = score>=80?'A':score>=60?'B':score>=40?'C':'D';
+        const gradeLabel = score>=80?'Excellent':'Financial Health':score>=60?'B — Good':score>=40?'C — Needs Work':'D — Urgent Attention';
+        const gradeColor = score>=80?'#00e676':score>=60?'#00d4ff':score>=40?'#ffd76a':'#ff607d';
+        setTop(score+'/100', grade, s.saverate.toFixed(0)+'%', 'Health Score', 'Grade', 'Savings Rate');
+        $('topProjected').style.color = gradeColor;
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:score+' / 100',
+          narrative:`Your financial health score is ${score}/100 — Grade ${grade}. ${score>=80?'Your finances are in excellent shape. Focus on growth and optimisation.':score>=60?'Good financial health with room to improve key areas.':score>=40?'Several areas need attention. Focus on emergency fund and reducing debt.':'Urgent financial health improvements needed. Start with basics.'}`,
+          stat1:{label:'Score', value:score+'/100'},
+          stat2:{label:'Grade', value:grade},
+          stat3:{label:'Savings Rate', value:s.saverate+'%'},
+          mood:score>=80?'Financial Excellence':score>=60?'Good Standing':score>=40?'Needs Attention':'Urgent Care',
+          power:`Grade ${grade} — ${score>=80?'Top tier':score>=60?'Above avg':score>=40?'Average':'Below avg'}`
+        });
+        setInsights(
+          {title:emScore>=15?'Emergency fund is adequate.':'Build your emergency fund first.', text:emScore>=15?`${s.emergency} months of emergency fund provides strong financial cushion.`:`${s.emergency} months of emergency fund is insufficient. Target 6 months of expenses minimum.`},
+          {title:dtScore>=15?'Debt is well-managed.':'Debt load is high.', text:dtScore>=15?`EMI of ${s.debtpct}% of income is healthy. You have room for growth investments.`:`EMI of ${s.debtpct}% of income is constraining. Prioritise debt reduction.`},
+          {title:inScore>=15?'Insurance coverage is solid.':'Insurance gap detected.', text:inScore>=15?'You have both life and health insurance — key risk mitigation in place.':'Missing insurance is your biggest financial vulnerability. Get term and health cover immediately.'}
+        );
+        const dimScores = [emScore/25, srScore/25, dtScore/20, asScore/20, inScore/20, rpScore/20, tpScore/15, nwScore/20].map(v=>Math.round(v*100));
+        const labels2 = Array.from({length:30},(_,i)=>'Year '+(i+1));
+        const corpusLine = Array.from({length:30},(_,i)=>Math.round(score * 1000 * Math.pow(1+score/100/12, (i+1)*12)/100));
+        renderChart(
+          ['Emergency','Savings Rate','Low Debt','Diversification','Insurance','Retirement','Tax Planning','NW Growth'],
+          [
+            {label:'Your Scores',color:'#00d4ff',fill:true, data:dimScores}
+          ],
+          cfg.chartTitle, cfg.chartMeta, 'line'
+        );
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {label:'Overall Score',     value:score+'/100',             note:`Grade ${grade}`},
+          {label:'Emergency Fund',    value:s.emergency+' months',    note:emScore>=15?'✓ Adequate':'⚠ Build more'},
+          {label:'Debt Ratio',        value:s.debtpct+'%',            note:dtScore>=15?'✓ Healthy':'⚠ High debt'},
+          {label:'Insurance',         value:s.hasinsure===2?'Full':'Partial', note:inScore>=15?'✓ Covered':'⚠ Gap exists'}
+        ]);
+      }
+
+      // ── E5. SALARY HIKE ──
+      if(active === 'hike'){
+        const newSalary  = s.cursalary * (1 + s.hikepct/100);
+        const annIncrease = newSalary - s.cursalary;
+        const monIncrease = annIncrease / 12;
+        const labels=[],corpus=[],base=[];
+        let cur = s.cursalary;
+        for(let y=1;y<=s.years;y++){
+          cur *= (1+s.hikepct/100);
+          labels.push('Year '+y); corpus.push(Math.round(cur)); base.push(Math.round(s.cursalary));
+        }
+        const salIn10 = s.cursalary * Math.pow(1+s.hikepct/100, s.years);
+        setTop(fmtShort(newSalary/12), fmtShort(monIncrease), s.hikepct+'%', 'New Monthly', 'Monthly Increase', 'Hike %');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(newSalary/12),
+          narrative:`A ${s.hikepct}% hike on ${fmtShort(s.cursalary)} gives you a new annual salary of ${fmtShort(newSalary)}, adding ${fmtShort(monIncrease)} to your monthly take-home.`,
+          stat1:{label:'New Annual Salary',  value:fmtShort(newSalary)},
+          stat2:{label:'Annual Increase',    value:fmtShort(annIncrease)},
+          stat3:{label:'Monthly Increase',   value:fmtShort(monIncrease)},
+          mood: s.hikepct >= 20 ? 'Strong Increment' : s.hikepct >= 10 ? 'Solid Raise' : 'Modest Raise',
+          power:`+${s.hikepct}% this cycle`
+        });
+        setInsights(
+          {title:'Invest the increment, not spend it.', text:`If you invest the entire ${fmtShort(monIncrease)} increase as a monthly SIP at 12%, it will build ${fmtShort(monIncrease*12*((Math.pow(1.01,s.years*12)-1)/0.01)*1.01)} over ${s.years} years.`},
+          {title:s.hikepct>=15?'This is an above-average hike.':'Always negotiate.', text:s.hikepct>=15?'Sustained double-digit hikes dramatically compound salary over a career.':'Average Indian IT salary hike is 8–12%. Even 2–3% more each cycle creates huge long-term income difference.'},
+          {title:'Salary in '+s.years+' years if hike is sustained.', text:`At ${s.hikepct}% annually, your ${fmtShort(s.cursalary)} grows to ${fmtShort(salIn10)} in ${s.years} years — a ${((salIn10/s.cursalary-1)*100).toFixed(0)}% increase.`}
+        );
+        renderChart(labels, [
+          {label:'Projected Salary', data:corpus, color:'#00d4ff', fill:true},
+          {label:'Current Salary',   data:base,   color:'#4fa3ff', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta, 'line');
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {label:'Current Salary',  value:fmtShort(s.cursalary),  note:'Annual base'},
+          {label:'Post-Hike',       value:fmtShort(newSalary),    note:'After this increment'},
+          {label:'In '+(Math.round(s.years/2))+' Years', value:fmtShort(s.cursalary*Math.pow(1+s.hikepct/100,Math.round(s.years/2))), note:'If sustained'},
+          {label:'In '+s.years+' Years', value:fmtShort(salIn10), note:'Full trajectory'}
+        ]);
+      }
+
+      // ── E6. COST OF LIVING ──
+      if(active === 'cost'){
+        const baseCity   = CITIES[baseCityKey];
+        const targetCity = CITIES[targetCityKey];
+        const baseExp    = s.monthlyexp;
+        const targetExp  = baseExp * (targetCity.idx / baseCity.idx);
+        const diff       = targetExp - baseExp;
+        const diffPct    = ((targetCity.idx - baseCity.idx) / baseCity.idx * 100).toFixed(1);
+        const cheaper    = diff < 0;
+        setTop(fmtShort(targetExp), fmtShort(Math.abs(diff)), Math.abs(diffPct)+'%', `Monthly Cost in ${targetCityKey}`, `${cheaper?'Savings':'Extra Cost'} vs ${baseCityKey}`, 'Cost Difference');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(targetExp),
+          narrative:`${targetCityKey} is ${Math.abs(diffPct)}% ${cheaper?'cheaper':'costlier'} than ${baseCityKey}. Your ${fmtShort(baseExp)} lifestyle in ${baseCityKey} would cost ${fmtShort(targetExp)} in ${targetCityKey}.`,
+          stat1:{label:`${baseCityKey} Monthly Cost`,  value:fmtShort(baseExp)},
+          stat2:{label:`${targetCityKey} Monthly Cost`, value:fmtShort(targetExp)},
+          stat3:{label:'Annual Difference', value:fmtShort(Math.abs(diff)*12)},
+          mood: cheaper ? 'Cost Advantage' : 'Premium City',
+          power: `${targetCityKey} ${cheaper?'saves':'costs'} ${Math.abs(diffPct)}%`
+        });
+        setInsights(
+          {title:`${targetCityKey} is ${cheaper?'more affordable':'more expensive'}.`, text:`The cost index difference of ${Math.abs(diffPct)}% means relocating from ${baseCityKey} to ${targetCityKey} ${cheaper?`saves ${fmtShort(Math.abs(diff))}/month.`:`costs ${fmtShort(Math.abs(diff))}/month extra.`}`},
+          {title:'Rent is the biggest variable.', text:`Rent in ${targetCityKey} is approximately ₹${targetCity.rent.toLocaleString('en-IN')}/month vs ₹${baseCity.rent.toLocaleString('en-IN')} in ${baseCityKey}.`},
+          {title:'Salary parity matters.', text:`If moving cities, negotiate a ${cheaper?'lower':'higher'} salary adjustment only if the lifestyle cost justifies it — don't just accept flat transfers.`}
+        );
+        const cityNames  = Object.keys(CITIES);
+        const cityValues = cityNames.map(c => Math.round(baseExp * CITIES[c].idx / baseCity.idx));
+        renderChart(
+          cityNames,
+          [{label:'Monthly Cost ₹', data:cityValues, color:'#00d4ff', fill:true}],
+          cfg.chartTitle, cfg.chartMeta, 'line'
+        );
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {label:'Rent',       value:'₹'+targetCity.rent.toLocaleString('en-IN'),      note:`Est. rent in ${targetCityKey}`},
+          {label:'Food',       value:'₹'+targetCity.food.toLocaleString('en-IN'),      note:`Food & dining estimate`},
+          {label:'Transport',  value:'₹'+targetCity.transport.toLocaleString('en-IN'), note:`Monthly commute`},
+          {label:'Annual Gap', value:fmtShort(Math.abs(diff)*12),                      note:`vs ${baseCityKey} lifestyle`}
+        ]);
+      }
+
+      // ── E7. INFLATION ──
+      if(active === 'inflation'){
+        const fv        = s.amount * Math.pow(1 + s.inflation/100, s.years);
+        const powerLoss = fv - s.amount;
+        const realVal   = s.amount / Math.pow(1 + s.inflation/100, s.years);
+        const labels=[], futureArr=[], realArr=[];
+        for(let y=1;y<=s.years;y++){
+          const f = s.amount * Math.pow(1+s.inflation/100,y);
+          const r = s.amount / Math.pow(1+s.inflation/100,y);
+          labels.push('Year '+y); futureArr.push(Math.round(f)); realArr.push(Math.round(r));
+        }
+        setTop(fmtShort(fv), fmtShort(powerLoss), s.inflation+'%', 'Future Cost', 'Purchasing Power Lost', 'Inflation Rate');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(fv),
+          narrative:`At ${s.inflation}% annual inflation, ${fmtShort(s.amount)} today will cost ${fmtShort(fv)} in ${s.years} years. Your ₹ will be worth only ${fmtShort(realVal)} in today's terms.`,
+          stat1:{label:'Present Value',     value:fmtShort(s.amount)},
+          stat2:{label:'Future Cost',       value:fmtShort(fv)},
+          stat3:{label:'Real Value Today',  value:fmtShort(realVal)},
+          mood: s.inflation <= 5 ? 'Manageable Inflation' : s.inflation <= 8 ? 'Watch Carefully' : 'High Inflation Risk',
+          power:`${s.inflation}% erodes ${((1-1/Math.pow(1+s.inflation/100,s.years))*100).toFixed(0)}% over ${s.years}yr`
+        });
+        setInsights(
+          {title:'Inflation is the silent wealth destroyer.', text:`At ${s.inflation}%, your money loses half its purchasing power in ~${(72/s.inflation).toFixed(0)} years. Only returns above this rate create real wealth.`},
+          {title:'Beat inflation with growth assets.', text:`Nifty 50 has historically returned ~13% CAGR — comfortably ahead of average inflation. FDs at 7% barely beat 6% inflation.`},
+          {title:'Education and healthcare inflate faster.', text:`Education inflates at ~10–12% and healthcare at 12–15% — well above general CPI. Plan for these separately.`}
+        );
+        renderChart(labels, [
+          {label:'Future Cost',         data:futureArr, color:'#ff607d', fill:true},
+          {label:'Real Purchasing Power', data:realArr,  color:'#00d4ff', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta, 'line');
+        const picks = [Math.ceil(s.years*0.25), Math.ceil(s.years*0.5), Math.ceil(s.years*0.75), s.years];
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, picks.map(y=>({
+          label:'Year '+y,
+          value:fmtShort(s.amount*Math.pow(1+s.inflation/100,y)),
+          note:`Real value: ${fmtShort(s.amount/Math.pow(1+s.inflation/100,y))}`
+        })));
+      }
+
+      // ── E8. WEALTH SIMULATOR ──
+      if(active === 'simulator'){
+        const rates = {conservative:8, moderate:12, aggressive:15};
+        const years = s.years;
+        const labels=[];
+        const corpusCon=[], corpusMod=[], corpusAgg=[];
+        for(let y=1;y<=years;y++){
+          labels.push('Year '+y);
+          const monthly = s.monthly + s.extra * (y-1);
+          // Build corpus iteratively
+        }
+        // Full simulation
+        const sim = (rate)=>{
+          const r = rate/12/100; let v=0; let cur=s.monthly;
+          const arr=[];
+          for(let y=1;y<=years;y++){
+            for(let m=0;m<12;m++){v=v*(1+r)+cur;}
+            arr.push(Math.round(v));
+            cur += s.extra/12;
+          }
+          return arr;
+        };
+        const con = sim(rates.conservative);
+        const mod = sim(rates.moderate);
+        const agg = sim(rates.aggressive);
+        const yrs = Array.from({length:years},(_,i)=>'Year '+(i+1));
+        const endCon = con[con.length-1], endMod = mod[mod.length-1], endAgg = agg[agg.length-1];
+        const invested = s.monthly * years * 12;
+        setTop(fmtShort(endMod), fmtShort(endMod-invested), '12%', 'Moderate Scenario', 'Estimated Gains', 'Growth Rate');
+        setWealthArea({
+          title:cfg.wealthTitle, pill:cfg.wealthPill, value:fmtShort(endMod),
+          narrative:`Investing ${fmtShort(s.monthly)}/month for ${years} years creates a corpus of ${fmtShort(endCon)} (conservative), ${fmtShort(endMod)} (moderate) or ${fmtShort(endAgg)} (aggressive).`,
+          stat1:{label:'Conservative (8%)', value:fmtShort(endCon)},
+          stat2:{label:'Moderate (12%)',     value:fmtShort(endMod)},
+          stat3:{label:'Aggressive (15%)',   value:fmtShort(endAgg)},
+          mood: s.monthly >= 50000 ? 'Power Saver' : s.monthly >= 20000 ? 'Consistent Investor' : 'Starting Strong',
+          power:`${years}-yr simulation running`
+        });
+        setInsights(
+          {title:'The difference between 8% and 15% is enormous.', text:`Over ${years} years, moderate (12%) creates ${((endMod/endCon-1)*100).toFixed(0)}% more than conservative (8%). Asset selection drives this divergence.`},
+          {title:'Starting early matters most.', text:'This simulation assumes you start today. Delaying by even 5 years can reduce the final corpus by 35–45%, especially in the aggressive scenario.'},
+          {title:'Monthly amount compounds — so does your increment.', text:`Adding ₹${s.extra.toLocaleString('en-IN')}/year to your SIP amount accelerates the aggressive scenario to ${fmtShort(endAgg)}.`}
+        );
+        renderChart(yrs, [
+          {label:'Conservative 8%',  data:con, color:'#4fa3ff', fill:false},
+          {label:'Moderate 12%',     data:mod, color:'#00d4ff', fill:true},
+          {label:'Aggressive 15%',   data:agg, color:'#00e676', fill:false}
+        ], cfg.chartTitle, cfg.chartMeta, 'line');
+        const midY = Math.ceil(years/2);
+        renderMilestones(cfg.timelineTitle, cfg.timelineMeta, [
+          {label:'Year '+Math.ceil(years*0.25), value:fmtShort(mod[Math.ceil(years*0.25)-1]), note:'Moderate scenario'},
+          {label:'Year '+midY,                  value:fmtShort(mod[midY-1]),                  note:'Moderate — halfway'},
+          {label:'Conservative End',            value:fmtShort(endCon),                        note:`${years} yrs @ 8%`},
+          {label:'Aggressive End',              value:fmtShort(endAgg),                        note:`${years} yrs @ 15%`}
+        ]);
+      }
+    }
+
+    // ─── ACTIONS ──────────────────────────────────────────────────────────────────
+    function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smooth', block:'start'}); }
+    function openAdvisor(){ window.open('https://absolutemoney.in','_blank'); }
+    function copySummary(){
+      const summary = `investpercent Personal Finance Dashboard
+Mode: ${CALCS[active].label}
+Result: ${$('wealthNumber').textContent}
+${$('stat1Label').textContent}: ${$('stat1Value').textContent}
+${$('stat2Label').textContent}: ${$('stat2Value').textContent}
+${$('stat3Label').textContent}: ${$('stat3Value').textContent}`;
+      navigator.clipboard.writeText(summary).then(()=>{
+        const old = $('miniInsight').textContent;
+        $('miniInsight').textContent = 'Summary Copied ✓';
+        setTimeout(()=> $('miniInsight').textContent = old, 1500);
+      });
+    }
+
+    // ─── BOOT ─────────────────────────────────────────────────────────────────────
+    initState();
+    renderTabs();
+    renderControls();
+    update();
+  </script>
+
+  <script>
+    fetch("components/navbar.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+        const currentPath = window.location.pathname.split("/").pop() || "index.html";
+        const links = document.querySelectorAll(".nav a, .mobile-drawer a");
+        links.forEach(link => {
+          const href = link.getAttribute("href");
+          if(href === currentPath) link.classList.add("active");
+        });
+      });
+    function toggleMenu(){
+      document.getElementById("mobileDrawer")?.classList.toggle("open");
+    }
+  </script>
+</body>
+</html>
