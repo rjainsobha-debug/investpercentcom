@@ -604,6 +604,201 @@ function toggleMenu(){
   document.getElementById("mobileDrawer")?.classList.toggle("open");
 }
 </script>
+<script>
+
+let state = {};
+let active = "fd";
+let chart;
+
+/* INIT */
+function init(){
+Object.keys(CALCS).forEach(k=>{
+state[k]={};
+CALCS[k].controls.forEach(c=>{
+state[k][c.id]=c.value;
+});
+});
+renderTabs();
+renderControls();
+update();
+}
+
+/* TABS */
+function renderTabs(){
+tabs.innerHTML = Object.keys(CALCS).map(k=>
+`<button class="tab ${k===active?'active':''}" onclick="switchTab('${k}')">${CALCS[k].label}</button>`
+).join('');
+}
+
+function switchTab(k){
+active=k;
+renderTabs();
+renderControls();
+update();
+}
+
+/* CONTROLS */
+function renderControls(){
+const cfg = CALCS[active];
+
+panelBadge.textContent = cfg.badge;
+controlDesc.textContent = cfg.desc;
+
+dynamicControls.innerHTML = cfg.controls.map(c=>`
+<div class="control-group">
+<div class="control-top">
+<div class="control-name">${c.label}</div>
+<div class="control-value">${state[active][c.id]}</div>
+</div>
+<input type="range" min="${c.min}" max="${c.max}" value="${state[active][c.id]}"
+oninput="updateVal('${c.id}',this.value)">
+</div>
+`).join('');
+}
+
+function updateVal(id,val){
+state[active][id]=Number(val);
+update();
+}
+
+/* FORMAT */
+function fmtCurrency(v){
+return "₹"+Math.round(v).toLocaleString();
+}
+
+/* TOP METRICS */
+function setTop(total,gain,rate){
+topProjected.innerText = fmtCurrency(total);
+topGains.innerText = fmtCurrency(gain);
+topRate.innerText = rate+"%";
+}
+
+/* MAIN DISPLAY */
+function setWealthArea(o){
+wealthNumber.innerText = fmtCurrency(o.value);
+wealthNarrative.innerText = o.narrative;
+stat1Label.innerText = o.stat1.label;
+stat1Value.innerText = o.stat1.value;
+stat2Label.innerText = o.stat2.label;
+stat2Value.innerText = o.stat2.value;
+stat3Label.innerText = o.stat3.label;
+stat3Value.innerText = o.stat3.value;
+miniMood.innerText = o.mood;
+miniInsight.innerText = o.power;
+}
+
+/* CHART */
+function drawChart(years,value){
+let labels=[],data=[];
+for(let i=1;i<=years;i++){
+labels.push("Year "+i);
+data.push(value*i/years);
+}
+
+if(chart) chart.destroy();
+
+chart=new Chart(document.getElementById("wealthChart"),{
+type:"line",
+data:{labels,datasets:[{data,borderColor:"#00d4ff"}]},
+options:{plugins:{legend:{display:false}}}
+});
+}
+
+/* UPDATE ENGINE */
+function update(){
+
+const s = state[active];
+
+if(active==="fd"){
+let v = s.amount * Math.pow(1 + s.rate/100, s.years);
+let gain = v - s.amount;
+
+setTop(v,gain,s.rate);
+setWealthArea({
+value:v,
+narrative:"Fixed deposit gives stable returns",
+stat1:{label:'Principal',value:fmtCurrency(s.amount)},
+stat2:{label:'Interest',value:fmtCurrency(gain)},
+stat3:{label:'Total',value:fmtCurrency(v)},
+mood:"Safe",
+power:"Stable"
+});
+drawChart(s.years,v);
+}
+
+if(active==="rd"){
+let r = s.rate/12/100;
+let n = s.years*12;
+let v = s.monthly*((Math.pow(1+r,n)-1)/r)*(1+r);
+let invested = s.monthly*n;
+
+setTop(v,v-invested,s.rate);
+setWealthArea({
+value:v,
+narrative:"Monthly saving grows steadily",
+stat1:{label:'Invested',value:fmtCurrency(invested)},
+stat2:{label:'Interest',value:fmtCurrency(v-invested)},
+stat3:{label:'Total',value:fmtCurrency(v)},
+mood:"Disciplined",
+power:"Consistency"
+});
+drawChart(s.years,v);
+}
+
+if(active==="nsc" || active==="scss" || active==="post"){
+let v = s.amount*Math.pow(1+s.rate/100,s.years);
+
+setTop(v,v-s.amount,s.rate);
+setWealthArea({
+value:v,
+narrative:"Government-backed safe investment",
+stat1:{label:'Principal',value:fmtCurrency(s.amount)},
+stat2:{label:'Interest',value:fmtCurrency(v-s.amount)},
+stat3:{label:'Total',value:fmtCurrency(v)},
+mood:"Safe",
+power:"Security"
+});
+drawChart(s.years,v);
+}
+
+if(active==="kvp"){
+let v = s.amount*2;
+
+setTop(v,v-s.amount,0);
+setWealthArea({
+value:v,
+narrative:"Money doubles in fixed tenure",
+stat1:{label:'Principal',value:fmtCurrency(s.amount)},
+stat2:{label:'Gain',value:fmtCurrency(v-s.amount)},
+stat3:{label:'Total',value:fmtCurrency(v)},
+mood:"Guaranteed",
+power:"Doubling"
+});
+drawChart(s.years,v);
+}
+
+if(active==="inflation"){
+let real = s.amount/Math.pow(1+s.inflation/100,s.years);
+
+setTop(real,s.amount-real,s.inflation);
+setWealthArea({
+value:real,
+narrative:"Inflation reduces value over time",
+stat1:{label:'Today',value:fmtCurrency(s.amount)},
+stat2:{label:'Future',value:fmtCurrency(real)},
+stat3:{label:'Loss',value:fmtCurrency(s.amount-real)},
+mood:"Awareness",
+power:"Inflation"
+});
+drawChart(s.years,real);
+}
+
+}
+
+/* START */
+init();
+
+</script>
 </body>
 
 </html>
