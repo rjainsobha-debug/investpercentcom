@@ -1047,22 +1047,31 @@
       $('modeHeadline').textContent = cfg.title;
       $('modeSub').textContent = cfg.sub;
 
+      /* V2.1: SCENARIO FACTOR */
+      const scenario = document.getElementById('scenarioMode').value;
+      let factor = 1;
+      if(scenario === 'conservative') factor = 0.8;
+      if(scenario === 'aggressive')   factor = 1.2;
+
       /* -------- TOOL 1: PROPERTY ROI -------- */
       if(active === 'roi'){
+        const adjustedAppreciation = s.appreciation * factor;
+        const adjustedYield        = s.rentalYield  * factor;
+
         const loanAmt    = s.price - s.down;
         const emi        = calcEMI(loanAmt, s.loanRate, s.tenure);
         const totalEMI   = emi * s.tenure * 12;
         const totalInvested = s.down + totalEMI;
-        const annualRent = s.price * (s.rentalYield / 100);
+        const annualRent = s.price * (adjustedYield / 100);
         const totalRental = annualRent * s.holding;
         const totalMaintenance = s.price * (s.maintenance / 100) * s.holding;
-        const exitValue  = s.price * Math.pow(1 + s.appreciation/100, s.holding);
+        const exitValue  = s.price * Math.pow(1 + adjustedAppreciation/100, s.holding);
         const netProfit  = exitValue + totalRental - totalMaintenance - totalInvested;
         const roi        = (netProfit / totalInvested) * 100;
 
         const labels = [], corpus = [], base = [], rentalArr = [];
         for(let y = 1; y <= s.holding; y++){
-          const propVal = s.price * Math.pow(1 + s.appreciation/100, y);
+          const propVal = s.price * Math.pow(1 + adjustedAppreciation/100, y);
           const rent    = annualRent * y;
           const maint   = s.price * (s.maintenance/100) * y;
           const invested = s.down + (emi * Math.min(y, s.tenure) * 12);
@@ -1072,7 +1081,7 @@
           rentalArr.push(Math.round(rent));
         }
 
-        setTop(fmtShort(exitValue), roi.toFixed(1)+'%', formatValue(s.appreciation,'percent'),
+        setTop(fmtShort(exitValue), roi.toFixed(1)+'%', formatValue(adjustedAppreciation,'percent'),
                'Exit Value', 'ROI %', 'Annual Appreciation');
         setWealthArea({
           title: cfg.wealthTitle, pill: cfg.wealthPill, value: fmtShort(exitValue),
@@ -1084,7 +1093,7 @@
           power: `EMI: ${fmtShort(emi)}/mo`
         });
         setInsights(
-          {title:'Location drives appreciation.', text:`At ${formatValue(s.appreciation,'percent')} annual appreciation, your property nearly ${(exitValue/s.price).toFixed(1)}x-es in ${s.holding} years.`},
+          {title:'Location drives appreciation.', text:`At ${formatValue(adjustedAppreciation,'percent')} annual appreciation, your property nearly ${(exitValue/s.price).toFixed(1)}x-es in ${s.holding} years.`},
           {title:'Rental yield supplements growth.', text:`Rental income of ${fmtShort(totalRental)} over the period adds meaningfully to total returns beyond capital gain.`},
           {title:'True ROI includes all costs.', text:'Maintenance, registration and EMI costs reduce net profit significantly — this calculator accounts for them.'}
         );
@@ -1094,6 +1103,11 @@
           {label:'Cumulative rental', data:rentalArr, color:'#00e676', fill:false}
         ], cfg.chartTitle, cfg.chartMeta);
         renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestones(labels, corpus, base));
+
+        /* V2.1: connect intelligence layer directly to ROI outputs */
+        updateVerdict('roi', { roi });
+        updateActions('roi', { roi, emi, rent: annualRent / 12 });
+        updateScore({ roi, yield: adjustedYield });
       }
 
       /* -------- TOOL 2: RENTAL YIELD -------- */
@@ -1705,6 +1719,92 @@
       computeActions();
     }
 
+    /* ======== V2.1: VERDICT ENGINE ======== */
+    function updateVerdict(type, data){
+      let verdict = '';
+      let reasons = [];
+
+      if(type === 'roi'){
+        const roi = data.roi;
+        if(roi > 15){
+          verdict = '🔥 STRONG BUY';
+          reasons = [
+            'High ROI potential',
+            'Strong appreciation + rental mix',
+            'Good long-term investment'
+          ];
+        } else if(roi > 8){
+          verdict = '✅ GOOD INVESTMENT';
+          reasons = [
+            'Balanced return profile',
+            'Acceptable yield',
+            'Moderate growth potential'
+          ];
+        } else if(roi > 5){
+          verdict = '⚠️ AVERAGE';
+          reasons = [
+            'Low upside potential',
+            'Returns close to inflation',
+            'Consider better options'
+          ];
+        } else {
+          verdict = '❌ AVOID';
+          reasons = [
+            'Very low ROI',
+            'High capital lock-in',
+            'Better alternatives available'
+          ];
+        }
+      }
+
+      document.getElementById('verdictBox').innerText = verdict;
+      document.getElementById('verdictReasons').innerHTML =
+        reasons.map(r => `<div class="verdict-reason">• ${r}</div>`).join('');
+    }
+
+    /* ======== V2.1: ACTION ENGINE ======== */
+    function updateActions(type, data){
+      let actions = [];
+
+      if(type === 'roi'){
+        if(data.roi < 8){
+          actions.push('Negotiate property price by 5–10% to improve ROI');
+          actions.push('Increase rental income to improve yield');
+        }
+        if(data.emi > data.rent){
+          actions.push('EMI is higher than rent → consider lower loan or cheaper property');
+        }
+        if(data.roi > 15){
+          actions.push('Strong deal → consider early entry before price rises');
+        }
+        if(actions.length === 0){
+          actions.push('Returns look solid — maintain hold strategy and review in 2 years');
+        }
+      }
+
+      document.getElementById('actionSteps').innerHTML =
+        actions.map(a => `<li>${a}</li>`).join('');
+    }
+
+    /* ======== V2.1: INVESTMENT SCORE ======== */
+    function updateScore(data){
+      let score = 0;
+      score += Math.min(40, data.roi * 2);
+      score += Math.min(20, data.yield * 3);
+      score += 20;
+      score += 20;
+      score = Math.min(100, Math.round(score));
+
+      document.getElementById('investmentScore').innerText = score + '/100';
+
+      let grade = 'Average';
+      if(score > 80)      grade = 'Excellent';
+      else if(score > 60) grade = 'Good';
+      else if(score < 40) grade = 'Weak';
+
+      document.getElementById('scoreGrade').innerText = grade;
+    }
+
     /* ======== V2: SCENARIO ENGINE ======== */
     function getScenarioMultiplier(){
       const mode = (document.getElementById('scenarioMode')||{}).value || 'realistic';
@@ -2027,17 +2127,19 @@
       URL.revokeObjectURL(a.href);
     }
 
-    /* ======== V2: LEAD CAPTURE ======== */
+    /* ======== V2.1: LEAD CAPTURE ======== */
     function submitLead(){
-      const name  = (document.getElementById('leadName')||{}).value || '';
-      const phone = (document.getElementById('leadPhone')||{}).value || '';
-      const city  = (document.getElementById('leadCity')||{}).value || '';
-      if(!name || !phone){ alert('Please enter your name and phone.'); return; }
-      // UI confirmation
-      const btn = document.querySelector('.lead-box .btn');
-      if(btn){ btn.textContent = '✅ Request Sent!'; btn.disabled = true; }
-      // Open justproperty with city prefilled as fallback
-      setTimeout(() => openMatchingProperties(), 600);
+      const name  = document.getElementById('leadName').value;
+      const phone = document.getElementById('leadPhone').value;
+      const city  = document.getElementById('leadCity').value;
+
+      if(!name || !phone){
+        alert('Please enter name and phone');
+        return;
+      }
+
+      console.log('Lead Captured:', { name, phone, city });
+      alert('Thank you! We will contact you shortly.');
     }
 
     function scrollToControls(){
