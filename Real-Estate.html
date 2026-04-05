@@ -207,23 +207,86 @@
       cursor:pointer;outline:none;margin-top:8px;appearance:none;
     }
     select option{background:#0f1830;color:var(--text)}
+
+    /* V2: 5-COLUMN METRICS */
+    .top-metrics-v2{grid-template-columns:2fr 1fr 1fr 1fr 1fr}
+
+    /* V2: SCENARIO TOGGLE */
+    .scenario-bar{
+      display:flex;align-items:center;gap:10px;margin-bottom:14px;
+      padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
+    }
+    .scenario-bar label{font-size:13px;font-weight:800;color:var(--muted);white-space:nowrap}
+    .scenario-bar select{margin-top:0;width:auto;flex:1;font-size:13px;padding:8px 12px}
+
+    /* V2: VERDICT CARD */
+    .verdict-card{
+      padding:20px;margin-top:14px;
+      background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
+    .verdict-box{
+      font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.04em;
+      margin:12px 0;padding:16px 20px;border-radius:18px;
+      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)
+    }
+    .verdict-reasons{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .verdict-reason{
+      padding:11px 16px;border-radius:12px;font-size:14px;line-height:1.5;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--muted)
+    }
+
+    /* V2: ACTION CARD */
+    .action-card{
+      padding:20px;margin-top:14px;
+      background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
+    .action-card ul{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+    .action-card li{
+      padding:12px 16px;border-radius:14px;font-size:14px;line-height:1.5;
+      background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.14);color:var(--text)
+    }
+    .action-card li::before{content:"→  ";color:var(--cyan);font-weight:800}
+
+    /* V2: LEAD CAPTURE */
+    .lead-box{
+      margin-top:16px;padding:16px;border-radius:18px;
+      background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.12)
+    }
+    .lead-box h4{margin:0 0 12px;font-size:15px;font-weight:800;letter-spacing:-.02em}
+    .lead-box input{
+      width:100%;padding:10px 14px;border-radius:12px;margin-bottom:8px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+      color:var(--text);font-size:14px;font-weight:600;outline:none
+    }
+    .lead-box input::placeholder{color:var(--muted)}
+    .lead-box .btn{width:100%;margin-top:4px;justify-content:center;display:flex}
+
+    /* V2: SCORE BADGE */
+    .score-ring{
+      font-size:clamp(26px,3vw,38px);font-weight:800;letter-spacing:-.04em
+    }
+    .score-grade{font-size:13px;font-weight:800;margin-top:6px;letter-spacing:.02em}
+
     @media(max-width:1180px){
-      .top-metrics{grid-template-columns:1fr 1fr}
+      .top-metrics,.top-metrics-v2{grid-template-columns:1fr 1fr}
       .layout{grid-template-columns:1fr}
       .dashboard{min-height:auto}
       .dash-top{grid-template-columns:1fr}
       .timeline-grid{grid-template-columns:1fr 1fr}
     }
     @media(max-width:760px){
-      .hero{padding:14px}
-      .hero-copy h1{font-size:22px}
+      .hero{padding:10px 12px}
+      .hero-copy h1{font-size:20px}
       .hero-copy p{font-size:13px}
       .btn{padding:8px 10px;font-size:13px}
-      .top-metrics{grid-template-columns:1fr}
+      .top-metrics,.top-metrics-v2{grid-template-columns:1fr}
       .metric-card{padding:12px}
       .dashboard{gap:10px}
-      .chart-card{min-height:220px}
-      .wealth-number{font-size:32px}
+      .chart-card{min-height:180px}
+      .chart-wrap{min-height:200px}
+      .wealth-number{font-size:30px}
       .wealth-split,.timeline-grid,.mini-grid{grid-template-columns:1fr}
       .page{padding:10px 10px 20px}
       .controls,.dashboard{padding:12px}
@@ -291,14 +354,14 @@
           <p>Analyze, Compare &amp; Invest Smarter in Property. ROI, rental yield, EMI, affordability, stamp duty, IRR, flip profit and more — all in one premium dashboard.</p>
         </div>
         <div class="hero-cta">
-          <button class="btn primary" onclick="window.open('https://justproperty.in','_blank')">Explore Properties</button>
+          <button class="btn primary" id="heroCta" onclick="openMatchingProperties()">🔥 See Properties Matching THIS Analysis</button>
           <button class="btn secondary" onclick="scrollToControls()">Start Analyzing</button>
         </div>
       </div>
 
       <div class="tabbar" id="tabs"></div>
 
-      <div class="top-metrics">
+      <div class="top-metrics top-metrics-v2">
         <div class="metric-card">
           <div class="metric-label">Current tool</div>
           <div class="metric-value cyan" id="modeHeadline">Property ROI Calculator</div>
@@ -319,6 +382,11 @@
           <div class="metric-value gold" id="topRate">—</div>
           <div class="metric-sub" id="topRateLabel">Selected assumption</div>
         </div>
+        <div class="metric-card">
+          <div class="metric-label">Investment Score</div>
+          <div class="score-ring cyan metric-value" id="investmentScore" style="color:var(--cyan)">—</div>
+          <div class="score-grade" id="scoreGrade" style="color:var(--muted)">Analyzing…</div>
+        </div>
       </div>
     </section>
 
@@ -330,6 +398,15 @@
             <div class="panel-desc" id="controlDesc">Adjust the inputs below. Results update instantly.</div>
           </div>
           <div class="badge" id="panelBadge">ROI MODE</div>
+        </div>
+
+        <div class="scenario-bar">
+          <label>Scenario:</label>
+          <select id="scenarioMode" onchange="update()">
+            <option value="conservative">Conservative</option>
+            <option value="realistic" selected>Realistic</option>
+            <option value="aggressive">Aggressive</option>
+          </select>
         </div>
 
         <div id="dynamicControls"></div>
@@ -349,8 +426,16 @@
           <h4>Ready to find the right property?</h4>
           <p>Use the dashboard to model your strategy, then explore real listings with expert guidance.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="window.open('https://justproperty.in','_blank')">Start with justproperty.in</button>
-            <button class="btn secondary" onclick="copySummary()">Copy summary</button>
+            <button class="btn primary" onclick="openMatchingProperties()">🔥 See Matching Properties</button>
+            <button class="btn secondary" onclick="downloadReport()">Download Report</button>
+            <button class="btn secondary" onclick="copySummary()">Copy Analysis</button>
+          </div>
+          <div class="lead-box">
+            <h4>Get Matching Property Deals</h4>
+            <input type="text" id="leadName" placeholder="Name">
+            <input type="tel" id="leadPhone" placeholder="Phone">
+            <input type="text" id="leadCity" placeholder="City">
+            <button class="btn primary" onclick="submitLead()">Get Deals →</button>
           </div>
         </div>
       </aside>
@@ -411,6 +496,17 @@
             </div>
           </div>
           <div class="timeline-grid" id="timelineGrid"></div>
+        </div>
+
+        <div class="verdict-card">
+          <div class="panel-title">Final Investment Verdict</div>
+          <div id="verdictBox" class="verdict-box">—</div>
+          <div class="verdict-reasons" id="verdictReasons"></div>
+        </div>
+
+        <div class="action-card">
+          <div class="panel-title">What Should You Do Next?</div>
+          <ul id="actionSteps"><li>Adjust inputs above to get personalized recommendations.</li></ul>
         </div>
       </section>
     </section>
@@ -1602,6 +1698,346 @@
           existingMatch.querySelector('a').href = ctaURL;
         }
       }
+
+      /* V2: run intelligence layer after every update */
+      const score = computeScore();
+      computeVerdict(score);
+      computeActions();
+    }
+
+    /* ======== V2: SCENARIO ENGINE ======== */
+    function getScenarioMultiplier(){
+      const mode = (document.getElementById('scenarioMode')||{}).value || 'realistic';
+      if(mode === 'conservative') return {appreciation:-2, yield:-0.7, risk:1.3, label:'Conservative'};
+      if(mode === 'aggressive')   return {appreciation:+3, yield:+1.0, risk:0.75, label:'Aggressive'};
+      return {appreciation:0, yield:0, risk:1, label:'Realistic'};
+    }
+
+    /* ======== V2: INVESTMENT SCORE ======== */
+    function computeScore(){
+      const s  = state[active];
+      const sc = getScenarioMultiplier();
+      let score = 50; // base
+
+      if(active === 'roi'){
+        const loanAmt   = s.price - s.down;
+        const emi       = calcEMI(loanAmt, s.loanRate, s.tenure);
+        const totalInvested = s.down + emi * s.tenure * 12;
+        const annualRent = s.price * ((s.rentalYield + sc.yield) / 100);
+        const exitValue = s.price * Math.pow(1 + (s.appreciation + sc.appreciation) / 100, s.holding);
+        const netProfit = exitValue + annualRent * s.holding - s.price * (s.maintenance/100) * s.holding - totalInvested;
+        const roi = (netProfit / totalInvested) * 100;
+        const roiScore = Math.min(40, Math.max(0, roi / 20 * 40));
+        const yieldPct = ((annualRent / s.price) * 100);
+        const yieldScore = Math.min(20, yieldPct / 6 * 20);
+        const riskScore  = Math.max(0, 20 - (s.loanRate - 7) * 3 * sc.risk);
+        const affordScore = Math.min(20, ((s.down / s.price) * 100) / 25 * 20);
+        score = Math.round(roiScore + yieldScore + riskScore + affordScore);
+      } else if(active === 'yield'){
+        const netYield = ((s.rent * 12 * (1 - s.vacancy/100) - s.propValue * s.maintenance/100) / s.propValue) * 100 + sc.yield;
+        score = Math.round(Math.min(100, Math.max(0, netYield / 8 * 100)));
+      } else if(active === 'buyvrent'){
+        const emi = calcEMI(s.price, s.loanRate, s.tenure);
+        const ratio = (emi / s.rent);
+        score = Math.round(Math.min(100, Math.max(0, (2 - ratio) / 1.5 * 100)));
+      } else if(active === 'afford'){
+        const maxEMI = (s.income * 0.4) - s.existEMI;
+        const ratio = maxEMI / s.income;
+        score = Math.round(Math.min(100, Math.max(0, ratio / 0.4 * 80)));
+      } else if(active === 'irr'){
+        const annualNet = (s.rentalIncome - s.emi) * 12;
+        const cashflows = [-s.downPayment];
+        for(let y=1; y<=s.years; y++) cashflows.push(y===s.years ? annualNet + s.exitValue : annualNet);
+        const irr = calcIRR(cashflows);
+        score = Math.round(Math.min(100, Math.max(0, irr / 20 * 100)));
+      } else if(active === 'flip'){
+        const totalCost = s.purchase + s.renovation + s.holding;
+        const roi = ((s.selling - totalCost) / totalCost) * 100;
+        score = Math.round(Math.min(100, Math.max(0, roi / 30 * 100)));
+      } else if(active === 'compare'){
+        const mfVal = s.amount * Math.pow(1 + s.mfRate/100, s.years);
+        const reVal = s.amount * Math.pow(1 + (s.reRate + sc.appreciation)/100, s.years);
+        score = Math.round(Math.min(100, Math.max(0, (reVal / mfVal) * 60)));
+      } else if(active === 'location'){
+        score = s.infra + s.connectivity + s.rental + s.growth;
+      } else if(active === 'growth'){
+        score = Math.round(Math.min(100, s.baseRate / 15 * 100));
+      } else if(active === 'loanelig'){
+        const maxEMI = (s.income * 0.5) - s.existEMI;
+        score = Math.round(Math.min(100, Math.max(0, maxEMI / s.income / 0.5 * 80)));
+      } else if(active === 'prepay'){
+        const emi = calcEMI(s.loan, s.loanRate, s.tenure);
+        const interestSaved = (emi * s.tenure * 12 - s.loan) - (calcEMI(Math.max(0,s.loan-s.extra), s.loanRate, s.tenure) * s.tenure * 12 - Math.max(0,s.loan-s.extra));
+        score = Math.round(Math.min(100, interestSaved / s.loan * 200));
+      } else if(active === 'advisor'){
+        const riskMap = {Low:55, Medium:72, High:85};
+        score = riskMap[selectState[active]?.risk || 'Medium'] || 70;
+      } else if(active === 'match'){
+        const benchmarks = {'1 BHK':3000000,'2 BHK':7000000,'3 BHK':15000000,'4 BHK':25000000,'Villa':35000000,'Plot':8000000};
+        const mid = benchmarks[selectState[active]?.bhk || '2 BHK'] || 7000000;
+        const ratio = s.budget / mid;
+        score = Math.round(Math.min(100, Math.max(10, ratio > 1 ? 85 : ratio * 85)));
+      }
+
+      score = Math.max(0, Math.min(100, score));
+      const grade = score >= 80 ? 'Excellent' : score >= 60 ? 'Good' : score >= 40 ? 'Average' : 'Weak';
+      const color = score >= 80 ? 'var(--green)' : score >= 60 ? 'var(--cyan)' : score >= 40 ? 'var(--gold)' : 'var(--red)';
+      $('investmentScore').textContent = score + '/100';
+      $('investmentScore').style.color = color;
+      $('scoreGrade').textContent = grade;
+      $('scoreGrade').style.color = color;
+      return score;
+    }
+
+    /* ======== V2: VERDICT ENGINE ======== */
+    function computeVerdict(score){
+      const s  = state[active];
+      const sc = getScenarioMultiplier();
+      let verdict = '', color = '', reasons = [];
+
+      if(active === 'roi'){
+        const loanAmt   = s.price - s.down;
+        const emi       = calcEMI(loanAmt, s.loanRate, s.tenure);
+        const totalInvested = s.down + emi * s.tenure * 12;
+        const annualRent = s.price * ((s.rentalYield + sc.yield) / 100);
+        const exitValue = s.price * Math.pow(1 + (s.appreciation + sc.appreciation) / 100, s.holding);
+        const netProfit = exitValue + annualRent * s.holding - s.price * (s.maintenance/100) * s.holding - totalInvested;
+        const roi = (netProfit / totalInvested) * 100;
+        if(roi > 15)     { verdict = '🔥 STRONG BUY'; color = 'var(--green)'; }
+        else if(roi > 8) { verdict = '✅ GOOD INVESTMENT'; color = 'var(--cyan)'; }
+        else if(roi > 5) { verdict = '⚠️ AVERAGE'; color = 'var(--gold)'; }
+        else             { verdict = '❌ AVOID'; color = 'var(--red)'; }
+        reasons = [
+          `ROI of ${roi.toFixed(1)}% is ${roi>8?'above':'below'} the 8% benchmark for a quality real estate investment.`,
+          `Annual appreciation of ${(s.appreciation+sc.appreciation).toFixed(1)}% is the ${s.appreciation>6?'primary growth driver':'weakest link'} in this deal.`,
+          `Rental yield covers ${((annualRent/emi/12)*100).toFixed(0)}% of EMI — ${annualRent>emi*12?'positive cash flow from day one.':'monthly top-up required.'}`
+        ];
+      } else if(active === 'yield'){
+        const netYield = ((s.rent * 12 * (1 - s.vacancy/100) - s.propValue * s.maintenance/100) / s.propValue * 100) + sc.yield;
+        if(netYield > 5)     { verdict = '🔥 STRONG RENTAL PERFORMER'; color = 'var(--green)'; }
+        else if(netYield > 3){ verdict = '✅ MODERATE YIELD'; color = 'var(--cyan)'; }
+        else                  { verdict = '⚠️ WEAK — BELOW FD RATE'; color = 'var(--gold)'; }
+        reasons = [
+          `Net yield of ${netYield.toFixed(2)}% ${netYield>6?'beats most FD rates — excellent passive income.':'is below 6-7% FD rates — consider whether the illiquidity is worth it.'}`,
+          `Vacancy at ${s.vacancy}% costs ₹${Math.round(s.rent*12*s.vacancy/100).toLocaleString('en-IN')}/yr in lost income.`,
+          `Maintenance eats ${s.maintenance}% of property value annually — ${s.maintenance<1?'well managed.':'worth negotiating upfront.'}`
+        ];
+      } else if(active === 'buyvrent'){
+        const emi = calcEMI(s.price, s.loanRate, s.tenure);
+        if(emi <= s.rent){ verdict = '✅ BUY — EMI ≤ Rent'; color = 'var(--green)'; }
+        else              { verdict = '🏠 RENT — EMI > Current Rent'; color = 'var(--cyan)'; }
+        reasons = [
+          `Monthly EMI is ₹${Math.round(emi-s.rent).toLocaleString('en-IN')} ${emi>s.rent?'more':'less'} than current rent.`,
+          `EMI builds equity; rent does not — factor property appreciation into final decision.`,
+          `Rent growing at ${s.rentRise}%/yr may cross EMI level in a few years — lock in now if appreciation looks strong.`
+        ];
+      } else if(active === 'irr'){
+        const annualNet = (s.rentalIncome - s.emi) * 12;
+        const cashflows = [-s.downPayment];
+        for(let y=1; y<=s.years; y++) cashflows.push(y===s.years ? annualNet + s.exitValue : annualNet);
+        const irr = calcIRR(cashflows);
+        if(irr > 15)     { verdict = '🔥 EXCELLENT IRR'; color = 'var(--green)'; }
+        else if(irr > 8) { verdict = '✅ GOOD RETURN'; color = 'var(--cyan)'; }
+        else             { verdict = '⚠️ REVIEW DEAL'; color = 'var(--gold)'; }
+        reasons = [
+          `IRR of ${irr.toFixed(1)}% ${irr>12?'beats most equity benchmarks.':'may not justify the illiquidity vs mutual funds.'}`,
+          annualNet > 0 ? 'Positive monthly cash flow — investment is self-sustaining.' : 'Negative carry — requires monthly top-up of ' + fmtShort(Math.abs(annualNet/12)) + '.',
+          `Exit value of ${fmtShort(s.exitValue)} drives the bulk of total returns.`
+        ];
+      } else if(active === 'flip'){
+        const totalCost = s.purchase + s.renovation + s.holding;
+        const profit = s.selling - totalCost;
+        const roi = (profit / totalCost) * 100;
+        if(roi > 20)     { verdict = '🔥 GREAT FLIP'; color = 'var(--green)'; }
+        else if(roi > 10){ verdict = '✅ DECENT FLIP'; color = 'var(--cyan)'; }
+        else if(profit<0){ verdict = '❌ LOSS — DO NOT PROCEED'; color = 'var(--red)'; }
+        else             { verdict = '⚠️ THIN MARGIN'; color = 'var(--gold)'; }
+        reasons = [
+          `Net profit: ${fmtShort(profit)} on total cost of ${fmtShort(totalCost)} = ${roi.toFixed(1)}% ROI.`,
+          'Renovation cost overruns of 15-20% are common — budget buffer is essential.',
+          `Holding cost of ${fmtShort(s.holding)} erodes margin — faster exit = better IRR.`
+        ];
+      } else if(active === 'compare'){
+        const reVal = s.amount * Math.pow(1+(s.reRate+sc.appreciation)/100, s.years);
+        const mfVal = s.amount * Math.pow(1+s.mfRate/100, s.years);
+        const goldVal = s.amount * Math.pow(1+s.goldRate/100, s.years);
+        const best = reVal>=mfVal && reVal>=goldVal ? 'Real Estate' : mfVal>=goldVal ? 'Mutual Funds' : 'Gold';
+        verdict = best === 'Real Estate' ? '🏠 REAL ESTATE WINS' : best === 'Mutual Funds' ? '📈 MUTUAL FUNDS WIN' : '🥇 GOLD WINS';
+        color = 'var(--cyan)';
+        reasons = [`Over ${s.years} yrs: RE ${fmtShort(reVal)}, MF ${fmtShort(mfVal)}, Gold ${fmtShort(goldVal)}.`, 'Each asset class has different liquidity and tax profile.', 'Diversification across all three reduces portfolio risk.'];
+      } else if(active === 'location'){
+        const total = s.infra + s.connectivity + s.rental + s.growth;
+        if(total >= 75)    { verdict = '🔥 HOT LOCATION — INVEST NOW'; color = 'var(--green)'; }
+        else if(total>=50) { verdict = '✅ MODERATE — WATCH & WAIT'; color = 'var(--cyan)'; }
+        else               { verdict = '❌ AVOID — POOR FUNDAMENTALS'; color = 'var(--red)'; }
+        reasons = [`Composite score: ${total}/100.`, `Infrastructure (${s.infra}/30) is the top driver of long-term appreciation.`, `Rental demand (${s.rental}/25) confirms real end-use activity.`];
+      } else if(active === 'growth'){
+        const best = s.price * Math.pow(1+(s.baseRate+3)/100, s.years);
+        const base = s.price * Math.pow(1+s.baseRate/100, s.years);
+        verdict = s.baseRate >= 8 ? '🔥 HIGH GROWTH CORRIDOR' : s.baseRate >= 5 ? '✅ STEADY GROWTH' : '⚠️ SLOW MARKET';
+        color = s.baseRate >= 8 ? 'var(--green)' : s.baseRate >= 5 ? 'var(--cyan)' : 'var(--gold)';
+        reasons = [`Base scenario projects ${fmtShort(base)} after ${s.years} years.`, `Best case hits ${fmtShort(best)} — significant upside if growth accelerates.`, 'Historical Indian residential CAGR: 6–9% — calibrate your base rate accordingly.'];
+      } else if(active === 'prepay'){
+        const emi = calcEMI(s.loan, s.loanRate, s.tenure);
+        const saved = (emi * s.tenure * 12 - s.loan) - (calcEMI(Math.max(0,s.loan-s.extra), s.loanRate, s.tenure) * s.tenure * 12 - Math.max(0,s.loan-s.extra));
+        verdict = saved > 500000 ? '🔥 BIG SAVINGS — PREPAY NOW' : saved > 100000 ? '✅ GOOD MOVE' : '⚠️ MODEST IMPACT';
+        color = saved > 500000 ? 'var(--green)' : 'var(--cyan)';
+        reasons = [`Interest saved: ${fmtShort(saved)} — guaranteed tax-free return.`, 'Prepaying in early years saves 3–5x vs late-tenure prepayment.', 'RBI mandates zero prepayment penalty on floating rate home loans.'];
+      } else {
+        // Generic based on score
+        if(score >= 80)      { verdict = '🔥 EXCELLENT'; color = 'var(--green)'; }
+        else if(score >= 60) { verdict = '✅ GOOD'; color = 'var(--cyan)'; }
+        else if(score >= 40) { verdict = '⚠️ AVERAGE'; color = 'var(--gold)'; }
+        else                 { verdict = '❌ WEAK'; color = 'var(--red)'; }
+        reasons = ['Review the key metrics above for a detailed breakdown.', 'Adjust the sliders to improve your score.', 'Compare across multiple tools for a complete picture.'];
+      }
+
+      const vbox = $('verdictBox');
+      vbox.textContent = verdict;
+      vbox.style.color = color;
+      vbox.style.borderColor = color.replace('var(','').replace(')','') === 'var(--red)' ? 'rgba(255,96,125,.2)' : 'rgba(0,212,255,.15)';
+
+      $('verdictReasons').innerHTML = reasons.map(r => `<div class="verdict-reason">• ${r}</div>`).join('');
+    }
+
+    /* ======== V2: ACTION STEPS ENGINE ======== */
+    function computeActions(){
+      const s  = state[active];
+      const sc = getScenarioMultiplier();
+      let steps = [];
+
+      if(active === 'roi'){
+        const emi = calcEMI(s.price - s.down, s.loanRate, s.tenure);
+        const annualRent = s.price * (s.rentalYield/100);
+        if(s.rentalYield < 4) steps.push(`Raise rental yield target to 4% → improves net yield by ₹${Math.round(s.price*0.01/12).toLocaleString('en-IN')}/mo`);
+        if(s.appreciation < 7) steps.push(`Target a location with 7%+ appreciation → property value increases ₹${fmtShort(s.price*0.07*s.holding)} over holding period`);
+        if(s.down / s.price < 0.25) steps.push(`Increase down payment to 25% → saves ₹${fmtShort(emi * 0.05 * s.tenure * 12)} in interest`);
+        if(s.maintenance > 1) steps.push(`Negotiate maintenance below 1% of property value → saves ₹${fmtShort(s.price*0.005*s.holding)} over holding period`);
+        if(s.loanRate > 8.5) steps.push(`Shop for a lower rate — reducing to 8.5% saves ₹${fmtShort(calcEMI(s.price-s.down,s.loanRate,s.tenure)*s.tenure*12 - calcEMI(s.price-s.down,8.5,s.tenure)*s.tenure*12)} total`);
+      } else if(active === 'yield'){
+        if(s.rent * 12 / s.propValue * 100 < 4) steps.push(`Increase rent by ₹${Math.round(s.propValue*0.01/12).toLocaleString('en-IN')}/mo → gross yield crosses 4%`);
+        if(s.vacancy > 5) steps.push(`Reduce vacancy to 5% → saves ₹${fmtShort(s.rent*12*((s.vacancy-5)/100))} in annual lost rent`);
+        steps.push(`Renovate to premium spec → target ₹${Math.round(s.rent*1.2).toLocaleString('en-IN')}/mo rent, boosting yield by ${(s.rent*0.2*12/s.propValue*100).toFixed(2)}%`);
+        steps.push('Compare net yield vs FD rate — if below 5.5%, REITs may offer better risk-adjusted income.');
+      } else if(active === 'buyvrent'){
+        const emi = calcEMI(s.price, s.loanRate, s.tenure);
+        if(emi > s.rent) steps.push(`Negotiate property price down by 10% → EMI drops by ${fmtShort((emi-calcEMI(s.price*0.9,s.loanRate,s.tenure))*12)}/yr`);
+        steps.push(`Increasing down payment reduces EMI by ₹${Math.round((calcEMI(s.price,s.loanRate,s.tenure)-calcEMI(s.price*0.8,s.loanRate,s.tenure))).toLocaleString('en-IN')}/mo`);
+        steps.push('Consider co-applicant to qualify for larger loan with lower interest rate.');
+        if(s.rentRise > 7) steps.push('Rent growing faster than inflation — locking in a purchase now may protect long-term costs.');
+      } else if(active === 'afford'){
+        if(s.existEMI > 0) steps.push(`Close one loan first → reduces existing EMI obligation and increases eligible loan by ₹${fmtShort(s.existEMI*(Math.pow(1+s.loanRate/12/100,s.tenure*12)-1)/(s.loanRate/12/100*Math.pow(1+s.loanRate/12/100,s.tenure*12)))}`);
+        steps.push('Add spouse as co-applicant — combined income can push eligible loan amount up by 60–80%.');
+        steps.push(`Extend tenure to ${Math.min(30,s.tenure+5)} years → reduces required EMI, increasing eligible loan amount.`);
+      } else if(active === 'irr'){
+        const annualNet = (s.rentalIncome - s.emi) * 12;
+        if(annualNet < 0) steps.push(`Increase rental income by ₹${Math.abs(Math.round(annualNet/12)).toLocaleString('en-IN')}/mo to break even on monthly cash flow`);
+        steps.push(`Negotiate exit value — each ₹5L increase in exit price adds ~${(500000/(s.downPayment)*100).toFixed(1)}% to total return.`);
+        steps.push('Refinance at lower rate after 3 years to improve cash flow and IRR.');
+      } else if(active === 'flip'){
+        const totalCost = s.purchase + s.renovation + s.holding;
+        const profit = s.selling - totalCost;
+        if(s.renovation > s.purchase * 0.15) steps.push('Renovation budget exceeds 15% of purchase — reduce scope to protect margins.');
+        steps.push(`Negotiate purchase price down by 5% → saves ${fmtShort(s.purchase*0.05)} and boosts ROI by ${(s.purchase*0.05/totalCost*100).toFixed(1)}%`);
+        steps.push('Consider 2BHK instead of villa — faster to renovate and easier to sell in current market.');
+        if(profit < 0) steps.push('Deal is loss-making at current numbers — do not proceed without renegotiating purchase price or reducing renovation scope.');
+      } else if(active === 'compare'){
+        steps.push('Allocate 50% to Mutual Funds for liquidity + high long-term CAGR.');
+        steps.push('Use Real Estate for 30% — buy one property in a high-growth corridor.');
+        steps.push('Keep 20% in Gold as portfolio hedge against currency and inflation risk.');
+        steps.push('Review allocation annually and rebalance based on market conditions.');
+      } else if(active === 'location'){
+        if(s.infra < 20) steps.push('Infrastructure score is low — wait for announced metro/road projects to be complete before buying.');
+        if(s.rental < 15) steps.push('Low rental demand — verify occupancy rates in the area before committing to a buy-to-let strategy.');
+        steps.push('Track RERA registrations in this micro-market — rising launches signal developer confidence.');
+      } else if(active === 'prepay'){
+        const emi = calcEMI(s.loan, s.loanRate, s.tenure);
+        steps.push(`Make annual prepayment of ₹1L/yr → saves ₹${fmtShort(Math.min(s.loan,100000*(s.tenure))*s.loanRate/100*0.5)} over remaining tenure.`);
+        steps.push('Choose EMI reduction over tenure reduction — improves monthly cash flow immediately.');
+        steps.push('Invest the monthly EMI savings in SIP — compounds alongside your loan payoff.');
+        steps.push('No prepayment penalty on floating rate loans per RBI — prepay freely.');
+      } else if(active === 'advisor'){
+        steps.push('Get pre-approved for a home loan before shortlisting properties — strengthens negotiation.');
+        steps.push('Visit 5+ properties in your target micro-market before making an offer.');
+        steps.push('Check RERA registration and builder delivery track record before booking.');
+      } else if(active === 'match'){
+        steps.push('Shortlist 3 properties in your budget range and negotiate for 5-8% below asking price.');
+        steps.push('Get an independent valuation before finalising — banks sometimes fund less than expected.');
+        steps.push('Verify society maintenance charges and hidden costs before signing the term sheet.');
+      } else {
+        steps.push('Adjust inputs using the sliders to get personalized recommendations.');
+        steps.push('Compare results across multiple calculators for a complete picture.');
+      }
+
+      $('actionSteps').innerHTML = steps.map(step => `<li>${step}</li>`).join('');
+    }
+
+    /* ======== V2: OPEN MATCHING PROPERTIES ======== */
+    function openMatchingProperties(){
+      const s  = state[active];
+      const ss = selectState[active] || {};
+      let budget = s.budget || s.price || s.amount || 5000000;
+      let city   = ss.city || document.getElementById('leadCity')?.value || '';
+      let bhk    = ss.bhk  || '2 BHK';
+      const url  = `https://justproperty.in/?budget=${Math.round(budget)}&city=${encodeURIComponent(city)}&bhk=${encodeURIComponent(bhk)}`;
+      window.open(url, '_blank');
+    }
+
+    /* ======== V2: DOWNLOAD REPORT ======== */
+    function downloadReport(){
+      const tool    = CALCS[active].title;
+      const verdict = $('verdictBox').textContent;
+      const score   = $('investmentScore').textContent;
+      const scenario = (document.getElementById('scenarioMode')||{}).value || 'Realistic';
+      const reasons = Array.from(document.querySelectorAll('.verdict-reason')).map(r => r.textContent).join('\n');
+      const actions = Array.from(document.querySelectorAll('#actionSteps li')).map(li => '→ ' + li.textContent).join('\n');
+
+      const content = [
+        '=== investpercent Real Estate Report ===',
+        `Tool: ${tool}`,
+        `Scenario: ${scenario}`,
+        `Date: ${new Date().toLocaleDateString('en-IN')}`,
+        '',
+        '--- KEY METRICS ---',
+        `${$('topProjectedLabel').textContent}: ${$('topProjected').textContent}`,
+        `${$('topGainsLabel').textContent}: ${$('topGains').textContent}`,
+        `${$('topRateLabel').textContent}: ${$('topRate').textContent}`,
+        `Investment Score: ${score}`,
+        '',
+        '--- VERDICT ---',
+        verdict,
+        '',
+        '--- REASONS ---',
+        reasons,
+        '',
+        '--- WHAT TO DO NEXT ---',
+        actions,
+        '',
+        '--- ANALYSIS SUMMARY ---',
+        $('wealthNarrative').textContent,
+        '',
+        'Generated at investpercent.com'
+      ].join('\n');
+
+      const blob = new Blob([content], {type:'text/plain'});
+      const a    = document.createElement('a');
+      a.href     = URL.createObjectURL(blob);
+      a.download = `investpercent-${active}-report.txt`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    /* ======== V2: LEAD CAPTURE ======== */
+    function submitLead(){
+      const name  = (document.getElementById('leadName')||{}).value || '';
+      const phone = (document.getElementById('leadPhone')||{}).value || '';
+      const city  = (document.getElementById('leadCity')||{}).value || '';
+      if(!name || !phone){ alert('Please enter your name and phone.'); return; }
+      // UI confirmation
+      const btn = document.querySelector('.lead-box .btn');
+      if(btn){ btn.textContent = '✅ Request Sent!'; btn.disabled = true; }
+      // Open justproperty with city prefilled as fallback
+      setTimeout(() => openMatchingProperties(), 600);
     }
 
     function scrollToControls(){
@@ -1609,8 +2045,27 @@
     }
 
     function copySummary(){
-      const text = `Real Estate Tool: ${CALCS[active].title}\nKey Output: ${$('topProjected').textContent}\nSecondary: ${$('topGains').textContent}\nRef: ${$('topRate').textContent}\nInsight: ${$('wealthNarrative').textContent}`;
-      navigator.clipboard.writeText(text).catch(()=>{});
+      const scenario = (document.getElementById('scenarioMode')||{}).value || 'Realistic';
+      const s = state[active];
+      const lines = [
+        `=== investpercent Real Estate Analysis ===`,
+        `Tool: ${CALCS[active].title} | Scenario: ${scenario}`,
+        `Key Output: ${$('topProjected').textContent} (${$('topProjectedLabel').textContent})`,
+        `Secondary: ${$('topGains').textContent} (${$('topGainsLabel').textContent})`,
+        `Reference: ${$('topRate').textContent} (${$('topRateLabel').textContent})`,
+        `Investment Score: ${$('investmentScore').textContent} — ${$('scoreGrade').textContent}`,
+        `Verdict: ${$('verdictBox').textContent}`,
+        ``,
+        `Analysis: ${$('wealthNarrative').textContent}`,
+        ``,
+        `Next Steps:`,
+        ...Array.from(document.querySelectorAll('#actionSteps li')).map(li => '→ ' + li.textContent),
+        ``,
+        `Generated at investpercent.com`
+      ];
+      navigator.clipboard.writeText(lines.join('\n'))
+        .then(() => { const b = document.querySelector('.advisor-actions .btn.secondary:last-child'); if(b){const orig=b.textContent;b.textContent='✅ Copied!';setTimeout(()=>b.textContent=orig,2000);} })
+        .catch(() => {});
     }
 
     document.addEventListener('DOMContentLoaded', () => {
