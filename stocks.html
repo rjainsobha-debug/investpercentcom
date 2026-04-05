@@ -1594,58 +1594,63 @@ function calcRights(){
 /* ═══════════════════════════════════════════════════════════
    CALCULATOR: SCREENER
 ════════════════════════════════════════════════════════════ */
-function applyScreener(){
+let currentSort = "name";
+
+  function applyScreener(){
     update();
   }
-  function updateSortArrows(sortKey){
-    ['pe','cap','div'].forEach(k=>{
-      const th=$('th-'+k), arr=$('arrow-'+k);
-      if(th) th.style.color='';
-      if(arr){ arr.textContent='↕'; arr.style.opacity='.5'; arr.style.color=''; }
+  function updateSortUI(){
+    const colMap = {pe:'pe', pe_desc:'pe', div:'div', cap:'cap'};
+    const col = colMap[currentSort];
+    ['pe','cap','div'].forEach(k => {
+      const th = $('th-'+k), arr = $('arrow-'+k);
+      if(th) th.style.color = '';
+      if(arr){ arr.textContent = '↕'; arr.style.opacity = '.5'; arr.style.color = ''; }
     });
-    const colMap={pe:'pe',pe_desc:'pe',div:'div',cap:'cap'};
-    const col=colMap[sortKey];
     if(!col) return;
-    const th=$('th-'+col), arr=$('arrow-'+col);
-    if(th) th.style.color='var(--cyan)';
+    const th = $('th-'+col), arr = $('arrow-'+col);
+    if(th) th.style.color = 'var(--cyan)';
     if(arr){
-      arr.textContent=sortKey==='pe_desc'?'↓':'↑';
-      arr.style.opacity='1';
-      arr.style.color='var(--cyan)';
+      arr.textContent = currentSort === 'pe_desc' ? '↓' : '↑';
+      arr.style.opacity = '1';
+      arr.style.color = 'var(--cyan)';
     }
   }
-function setSortBy(col){
-    const el=$('sortBy'); if(!el) return;
-    if(col==='pe' && el.value==='pe') col='pe_desc';
-    else if(col==='pe' && el.value==='pe_desc') col='pe';
-    el.value = col;
+  function setSortBy(type){
+    if(type === 'pe' && currentSort === 'pe') type = 'pe_desc';
+    else if(type === 'pe' && currentSort === 'pe_desc') type = 'pe';
+    currentSort = type;
+    const el = document.getElementById('sortBy');
+    if(el) el.value = type;
     applyScreener();
+    updateSortUI();
   }
 
-function calcScreener(){
-  const s=state.screener;
-  const sectorEl=$('filterSector'), sortEl=$('sortBy');
-  const sectorFilter = sectorEl ? sectorEl.value : '';
-  const sortKey = sortEl ? sortEl.value : 'name';
+  function calcScreener(){
 
-  let filtered=STOCKS.filter(st=>{
-    const peOk  = st.pe >= s.peMin && st.pe <= s.peMax;
-    const divOk = st.div >= s.divYield;
-    let capOk=true;
-    if(s.capFilter==='Small Cap (<₹5k Cr)')            capOk=st.capCr<5000;
-    else if(s.capFilter==='Mid Cap (₹5k–₹20k Cr)')    capOk=st.capCr>=5000&&st.capCr<20000;
-    else if(s.capFilter==='Large Cap (₹20k–₹1L Cr)')  capOk=st.capCr>=20000&&st.capCr<100000;
-    else if(s.capFilter==='Mega Cap (>₹1L Cr)')       capOk=st.capCr>=100000;
-    const secOk = sectorFilter===''||st.sector===sectorFilter;
-    return peOk && divOk && capOk && secOk;
-  });
+    const s = state.screener;
+    const sectorEl = $('filterSector');
+    const sectorFilter = sectorEl ? sectorEl.value : '';
+    const capFilter = s.capFilter || '';
 
-  if(sortKey==='pe')       filtered.sort((a,b)=>a.pe-b.pe);
-  else if(sortKey==='pe_desc') filtered.sort((a,b)=>b.pe-a.pe);
-  else if(sortKey==='div') filtered.sort((a,b)=>b.div-a.div);
-  else if(sortKey==='cap') filtered.sort((a,b)=>b.capCr-a.capCr);
-  else filtered.sort((a,b)=>a.name.localeCompare(b.name));
-  updateSortArrows(sortKey);
+    let filtered = STOCKS.filter(st => {
+      const peOk  = st.pe >= s.peMin && st.pe <= s.peMax;
+      const divOk = st.div >= s.divYield;
+      let capOk = true;
+      if(capFilter.includes('Small'))       capOk = st.capCr < 5000;
+      else if(capFilter.includes('Mid'))    capOk = st.capCr >= 5000 && st.capCr < 20000;
+      else if(capFilter.includes('Large'))  capOk = st.capCr >= 20000 && st.capCr < 100000;
+      else if(capFilter.includes('Mega'))   capOk = st.capCr >= 100000;
+      const secOk = sectorFilter === '' || st.sector === sectorFilter;
+      return peOk && divOk && capOk && secOk;
+    });
+
+    if(currentSort === 'pe')           filtered.sort((a,b) => a.pe - b.pe);
+    else if(currentSort === 'pe_desc') filtered.sort((a,b) => b.pe - a.pe);
+    else if(currentSort === 'div')     filtered.sort((a,b) => b.div - a.div);
+    else if(currentSort === 'cap')     filtered.sort((a,b) => b.capCr - a.capCr);
+    else                               filtered.sort((a,b) => a.name.localeCompare(b.name));
+    updateSortUI();
 
   const count=filtered.length;
   const buyCnt=filtered.filter(st=>st.tag==='buy').length;
@@ -2221,52 +2226,41 @@ function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smoot
 function openAdvisor(){ window.open('https://justinvesting.in','_blank'); }
 
 /* Clipboard helper with graceful fallback */
-function copyToClipboard(txt, successCb){
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(txt).then(successCb).catch(()=>fallbackCopy(txt,successCb));
-  } else {
-    fallbackCopy(txt, successCb);
-  }
-}
-function fallbackCopy(txt, successCb){
-    try{
-      const ta=document.createElement('textarea');
-      ta.value=txt; ta.style.cssText='position:fixed;left:-9999px;top:-9999px';
-      document.body.appendChild(ta); ta.focus(); ta.select();
-      const ok=document.execCommand('copy');
-      document.body.removeChild(ta);
-      if(ok) successCb();
-      else alert('Copy failed. Please copy manually.');
-    }catch(e){ alert('Copy failed. Please copy manually.'); }
+function safeCopy(text){
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text)
+        .then(()=>alert('Copied successfully'))
+        .catch(()=>alert('Copy failed. Please copy manually.'));
+    } else {
+      alert('Clipboard not supported.');
+    }
   }
 
-function copySummary(){
-    const txt=`investpercent — Stock Dashboard
-  Tool: ${CALCS[active].label}
-  Result: ${$('wealthNumber').textContent}
-  ${$('stat1Label').textContent}: ${$('stat1Value').textContent}
-  ${$('stat2Label').textContent}: ${$('stat2Value').textContent}
-  ${$('stat3Label').textContent}: ${$('stat3Value').textContent}
-  Signal: ${$('topV3').textContent}
-  via justinvesting.in`;
-    copyToClipboard(txt,()=>alert('Copied successfully'));
+  function copySummary(){
+    const txt = 'investpercent — Stock Dashboard\n'
+      + 'Tool: ' + CALCS[active].label + '\n'
+      + 'Result: ' + $('wealthNumber').textContent + '\n'
+      + $('stat1Label').textContent + ': ' + $('stat1Value').textContent + '\n'
+      + $('stat2Label').textContent + ': ' + $('stat2Value').textContent + '\n'
+      + $('stat3Label').textContent + ': ' + $('stat3Value').textContent + '\n'
+      + 'Signal: ' + $('topV3').textContent + '\n'
+      + 'via justinvesting.in';
+    safeCopy(txt);
   }
 
-function copyAISummary(){
-    const decision=$('advDecision')?$('advDecision').textContent:'';
-    const txt=`AI Advisor — ${CALCS[active].label}
-  Decision: ${decision} | Stance: ${$('advisorStance').textContent} | Confidence: ${$('confText').textContent}
-  ${$('advisorSummary').textContent}
-
-  What Looks Good: ${$('advGood').textContent}
-  What Needs Caution: ${$('advCaution').textContent}
-  Suggested Next Step: ${$('advAction').textContent}
-
-  via investpercent / justinvesting.in`;
-    copyToClipboard(txt,()=>alert('Copied successfully'));
+  function copyAISummary(){
+    const decision = $('advDecision') ? $('advDecision').textContent : '';
+    const txt = 'AI Advisor — ' + CALCS[active].label + '\n'
+      + 'Decision: ' + decision + ' | Stance: ' + $('advisorStance').textContent + ' | Confidence: ' + $('confText').textContent + '\n'
+      + $('advisorSummary').textContent + '\n\n'
+      + 'What Looks Good: ' + $('advGood').textContent + '\n'
+      + 'What Needs Caution: ' + $('advCaution').textContent + '\n'
+      + 'Suggested Next Step: ' + $('advAction').textContent + '\n\n'
+      + 'via investpercent / justinvesting.in';
+    safeCopy(txt);
   }
 
-/* ═══════════════════════════════════════════════════════════
+  /* ═══════════════════════════════════════════════════════════
    BOOT
 ════════════════════════════════════════════════════════════ */
 initState();
