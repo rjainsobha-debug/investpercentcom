@@ -162,6 +162,31 @@
     .m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
     .m-amount{font-size:22px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
     .m-note{color:#8390b1;font-size:13px;line-height:1.45}
+    /* ── AI Advisor card ── */
+    .ai-card{
+      margin-top:14px;padding:16px;border-radius:20px;
+      background:linear-gradient(135deg,rgba(0,212,255,.07),rgba(123,97,255,.1));
+      border:1px solid rgba(0,212,255,.18);position:relative;overflow:hidden;
+    }
+    .ai-card::before{
+      content:"";position:absolute;inset:auto -60px -60px auto;width:160px;height:160px;border-radius:50%;
+      background:radial-gradient(circle,rgba(123,97,255,.14),transparent 65%);pointer-events:none;
+    }
+    .ai-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .ai-icon{font-size:20px;line-height:1}
+    .ai-label{font-size:15px;font-weight:800;letter-spacing:-.02em}
+    .ai-sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .ai-row{
+      padding:12px 14px;border-radius:14px;background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.07);margin-bottom:9px;
+    }
+    .ai-row:last-child{margin-bottom:0}
+    .ai-row-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+    .ai-row-label.green{color:var(--green)}
+    .ai-row-label.gold{color:var(--gold)}
+    .ai-row-label.red{color:var(--red)}
+    .ai-row-label.cyan{color:var(--cyan)}
+    .ai-row-text{font-size:13px;color:#c8d8ff;line-height:1.55}
     @media(max-width:1180px){
       .top-metrics{grid-template-columns:1fr 1fr}
       .layout{grid-template-columns:1fr}
@@ -217,12 +242,12 @@
         <div class="metric-card">
           <div class="metric-label">Wealth gain</div>
           <div class="metric-value cyan" id="topGains">—</div>
-          <div class="metric-sub">Above contributions</div>
+          <div class="metric-sub" id="topGainsSub">Above contributions</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Reference rate</div>
           <div class="metric-value gold" id="topRate">—</div>
-          <div class="metric-sub">Selected assumption</div>
+          <div class="metric-sub" id="topRateSub">Selected assumption</div>
         </div>
       </div>
     </section>
@@ -238,6 +263,23 @@
         </div>
 
         <div id="dynamicControls"></div>
+
+        <div style="margin-bottom:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-size:14px;font-weight:700;color:var(--text)">Tax Bracket</div>
+            <select id="taxSelect" onchange="setTax(this.value)" style="background:#0b1224;color:#00d4ff;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer;outline:none">
+              <option value="0">No Tax</option>
+              <option value="0.05">5% Slab</option>
+              <option value="0.20">20% Slab</option>
+              <option value="0.30">30% Slab</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:14px;font-weight:700;color:var(--text)">Target Goal <span style="font-size:11px;color:var(--muted);font-weight:500">(optional)</span></div>
+            <input type="number" id="goalInput" placeholder="₹ amount" oninput="setGoal(this.value)"
+              style="background:#0b1224;color:#00d4ff;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:6px 10px;font-size:13px;font-weight:700;width:130px;text-align:right;outline:none">
+          </div>
+        </div>
 
         <div class="mini-grid">
           <div class="mini">
@@ -257,6 +299,17 @@
             <button class="btn primary" onclick="openAdvisor()">Start with justinvesting.in</button>
             <button class="btn secondary" onclick="copySummary()">Copy summary</button>
           </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-head">
+            <div class="ai-icon">🧠</div>
+            <div>
+              <div class="ai-label">Smart AI Advisor</div>
+              <div class="ai-sub">Auto-reads your inputs — updates live</div>
+            </div>
+          </div>
+          <div id="aiAutoOutput"></div>
         </div>
       </aside>
 
@@ -440,6 +493,9 @@
     let state  = {};
     let active = "fd";
     let chart;
+    let taxRate    = 0;       /* 0 | 0.05 | 0.20 | 0.30 */
+    let goalAmount = 0;       /* 0 = disabled */
+    const INFLATION_REF = 6; /* reference inflation for real-return calcs */
     const $ = id => document.getElementById(id);
 
     /* ═══════════════════════════════════════════
@@ -521,10 +577,76 @@
     /* ═══════════════════════════════════════════
        TOP METRICS
     ═══════════════════════════════════════════ */
-    function setTop(total, gain, rate){
+    function setTop(total, gain, rate, opts){
+      opts = opts || {};
       $("topProjected").textContent = fmtShort(total);
       $("topGains").textContent     = fmtShort(gain);
       $("topRate").textContent      = typeof rate === "number" ? rate.toFixed(1).replace(/\.0$/,"") + "%" : rate;
+      $("topGainsSub").textContent  = opts.gainSub  || (taxRate > 0 ? "After tax (post-tax gain)" : "Above contributions");
+      $("topRateSub").textContent   = opts.rateSub  || (typeof rate === "number" ? `Real: ${(rate*(1-taxRate)-INFLATION_REF)>=0?"+":""}${(rate*(1-taxRate)-INFLATION_REF).toFixed(1)}% (post-inflation)` : "Selected assumption");
+    }
+
+    /* ═══════════════════════════════════════════
+       TAX + GOAL HANDLERS
+    ═══════════════════════════════════════════ */
+    function setTax(v){ taxRate = Number(v); update(); }
+    function setGoal(v){ goalAmount = Number(v)||0; update(); }
+
+    /* goal helper — returns insight object or null */
+    function goalInsight(corpus, label){
+      if(!goalAmount) return null;
+      const fin = corpus[corpus.length-1];
+      if(fin >= goalAmount){
+        /* find first year corpus crosses goal */
+        let crossYear = corpus.length;
+        for(let i=0;i<corpus.length;i++){ if(corpus[i]>=goalAmount){ crossYear=i+1; break; } }
+        return {title:`Goal of ${fmtShort(goalAmount)} reached in Year ${crossYear} ✓`, text:`Your ${label} crosses your target ${fmtShort(goalAmount)} by Year ${crossYear} and ends at ${fmtShort(fin)}.`};
+      } else {
+        const gap = goalAmount - fin;
+        return {title:`Gap to goal: ${fmtShort(gap)}`, text:`Your ${label} ends at ${fmtShort(fin)} — ${fmtShort(gap)} short of your ${fmtShort(goalAmount)} target. Try increasing the amount or extending the tenure.`};
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       PHRASE RANDOMIZER
+    ═══════════════════════════════════════════ */
+    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    /* ═══════════════════════════════════════════
+       DECISION SCORE ENGINE
+    ═══════════════════════════════════════════ */
+    function calcScore(rate, years, tRate, inflRef){
+      inflRef = inflRef || INFLATION_REF;
+      let score = 50;
+      const realRate = rate*(1-tRate) - inflRef;
+      score += Math.min(30, Math.max(-15, realRate * 4));
+      score += Math.min(20, years * 2);
+      if(years >= 10) score += 5;
+      if(tRate >= 0.3) score -= 10;
+      else if(tRate >= 0.2) score -= 5;
+      return Math.max(0, Math.min(100, Math.round(score)));
+    }
+
+    function aiScore(score){
+      const col = score >= 70 ? "green" : score >= 50 ? "gold" : "red";
+      const label = score >= 70 ? "Strong decision" : score >= 50 ? "Acceptable — can improve" : "Needs attention";
+      return `<div class="ai-row" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div>
+          <div class="ai-row-label ${col}" style="margin-bottom:3px">Decision Score</div>
+          <div class="ai-row-text">${label}</div>
+        </div>
+        <div style="font-size:28px;font-weight:800;color:var(--${col==="green"?"green":col==="gold"?"gold":"red"})">${score}<span style="font-size:13px;opacity:.55">/100</span></div>
+      </div>`;
+    }
+
+    function aiCTA(){
+      return `<div class="ai-row" style="text-align:center;background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.18)">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:9px">Want a personalised investment plan?</div>
+        <a href="https://justinvesting.in" target="_blank"
+          style="display:inline-block;background:linear-gradient(135deg,#00d4ff,#4fa3ff,#7b61ff);color:#071120;font-weight:800;font-size:13px;padding:9px 20px;border-radius:12px;text-decoration:none;letter-spacing:-.01em">
+          Talk to an Advisor → justinvesting.in
+        </a>
+      </div>`;
     }
 
     /* ═══════════════════════════════════════════
@@ -675,17 +797,24 @@
           corpus.push(Math.round(s.amount * Math.pow(1 + s.rate/100, y)));
           base.push(s.amount);
         }
-        const mat  = corpus[corpus.length-1];
-        const gain = mat - s.amount;
-        const mult = mat / s.amount;
+        const mat      = corpus[corpus.length-1];
+        const gain     = mat - s.amount;
+        const taxAmt   = Math.round(gain * taxRate);
+        const postGain = gain - taxAmt;
+        const postMat  = s.amount + postGain;
+        const mult     = postMat / s.amount;
+        const realMat  = Math.round(postMat / Math.pow(1+INFLATION_REF/100, s.years));
+        const realRate = parseFloat((s.rate*(1-taxRate) - INFLATION_REF).toFixed(1));
 
-        setTop(mat, gain, s.rate);
+        setTop(postMat, postGain, s.rate);
         setWealth({
-          value: mat,
-          narrative: `${fmtCurrency(s.amount)} at ${s.rate}% for ${s.years} yr${s.years>1?"s":""} grows to ${fmtShort(mat)} — ${mult.toFixed(2)}x your money.`,
-          stat1:{label:"Principal",       value:fmtCurrency(s.amount)},
-          stat2:{label:"Interest earned", value:fmtCurrency(gain)},
-          stat3:{label:"Multiple",        value:mult.toFixed(2)+"x"},
+          value: postMat,
+          narrative: taxRate > 0
+            ? `${fmtCurrency(s.amount)} at ${s.rate}% for ${s.years} yr${s.years>1?"s":""}. After ${(taxRate*100).toFixed(0)}% tax: ${fmtShort(postMat)} (tax: ${fmtShort(taxAmt)}). Real purchasing power today: ${fmtShort(realMat)}.`
+            : `${fmtCurrency(s.amount)} at ${s.rate}% for ${s.years} yr${s.years>1?"s":""} grows to ${fmtShort(mat)} — ${mult.toFixed(2)}x. Real value after ${INFLATION_REF}% inflation: ${fmtShort(realMat)}.`,
+          stat1:{label:"Principal",                            value:fmtCurrency(s.amount)},
+          stat2:{label:taxRate>0?"Post-tax gain":"Interest earned", value:fmtCurrency(postGain)},
+          stat3:{label:taxRate>0?"Real value (infl-adj)":"Multiple",value:taxRate>0?fmtShort(realMat):mult.toFixed(2)+"x"},
           mood:"Safe", power:"Guaranteed"
         });
 
@@ -693,10 +822,13 @@
         const i1 = s.years > 10
           ? {title:"Long-term compounding is powerful.", text:`Over ${s.years} years, compounding creates ${fmtShort(gain)} — ${((gain/s.amount)*100).toFixed(0)}% more than your starting capital.`}
           : {title:"FD offers full capital protection.", text:"Your principal is guaranteed by the bank and the rate locks in at deposit time."};
-        const i2 = s.rate < 6
+        const i2 = realRate < 0
+          ? {title:"Real return is negative after tax & inflation.", text:`At ${s.rate}% with ${(taxRate*100).toFixed(0)}% tax and ${INFLATION_REF}% inflation, your net real return is ${realRate}%. Consider NSC (7.7%) or equity SIP to protect purchasing power.`}
+          : s.rate < 6
           ? {title:"Rate may not beat inflation.", text:`At ${s.rate}%, with typical Indian inflation near 5-6%, real returns could be near zero. Consider NSC at 7.7% or SCSS at 8.2%.`}
           : {title:"Compounding accelerates in later years.", text:`The last year alone generates more interest than the first ${Math.ceil(s.years/3)} years combined.`};
-        const i3 = {title:"Ladder FDs for better liquidity.", text:"Splitting into FDs with staggered maturities lets you access funds at regular intervals without breaking early."};
+        const gi = goalInsight(corpus, "FD");
+        const i3 = gi || {title:"Ladder FDs for better liquidity.", text:"Splitting into FDs with staggered maturities lets you access funds at regular intervals without breaking early."};
         setInsights(i1, i2, i3);
 
         renderChart(labels, [
@@ -717,27 +849,37 @@
           corpus.push(Math.round(v));
           base.push(s.monthly*n);
         }
-        const mat     = corpus[corpus.length-1];
+        const mat      = corpus[corpus.length-1];
         const invested = base[base.length-1];
-        const gain    = mat - invested;
+        const gain     = mat - invested;
+        const taxAmt   = Math.round(gain * taxRate);
+        const postGain = gain - taxAmt;
+        const postMat  = invested + postGain;
+        const realMat  = Math.round(postMat / Math.pow(1+INFLATION_REF/100, s.years));
+        const realRate = parseFloat((s.rate*(1-taxRate) - INFLATION_REF).toFixed(1));
 
-        setTop(mat, gain, s.rate);
+        setTop(postMat, postGain, s.rate);
         setWealth({
-          value: mat,
-          narrative: `${fmtCurrency(s.monthly)}/month at ${s.rate}% for ${s.years} yr${s.years>1?"s":""} → invested ${fmtShort(invested)}, maturity ${fmtShort(mat)}.`,
-          stat1:{label:"Total invested",  value:fmtCurrency(invested)},
-          stat2:{label:"Interest earned", value:fmtCurrency(gain)},
-          stat3:{label:"Multiple",        value:(mat/invested).toFixed(2)+"x"},
+          value: postMat,
+          narrative: taxRate > 0
+            ? `${fmtCurrency(s.monthly)}/month at ${s.rate}% for ${s.years} yr${s.years>1?"s":""}. Invested: ${fmtShort(invested)}. After ${(taxRate*100).toFixed(0)}% tax you keep ${fmtShort(postMat)}. Real value: ${fmtShort(realMat)}.`
+            : `${fmtCurrency(s.monthly)}/month at ${s.rate}% for ${s.years} yr${s.years>1?"s":""} → invested ${fmtShort(invested)}, maturity ${fmtShort(mat)}. Real value: ${fmtShort(realMat)}.`,
+          stat1:{label:"Total invested",                        value:fmtCurrency(invested)},
+          stat2:{label:taxRate>0?"Post-tax gain":"Interest earned", value:fmtCurrency(postGain)},
+          stat3:{label:taxRate>0?"Real value (infl-adj)":"Multiple",value:taxRate>0?fmtShort(realMat):(mat/invested).toFixed(2)+"x"},
           mood:"Disciplined", power:"Consistency"
         });
 
         const i1 = s.years > 10
           ? {title:"Long-term discipline pays off.", text:`Over ${s.years} years of ${fmtCurrency(s.monthly)}/month, you'll earn ${fmtShort(gain)} purely from interest — nearly ${((gain/invested)*100).toFixed(0)}% of your invested amount.`}
           : {title:"RD enforces saving discipline.", text:"A recurring deposit turns monthly saving into a habit and generates steady returns."};
-        const i2 = s.rate < 6
+        const i2 = realRate < 0
+          ? {title:"Real return is negative after tax & inflation.", text:`After ${(taxRate*100).toFixed(0)}% tax and ${INFLATION_REF}% inflation, your RD at ${s.rate}% yields ${realRate}% real return. Consider equity SIP for better long-term growth.`}
+          : s.rate < 6
           ? {title:"Low rate may not beat inflation.", text:`At ${s.rate}%, returns may be eroded by inflation. Consider comparing against an equity SIP in the Compare tab.`}
           : {title:"Good for short-to-medium goals.", text:"RDs work well for vacations, appliances or down payment savings over 2–5 years."};
-        const i3 = {title:"Compare vs SIP for long horizons.", text:"For 7+ years, equity SIPs historically outperform RDs by 2–3x due to market compounding."};
+        const gi = goalInsight(corpus, "RD");
+        const i3 = gi || {title:"Compare vs SIP for long horizons.", text:"For 7+ years, equity SIPs historically outperform RDs by 2–3x due to market compounding."};
         setInsights(i1, i2, i3);
 
         renderChart(labels, [
@@ -755,26 +897,36 @@
           corpus.push(Math.round(s.amount * Math.pow(1+s.rate/100, y)));
           base.push(s.amount);
         }
-        const mat  = corpus[corpus.length-1];
-        const gain = mat - s.amount;
+        const mat      = corpus[corpus.length-1];
+        const gain     = mat - s.amount;
+        const taxAmt   = Math.round(gain * taxRate);
+        const postGain = gain - taxAmt;
+        const postMat  = s.amount + postGain;
+        const realMat  = Math.round(postMat / Math.pow(1+INFLATION_REF/100, s.years));
+        const realRate = parseFloat((s.rate*(1-taxRate) - INFLATION_REF).toFixed(1));
 
-        setTop(mat, gain, s.rate);
+        setTop(postMat, postGain, s.rate);
         setWealth({
-          value: mat,
-          narrative: `NSC of ${fmtCurrency(s.amount)} at ${s.rate}% compounded annually matures to ${fmtShort(mat)} in 5 years.`,
-          stat1:{label:"Invested",  value:fmtCurrency(s.amount)},
-          stat2:{label:"Interest",  value:fmtCurrency(gain)},
-          stat3:{label:"Maturity",  value:fmtShort(mat)},
+          value: postMat,
+          narrative: taxRate > 0
+            ? `NSC of ${fmtCurrency(s.amount)} at ${s.rate}% matures to ${fmtShort(mat)}. After ${(taxRate*100).toFixed(0)}% tax: ${fmtShort(postMat)}. Real value: ${fmtShort(realMat)}.`
+            : `NSC of ${fmtCurrency(s.amount)} at ${s.rate}% compounded annually matures to ${fmtShort(mat)} in 5 years. Real value: ${fmtShort(realMat)}.`,
+          stat1:{label:"Invested",                              value:fmtCurrency(s.amount)},
+          stat2:{label:taxRate>0?"Post-tax gain":"Interest",   value:fmtCurrency(postGain)},
+          stat3:{label:taxRate>0?"Real value (infl-adj)":"Maturity", value:taxRate>0?fmtShort(realMat):fmtShort(mat)},
           mood:"Secure", power:"Govt-Backed"
         });
 
-        const i2 = s.rate < 6
+        const nscI2 = realRate < 0
+          ? {title:"Real return negative after tax.", text:`At ${s.rate}% with ${(taxRate*100).toFixed(0)}% tax and ${INFLATION_REF}% inflation your real return is ${realRate}%. However 80C deduction can offset this — check your net benefit.`}
+          : s.rate < 6
           ? {title:"Rate may trail inflation.", text:`At ${s.rate}%, inflation could erode real returns. NSC is primarily a tax-saving tool.`}
           : {title:"Interest reinvested automatically.", text:"NSC interest is deemed reinvested each year, compounding your returns for the full 5-year term."};
+        const nscGi = goalInsight(corpus, "NSC");
         setInsights(
           {title:"NSC gives 80C tax deduction.", text:"Investments up to ₹1.5L per year qualify for income tax deduction under Section 80C."},
-          i2,
-          {title:"No TDS deducted on maturity.", text:"Tax liability exists but no TDS is deducted, giving better liquidity through the tenure."}
+          nscI2,
+          nscGi || {title:"No TDS deducted on maturity.", text:"Tax liability exists but no TDS is deducted, giving better liquidity through the tenure."}
         );
         renderChart(labels, [
           {label:"NSC value", data:corpus, color:"#4fa3ff"},
@@ -793,21 +945,30 @@
           corpus.push(Math.round(s.amount * Math.pow(1+impliedRate/100, y)));
           base.push(s.amount);
         }
+        const gain     = s.amount;
+        const taxAmt   = Math.round(gain * taxRate);
+        const postGain = gain - taxAmt;
+        const postMat  = s.amount + postGain;
+        const realMat  = Math.round(postMat / Math.pow(1+INFLATION_REF/100, s.years));
+        const realRate = parseFloat((impliedRate*(1-taxRate) - INFLATION_REF).toFixed(1));
 
-        setTop(mat, s.amount, impliedRate);
+        setTop(postMat, postGain, impliedRate);
         setWealth({
-          value: mat,
-          narrative: `KVP doubles ${fmtCurrency(s.amount)} in ${s.years} years — equivalent to ${impliedRate.toFixed(2)}% CAGR guaranteed.`,
-          stat1:{label:"Invested",  value:fmtCurrency(s.amount)},
-          stat2:{label:"Gain",      value:fmtCurrency(s.amount)},
-          stat3:{label:"Maturity",  value:fmtShort(mat)},
+          value: postMat,
+          narrative: taxRate > 0
+            ? `KVP doubles ${fmtCurrency(s.amount)} in ${s.years} years (${impliedRate.toFixed(2)}% CAGR). After ${(taxRate*100).toFixed(0)}% tax: ${fmtShort(postMat)}. Real value: ${fmtShort(realMat)}.`
+            : `KVP doubles ${fmtCurrency(s.amount)} in ${s.years} years — equivalent to ${impliedRate.toFixed(2)}% CAGR guaranteed. Real value: ${fmtShort(realMat)}.`,
+          stat1:{label:"Invested",                              value:fmtCurrency(s.amount)},
+          stat2:{label:taxRate>0?"Post-tax gain":"Gain",       value:fmtCurrency(postGain)},
+          stat3:{label:taxRate>0?"Real value (infl-adj)":"Maturity", value:taxRate>0?fmtShort(realMat):fmtShort(mat)},
           mood:"Guaranteed", power:"Doubling"
         });
 
+        const kvpGi = goalInsight(corpus, "KVP");
         setInsights(
           {title:"KVP guarantees doubling — zero risk.", text:"The principal doubles at a fixed government-set rate with no market risk whatsoever."},
           {title:"No upper investment limit.", text:"Unlike most small savings schemes, KVP has no maximum investment cap — ideal for large lump sums."},
-          {title:"Freely transferable.", text:"KVP certificates can be transferred person-to-person or pledged as loan collateral."}
+          kvpGi || {title:"Freely transferable.", text:"KVP certificates can be transferred person-to-person or pledged as loan collateral."}
         );
         renderChart(labels, [
           {label:"KVP value",  data:corpus, color:"#00e676"},
@@ -826,26 +987,34 @@
           corpus.push(Math.round(annualInterest * y)); /* cumulative interest, principal returned at end */
           base.push(0);
         }
-        const totalInterest = annualInterest * s.years;
-        const totalReceived = s.amount + totalInterest; /* principal back + all interest */
+        const totalInterest    = annualInterest * s.years;
+        const totalReceived    = s.amount + totalInterest;
+        const taxAmt           = Math.round(totalInterest * taxRate);
+        const postInterest     = totalInterest - taxAmt;
+        const postReceived     = s.amount + postInterest;
+        const postQtrPayout    = Math.round(annualInterest*(1-taxRate)/4);
+        const realReceived     = Math.round(postReceived / Math.pow(1+INFLATION_REF/100, s.years));
 
-        setTop(totalReceived, totalInterest, s.rate);
+        setTop(postReceived, postInterest, s.rate, {gainSub: taxRate>0?"After-tax interest":"Total interest received"});
         setWealth({
-          value: totalReceived,
-          narrative: `SCSS deposit of ${fmtCurrency(s.amount)} at ${s.rate}% (simple interest) pays ${fmtCurrency(quarterlyPayout)} every quarter — ${fmtShort(totalInterest)} total interest, principal returned at maturity.`,
-          stat1:{label:"Annual interest",    value:fmtCurrency(annualInterest)},
-          stat2:{label:"Quarterly payout",   value:fmtCurrency(quarterlyPayout)},
-          stat3:{label:"Total interest",     value:fmtShort(totalInterest)},
+          value: postReceived,
+          narrative: taxRate > 0
+            ? `SCSS ${fmtCurrency(s.amount)} at ${s.rate}%. Post-tax quarterly payout: ${fmtCurrency(postQtrPayout)}. Total post-tax income: ${fmtShort(postInterest)}. Real value at maturity: ${fmtShort(realReceived)}.`
+            : `SCSS deposit of ${fmtCurrency(s.amount)} at ${s.rate}% pays ${fmtCurrency(quarterlyPayout)} every quarter — ${fmtShort(totalInterest)} total interest, principal returned at maturity.`,
+          stat1:{label:taxRate>0?"Post-tax annual income":"Annual interest",   value:fmtCurrency(Math.round(annualInterest*(1-taxRate)))},
+          stat2:{label:taxRate>0?"Post-tax quarterly":"Quarterly payout",      value:fmtCurrency(postQtrPayout)},
+          stat3:{label:taxRate>0?"Real value (infl-adj)":"Total interest",     value:taxRate>0?fmtShort(realReceived):fmtShort(totalInterest)},
           mood:"Income Phase", power:"Quarterly Cash"
         });
 
         const i1 = s.amount >= 2000000
           ? {title:"Near the deposit limit.", text:"Individual SCSS limit is ₹30L. Consider splitting with a spouse to double the allowed deposit."}
           : {title:"SCSS: India's best guaranteed rate.", text:`At ${s.rate}%, SCSS offers among the highest guaranteed returns for senior citizens with sovereign safety.`};
+        const scssGi = goalInsight(corpus.map(v=>v+s.amount), "SCSS total");
         setInsights(
           i1,
-          {title:"Quarterly payouts = regular income.", text:"Interest is paid every quarter — a reliable post-retirement cash flow for living expenses."},
-          {title:"No compounding — pure simple interest.", text:"The quarterly payout is always fixed. The principal remains untouched and is returned fully at maturity."}
+          {title:taxRate>0?"Post-tax quarterly income shown.":"Quarterly payouts = regular income.", text:taxRate>0?`After ${(taxRate*100).toFixed(0)}% tax your quarterly payout is ${fmtCurrency(postQtrPayout)} — still reliable post-retirement income.`:"Interest is paid every quarter — a reliable post-retirement cash flow for living expenses."},
+          scssGi || {title:"No compounding — pure simple interest.", text:"The quarterly payout is always fixed. The principal remains untouched and is returned fully at maturity."}
         );
         renderChart(labels, [
           {label:"Cumulative interest received", data:corpus, color:"#7b61ff"},
@@ -863,26 +1032,36 @@
           corpus.push(Math.round(s.amount + annualInterest * y)); /* simple interest: P + P*r*t */
           base.push(s.amount);
         }
-        const mat  = corpus[corpus.length-1];
-        const gain = mat - s.amount;
+        const mat      = corpus[corpus.length-1];
+        const gain     = mat - s.amount;
+        const taxAmt   = Math.round(gain * taxRate);
+        const postGain = gain - taxAmt;
+        const postMat  = s.amount + postGain;
+        const realMat  = Math.round(postMat / Math.pow(1+INFLATION_REF/100, s.years));
+        const realRate = parseFloat((s.rate*(1-taxRate) - INFLATION_REF).toFixed(1));
 
-        setTop(mat, gain, s.rate);
+        setTop(postMat, postGain, s.rate);
         setWealth({
-          value: mat,
-          narrative: `Post Office deposit of ${fmtCurrency(s.amount)} at ${s.rate}% simple interest grows to ${fmtShort(mat)} in ${s.years} years.`,
-          stat1:{label:"Deposited",       value:fmtCurrency(s.amount)},
-          stat2:{label:"Total interest",  value:fmtCurrency(gain)},
-          stat3:{label:"Maturity",        value:fmtShort(mat)},
+          value: postMat,
+          narrative: taxRate > 0
+            ? `Post Office ${fmtCurrency(s.amount)} at ${s.rate}% simple interest. After ${(taxRate*100).toFixed(0)}% tax: ${fmtShort(postMat)}. Real purchasing power: ${fmtShort(realMat)}.`
+            : `Post Office deposit of ${fmtCurrency(s.amount)} at ${s.rate}% simple interest grows to ${fmtShort(mat)} in ${s.years} years. Real value: ${fmtShort(realMat)}.`,
+          stat1:{label:"Deposited",                              value:fmtCurrency(s.amount)},
+          stat2:{label:taxRate>0?"Post-tax interest":"Total interest", value:fmtCurrency(postGain)},
+          stat3:{label:taxRate>0?"Real value (infl-adj)":"Maturity",   value:taxRate>0?fmtShort(realMat):fmtShort(mat)},
           mood:"Very Safe", power:"Sovereign"
         });
 
-        const i2 = s.rate < 6
+        const postI2 = realRate < 0
+          ? {title:"Real return is negative.", text:`After ${(taxRate*100).toFixed(0)}% tax and ${INFLATION_REF}% inflation, Post Office at ${s.rate}% yields ${realRate}% real return. NSC (7.7%) or FD with compounding would be better alternatives.`}
+          : s.rate < 6
           ? {title:"Rate may not beat inflation.", text:`At ${s.rate}%, typical Indian inflation of 5-6% could erode real value. Consider NSC or SCSS for better guaranteed returns.`}
           : {title:"Interest is simple, not compound.", text:"Post Office TD pays simple interest — unlike FDs, interest on interest is not added. Use FD for compounding."};
+        const postGi = goalInsight(corpus, "Post Office");
         setInsights(
           {title:"Backed by the Government of India.", text:"Post Office deposits carry a sovereign guarantee — among the safest savings instruments available."},
-          i2,
-          {title:"Rates revised quarterly.", text:"Post Office TD rates are announced quarterly by the government. Lock in when rates are high."}
+          postI2,
+          postGi || {title:"Rates revised quarterly.", text:"Post Office TD rates are announced quarterly by the government. Lock in when rates are high."}
         );
         renderChart(labels, [
           {label:"Deposit value", data:corpus, color:"#00d4ff"},
@@ -895,10 +1074,11 @@
       if(active === "compare"){
         const rdR   = s.fdrate / 12 / 100;
         const sipR  = s.siprate / 12 / 100;
+        const n     = s.years * 12;
         const labels=[], fdCorpus=[], rdCorpus=[], sipCorpus=[], fdBase=[];
 
         for(let y=1; y<=s.years; y++){
-          const n = y*12;
+          const yn = y*12;
           labels.push("Year "+y);
 
           /* FD: lump sum compounded annually */
@@ -906,40 +1086,58 @@
           fdBase.push(s.fdamount);
 
           /* RD: independent monthly amount, monthly compounding at FD rate */
-          const rdV = s.rdmonthly * ((Math.pow(1+rdR,n)-1)/rdR) * (1+rdR);
+          const rdV = s.rdmonthly * ((Math.pow(1+rdR,yn)-1)/rdR) * (1+rdR);
           rdCorpus.push(Math.round(rdV));
 
           /* SIP: independent monthly amount, monthly compounding at equity rate */
-          const sipV = s.sipmonthly * ((Math.pow(1+sipR,n)-1)/sipR) * (1+sipR);
+          const sipV = s.sipmonthly * ((Math.pow(1+sipR,yn)-1)/sipR) * (1+sipR);
           sipCorpus.push(Math.round(sipV));
         }
+
+        /* investment totals (different structures) */
+        const fdInvested  = s.fdamount;                 /* lump sum */
+        const rdInvested  = s.rdmonthly * n;            /* monthly × months */
+        const sipInvested = s.sipmonthly * n;           /* monthly × months */
 
         const fdFinal  = fdCorpus[fdCorpus.length-1];
         const rdFinal  = rdCorpus[rdCorpus.length-1];
         const sipFinal = sipCorpus[sipCorpus.length-1];
-        const best     = Math.max(fdFinal, rdFinal, sipFinal);
-        const bestName = best===sipFinal ? "SIP" : best===fdFinal ? "FD" : "RD";
 
-        setTop(best, best - Math.min(s.fdamount, s.rdmonthly*s.years*12), s.fdrate);
+        /* tax adjustments */
+        const fdGain      = fdFinal - fdInvested;
+        const fdPostTax   = fdInvested + fdGain*(1-taxRate);
+        const rdGain      = rdFinal  - rdInvested;
+        const rdPostTax   = rdInvested + rdGain*(1-taxRate);
+        /* SIP: LTCG — gains above ₹1L taxed at 10% regardless of tax bracket */
+        const sipGain     = sipFinal - sipInvested;
+        const sipLTCG     = taxRate > 0 ? Math.round(Math.max(0, sipGain - 100000) * 0.10) : 0;
+        const sipPostTax  = sipFinal - sipLTCG;
+
+        const best     = Math.max(fdPostTax, rdPostTax, sipPostTax);
+        const bestName = best===sipPostTax ? "SIP" : best===fdPostTax ? "FD" : "RD";
+
+        setTop(best, best - Math.min(fdInvested, rdInvested, sipInvested), s.fdrate, {
+          rateSub: `FD invested: ${fmtShort(fdInvested)} | RD invested: ${fmtShort(rdInvested)} | SIP invested: ${fmtShort(sipInvested)}`
+        });
         setWealth({
           value: best,
-          narrative: `Over ${s.years} years: FD ${fmtShort(fdFinal)} | RD ${fmtShort(rdFinal)} | SIP ${fmtShort(sipFinal)}. ${bestName} wins.`,
-          stat1:{label:"FD value",  value:fmtShort(fdFinal)},
-          stat2:{label:"RD value",  value:fmtShort(rdFinal)},
-          stat3:{label:"SIP value", value:fmtShort(sipFinal)},
+          narrative: `Over ${s.years} yr${s.years>1?"s":""}${taxRate>0?" (post-tax)":""}: FD ${fmtShort(fdPostTax)} (invested ${fmtShort(fdInvested)}) | RD ${fmtShort(rdPostTax)} (invested ${fmtShort(rdInvested)}) | SIP ${fmtShort(sipPostTax)} (LTCG tax: ${fmtShort(sipLTCG)}). ${bestName} wins. Note: values are based on different contribution structures.`,
+          stat1:{label:"FD  value",  value:fmtShort(fdPostTax)},
+          stat2:{label:"RD  value",  value:fmtShort(rdPostTax)},
+          stat3:{label:"SIP value",  value:fmtShort(sipPostTax)},
           mood:bestName+" Wins", power:"Compare"
         });
 
-        const sipWins = sipFinal > fdFinal;
+        const sipWins = sipPostTax > fdPostTax;
         const i1 = sipWins
-          ? {title:"Equity (SIP) outperforms in long term.", text:`SIP at ${s.siprate}% beats FD at ${s.fdrate}% by ${fmtShort(sipFinal-fdFinal)} over ${s.years} years. The higher rate makes a large difference over time.`}
-          : {title:`FD leads at these settings.`, text:`FD of ${fmtShort(s.fdamount)} beats SIP here. Likely because the horizon is short or the SIP amount is smaller.`};
+          ? {title:"Equity (SIP) outperforms in long term.", text:`SIP at ${s.siprate}% beats FD at ${s.fdrate}% by ${fmtShort(sipPostTax-fdPostTax)} over ${s.years} years — even after LTCG tax of ${fmtShort(sipLTCG)}.`}
+          : {title:`FD leads at these settings.`, text:`FD of ${fmtShort(fdInvested)} beats SIP here. Likely because the horizon is short or the SIP amount is smaller.`};
         const i2 = s.years > 10
           ? {title:"Long horizon favours equity strongly.", text:`Over ${s.years} years, even a 1-2% higher SIP rate compounds to a massive advantage. Consider staying invested longer.`}
           : {title:"Short horizon reduces SIP advantage.", text:"SIP's power comes from long-term compounding. For under 7 years, FD's certainty often makes more practical sense."};
         setInsights(
           i1, i2,
-          {title:"These are independent amounts.", text:"Each slider controls a separate pool of money. Use them to model what you'd actually allocate to each instrument."}
+          {title:"Different contribution structures.", text:`FD: lump sum ${fmtShort(fdInvested)} | RD: ${fmtCurrency(s.rdmonthly)}/month total ${fmtShort(rdInvested)} | SIP: ${fmtCurrency(s.sipmonthly)}/month total ${fmtShort(sipInvested)}. Adjust each independently.`}
         );
         renderChart(labels, [
           {label:"FD",  data:fdCorpus,  color:"#ffd76a"},
@@ -987,6 +1185,536 @@
         ]);
         renderMilestones(labels, corpus, base, "inflation");
       }
+
+      runAutoAdvisor();
+    }
+
+    /* ═══════════════════════════════════════════
+       SMART AI ADVISOR
+    ═══════════════════════════════════════════ */
+    function aiRow(color, label, text){
+      return `<div class="ai-row">
+        <div class="ai-row-label ${color}">${label}</div>
+        <div class="ai-row-text">${text}</div>
+      </div>`;
+    }
+
+    /* helpers */
+    function aiConfidence(level){
+      const map = { High:["green","▲ High Confidence"], Medium:["gold","◆ Medium Confidence"], Low:["red","▼ Low Confidence"] };
+      const [c,t] = map[level]||map.Medium;
+      return `<div class="ai-row" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+        <div class="ai-row-label ${c}" style="margin:0">${t}</div>
+        <div class="ai-row-text" style="font-size:12px;opacity:.7;text-align:right">${
+          level==="High"?"Data-backed, high-certainty advice":
+          level==="Medium"?"Dependent on market conditions":
+          "Uncertain — review with advisor"
+        }</div>
+      </div>`;
+    }
+
+    function aiAlloc(splits){
+      const bars = splits.map(([pct,label,color])=>
+        `<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+          <div style="width:${pct*1.5}px;min-width:24px;height:10px;border-radius:999px;background:${color}"></div>
+          <div style="font-size:12px;color:#c8d8ff">${pct}% ${label}</div>
+        </div>`
+      ).join("");
+      return `<div class="ai-row">
+        <div class="ai-row-label cyan" style="margin-bottom:8px">Suggested Allocation</div>
+        ${bars}
+      </div>`;
+    }
+
+    function runAutoAdvisor(){
+      const s   = state[active];
+      const out = $("aiAutoOutput");
+      let rows  = [];
+      const INF = INFLATION_REF;
+
+      /* ─── FD ─── */
+      if(active === "fd"){
+        const mat      = s.amount * Math.pow(1+s.rate/100, s.years);
+        const gain     = mat - s.amount;
+        const postGain = gain * (1 - taxRate);
+        const postMat  = s.amount + postGain;
+        const mult     = postMat / s.amount;
+        const pctG     = ((postGain/s.amount)*100).toFixed(1);
+        const realRate = parseFloat((s.rate*(1-taxRate) - INF).toFixed(1));
+        const sipMat   = s.amount * Math.pow(1.12, s.years);
+        const sipDiff  = sipMat - mat;
+        const score    = calcScore(s.rate, s.years, taxRate);
+
+        rows.push(aiRow("cyan","Situation Analysis",
+          pick([
+            `Your FD of ${fmtCurrency(s.amount)} at ${s.rate}% CAGR over ${s.years} year${s.years>1?"s":""} matures to ${fmtShort(postMat)}${taxRate>0?` (after ${(taxRate*100).toFixed(0)}% tax)`:""} — a ${pctG}% total gain (${mult.toFixed(2)}x your principal). Real return after ${INF}% inflation: ${realRate>=0?"+":""}${realRate}%.`,
+            `You've locked in ${fmtCurrency(s.amount)} at ${s.rate}% for ${s.years} year${s.years>1?"s":""}. Net of ${(taxRate*100).toFixed(0)}% tax and ${INF}% inflation, your effective real return is ${realRate>=0?"+":""}${realRate}%. Maturity value: ${fmtShort(postMat)} (${mult.toFixed(2)}x).`
+          ])
+        ));
+
+        if(realRate < 0){
+          rows.push(aiRow("red","What This Means",
+            pick([
+              `Your FD at ${s.rate}% is generating a negative real return of ${realRate}% after tax and inflation. Your money is currently losing purchasing power — not gaining it.`,
+              `With ${(taxRate*100).toFixed(0)}% tax reducing your net rate and ${INF}% inflation eroding value, this FD is effectively a loss-making instrument in real terms (${realRate}% real return).`
+            ])
+          ));
+          rows.push(aiRow("gold","Recommended Action",
+            pick([
+              `Shift ${s.years>5?"60%":"40%"} of this corpus to a diversified equity SIP. At 12% CAGR, SIP would have built ${fmtShort(sipMat)} — that's ${fmtShort(sipDiff)} more than your FD over the same period.`,
+              `Consider moving a significant portion (at least ${s.years>5?"50%":"35%"}) into NSC (7.7%, 80C benefit) or equity SIP. Both would outperform this FD's real return of ${realRate}%.`
+            ])
+          ));
+          rows.push(aiRow("red","Risk / Warning",
+            pick([
+              `Locking a large sum in a below-inflation FD for ${s.years} years compounds the purchasing power loss. Even a partial reallocation to NSC (7.7%) or equity would significantly improve real returns.`,
+              `Every year this FD runs, your real wealth shrinks. Staying invested here is not a neutral decision — it's an active loss of purchasing power equal to ${fmtShort(s.amount*Math.abs(realRate)/100)} per year.`
+            ])
+          ));
+          rows.push(aiAlloc(s.years>5 ? [[60,"Equity SIP","#00e676"],[30,"FD","#ffd76a"],[10,"NSC","#4fa3ff"]] : [[40,"Equity SIP","#00e676"],[50,"FD","#ffd76a"],[10,"Gold","#e8b23a"]]));
+
+        } else if(s.years > 7){
+          rows.push(aiRow("gold","What This Means",
+            pick([
+              `Your ${s.rate}% FD yields a real return of ~${realRate}% after tax and inflation — positive, but modest. Over ${s.years} years, an equity SIP at 12% would produce ${fmtShort(sipMat-s.amount)} in gains vs your FD's ${fmtShort(postGain)}, a difference of ${fmtShort(sipDiff)}.`,
+              `A positive real return of ${realRate}% is encouraging, but the opportunity cost vs equity is ${fmtShort(sipDiff)} over ${s.years} years. That's the price of guaranteed safety.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            pick([
+              `Consider a 50-50 split: keep ${fmtShort(s.amount*0.5)} in FD for capital safety, and redirect the other ${fmtShort(s.amount*0.5)} equivalent into monthly SIP for equity upside over your ${s.years}-year horizon.`,
+              `A barbell approach works here: 40% FD for certainty, 50% equity SIP for growth, 10% gold as inflation hedge. This gives you safety plus meaningful upside.`
+            ])
+          ));
+          rows.push(aiRow("gold","Risk / Warning",
+            pick([
+              `Long-term FDs are opportunity-cost heavy. After tax on interest, your net real return of ${realRate}% is modest. Equity carries volatility but historically delivers 4–6x better real returns over 8+ year periods.`,
+              `FD rates are not guaranteed at renewal. When this FD matures in ${s.years} years, you may find rates have fallen. Locking into NSC or equity SIP now hedges this reinvestment risk.`
+            ])
+          ));
+          rows.push(aiAlloc([[50,"Equity SIP","#00e676"],[40,"FD","#ffd76a"],[10,"Gold","#e8b23a"]]));
+
+        } else {
+          rows.push(aiRow("green","What This Means",
+            pick([
+              `At ${s.rate}%, your FD clears the ${INF}% inflation benchmark with a real return of ~${realRate}%. Over ${s.years} years, you're gaining ${fmtShort(postGain)} in interest — a sound, low-risk outcome.`,
+              `A ${realRate}% real return on a capital-guaranteed instrument is solid for a ${s.years}-year goal. Your ${fmtCurrency(s.amount)} is working efficiently within its risk class.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            pick([
+              `This is a sensible allocation for a ${s.years}-year goal. To optimise further, split into 3 FDs maturing in Year ${Math.ceil(s.years/3)}, ${Math.ceil(s.years*2/3)}, and Year ${s.years} to maintain liquidity without sacrificing returns.`,
+              `You're on the right track. Ladder this FD across 2–3 staggered maturities. If one rate falls at renewal, the others continue earning your locked-in rate.`
+            ])
+          ));
+          rows.push(aiRow("gold","Risk / Warning",
+            pick([
+              `While the rate is healthy today, FD rates are revised at renewal. Diversify a portion into NSC (7.7%, locked rate) to hedge this reinvestment risk.`,
+              `FD interest is fully taxable as per your slab. In a 30% bracket, your effective yield drops meaningfully. Consider ELSS or NSC for the 80C portion to improve post-tax efficiency.`
+            ])
+          ));
+          rows.push(aiAlloc([[60,"FD","#ffd76a"],[25,"NSC","#4fa3ff"],[15,"Liquid Fund","#00d4ff"]]));
+        }
+        rows.push(aiScore(score));
+        rows.push(aiConfidence(score >= 70 ? "High" : score >= 50 ? "Medium" : "Low"));
+      }
+
+      /* ─── RD ─── */
+      else if(active === "rd"){
+        const r       = s.rate/12/100;
+        const n       = s.years*12;
+        const mat     = s.monthly*((Math.pow(1+r,n)-1)/r)*(1+r);
+        const inv     = s.monthly*n;
+        const gain    = mat - inv;
+        const postGain= gain * (1-taxRate);
+        const postMat = inv + postGain;
+        const mult    = postMat/inv;
+        const sip12R  = 12/12/100;
+        const sipMat  = s.monthly*((Math.pow(1+sip12R,n)-1)/sip12R)*(1+sip12R);
+        const sipDiff = sipMat - mat;
+        const pctG    = ((postGain/inv)*100).toFixed(1);
+        const realRate= parseFloat((s.rate*(1-taxRate) - INF).toFixed(1));
+        const score   = calcScore(s.rate, s.years, taxRate);
+
+        rows.push(aiRow("cyan","Situation Analysis",
+          pick([
+            `Your RD of ${fmtCurrency(s.monthly)}/month at ${s.rate}% over ${s.years} years accumulates ${fmtShort(inv)} invested and matures to ${fmtShort(postMat)}${taxRate>0?` (post-tax)`:""} — a ${pctG}% return on capital (${mult.toFixed(2)}x). Real return: ${realRate>=0?"+":""}${realRate}%.`,
+            `Depositing ${fmtCurrency(s.monthly)}/month at ${s.rate}% for ${s.years} years builds ${fmtShort(inv)} in deposits and ${fmtShort(postGain)} in post-tax interest, totalling ${fmtShort(postMat)} at maturity.`
+          ])
+        ));
+
+        if(s.years > 10){
+          rows.push(aiRow("gold","What This Means",
+            pick([
+              `Over ${s.years} years, an equivalent SIP at 12% on the same ${fmtCurrency(s.monthly)}/month would build ${fmtShort(sipMat)} — that's ${fmtShort(sipDiff)} more than your RD, because equity compounding accelerates sharply beyond 8 years.`,
+              `The power of long tenures works strongly in equity's favour. Your RD builds ${fmtShort(postMat)}; a 12% SIP on the same amount builds ${fmtShort(sipMat)} — a difference of ${fmtShort(sipDiff)} that grows every year you stay invested.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            pick([
+              `Use the RD for the first 3 years to build a ₹${((s.monthly*36)/100000).toFixed(1)}L emergency fund. Then redirect the same monthly amount into a diversified equity SIP for the remaining ${s.years-3} years.`,
+              `Phase your strategy: RD for years 1–3 to establish a liquid reserve, then switch to a large-cap index SIP from year 4 onwards. This captures both safety and growth in sequence.`
+            ])
+          ));
+          rows.push(aiRow("red","Risk / Warning",
+            pick([
+              `Long-term RD locks you into bank deposit rates that rarely keep pace with inflation after tax. For horizons above 8 years, equity SIPs have historically delivered 2–3x better real returns.`,
+              `Your ${(taxRate*100).toFixed(0)}% tax slab makes RD interest significantly less efficient over ${s.years} years. The longer the tenure, the more meaningful the equity advantage becomes — consider transitioning now.`
+            ])
+          ));
+          rows.push(aiAlloc([[60,"Equity SIP","#00e676"],[30,"RD / Debt","#4fa3ff"],[10,"Gold","#e8b23a"]]));
+
+        } else if(s.monthly < 3000){
+          rows.push(aiRow("gold","What This Means",
+            pick([
+              `${fmtCurrency(s.monthly)}/month is a meaningful start — but doubling it to ${fmtCurrency(s.monthly*2)} would nearly double your maturity corpus with zero additional risk.`,
+              `At ${fmtCurrency(s.monthly)}/month, your corpus will be modest. Small increments — even ₹500 more per month — compound meaningfully over time.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            pick([
+              `Increase your RD by ₹500 every 6 months (step-up approach). At the same rate, adding ₹500/month from Year 2 onwards adds approximately ${fmtShort(500*((Math.pow(1+r,n)-1)/r)*(1+r))} to your final maturity.`,
+              `Set up a step-up RD: increase by 10% each year. This alone can boost your maturity corpus significantly without disrupting your budget.`
+            ])
+          ));
+          rows.push(aiRow("gold","Risk / Warning",
+            `Small RDs are great for habit formation, but at ${fmtCurrency(s.monthly)}/month the corpus may fall short of most medium-term goals. Review and raise the amount as income grows.`
+          ));
+          rows.push(aiAlloc([[50,"RD","#00e676"],[30,"Equity SIP","#4fa3ff"],[20,"Liquid Fund","#00d4ff"]]));
+
+        } else {
+          rows.push(aiRow("green","What This Means",
+            pick([
+              `Your RD at ${s.rate}% is a disciplined, guaranteed savings plan. The ${fmtShort(postGain)} post-tax interest over ${s.years} years provides a ${realRate}% real return above typical inflation — modest but risk-free.`,
+              `${fmtCurrency(s.monthly)}/month at ${s.rate}% consistently builds ${fmtShort(postMat)} over ${s.years} years. The discipline of monthly investing is as valuable as the return itself.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            pick([
+              `Complement your RD with ${fmtCurrency(Math.round(s.monthly*0.5))}/month SIP in a large-cap or balanced fund to capture equity upside without disrupting your guaranteed savings.`,
+              `Add an ELSS SIP alongside this RD. At ${fmtCurrency(Math.round(s.monthly*0.5))}/month, you'd get 80C benefits, tax-efficient growth, and diversification beyond bank deposits.`
+            ])
+          ));
+          rows.push(aiRow("gold","Risk / Warning",
+            taxRate >= 0.2
+              ? `At your ${(taxRate*100).toFixed(0)}% tax bracket, RD interest is significantly reduced post-tax. ELSS (locked 3 years) offers the same discipline with equity-grade growth and tax deductions.`
+              : `RD interest is fully taxable. Consider pairing with ELSS SIP for the 80C portion — you'll get discipline, returns, and a tax break in one vehicle.`
+          ));
+          rows.push(aiAlloc([[55,"RD","#00e676"],[35,"Equity SIP","#4fa3ff"],[10,"ELSS","#7b61ff"]]));
+        }
+        rows.push(aiScore(score));
+        rows.push(aiConfidence(score >= 70 ? "High" : score >= 50 ? "Medium" : "Low"));
+      }
+
+      /* ─── NSC ─── */
+      else if(active === "nsc"){
+        const mat      = s.amount*Math.pow(1+s.rate/100,s.years);
+        const gain     = mat - s.amount;
+        const postGain = gain*(1-taxRate);
+        const postMat  = s.amount + postGain;
+        const mult     = postMat/s.amount;
+        const realRate = parseFloat((s.rate*(1-taxRate)-INF).toFixed(1));
+        const score    = calcScore(s.rate, s.years, taxRate);
+
+        rows.push(aiRow("cyan","Situation Analysis",
+          pick([
+            `Your NSC of ${fmtCurrency(s.amount)} at ${s.rate}% compounds annually, maturing to ${fmtShort(postMat)}${taxRate>0?` after ${(taxRate*100).toFixed(0)}% tax`:""} (${mult.toFixed(2)}x). Real return after ${INF}% inflation: ${realRate>=0?"+":""}${realRate}%.`,
+            `NSC at ${s.rate}% on ${fmtCurrency(s.amount)}: net of ${(taxRate*100).toFixed(0)}% tax and ${INF}% inflation, your effective real yield is ${realRate>=0?"+":""}${realRate}%. Maturity: ${fmtShort(postMat)} — well-secured by the government.`
+          ])
+        ));
+        rows.push(aiRow(realRate>=0?"green":"gold","What This Means",
+          pick([
+            `NSC auto-reinvests interest annually, compounding your gains within a government-backed instrument. At ${s.rate}%, it ${realRate>=0?"comfortably beats":"narrowly misses"} the ${INF}% inflation mark by ${Math.abs(realRate)}% post-tax.`,
+            `The 80C tax deduction on up to ₹1.5L/year can add ${(taxRate*100).toFixed(0)}% × ₹1.5L = ${fmtShort(1500000*taxRate)} of additional value to this investment in the first year alone. Factor this into your effective return.`
+          ])
+        ));
+        rows.push(aiRow("cyan","Recommended Action",
+          pick([
+            `NSC is ideal for the fixed-income portion of your portfolio. Claim the 80C deduction on up to ₹1.5L invested — for a ${(taxRate*100).toFixed(0)}% bracket taxpayer, this effectively improves the net yield by ~${(taxRate*100/s.rate).toFixed(1)}% points.`,
+            `If your 80C limit of ₹1.5L is unfilled, NSC is one of the most efficient ways to fill it. Lock in the rate now, claim the deduction this year, and let it compound undisturbed for 5 years.`
+          ])
+        ));
+        rows.push(aiRow("gold","Risk / Warning",
+          `NSC is locked for 5 years with no premature exit allowed except in specific circumstances. Ensure you don't need this capital before maturity. Keep a separate liquid fund for emergencies.`
+        ));
+        rows.push(aiAlloc([[50,"NSC","#4fa3ff"],[30,"Equity SIP","#00e676"],[20,"Liquid Fund","#00d4ff"]]));
+        rows.push(aiScore(score));
+        rows.push(aiConfidence(score >= 70 ? "High" : "Medium"));
+      }
+
+      /* ─── KVP ─── */
+      else if(active === "kvp"){
+        const impliedRate = (Math.pow(2,1/s.years)-1)*100;
+        const fdAt7  = s.amount*Math.pow(1.07,s.years);
+        const kvpVsFD= (s.amount*2)-fdAt7;
+        const postMat= s.amount + s.amount*(1-taxRate);
+        const realRate= parseFloat((impliedRate*(1-taxRate)-INF).toFixed(1));
+        const score  = calcScore(impliedRate, s.years, taxRate);
+
+        rows.push(aiRow("cyan","Situation Analysis",
+          pick([
+            `KVP doubles your ${fmtCurrency(s.amount)} in ${s.years} years — equivalent to a ${impliedRate.toFixed(2)}% CAGR, guaranteed by the Government of India. After ${(taxRate*100).toFixed(0)}% tax on gains, net maturity: ${fmtShort(postMat)}.`,
+            `At ${impliedRate.toFixed(2)}% CAGR, KVP is one of the few sovereign-guaranteed schemes that clearly communicates your return upfront — you know exactly when your money doubles.`
+          ])
+        ));
+        rows.push(aiRow("green","What This Means",
+          pick([
+            `At ${impliedRate.toFixed(2)}% effective CAGR, KVP is ${kvpVsFD>0?`${fmtShort(kvpVsFD)} better`:`${fmtShort(-kvpVsFD)} less`} than a 7% FD over ${s.years} years. It offers no TDS, no reinvestment risk, and is freely transferable.`,
+            `No TDS, no market risk, and a locked doubling period makes KVP mentally satisfying and financially predictable. At ${impliedRate.toFixed(2)}% effective, it competes favourably with most bank FDs.`
+          ])
+        ));
+        rows.push(aiRow("cyan","Recommended Action",
+          pick([
+            `KVP works best for a lump sum you won't need for ${s.years} years — inheritance planning, a child's future fund, or a major goal corpus. Buy in multiples of ₹1,000, no upper limit.`,
+            `Use KVP for the capital-certain portion of your portfolio. It pairs well with equity SIP: KVP guarantees the floor, SIP provides the upside. Together they balance certainty and growth.`
+          ])
+        ));
+        rows.push(aiRow("gold","Risk / Warning",
+          `KVP is illiquid for the first 2.5 years. Interest is taxable annually even though it's not received. Consult your CA on the tax treatment to avoid a surprise liability at maturity.`
+        ));
+        rows.push(aiAlloc([[50,"KVP","#00e676"],[30,"Equity SIP","#4fa3ff"],[20,"FD (liquid)","#ffd76a"]]));
+        rows.push(aiScore(score));
+        rows.push(aiConfidence(score >= 70 ? "High" : "Medium"));
+      }
+
+      /* ─── SCSS ─── */
+      else if(active === "scss"){
+        const annual   = s.amount*s.rate/100;
+        const quarter  = annual/4;
+        const total    = annual*s.years;
+        const postQtr  = Math.round(quarter*(1-taxRate));
+        const postAnn  = Math.round(annual*(1-taxRate));
+        const realRate = parseFloat((s.rate*(1-taxRate)-INF).toFixed(1));
+        const score    = calcScore(s.rate, s.years, taxRate);
+
+        rows.push(aiRow("cyan","Situation Analysis",
+          pick([
+            `Your SCSS deposit of ${fmtCurrency(s.amount)} at ${s.rate}% generates ${fmtCurrency(annual)}/year — paid as ${fmtCurrency(quarter)}/quarter${taxRate>0?`. After ${(taxRate*100).toFixed(0)}% tax: ${fmtCurrency(postAnn)}/year (${fmtCurrency(postQtr)}/quarter)`:""}.`,
+            `SCSS: ${fmtCurrency(s.amount)} at ${s.rate}% simple interest. Your quarterly income is ${fmtCurrency(quarter)} gross${taxRate>0?`, ${fmtCurrency(postQtr)} post-tax`:""}. Real income yield: ${realRate>=0?"+":""}${realRate}% above inflation.`
+          ])
+        ));
+        rows.push(aiRow("green","What This Means",
+          pick([
+            `This is India's highest-guaranteed-rate scheme for senior citizens. At ${s.rate}%, the ${realRate>=0?realRate+"% real income yield":"real yield needs monitoring"} makes SCSS a strong core holding for post-retirement income.`,
+            `SCSS provides predictable, sovereign-backed income. Even after ${(taxRate*100).toFixed(0)}% tax, your quarterly income of ${fmtCurrency(postQtr)} arrives reliably — ideal for meeting regular living expenses.`
+          ])
+        ));
+        rows.push(aiRow("cyan","Recommended Action",
+          s.amount < 2000000
+            ? pick([
+                `You can deposit up to ₹30L in SCSS. Increasing to ₹30L at ${s.rate}% would generate ${fmtCurrency(Math.round(3000000*s.rate/100/4*(1-taxRate)))}/quarter post-tax — ${fmtCurrency(Math.round(3000000*s.rate/100/4*(1-taxRate)-postQtr))} more than your current payout.`,
+                `You have room to grow. At ₹30L maximum, post-tax quarterly income would be ${fmtCurrency(Math.round(3000000*s.rate/100/4*(1-taxRate)))} — consider increasing your deposit to maximise this guaranteed income stream.`
+              ])
+            : `You're near the individual limit. If your spouse is also eligible, open a joint SCSS account to allow additional deposit and nearly double the quarterly income stream.`
+        ));
+        rows.push(aiRow("gold","Risk / Warning",
+          `SCSS pays simple interest — no compounding. The principal is locked for 5 years (extendable by 3). Premature closure attracts a 1.5% penalty. Keep a liquid buffer separately for emergencies.`
+        ));
+        rows.push(aiAlloc([[60,"SCSS","#7b61ff"],[25,"FD (short-term)","#ffd76a"],[15,"Liquid Fund","#00d4ff"]]));
+        rows.push(aiScore(score));
+        rows.push(aiConfidence(score >= 70 ? "High" : "Medium"));
+      }
+
+      /* ─── POST OFFICE ─── */
+      else if(active === "post"){
+        const annual   = s.amount*s.rate/100;
+        const mat      = s.amount+annual*s.years;
+        const gain     = annual*s.years;
+        const postGain = gain*(1-taxRate);
+        const postMat  = s.amount+postGain;
+        const fdMat    = s.amount*Math.pow(1+s.rate/100,s.years);
+        const fdEdge   = fdMat-mat;
+        const realRate = parseFloat((s.rate*(1-taxRate)-INF).toFixed(1));
+        const score    = calcScore(s.rate, s.years, taxRate);
+
+        rows.push(aiRow("cyan","Situation Analysis",
+          pick([
+            `Your Post Office deposit of ${fmtCurrency(s.amount)} at ${s.rate}% simple interest over ${s.years} years returns ${fmtShort(postMat)}${taxRate>0?` (post-${(taxRate*100).toFixed(0)}% tax)":""}. Real return after ${INF}% inflation: ${realRate>=0?"+":""}${realRate}%.`,
+            `Post Office TD: ${fmtCurrency(s.amount)} at ${s.rate}% (simple interest). Net of tax: ${fmtShort(postGain)} interest, ${fmtShort(postMat)} total. Compounding FD at same rate would return ${fmtShort(fdMat)} — ${fmtShort(fdEdge)} more.`
+          ])
+        ));
+
+        if(realRate < 0 || s.rate < INF){
+          rows.push(aiRow("red","What This Means",
+            pick([
+              `At ${s.rate}% simple interest after ${(taxRate*100).toFixed(0)}% tax and ${INF}% inflation, your Post Office deposit is likely losing real purchasing power. Simple interest compounds the disadvantage vs FDs.`,
+              `Post Office uses simple — not compound — interest. At this rate, your real return of ${realRate}% is ${realRate<0?"negative":"marginal"}. A compounding FD at the same rate would return ${fmtShort(fdEdge)} more over ${s.years} years.`
+            ])
+          ));
+          rows.push(aiRow("gold","Recommended Action",
+            pick([
+              `Shift this deposit to an FD or NSC. A compounding FD returns ${fmtShort(fdMat)} vs Post Office's ${fmtShort(mat)} — that's ${fmtShort(fdEdge)} more for the same rate. NSC at 7.7% with 80C benefit is significantly better.`,
+              `Consider switching to an NSC (7.7%, compound interest, 80C eligible). The combination of compounding and tax deduction makes NSC substantially more efficient than Post Office TD.`
+            ])
+          ));
+          rows.push(aiAlloc([[50,"FD (compound)","#ffd76a"],[30,"NSC","#4fa3ff"],[20,"Liquid Fund","#00d4ff"]]));
+        } else {
+          rows.push(aiRow("green","What This Means",
+            pick([
+              `Post Office TD provides a sovereign-guaranteed, nationwide-accessible instrument. However, simple interest means an equivalent FD at ${s.rate}% would generate ${fmtShort(fdEdge)} more due to compounding over ${s.years} years.`,
+              `The ${realRate}% real return is positive, which is encouraging. But simple interest limits this instrument — the longer the tenure, the more FD's compounding advantage grows.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            pick([
+              `Use Post Office TD for portions allocated to family members without easy bank access. For urban investors, a bank FD at the same rate will always outperform due to compounding.`,
+              `Post Office is best used for fixed 1–2 year parking where liquidity and safety are paramount. For 3+ year goals, migrate to NSC or bank FD to benefit from compounding.`
+            ])
+          ));
+          rows.push(aiAlloc([[50,"FD (compound)","#ffd76a"],[30,"Post Office","#00d4ff"],[20,"NSC","#4fa3ff"]]));
+        }
+        rows.push(aiRow("gold","Risk / Warning",
+          `Post Office TD rates are revised quarterly. Lock in when rates are high. Premature withdrawal before 6 months earns no interest; after 6 months but before 1 year, only savings account rate applies.`
+        ));
+        rows.push(aiScore(score));
+        rows.push(aiConfidence(score >= 70 ? "High" : score >= 50 ? "Medium" : "Low"));
+      }
+
+      /* ─── COMPARE ─── */
+      else if(active === "compare"){
+        const rdR      = s.fdrate/12/100;
+        const sipR     = s.siprate/12/100;
+        const n        = s.years*12;
+        const fdFinal  = Math.round(s.fdamount*Math.pow(1+s.fdrate/100,s.years));
+        const rdFinal  = Math.round(s.rdmonthly*((Math.pow(1+rdR,n)-1)/rdR)*(1+rdR));
+        const sipFinal = Math.round(s.sipmonthly*((Math.pow(1+sipR,n)-1)/sipR)*(1+sipR));
+        const fdInv    = s.fdamount;
+        const rdInv    = s.rdmonthly*n;
+        const sipInv   = s.sipmonthly*n;
+        const fdPost   = fdInv + (fdFinal-fdInv)*(1-taxRate);
+        const rdPost   = rdInv + (rdFinal-rdInv)*(1-taxRate);
+        const sipGain  = sipFinal - sipInv;
+        const sipLTCG  = taxRate > 0 ? Math.round(Math.max(0,sipGain-100000)*0.10) : 0;
+        const sipPost  = sipFinal - sipLTCG;
+        const best     = Math.max(fdPost,rdPost,sipPost);
+        const bestName = best===sipPost?"SIP":best===fdPost?"FD":"RD";
+        const sipVsFD  = sipPost - fdPost;
+        const score    = calcScore(s.siprate, s.years, 0);
+
+        rows.push(aiRow("cyan","Situation Analysis",
+          pick([
+            `Over ${s.years} years${taxRate>0?" (post-tax)":""} — FD (${fmtShort(fdInv)} lump sum): ${fmtShort(fdPost)} | RD (${fmtCurrency(s.rdmonthly)}/month, total ${fmtShort(rdInv)}): ${fmtShort(rdPost)} | SIP (${fmtCurrency(s.sipmonthly)}/month, total ${fmtShort(sipInv)}): ${fmtShort(sipPost)}${taxRate>0?` (LTCG: ${fmtShort(sipLTCG)})`:""}. Winner: ${bestName}.`,
+            `Three independent structures compared — FD lump sum vs RD monthly vs SIP monthly — over ${s.years} years${taxRate>0?" with tax applied":""}. Post-tax: FD ${fmtShort(fdPost)} | RD ${fmtShort(rdPost)} | SIP ${fmtShort(sipPost)}. ${bestName} leads.`
+          ])
+        ));
+
+        if(sipVsFD > 0){
+          rows.push(aiRow("green","What This Means",
+            pick([
+              `SIP is outperforming your FD by ${fmtShort(sipVsFD)} over ${s.years} years — even after LTCG tax of ${fmtShort(sipLTCG)}. Equity compounding at ${s.siprate}% significantly outpaces the ${s.fdrate}% guaranteed FD rate.`,
+              `Even on a post-tax basis (LTCG applied to SIP), equity wins by ${fmtShort(sipVsFD)}. This gap widens every additional year you stay invested in SIP.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            pick([
+              `Maintain both — FD for capital protection, SIP for growth. If you can extend the horizon to ${s.years+5} years, the SIP advantage compounds to an even larger gap.`,
+              `Consider rebalancing: reduce the FD lump sum by 30% and redirect to a higher SIP monthly amount. This shifts you toward the outperforming instrument while retaining a guaranteed base.`
+            ])
+          ));
+          rows.push(aiAlloc([
+            [Math.min(75,Math.round(sipPost/(fdPost+sipPost)*70+15)),"SIP","#00e676"],
+            [Math.max(15,Math.round(fdPost/(fdPost+sipPost)*60+5)),"FD","#ffd76a"],
+            [10,"Gold","#e8b23a"]
+          ]));
+        } else {
+          rows.push(aiRow("gold","What This Means",
+            pick([
+              `FD is leading at these settings — either the horizon is short, the SIP amount is smaller, or the equity rate assumption is conservative. SIP's advantage becomes decisive beyond 7–8 years with larger monthly amounts.`,
+              `FD leads now, but the gap is likely to close and reverse as tenure extends. The crossover point is typically around year ${Math.ceil(s.years*1.4)} — extend the horizon to see SIP pull ahead.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            s.years < 7
+              ? `Extend the horizon to 10+ years — SIP advantage grows dramatically with time. Alternatively, increase the SIP monthly amount to ${fmtCurrency(s.sipmonthly*2)} and compare again.`
+              : `Increase SIP rate or amount. At ${s.siprate}%, SIP is close but not ahead yet. A rate of ${Math.ceil(s.siprate+2)}% (achievable with mid-cap allocation) could flip the outcome.`
+          ));
+          rows.push(aiAlloc([[50,"FD","#ffd76a"],[35,"SIP","#00e676"],[15,"RD","#4fa3ff"]]));
+        }
+        rows.push(aiRow("red","Risk / Warning",
+          `SIP returns depend on market performance — historical 12% CAGR is not guaranteed. FD is certain. RD is disciplined. Blend all three to match your risk appetite and goal timeline.`
+        ));
+        rows.push(aiScore(score));
+        rows.push(aiConfidence(s.siprate>=12 && s.years>=7 ? "High" : "Medium"));
+      }
+
+      /* ─── INFLATION ─── */
+      else if(active === "inflation"){
+        const finalReal  = Math.round(s.amount/Math.pow(1+s.inflation/100,s.years));
+        const loss       = s.amount - finalReal;
+        const halvingYrs = Math.round(72/s.inflation);
+        const fdHedge    = s.amount*Math.pow(1.075*(1-taxRate)+1-1+1,s.years); /* approximate post-tax FD */
+        const sipHedge   = s.amount*Math.pow(1.12,s.years);
+        const realLoss   = ((loss/s.amount)*100).toFixed(1);
+        const score      = 100 - Math.min(100, Math.round(s.inflation * 8 + s.years));
+
+        rows.push(aiRow("cyan","Situation Analysis",
+          pick([
+            `At ${s.inflation}% annual inflation, your ${fmtCurrency(s.amount)} today will have the real purchasing power of only ${fmtShort(finalReal)} in ${s.years} years — a ${realLoss}% erosion (${fmtShort(loss)} lost). Purchasing power halves every ${halvingYrs} years at this rate.`,
+            `Inflation at ${s.inflation}% compounds silently. In ${s.years} years, your ${fmtCurrency(s.amount)} will only feel like ${fmtShort(finalReal)} — ${fmtShort(loss)} of value quietly disappears. An SIP at 12% would grow it to ${fmtShort(sipHedge)} instead.`
+          ])
+        ));
+
+        if(s.inflation > 6){
+          rows.push(aiRow("red","What This Means",
+            pick([
+              `High inflation at ${s.inflation}% is actively destroying the real value of idle cash. Even a 7.5% FD would yield only ${fmtShort(fdHedge-s.amount)} in gains vs ${fmtShort(loss)} eroded — barely breaking even in real terms.`,
+              `At ${s.inflation}% inflation, you need investments returning at least ${s.inflation+2}% just to tread water. Only equity, real estate, or gold historically provide that buffer reliably.`
+            ])
+          ));
+          rows.push(aiRow("gold","Recommended Action",
+            pick([
+              `Equity is your primary inflation hedge. An SIP at 12% CAGR would grow ${fmtCurrency(s.amount)} to ${fmtShort(sipHedge)} — a real gain of ${fmtShort(sipHedge-s.amount-loss)} after accounting for inflation erosion. Allocate at least 60% to equity immediately.`,
+              `Move aggressively into equity SIP (60–70%), with a small gold allocation (15%) as an inflation hedge. The remaining 15–25% can stay in FD for liquidity. Don't let inflation silently erode more.`
+            ])
+          ));
+          rows.push(aiRow("red","Risk / Warning",
+            pick([
+              `Every month you delay reallocation from low-yield instruments, the inflation clock ticks. ${fmtCurrency(s.amount)} in a savings account at 3.5% loses approximately ${fmtShort(s.amount*(s.inflation-3.5)/100)} in real value each year.`,
+              `At ${s.inflation}% inflation, cash and savings accounts are actively losing ground. The only safe choice is action — deploy into inflation-beating instruments before the erosion compounds further.`
+            ])
+          ));
+          rows.push(aiAlloc([[65,"Equity SIP","#00e676"],[20,"FD / Bonds","#ffd76a"],[15,"Gold","#e8b23a"]]));
+          rows.push(aiScore(Math.max(0,score-15)));
+          rows.push(aiConfidence("High"));
+
+        } else if(s.years > 15){
+          rows.push(aiRow("gold","What This Means",
+            pick([
+              `Even at ${s.inflation}% inflation, over ${s.years} years the compounding erosion is severe. A SIP at 12% would yield ${fmtShort(sipHedge)} — a real gain of ${fmtShort(sipHedge-s.amount-loss)} above inflation. An FD hedges partially.`,
+              `${s.years} years is a very long horizon. Even "moderate" ${s.inflation}% inflation erodes ${realLoss}% of your wealth. Only equity has historically grown wealth meaningfully over 15+ year periods after inflation.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            `For a ${s.years}-year horizon, invest primarily in equity — large-cap index funds or diversified equity SIPs. Supplement with NPS Tier 1 (80CCD benefit) and PPF for tax-efficient, inflation-beating long-term wealth.`
+          ));
+          rows.push(aiRow("gold","Risk / Warning",
+            `Even moderate inflation compounding over 15+ years creates significant real erosion. Review your asset allocation every 3 years and rebalance toward equity during market dips.`
+          ));
+          rows.push(aiAlloc([[60,"Equity SIP","#00e676"],[20,"NPS/PPF","#7b61ff"],[20,"FD/Debt","#ffd76a"]]));
+          rows.push(aiScore(score));
+          rows.push(aiConfidence("High"));
+
+        } else {
+          rows.push(aiRow("cyan","What This Means",
+            pick([
+              `${s.inflation}% inflation over ${s.years} years erodes ${fmtShort(loss)} (${realLoss}%) of your money's real value. An FD at 7.5% still grows your ${fmtCurrency(s.amount)} to ${fmtShort(fdHedge)}, keeping you partially ahead of inflation.`,
+              `This is manageable inflation for a ${s.years}-year horizon — but it still requires deliberate action. Simply leaving money idle costs you ${fmtShort(loss)} in real purchasing power.`
+            ])
+          ));
+          rows.push(aiRow("cyan","Recommended Action",
+            `For this horizon, a 60/40 equity-debt split works well. Even a 30% equity allocation meaningfully lifts your real returns above the inflation line. Consider an index fund SIP alongside your fixed-income holdings.`
+          ));
+          rows.push(aiRow("gold","Risk / Warning",
+            `Don't let cash accumulate in savings accounts. Even at ${s.inflation}% inflation, idle cash loses ${fmtShort(s.amount*s.inflation/100)} per year in real terms. Every rupee should be deployed in something that beats inflation.`
+          ));
+          rows.push(aiAlloc([[40,"Equity SIP","#00e676"],[40,"FD/NSC","#ffd76a"],[20,"Gold","#e8b23a"]]));
+          rows.push(aiScore(score));
+          rows.push(aiConfidence("Medium"));
+        }
+      }
+
+      rows.push(aiCTA());
+      out.innerHTML = rows.join("");
     }
 
     /* ═══════════════════════════════════════════
