@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="css/navbar.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Market Tools — investpercent</title>
+  <meta name="description" content="Premium stock market dashboard with Stock Return, P/E Valuation, Market Cap, Portfolio Check, Brokerage, Dividend DRIP, IPO Probability, Rights Issue and Stock Screener calculators." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --bg:#060915;
+      --bg2:#0b1224;
+      --panel:#0f1830;
+      --panel2:#121e3c;
+      --soft:#18284d;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.13);
+      --text:#f7fbff;
+      --muted:#9da9c6;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --red:#ff607d;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
+      --hero:
+        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
+        linear-gradient(180deg,#070c18 0%,#091224 100%);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
+      z-index:0;
+    }
+    a{text-decoration:none;color:inherit}
+    button,input,select{font:inherit}
+    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:18px 18px 38px}
+
+    .hero{
+      background:var(--hero);border:1px solid var(--line);border-radius:32px;padding:28px;
+      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:18px
+    }
+    .hero::after{
+      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);pointer-events:none
+    }
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+    .hero-copy h1{
+      margin:0;font-family:Poppins,sans-serif;font-size:clamp(34px,5vw,58px);
+      line-height:1.02;letter-spacing:-.045em;max-width:840px
+    }
+    .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy p{margin:14px 0 0;color:var(--muted);font-size:18px;max-width:760px;line-height:1.6}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:none;cursor:pointer;border-radius:14px;padding:13px 18px;font-weight:800;transition:.2s ease
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .tabbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .tab{
+      background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
+      padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease
+    }
+    .tab:hover{color:var(--text);border-color:var(--line2)}
+    .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
+    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:14px}
+    .metric-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:18px;min-height:110px;position:relative;overflow:hidden
+    }
+    .metric-card::before{
+      content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
+      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
+    }
+    .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+    .metric-value{font-size:clamp(28px,3vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1}
+    .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)} .metric-value.red{color:var(--red)}
+    .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
+    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:18px;margin-top:18px}
+    .panel{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
+    .controls{padding:22px;position:relative;overflow:hidden}
+    .controls::after{
+      content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
+    }
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+    .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+    .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
+    .control-group{
+      margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
+    }
+    .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .control-name{font-size:14px;font-weight:700;color:var(--text)}
+    .control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
+    input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
+    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-webkit-slider-thumb{
+      appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
+      border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-moz-range-thumb{
+      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    select.ctrl-select{
+      width:100%;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+      color:var(--text);font-weight:700;cursor:pointer;outline:none;margin-top:4px;
+      appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239da9c6' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 14px center;background-size:12px;
+      padding-right:38px
+    }
+    select.ctrl-select option{background:#0f1830;color:var(--text)}
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+    .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+    .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card{
+      margin-top:18px;padding:18px;border-radius:20px;
+      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
+      border:1px solid rgba(255,255,255,.1)
+    }
+    .advisor-card h4{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
+    .advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .advisor-actions .btn{flex:1;min-width:150px}
+    .dashboard{padding:18px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:780px}
+    .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
+    .wealth-card,.insight-card,.chart-card,.timeline-card{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
+    }
+    .wealth-card{
+      padding:22px;display:flex;flex-direction:column;justify-content:space-between;min-height:188px;
+      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
+    }
+    .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+    .wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
+    .pill.green{background:rgba(0,230,118,.12);border-color:rgba(0,230,118,.25);color:var(--green)}
+    .pill.red{background:rgba(255,96,125,.12);border-color:rgba(255,96,125,.25);color:var(--red)}
+    .pill.gold{background:rgba(255,215,106,.12);border-color:rgba(255,215,106,.25);color:var(--gold)}
+    .wealth-number{
+      font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff
+    }
+    .wealth-number .grad{
+      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .wealth-sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:660px}
+    .wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+    .wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .wealth-stat .s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+    .wealth-stat .s-value{font-size:24px;font-weight:800;letter-spacing:-.03em}
+    .insight-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:188px}
+    .insight-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .insight-box strong{display:block;font-size:15px;margin-bottom:6px;letter-spacing:-.02em}
+    .insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
+    .chart-card{padding:18px;min-height:390px;display:flex;flex-direction:column}
+    .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+    .chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
+    .legend{display:flex;gap:12px;flex-wrap:wrap}
+    .legend-item{
+      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px
+    }
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .chart-wrap{position:relative;flex:1;min-height:280px;margin-top:8px}
+    .timeline-card{padding:18px}
+    .timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+    .timeline-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .milestone{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+    .m-amount{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
+    .m-note{color:#8390b1;font-size:13px;line-height:1.45}
+    /* Screener table */
+    .screener-table-wrap{overflow-x:auto;margin-top:8px}
+    .screener-table{width:100%;border-collapse:separate;border-spacing:0 6px}
+    .screener-table th{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:8px 14px;text-align:left}
+    .screener-table td{padding:12px 14px;font-size:14px;font-weight:700;background:rgba(255,255,255,.03);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}
+    .screener-table td:first-child{border-left:1px solid rgba(255,255,255,.04);border-radius:12px 0 0 12px}
+    .screener-table td:last-child{border-right:1px solid rgba(255,255,255,.04);border-radius:0 12px 12px 0}
+    .screener-table .tag{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800}
+    .tag-buy{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+    .tag-hold{background:rgba(255,215,106,.12);color:var(--gold);border:1px solid rgba(255,215,106,.2)}
+    .tag-watch{background:rgba(79,163,255,.12);color:var(--blue);border:1px solid rgba(79,163,255,.2)}
+    .hidden{display:none !important}
+    @media(max-width:1180px){
+      .top-metrics{grid-template-columns:1fr 1fr}
+      .layout{grid-template-columns:1fr}
+      .dashboard{min-height:auto}
+      .dash-top{grid-template-columns:1fr}
+      .timeline-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:760px){
+      .page{padding:12px 12px 28px}
+      .nav{padding:14px}
+      .hero{padding:18px}
+      .controls,.dashboard{padding:16px}
+      .wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}
+      .hero-copy p{font-size:15px}
+      .metric-value{font-size:30px}
+      .wealth-number{font-size:42px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div id="navbar"></div>
+
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>Stock Market <span class="grad">Intelligence Dashboard</span></h1>
+          <p>Analyze stocks, valuation, IPO probability, and portfolio strength in one premium interface.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="scrollToControls()">Start Analyzing</button>
+          <button class="btn secondary" onclick="openAdvisor()">Talk to Advisor</button>
+        </div>
+      </div>
+
+      <div class="tabbar" id="tabs"></div>
+
+      <div class="top-metrics">
+        <div class="metric-card">
+          <div class="metric-label">Current tool</div>
+          <div class="metric-value cyan" id="modeHeadline">Stock Return Calculator</div>
+          <div class="metric-sub" id="modeSub">Measure absolute return, CAGR, and profit or loss on any stock trade.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Primary result</div>
+          <div class="metric-value green" id="topProjected">₹50,000</div>
+          <div class="metric-sub">At current settings</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Return metric</div>
+          <div class="metric-value cyan" id="topGains">100%</div>
+          <div class="metric-sub">Absolute or annualized</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Signal</div>
+          <div class="metric-value gold" id="topRate">CAGR</div>
+          <div class="metric-sub">Key output indicator</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="panel controls" id="controlsAnchor">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Control Panel</div>
+            <div class="panel-desc" id="controlDesc">Tune your inputs. The dashboard updates instantly with live calculations.</div>
+          </div>
+          <div class="badge" id="panelBadge">STOCK RETURN</div>
+        </div>
+
+        <div id="dynamicControls"></div>
+
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="k">Signal mood</div>
+            <div class="v" id="miniMood">Bullish</div>
+          </div>
+          <div class="mini">
+            <div class="k">Key insight</div>
+            <div class="v" id="miniInsight">Profit Zone</div>
+          </div>
+        </div>
+
+        <div class="advisor-card">
+          <h4>Ready to act on your analysis?</h4>
+          <p>Use the dashboard to screen and evaluate, then step into a guided investment conversation.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="openAdvisor()">Start with justinvesting.in</button>
+            <button class="btn secondary" onclick="copySummary()">Copy summary</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title" id="wealthTitle">Stock Return Result</div>
+                <div class="pill" id="wealthPill">Live Calc</div>
+              </div>
+              <div class="wealth-number"><span class="grad" id="wealthNumber">₹50,000</span></div>
+              <div class="wealth-sub" id="wealthNarrative">Your stock position has generated a strong profit. Consistent picking and holding builds compounding advantage.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label" id="stat1Label">Investment</div>
+                <div class="s-value" id="stat1Value">₹50,000</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat2Label">Profit / Loss</div>
+                <div class="s-value" id="stat2Value">₹50,000</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat3Label">CAGR</div>
+                <div class="s-value" id="stat3Value">100%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-card">
+            <div class="insight-title">AI Insights</div>
+            <div class="insight-box"><strong id="insight1Title"></strong><span id="insight1Text"></span></div>
+            <div class="insight-box"><strong id="insight2Title"></strong><span id="insight2Text"></span></div>
+            <div class="insight-box"><strong id="insight3Title"></strong><span id="insight3Text"></span></div>
+          </div>
+        </div>
+
+        <div class="chart-card" id="mainChartCard">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title" id="chartTitle">Stock value trajectory</div>
+              <div class="chart-meta" id="chartMeta">Year-by-year portfolio growth at current return assumptions.</div>
+            </div>
+            <div class="legend" id="chartLegend"></div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="wealthChart"></canvas>
+          </div>
+        </div>
+
+        <div class="timeline-card" id="mainTimeline">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title" id="timelineTitle">Trade Milestones</div>
+              <div class="chart-meta" id="timelineMeta">Key value checkpoints across your holding period.</div>
+            </div>
+          </div>
+          <div class="timeline-grid" id="timelineGrid"></div>
+        </div>
+
+        <!-- Screener section (only visible for screener tab) -->
+        <div class="timeline-card hidden" id="screenerSection">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title">Filtered Stock Results</div>
+              <div class="chart-meta">Stocks matching your selected P/E, Market Cap, and Dividend Yield criteria.</div>
+            </div>
+          </div>
+          <div class="screener-table-wrap">
+            <table class="screener-table">
+              <thead>
+                <tr>
+                  <th>Stock</th>
+                  <th>Sector</th>
+                  <th>P/E</th>
+                  <th>Mkt Cap (Cr)</th>
+                  <th>Div Yield</th>
+                  <th>Signal</th>
+                </tr>
+              </thead>
+              <tbody id="screenerBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script>
+    const CALCS = {
+      stockreturn: {
+        label: "Stock Return",
+        badge: "STOCK RETURN",
+        title: "Stock Return Calculator",
+        sub: "Measure absolute return, CAGR, and profit or loss on any stock trade.",
+        desc: "Enter buy price, sell price, quantity and holding period to see your full return profile.",
+        wealthTitle: "Trade Return Result",
+        wealthPill: "Live Calc",
+        chartTitle: "Stock value trajectory",
+        chartMeta: "Year-by-year growth from buy price to sell price across the holding period.",
+        timelineTitle: "Holding Milestones",
+        timelineMeta: "Key value checkpoints across your holding period.",
+        controls: [
+          {id:"buyPrice",  label:"Buy Price (₹)",      min:1,     max:100000, step:1,    value:100,   format:"currency"},
+          {id:"sellPrice", label:"Sell Price (₹)",     min:1,     max:200000, step:1,    value:200,   format:"currency"},
+          {id:"qty",       label:"Quantity (shares)",  min:1,     max:10000,  step:1,    value:500,   format:"shares"},
+          {id:"holdYears", label:"Holding Period",     min:1,     max:30,     step:1,    value:2,     format:"years"}
+        ]
+      },
+      pevaluation: {
+        label: "P/E Valuation",
+        badge: "P/E VALUATION",
+        title: "P/E Valuation Tool",
+        sub: "Discover if a stock is undervalued or overvalued against industry peers.",
+        desc: "Enter EPS, current price and industry P/E to get the fair value and valuation tag.",
+        wealthTitle: "Fair Value Analysis",
+        wealthPill: "Valuation Mode",
+        chartTitle: "Price vs Fair Value",
+        chartMeta: "Comparison of current price against fair value across a range of EPS scenarios.",
+        timelineTitle: "Valuation Checkpoints",
+        timelineMeta: "How valuation shifts as EPS changes over time.",
+        controls: [
+          {id:"eps",        label:"Earnings Per Share (₹)", min:0.1,  max:500,  step:0.1, value:50,   format:"currency"},
+          {id:"curPrice",   label:"Current Market Price",  min:1,    max:50000,step:1,   value:800,  format:"currency"},
+          {id:"industryPE", label:"Industry P/E Ratio",   min:1,    max:100,  step:0.1, value:20,   format:"decimal"}
+        ]
+      },
+      marketcap: {
+        label: "Market Cap",
+        badge: "MARKET CAP",
+        title: "Market Cap Calculator",
+        sub: "Compute market capitalization and classify the company by size.",
+        desc: "Enter share price and outstanding shares to get market cap and company category.",
+        wealthTitle: "Market Cap Result",
+        wealthPill: "Cap Estimate",
+        chartTitle: "Market cap sensitivity",
+        chartMeta: "How market cap changes as the share price moves across a range.",
+        timelineTitle: "Cap Milestones",
+        timelineMeta: "Market cap at key share price levels.",
+        controls: [
+          {id:"sharePrice",  label:"Share Price (₹)",          min:1,    max:100000, step:1,      value:500,     format:"currency"},
+          {id:"sharesOut",   label:"Shares Outstanding (Cr)", min:0.01, max:500,    step:0.01,   value:10,      format:"cr"}
+        ]
+      },
+      portfolio: {
+        label: "Portfolio Check",
+        badge: "PORTFOLIO CHECK",
+        title: "Portfolio Diversification Checker",
+        sub: "Assess allocation risk and get a Balanced / Aggressive / Conservative verdict.",
+        desc: "Set your equity, debt, gold and other allocation percentages to see your risk score.",
+        wealthTitle: "Portfolio Risk Score",
+        wealthPill: "Risk Analyzer",
+        chartTitle: "Allocation breakdown",
+        chartMeta: "Pie view of your current asset class allocation.",
+        timelineTitle: "Allocation Analysis",
+        timelineMeta: "Asset class breakdown with risk commentary.",
+        controls: [
+          {id:"equity", label:"Equity %", min:0, max:100, step:1, value:60, format:"percent"},
+          {id:"debt",   label:"Debt %",   min:0, max:100, step:1, value:25, format:"percent"},
+          {id:"gold",   label:"Gold %",   min:0, max:100, step:1, value:10, format:"percent"},
+          {id:"others", label:"Others %", min:0, max:100, step:1, value:5,  format:"percent"}
+        ]
+      },
+      brokerage: {
+        label: "Brokerage",
+        badge: "BROKERAGE",
+        title: "Brokerage Comparator",
+        sub: "Compare discount vs full-service broker costs and their net impact on your trade.",
+        desc: "Enter trade amount and see how much brokerage eats into your profit.",
+        wealthTitle: "Net Trade Impact",
+        wealthPill: "Cost Analysis",
+        chartTitle: "Brokerage cost vs trade size",
+        chartMeta: "How brokerage cost scales across different trade sizes.",
+        timelineTitle: "Trade Cost Milestones",
+        timelineMeta: "Brokerage cost at key trade amount levels.",
+        controls: [
+          {id:"tradeAmt",    label:"Trade Amount (₹)",      min:1000,    max:10000000, step:1000, value:100000, format:"currency"},
+          {id:"fullPct",     label:"Full-service % charge", min:0.1,     max:2,        step:0.05, value:0.5,    format:"pct2"}
+        ]
+      },
+      dividend: {
+        label: "Dividend + DRIP",
+        badge: "DIVIDEND + DRIP",
+        title: "Dividend & DRIP Calculator",
+        sub: "Project total dividends and final portfolio value with dividend reinvestment.",
+        desc: "Enter shares, dividend per share, reinvestment rate and years to see DRIP compounding.",
+        wealthTitle: "DRIP Final Value",
+        wealthPill: "Reinvestment Mode",
+        chartTitle: "Dividend DRIP growth curve",
+        chartMeta: "Year-by-year portfolio growth with dividend reinvestment compounding.",
+        timelineTitle: "Dividend Milestones",
+        timelineMeta: "Key checkpoints on your dividend reinvestment journey.",
+        controls: [
+          {id:"shares",     label:"Number of Shares",         min:1,    max:100000, step:1,   value:1000,  format:"shares"},
+          {id:"divPS",      label:"Annual Dividend / Share",  min:0.1,  max:1000,   step:0.1, value:15,    format:"currency"},
+          {id:"reinvest",   label:"Reinvestment Rate",        min:0,    max:100,    step:1,   value:100,   format:"percent"},
+          {id:"dripYears",  label:"Holding Period",           min:1,    max:40,     step:1,   value:10,    format:"years"}
+        ]
+      },
+      ipo: {
+        label: "IPO Probability",
+        badge: "IPO PROBABILITY",
+        title: "IPO Allotment Probability",
+        sub: "Estimate your chances of getting an IPO allotment based on subscription levels.",
+        desc: "Enter issue size, total applications and lot size to see allotment probability.",
+        wealthTitle: "Allotment Probability",
+        wealthPill: "IPO Analyzer",
+        chartTitle: "Subscription vs probability",
+        chartMeta: "How allotment probability drops as oversubscription rises.",
+        timelineTitle: "IPO Benchmarks",
+        timelineMeta: "Allotment probability at key oversubscription levels.",
+        controls: [
+          {id:"issueSize",   label:"Issue Size (₹ Cr)",      min:10,   max:50000, step:10,   value:1000, format:"cr"},
+          {id:"lotSize",     label:"Lot Size (shares)",      min:1,    max:1000,  step:1,    value:40,   format:"shares"},
+          {id:"lotPrice",    label:"Price per Lot (₹)",      min:100,  max:100000,step:100,  value:8000, format:"currency"},
+          {id:"totalApps",   label:"Total Applications (L)", min:0.1,  max:500,   step:0.1,  value:10,   format:"lakh"}
+        ]
+      },
+      rights: {
+        label: "Rights Issue",
+        badge: "RIGHTS ISSUE",
+        title: "Rights Issue Calculator",
+        sub: "Calculate new shares, total cost and blended average price after a rights issue.",
+        desc: "Enter current shares, rights ratio and issue price to see your post-rights position.",
+        wealthTitle: "Rights Issue Summary",
+        wealthPill: "Rights Calc",
+        chartTitle: "Average price sensitivity",
+        chartMeta: "How your blended average price shifts with different rights ratios.",
+        timelineTitle: "Rights Milestones",
+        timelineMeta: "Post-rights position at key issue price levels.",
+        controls: [
+          {id:"curShares",    label:"Current Shares",              min:1,    max:1000000, step:1,    value:1000,  format:"shares"},
+          {id:"rightRatio",   label:"Rights Ratio (shares per 1)", min:0.1,  max:5,       step:0.1,  value:0.5,   format:"decimal"},
+          {id:"issuePrice",   label:"Rights Issue Price (₹)",     min:1,    max:10000,   step:1,    value:150,   format:"currency"},
+          {id:"mktPrice",     label:"Current Market Price (₹)",   min:1,    max:50000,   step:1,    value:250,   format:"currency"}
+        ]
+      },
+      screener: {
+        label: "Stock Screener",
+        badge: "STOCK SCREENER",
+        title: "Basic Stock Screener",
+        sub: "Filter and discover stocks by P/E range, market cap size, and dividend yield.",
+        desc: "Set your screening criteria and see a curated list of matching stock profiles.",
+        wealthTitle: "Screener Results",
+        wealthPill: "Screener Mode",
+        chartTitle: "P/E distribution of results",
+        chartMeta: "P/E ratio spread across screened stocks in the filtered universe.",
+        timelineTitle: "Screener Metrics",
+        timelineMeta: "Aggregate stats for the current filtered set.",
+        controls: [
+          {id:"peMin",      label:"Min P/E",              min:0,  max:100,  step:1,   value:5,   format:"decimal"},
+          {id:"peMax",      label:"Max P/E",              min:0,  max:200,  step:1,   value:30,  format:"decimal"},
+          {id:"capFilter",  label:"Market Cap Filter",    type:"select",
+           options:["Any","Small Cap (<₹5k Cr)","Mid Cap (₹5k–₹20k Cr)","Large Cap (>₹20k Cr)"],
+           value:"Any"},
+          {id:"divYield",   label:"Min Dividend Yield %", min:0,  max:10,   step:0.1, value:1,   format:"percent"}
+        ]
+      }
+    };
+
+    const SCREENER_DATA = [
+      {name:"Infosys",     sector:"IT",          pe:22, cap:600000, div:2.8,  tag:"hold"},
+      {name:"HDFC Bank",   sector:"Banking",     pe:18, cap:1100000,div:1.2,  tag:"buy"},
+      {name:"ITC",         sector:"FMCG",        pe:25, cap:580000, div:3.5,  tag:"buy"},
+      {name:"TCS",         sector:"IT",          pe:28, cap:1300000,div:1.8,  tag:"hold"},
+      {name:"Maruti",      sector:"Auto",        pe:30, cap:380000, div:1.0,  tag:"watch"},
+      {name:"Wipro",       sector:"IT",          pe:20, cap:290000, div:1.5,  tag:"hold"},
+      {name:"Sun Pharma",  sector:"Pharma",      pe:32, cap:320000, div:0.8,  tag:"watch"},
+      {name:"Bajaj Finance",sector:"NBFC",       pe:35, cap:410000, div:0.4,  tag:"buy"},
+      {name:"Coal India",  sector:"Energy",      pe:7,  cap:260000, div:5.6,  tag:"buy"},
+      {name:"ONGC",        sector:"Energy",      pe:9,  cap:310000, div:4.2,  tag:"buy"},
+      {name:"Britannia",   sector:"FMCG",        pe:48, cap:120000, div:1.4,  tag:"hold"},
+      {name:"Tata Steel",  sector:"Metal",       pe:11, cap:180000, div:2.2,  tag:"watch"},
+      {name:"Power Grid",  sector:"Utilities",   pe:14, cap:270000, div:3.8,  tag:"buy"},
+      {name:"Asian Paints",sector:"Paints",      pe:55, cap:250000, div:1.1,  tag:"hold"},
+      {name:"M&M",         sector:"Auto",        pe:21, cap:340000, div:0.9,  tag:"buy"},
+      {name:"HUL",         sector:"FMCG",        pe:50, cap:560000, div:2.0,  tag:"hold"},
+      {name:"Adani Ports", sector:"Infra",       pe:27, cap:220000, div:0.7,  tag:"watch"},
+      {name:"NTPC",        sector:"Utilities",   pe:12, cap:350000, div:3.1,  tag:"buy"}
+    ];
+
+    let state = {};
+    let active = 'stockreturn';
+    let chart;
+
+    const $ = id => document.getElementById(id);
+
+    function formatValue(v, kind){
+      v = Number(v);
+      if(kind === 'currency') return '₹' + Math.round(v).toLocaleString('en-IN');
+      if(kind === 'percent')  return Number(v).toFixed(1).replace(/\.0$/, '') + '%';
+      if(kind === 'years')    return Math.round(v) + ' Yrs';
+      if(kind === 'shares')   return Math.round(v).toLocaleString('en-IN') + ' sh';
+      if(kind === 'cr')       return Number(v).toFixed(2) + ' Cr';
+      if(kind === 'decimal')  return Number(v).toFixed(1);
+      if(kind === 'pct2')     return Number(v).toFixed(2) + '%';
+      if(kind === 'lakh')     return Number(v).toFixed(1) + ' L Apps';
+      return v;
+    }
+    function fmtCurrency(v){ return '₹' + Math.round(v).toLocaleString('en-IN'); }
+    function fmtShort(v){
+      v = Math.abs(v) >= 10000000 ? (v/10000000).toFixed(2) + ' Cr' :
+          Math.abs(v) >= 100000  ? (v/100000).toFixed(2) + ' L' :
+          Math.round(v).toLocaleString('en-IN');
+      return v.startsWith && !v.startsWith('₹') && !isNaN(Number(v.replace(/[^0-9.-]/g,''))) ? '₹' + v : v;
+    }
+    function fmtShortNum(v){
+      if(Math.abs(v) >= 10000000) return '₹' + (v/10000000).toFixed(2) + ' Cr';
+      if(Math.abs(v) >= 100000)   return '₹' + (v/100000).toFixed(2) + ' L';
+      return '₹' + Math.round(v).toLocaleString('en-IN');
+    }
+
+    function initState(){
+      Object.keys(CALCS).forEach(key=>{
+        state[key]={};
+        CALCS[key].controls.forEach(c=>{
+          state[key][c.id] = c.type === 'select' ? c.value : c.value;
+        });
+      });
+    }
+
+    function renderTabs(){
+      $('tabs').innerHTML = Object.entries(CALCS).map(([key, cfg]) =>
+        `<button class="tab ${key===active?'active':''}" data-key="${key}">${cfg.label}</button>`
+      ).join('');
+      document.querySelectorAll('.tab').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          active = btn.dataset.key;
+          renderTabs();
+          renderControls();
+          update();
+        });
+      });
+    }
+
+    function renderControls(){
+      const cfg = CALCS[active];
+      $('panelBadge').textContent  = cfg.badge;
+      $('controlDesc').textContent = cfg.desc;
+      $('modeHeadline').textContent = cfg.title;
+      $('modeSub').textContent     = cfg.sub;
+
+      $('dynamicControls').innerHTML = cfg.controls.map(c=>{
+        if(c.type === 'select'){
+          const opts = c.options.map(o=>`<option value="${o}" ${state[active][c.id]===o?'selected':''}>${o}</option>`).join('');
+          return `<div class="control-group">
+            <div class="control-top"><div class="control-name">${c.label}</div></div>
+            <select class="ctrl-select" id="ctrl-${c.id}">${opts}</select>
+          </div>`;
+        }
+        return `<div class="control-group">
+          <div class="control-top">
+            <div class="control-name">${c.label}</div>
+            <div class="control-value" id="view-${c.id}">${formatValue(state[active][c.id], c.format)}</div>
+          </div>
+          <input type="range" id="ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${state[active][c.id]}">
+        </div>`;
+      }).join('');
+
+      cfg.controls.forEach(c=>{
+        const el = $(`ctrl-${c.id}`);
+        if(!el) return;
+        if(c.type === 'select'){
+          el.addEventListener('change', e=>{ state[active][c.id]=e.target.value; update(); });
+        } else {
+          el.addEventListener('input', e=>{
+            state[active][c.id] = Number(e.target.value);
+            $(`view-${c.id}`).textContent = formatValue(state[active][c.id], c.format);
+            update();
+          });
+        }
+      });
+    }
+
+    function buildMilestones(labels, corpus, base){
+      const total = labels.length;
+      const picks = Array.from(new Set([1, Math.max(1,Math.ceil(total*0.33)), Math.max(1,Math.ceil(total*0.66)), total])).slice(0,4);
+      return picks.map(y=>{
+        const idx = y - 1;
+        const val = corpus[idx] || 0;
+        const inv = base[idx]   || 0;
+        return {
+          year: y,
+          value: val,
+          note: val > inv ? fmtShortNum(val-inv) + ' created above base' : 'Capital still compounding'
+        };
+      });
+    }
+
+    function renderMilestones(title, meta, items){
+      $('timelineTitle').textContent = title;
+      $('timelineMeta').textContent  = meta;
+      $('timelineGrid').innerHTML = items.map(item=>`
+        <div class="milestone">
+          <div class="m-year">Year ${item.year}</div>
+          <div class="m-amount">${fmtShortNum(item.value)}</div>
+          <div class="m-note">${item.note}</div>
+        </div>
+      `).join('');
+    }
+
+    function setInsights(a, b, c){
+      $('insight1Title').textContent = a.title; $('insight1Text').textContent = a.text;
+      $('insight2Title').textContent = b.title; $('insight2Text').textContent = b.text;
+      $('insight3Title').textContent = c.title; $('insight3Text').textContent = c.text;
+    }
+
+    function renderLineChart(labels, series, title, meta){
+      $('chartTitle').textContent = title;
+      $('chartMeta').textContent  = meta;
+      $('chartLegend').innerHTML  = series.map(s=>`
+        <div class="legend-item"><span class="dot" style="background:${s.color}"></span>${s.label}</div>
+      `).join('');
+
+      const ctx = $('wealthChart').getContext('2d');
+      const gradient = ctx.createLinearGradient(0,0,0,360);
+      gradient.addColorStop(0, 'rgba(0,212,255,.28)');
+      gradient.addColorStop(.55,'rgba(79,163,255,.12)');
+      gradient.addColorStop(1, 'rgba(79,163,255,0)');
+
+      if(chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type:'line',
+        data:{
+          labels,
+          datasets: series.map((s,idx)=>({
+            label: s.label,
+            data:  s.data,
+            borderColor:     s.color,
+            backgroundColor: idx===0 ? gradient : 'transparent',
+            fill: !!s.fill,
+            borderWidth: idx===0 ? 3 : 2.2,
+            pointRadius:      idx===0 ? 2 : 0,
+            pointHoverRadius: 5,
+            pointBackgroundColor: s.color,
+            pointBorderColor:     '#08111f',
+            tension: .38
+          }))
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          interaction:{mode:'index',intersect:false},
+          plugins:{
+            legend:{display:false},
+            tooltip:{
+              backgroundColor:'rgba(7,12,28,.96)',
+              borderColor:'rgba(255,255,255,.08)',
+              borderWidth:1,
+              titleColor:'#fff',
+              bodyColor:'#dce6ff',
+              padding:12,
+              callbacks:{ label:(ctx)=>`${ctx.dataset.label}: ${fmtShortNum(ctx.raw)}` }
+            }
+          },
+          scales:{
+            x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:12}}},
+            y:{
+              beginAtZero:true,
+              grid:{color:'rgba(255,255,255,.06)'},
+              ticks:{color:'rgba(220,230,255,.55)',font:{size:12}, callback:(v)=>fmtShortNum(v)}
+            }
+          }
+        }
+      });
+    }
+
+    function renderPieChart(labels, data, colors, title, meta){
+      $('chartTitle').textContent = title;
+      $('chartMeta').textContent  = meta;
+      $('chartLegend').innerHTML  = labels.map((l,i)=>`
+        <div class="legend-item"><span class="dot" style="background:${colors[i]}"></span>${l}</div>
+      `).join('');
+
+      if(chart) chart.destroy();
+      const ctx = $('wealthChart').getContext('2d');
+      chart = new Chart(ctx, {
+        type:'doughnut',
+        data:{
+          labels,
+          datasets:[{
+            data,
+            backgroundColor: colors,
+            borderColor: '#08111f',
+            borderWidth: 3,
+            hoverOffset: 8
+          }]
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          plugins:{
+            legend:{display:false},
+            tooltip:{
+              backgroundColor:'rgba(7,12,28,.96)',
+              borderColor:'rgba(255,255,255,.08)',
+              borderWidth:1,
+              titleColor:'#fff',
+              bodyColor:'#dce6ff',
+              padding:12,
+              callbacks:{ label:(ctx)=>`${ctx.label}: ${ctx.raw}%` }
+            }
+          }
+        }
+      });
+    }
+
+    function renderBarChart(labels, data, color, title, meta){
+      $('chartTitle').textContent = title;
+      $('chartMeta').textContent  = meta;
+      $('chartLegend').innerHTML  = `<div class="legend-item"><span class="dot" style="background:${color}"></span>P/E Ratio</div>`;
+
+      if(chart) chart.destroy();
+      const ctx = $('wealthChart').getContext('2d');
+      chart = new Chart(ctx, {
+        type:'bar',
+        data:{
+          labels,
+          datasets:[{
+            label:'P/E',
+            data,
+            backgroundColor: color,
+            borderRadius: 8,
+            borderSkipped: false
+          }]
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          plugins:{
+            legend:{display:false},
+            tooltip:{
+              backgroundColor:'rgba(7,12,28,.96)',
+              borderColor:'rgba(255,255,255,.08)',
+              borderWidth:1,
+              titleColor:'#fff',
+              bodyColor:'#dce6ff',
+              padding:12
+            }
+          },
+          scales:{
+            x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:12}}},
+            y:{
+              beginAtZero:true,
+              grid:{color:'rgba(255,255,255,.06)'},
+              ticks:{color:'rgba(220,230,255,.55)',font:{size:12}}
+            }
+          }
+        }
+      });
+    }
+
+    function setWealthArea({title, pill, pillClass, value, narrative, stat1, stat2, stat3, mood, power}){
+      $('wealthTitle').textContent    = title;
+      const pillEl = $('wealthPill');
+      pillEl.textContent  = pill;
+      pillEl.className    = 'pill ' + (pillClass || '');
+      $('wealthNumber').textContent   = value;
+      $('wealthNarrative').textContent = narrative;
+      $('stat1Label').textContent = stat1.label; $('stat1Value').textContent = stat1.value;
+      $('stat2Label').textContent = stat2.label; $('stat2Value').textContent = stat2.value;
+      $('stat3Label').textContent = stat3.label; $('stat3Value').textContent = stat3.value;
+      $('miniMood').textContent    = mood;
+      $('miniInsight').textContent = power;
+    }
+
+    function setTop(primary, secondary, signal){
+      $('topProjected').textContent = primary;
+      $('topGains').textContent     = secondary;
+      $('topRate').textContent      = signal;
+    }
+
+    function showSections(showTimeline, showScreener){
+      $('mainTimeline').classList.toggle('hidden', !showTimeline);
+      $('screenerSection').classList.toggle('hidden', !showScreener);
+    }
+
+    // ─── CALCULATORS ───────────────────────────────────────────────────────────
+
+    function calcStockReturn(){
+      const s = state.stockreturn;
+      const cfg = CALCS.stockreturn;
+      const invested     = s.buyPrice * s.qty;
+      const finalValue   = s.sellPrice * s.qty;
+      const profitLoss   = finalValue - invested;
+      const absReturn    = ((s.sellPrice - s.buyPrice) / s.buyPrice) * 100;
+      const cagr         = s.holdYears > 0 ? (Math.pow(s.sellPrice / s.buyPrice, 1/s.holdYears) - 1) * 100 : absReturn;
+      const isProfit     = profitLoss >= 0;
+
+      setTop(fmtShortNum(finalValue), (isProfit ? '+' : '') + absReturn.toFixed(1) + '%', cagr.toFixed(1) + '% CAGR');
+      setWealthArea({
+        title: cfg.wealthTitle,
+        pill:  isProfit ? 'Profit' : 'Loss',
+        pillClass: isProfit ? 'green' : 'red',
+        value: fmtShortNum(Math.abs(profitLoss)),
+        narrative: `Buying ${s.qty.toLocaleString('en-IN')} shares at ${fmtCurrency(s.buyPrice)} and selling at ${fmtCurrency(s.sellPrice)} over ${s.holdYears} year(s) delivers a ${absReturn.toFixed(1)}% absolute return${s.holdYears > 1 ? ' and ' + cagr.toFixed(1) + '% CAGR' : ''}.`,
+        stat1:{label:'Invested', value:fmtShortNum(invested)},
+        stat2:{label:'Profit / Loss', value:(isProfit?'+':'-') + fmtShortNum(Math.abs(profitLoss))},
+        stat3:{label:'CAGR', value:cagr.toFixed(1) + '%'},
+        mood:  isProfit ? 'Bullish Win' : 'Review Trade',
+        power: 'Abs. Return ' + absReturn.toFixed(1) + '%'
+      });
+      setInsights(
+        {title: isProfit ? 'Strong absolute return.' : 'Loss on this trade.',
+         text:  `You made ${absReturn.toFixed(1)}% on this position. ${absReturn > 20 ? 'Exceptional gain — discipline and timing paid off.' : absReturn > 0 ? 'A positive return beats idle cash.' : 'Review your entry point or hold longer next time.'}`},
+        {title: s.holdYears > 1 ? 'CAGR smooths the picture.' : 'Single-year snapshot.',
+         text:  s.holdYears > 1 ? `The CAGR of ${cagr.toFixed(1)}% makes this trade comparable to mutual fund or index returns.` : 'Extend holding period to measure CAGR and compound better.'},
+        {title: 'Transaction costs matter.',
+         text:  'Brokerage, STT and taxes reduce net profit. Use the Brokerage tab to model the full cost impact.'}
+      );
+
+      const labels = [], corpus = [], base = [];
+      for(let y = 1; y <= s.holdYears; y++){
+        const pAtY = s.buyPrice * Math.pow(1 + cagr/100, y);
+        labels.push('Year ' + y);
+        corpus.push(Math.round(pAtY * s.qty));
+        base.push(Math.round(invested));
+      }
+      renderLineChart(labels, [
+        {label:'Portfolio value', data:corpus, color:'#00d4ff', fill:true},
+        {label:'Invested capital', data:base,   color:'#4fa3ff', fill:false}
+      ], cfg.chartTitle, cfg.chartMeta);
+      renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestones(labels, corpus, base));
+      showSections(true, false);
+    }
+
+    function calcPE(){
+      const s = state.pevaluation;
+      const cfg = CALCS.pevaluation;
+      const curPE     = s.curPrice / s.eps;
+      const fairValue = s.eps * s.industryPE;
+      const diff      = s.curPrice - fairValue;
+      const isUnder   = diff <= 0;
+      const pctDiff   = ((fairValue - s.curPrice) / fairValue) * 100;
+
+      setTop(fmtShortNum(fairValue), curPE.toFixed(1) + 'x P/E', isUnder ? 'UNDERVALUED' : 'OVERVALUED');
+      setWealthArea({
+        title:cfg.wealthTitle,
+        pill: isUnder ? 'Undervalued' : 'Overvalued',
+        pillClass: isUnder ? 'green' : 'red',
+        value: fmtShortNum(fairValue),
+        narrative: `At EPS of ${fmtCurrency(s.eps)}, the industry P/E of ${s.industryPE}x implies a fair value of ${fmtShortNum(fairValue)}. Current price of ${fmtShortNum(s.curPrice)} is ${isUnder ? 'BELOW' : 'ABOVE'} fair value by ${Math.abs(pctDiff).toFixed(1)}%.`,
+        stat1:{label:'Current Price', value:fmtShortNum(s.curPrice)},
+        stat2:{label:'Fair Value', value:fmtShortNum(fairValue)},
+        stat3:{label:'Current P/E', value:curPE.toFixed(1) + 'x'},
+        mood: isUnder ? 'Opportunity Zone' : 'Caution Zone',
+        power: (isUnder ? 'Discount ' : 'Premium ') + Math.abs(pctDiff).toFixed(1) + '%'
+      });
+      setInsights(
+        {title: isUnder ? 'Stock appears undervalued.' : 'Stock may be overvalued.',
+         text:  isUnder ? `Current market price is ${Math.abs(pctDiff).toFixed(1)}% below the industry-justified fair value.` : `Current market price is ${pctDiff.toFixed(1)}% above fair value — premium priced.`},
+        {title:'P/E ratio context.', text:`A P/E of ${curPE.toFixed(1)}x vs industry ${s.industryPE}x suggests the market ${curPE < s.industryPE ? 'hasn\'t fully priced in earnings potential' : 'is pricing in future growth expectations'}.`},
+        {title:'EPS quality matters.', text:'Fair value analysis depends on consistent and growing earnings. Validate EPS trend before acting on this signal.'}
+      );
+
+      const epsPoints = Array.from({length:8}, (_,i) => s.eps * (0.5 + i*0.15));
+      const fairVals  = epsPoints.map(e => e * s.industryPE);
+      const curVals   = epsPoints.map(e => e / s.eps * s.curPrice);
+      const labels    = epsPoints.map(e => '₹' + e.toFixed(0));
+      renderLineChart(labels, [
+        {label:'Fair Value', data:fairVals, color:'#00e676', fill:true},
+        {label:'Current Price trend', data:curVals, color:'#ff607d', fill:false}
+      ], cfg.chartTitle, cfg.chartMeta);
+      showSections(false, false);
+    }
+
+    function calcMarketCap(){
+      const s = state.marketcap;
+      const cfg = CALCS.marketcap;
+      const shareCr    = s.sharesOut * 1e7; // Cr to absolute
+      const mcapCr     = (s.sharePrice * shareCr) / 1e7;
+      let category, catColor;
+      if(mcapCr < 5000)       { category = 'Small Cap';  catColor = '#ffd76a'; }
+      else if(mcapCr < 20000) { category = 'Mid Cap';    catColor = '#4fa3ff'; }
+      else                    { category = 'Large Cap';  catColor = '#00e676'; }
+
+      setTop(fmtShortNum(mcapCr * 1e7), category, s.sharePrice > 500 ? 'Premium' : 'Value');
+      setWealthArea({
+        title:cfg.wealthTitle,
+        pill: category,
+        pillClass: mcapCr >= 20000 ? 'green' : mcapCr >= 5000 ? '' : 'gold',
+        value: fmtShortNum(mcapCr * 1e7),
+        narrative: `With ${s.sharesOut} Cr shares outstanding at ₹${s.sharePrice.toLocaleString('en-IN')}, the market capitalisation is ${fmtShortNum(mcapCr * 1e7)}, classifying this as a ${category} company.`,
+        stat1:{label:'Share Price', value:fmtShortNum(s.sharePrice)},
+        stat2:{label:'Shares (Cr)', value:s.sharesOut + ' Cr'},
+        stat3:{label:'Category', value:category},
+        mood: category + ' Territory',
+        power: 'Mcap ' + (mcapCr >= 100000 ? (mcapCr/100000).toFixed(1) + 'L Cr' : mcapCr.toFixed(0) + ' Cr')
+      });
+      setInsights(
+        {title: category + ' dynamics.', text: category === 'Large Cap' ? 'Large caps offer stability, lower volatility, and are typically well-researched by institutions.' : category === 'Mid Cap' ? 'Mid caps can offer growth with moderate risk — often overlooked by big funds.' : 'Small caps can be high-growth but come with higher volatility and lower liquidity.'},
+        {title:'Market cap is price-sensitive.', text:'A 10% change in share price directly changes market cap by 10%. Monitor float and dilution events.'},
+        {title:'Not all cap categories are equal.', text:'Category thresholds can shift as markets re-rate. Always cross-check with SEBI classification updates.'}
+      );
+
+      const prices = Array.from({length:8}, (_,i) => Math.round(s.sharePrice * (0.5 + i*0.15)));
+      const caps   = prices.map(p => Math.round((p * shareCr) / 1e7));
+      renderLineChart(prices.map(p=>'₹'+p.toLocaleString('en-IN')), [
+        {label:'Market Cap (Cr)', data:caps, color:'#00d4ff', fill:true}
+      ], cfg.chartTitle, cfg.chartMeta);
+      showSections(false, false);
+    }
+
+    function calcPortfolio(){
+      const s = state.portfolio;
+      const cfg = CALCS.portfolio;
+      const total = s.equity + s.debt + s.gold + s.others;
+      const eq = total > 0 ? s.equity : 0;
+      const de = total > 0 ? s.debt   : 0;
+      const go = total > 0 ? s.gold   : 0;
+      const ot = total > 0 ? s.others : 0;
+
+      const riskScore = Math.round((eq * 1.0 + go * 0.3 + de * 0.1 + ot * 0.5) / (total || 1));
+      let style, pillClass;
+      if(eq >= 70)       { style = 'Aggressive';   pillClass = 'red'; }
+      else if(eq >= 45)  { style = 'Balanced';     pillClass = 'gold'; }
+      else               { style = 'Conservative'; pillClass = 'green'; }
+
+      setTop(style, 'Risk Score: ' + riskScore + '/100', eq + '% Equity');
+      setWealthArea({
+        title:cfg.wealthTitle,
+        pill: style,
+        pillClass,
+        value: style,
+        narrative: `With ${eq}% equity, ${de}% debt, ${go}% gold and ${ot}% others, your portfolio is classified as ${style}. ${style === 'Aggressive' ? 'High equity means high growth potential but also high short-term volatility.' : style === 'Balanced' ? 'Good balance between growth and safety — suitable for most long-term investors.' : 'Heavy debt/gold allocation — low volatility but limited growth upside.'}`,
+        stat1:{label:'Equity', value:eq + '%'},
+        stat2:{label:'Debt', value:de + '%'},
+        stat3:{label:'Gold + Others', value:(go+ot) + '%'},
+        mood: style,
+        power: 'Risk Score ' + riskScore
+      });
+      $('wealthNumber').textContent = style;
+      setInsights(
+        {title: style + ' investor profile.', text: style === 'Aggressive' ? 'High equity concentration suits long investment horizons of 7+ years.' : style === 'Balanced' ? 'A 60/40 or similar allocation has historically balanced risk and return over market cycles.' : 'Conservative portfolios suit near-term goals or risk-averse investors seeking capital protection.'},
+        {title:'Gold as a hedge.', text:'Gold typically moves inversely to equities. Maintaining 5–15% allocation provides inflation protection and downside buffer.'},
+        {title:'Rebalance periodically.', text:'Market movements shift your actual allocation. Review and rebalance at least once a year to stay on target.'}
+      );
+      renderPieChart(
+        ['Equity','Debt','Gold','Others'],
+        [eq, de, go, ot],
+        ['#00d4ff','#4fa3ff','#ffd76a','#7b61ff'],
+        cfg.chartTitle, cfg.chartMeta
+      );
+      showSections(false, false);
+    }
+
+    function calcBrokerage(){
+      const s = state.brokerage;
+      const cfg = CALCS.brokerage;
+      const discountCost  = Math.min(20, s.tradeAmt * 0.0003);
+      const fullCost      = s.tradeAmt * (s.fullPct / 100);
+      const stt           = s.tradeAmt * 0.001;
+      const sebi          = s.tradeAmt * 0.0001;
+      const extraCharges  = stt + sebi;
+      const netDiscount   = discountCost + extraCharges;
+      const netFull       = fullCost + extraCharges;
+      const saving        = netFull - netDiscount;
+
+      setTop(fmtShortNum(netDiscount), fmtShortNum(netFull), fmtShortNum(saving) + ' saved');
+      setWealthArea({
+        title:cfg.wealthTitle,
+        pill: 'Cost Analyzer',
+        pillClass: '',
+        value: fmtShortNum(saving),
+        narrative: `On a trade of ${fmtShortNum(s.tradeAmt)}, a discount broker costs ${fmtShortNum(netDiscount)} (flat ₹20 + STT + SEBI), while a full-service broker charges ${fmtShortNum(netFull)}. You save ${fmtShortNum(saving)} per trade with discount broking.`,
+        stat1:{label:'Discount Broker', value:fmtShortNum(netDiscount)},
+        stat2:{label:'Full-service Broker', value:fmtShortNum(netFull)},
+        stat3:{label:'Savings', value:fmtShortNum(saving)},
+        mood: 'Cost Optimizer',
+        power: fmtShortNum(saving) + ' saved/trade'
+      });
+      setInsights(
+        {title:'Discount broking wins on cost.', text:`Zerodha, Groww, and Upstox cap brokerage at ₹20 per order — a massive advantage over percentage-based full-service fees.`},
+        {title:'Statutory charges are unavoidable.', text:'STT, SEBI charges, and exchange fees apply regardless of broker type. These add up on high-volume trading.'},
+        {title:'High frequency? Costs compound.', text:`If you trade 50 times a month with a full-service broker at ${s.fullPct}%, annual costs from brokerage alone exceed ${fmtShortNum(fullCost * 600)}.`}
+      );
+
+      const tradeSizes = [10000, 25000, 50000, 100000, 250000, 500000, 1000000, s.tradeAmt].sort((a,b)=>a-b);
+      const discCosts  = tradeSizes.map(t => Math.round(Math.min(20, t * 0.0003) + t * 0.0011));
+      const fullCosts  = tradeSizes.map(t => Math.round(t * (s.fullPct/100) + t * 0.0011));
+      renderLineChart(tradeSizes.map(t => fmtShortNum(t)), [
+        {label:'Discount Broker', data:discCosts, color:'#00e676', fill:true},
+        {label:'Full-service',    data:fullCosts, color:'#ff607d', fill:false}
+      ], cfg.chartTitle, cfg.chartMeta);
+
+      const times = [1, 2, 3, 4];
+      const labels = times.map(t => 'Trade ×' + t);
+      const cumulDisc = times.map(t => Math.round(netDiscount * t));
+      const cumulFull = times.map(t => Math.round(netFull * t));
+      renderMilestones(cfg.timelineTitle, cfg.timelineMeta, times.map((t,i)=>({
+        year: t,
+        value: cumulFull[i],
+        note: 'Save ' + fmtShortNum(cumulFull[i] - cumulDisc[i]) + ' vs full-service'
+      })));
+      showSections(true, false);
+    }
+
+    function calcDividend(){
+      const s = state.dividend;
+      const cfg = CALCS.dividend;
+      let shares = s.shares;
+      let totalDiv = 0;
+      const labels = [], portValues = [], divCumulative = [];
+      const sharePrice = 200; // assumed base for DRIP share price (simplified)
+
+      for(let y = 1; y <= s.dripYears; y++){
+        const annDiv = shares * s.divPS;
+        const reinvestedDiv = annDiv * (s.reinvest / 100);
+        const cashDiv       = annDiv - reinvestedDiv;
+        const newShares     = reinvestedDiv / (sharePrice * (1 + 0.07 * (y-1)));
+        shares  += newShares;
+        totalDiv += annDiv;
+        labels.push('Year ' + y);
+        portValues.push(Math.round(shares * sharePrice * (1 + 0.07 * (y-1))));
+        divCumulative.push(Math.round(totalDiv));
+      }
+      const finalValue = portValues[portValues.length - 1] || 0;
+
+      setTop(fmtShortNum(finalValue), fmtShortNum(totalDiv), s.reinvest + '% DRIP');
+      setWealthArea({
+        title:cfg.wealthTitle,
+        pill: s.reinvest === 100 ? 'Full DRIP' : s.reinvest === 0 ? 'No Reinvest' : 'Partial DRIP',
+        pillClass: s.reinvest >= 80 ? 'green' : s.reinvest >= 40 ? 'gold' : '',
+        value: fmtShortNum(finalValue),
+        narrative: `Starting with ${s.shares.toLocaleString('en-IN')} shares at ₹${s.divPS}/share annual dividend, reinvesting ${s.reinvest}% over ${s.dripYears} years, you accumulate ${fmtShortNum(totalDiv)} in total dividends and reach a final portfolio value of ${fmtShortNum(finalValue)}.`,
+        stat1:{label:'Total Dividends', value:fmtShortNum(totalDiv)},
+        stat2:{label:'Final Portfolio', value:fmtShortNum(finalValue)},
+        stat3:{label:'Shares Accumulated', value:Math.round(shares).toLocaleString('en-IN') + ' sh'},
+        mood: s.reinvest >= 80 ? 'DRIP Optimizer' : 'Dividend Collector',
+        power: 'DRIP Rate ' + s.reinvest + '%'
+      });
+      setInsights(
+        {title: s.reinvest >= 80 ? 'DRIP maximizes compounding.' : 'Partial reinvestment chosen.',
+         text:  s.reinvest >= 80 ? 'Reinvesting all dividends buys more shares automatically, accelerating compounding without extra capital.' : `You're taking ${100-s.reinvest}% as cash — useful for income. The remaining ${s.reinvest}% drives compounding growth.`},
+        {title:'Dividend growth matters.', text:'Companies with a consistent dividend growth history often deliver better total returns than high-yield but stagnant payers.'},
+        {title:'Tax on dividends.', text:'Dividend income is added to your taxable income. High-yield portfolios may face meaningful tax drag, especially in higher brackets.'}
+      );
+      renderLineChart(labels, [
+        {label:'Portfolio Value', data:portValues, color:'#00d4ff', fill:true},
+        {label:'Cumulative Dividends', data:divCumulative, color:'#00e676', fill:false}
+      ], cfg.chartTitle, cfg.chartMeta);
+      renderMilestones(cfg.timelineTitle, cfg.timelineMeta, buildMilestones(labels, portValues, divCumulative));
+      showSections(true, false);
+    }
+
+    function calcIPO(){
+      const s = state.ipo;
+      const cfg = CALCS.ipo;
+      const issueSizeAmt   = s.issueSize * 1e7;
+      const lotsAvailable  = Math.floor(issueSizeAmt / (s.lotSize * s.lotPrice));
+      const totalAppsAbs   = s.totalApps * 100000;
+      const overSub        = totalAppsAbs / (lotsAvailable || 1);
+      const probability    = Math.min(100, (1 / Math.max(1, overSub)) * 100);
+      let level;
+      if(overSub < 5)        level = 'Low demand';
+      else if(overSub < 20)  level = 'Moderate';
+      else if(overSub < 50)  level = 'High demand';
+      else if(overSub < 100) level = 'Hot IPO';
+      else                   level = 'Mega IPO';
+
+      setTop(probability.toFixed(1) + '%', overSub.toFixed(1) + 'x Oversubscribed', level);
+      setWealthArea({
+        title:cfg.wealthTitle,
+        pill: probability < 20 ? 'Low Chance' : probability < 50 ? 'Moderate' : 'Good Chance',
+        pillClass: probability < 20 ? 'red' : probability < 50 ? 'gold' : 'green',
+        value: probability.toFixed(1) + '%',
+        narrative: `With ${s.totalApps}L applications and ${lotsAvailable.toLocaleString('en-IN')} lots available, the IPO is ${overSub.toFixed(1)}x oversubscribed. Your allotment probability is approximately ${probability.toFixed(1)}%.`,
+        stat1:{label:'Lots Available', value:lotsAvailable.toLocaleString('en-IN')},
+        stat2:{label:'Oversubscription', value:overSub.toFixed(1) + 'x'},
+        stat3:{label:'Allotment Prob.', value:probability.toFixed(1) + '%'},
+        mood: level,
+        power: overSub.toFixed(1) + 'x subscribed'
+      });
+      $('wealthNumber').textContent = probability.toFixed(1) + '%';
+      setInsights(
+        {title: overSub > 30 ? 'IPO is heavily oversubscribed.' : 'Reasonable allotment chance.',
+         text:  overSub > 30 ? `At ${overSub.toFixed(1)}x subscription, only 1 in ${Math.round(overSub)} applicants is likely to get allotment. Apply via multiple family accounts if possible.` : `Subscription of ${overSub.toFixed(1)}x gives a decent allotment probability. Consider applying.`},
+        {title:'Retail quota matters.',text:'Retail investors (applying < ₹2L) get a 35% reservation. Oversubscription within retail quota determines your actual probability.'},
+        {title:'Listing premium is separate.',text:'Even with allotment, grey market premium (GMP) is a key indicator of potential listing gains — not guaranteed but signals market sentiment.'}
+      );
+
+      const overSubLevels = [1, 5, 10, 25, 50, 100, 200, Math.max(overSub, 1)].sort((a,b)=>a-b);
+      const probs         = overSubLevels.map(o => parseFloat(Math.min(100, (1/o)*100).toFixed(2)));
+      renderLineChart(overSubLevels.map(o=>o+'x'), [
+        {label:'Allotment Probability', data:probs, color:'#7b61ff', fill:true}
+      ], cfg.chartTitle, cfg.chartMeta);
+
+      const levels = [1, 5, 10, 25].map(x => ({
+        year:x,
+        value:parseFloat(Math.min(100,(1/x)*100).toFixed(1)),
+        note: `${x}x oversubscribed → ~${Math.min(100,(1/x)*100).toFixed(1)}% allotment chance`
+      }));
+      $('timelineTitle').textContent = cfg.timelineTitle;
+      $('timelineMeta').textContent  = cfg.timelineMeta;
+      $('timelineGrid').innerHTML = levels.map(l=>`
+        <div class="milestone">
+          <div class="m-year">${l.year}x Oversubscribed</div>
+          <div class="m-amount">${l.value}%</div>
+          <div class="m-note">${l.note}</div>
+        </div>
+      `).join('');
+      showSections(true, false);
+    }
+
+    function calcRights(){
+      const s = state.rights;
+      const cfg = CALCS.rights;
+      const newShares   = Math.round(s.curShares * s.rightRatio);
+      const totalShares = s.curShares + newShares;
+      const mktCost     = s.curShares * s.mktPrice;
+      const rightsCost  = newShares * s.issuePrice;
+      const totalCost   = mktCost + rightsCost;
+      const avgPrice    = totalCost / totalShares;
+      const discount    = ((s.mktPrice - s.issuePrice) / s.mktPrice) * 100;
+
+      setTop(fmtShortNum(totalCost), fmtShortNum(avgPrice) + ' avg', discount.toFixed(1) + '% disc');
+      setWealthArea({
+        title:cfg.wealthTitle,
+        pill: 'Rights Calc',
+        pillClass: discount > 10 ? 'green' : discount > 0 ? 'gold' : 'red',
+        value: fmtShortNum(avgPrice),
+        narrative: `You get ${newShares.toLocaleString('en-IN')} new shares at ₹${s.issuePrice} each (${discount.toFixed(1)}% below market price). Total holding of ${totalShares.toLocaleString('en-IN')} shares at average price of ${fmtShortNum(avgPrice)}.`,
+        stat1:{label:'New Shares', value:newShares.toLocaleString('en-IN') + ' sh'},
+        stat2:{label:'Rights Cost', value:fmtShortNum(rightsCost)},
+        stat3:{label:'Avg Price', value:fmtShortNum(avgPrice)},
+        mood: discount > 10 ? 'Value Accretive' : 'Neutral',
+        power: discount.toFixed(1) + '% below market'
+      });
+      setInsights(
+        {title: discount > 10 ? 'Attractive rights discount.' : 'Modest discount — evaluate carefully.',
+         text:  `The issue price is ${discount.toFixed(1)}% below the current market price. ${discount > 15 ? 'Strong discount — generally worth participating unless fundamentals have deteriorated.' : 'Moderate benefit. Consider company rationale for the rights issue before subscribing.'}`},
+        {title:'Purpose of rights issue matters.', text:'Rights to fund growth or debt reduction are generally positive. Rights to plug losses or cash burns warrant caution.'},
+        {title:'Subscription deadline is critical.', text:'Unsubscribed rights expire worthless. If you miss the window, your stake gets diluted without benefit.'}
+      );
+
+      const ratios = [0.1, 0.2, 0.5, 1.0, 1.5, 2.0, s.rightRatio].sort((a,b)=>a-b);
+      const avgPrices = ratios.map(r=>{
+        const ns = s.curShares * r;
+        const tc = s.curShares * s.mktPrice + ns * s.issuePrice;
+        return parseFloat((tc / (s.curShares + ns)).toFixed(2));
+      });
+      renderLineChart(ratios.map(r=>'1:'+r.toFixed(1)), [
+        {label:'Avg Price (₹)', data:avgPrices, color:'#00d4ff', fill:true},
+        {label:'Issue Price',   data:Array(ratios.length).fill(s.issuePrice), color:'#ffd76a', fill:false}
+      ], cfg.chartTitle, cfg.chartMeta);
+
+      const issuePrices = [Math.round(s.issuePrice*0.7), Math.round(s.issuePrice*0.85), Math.round(s.issuePrice), Math.round(s.issuePrice*1.2)];
+      $('timelineTitle').textContent = cfg.timelineTitle;
+      $('timelineMeta').textContent  = cfg.timelineMeta;
+      $('timelineGrid').innerHTML = issuePrices.map(ip=>{
+        const rc   = newShares * ip;
+        const avg2 = (mktCost + rc) / totalShares;
+        return `<div class="milestone">
+          <div class="m-year">Issue @ ₹${ip.toLocaleString('en-IN')}</div>
+          <div class="m-amount">${fmtShortNum(avg2)}</div>
+          <div class="m-note">Avg price after rights at ₹${ip.toLocaleString('en-IN')}</div>
+        </div>`;
+      }).join('');
+      showSections(true, false);
+    }
+
+    function calcScreener(){
+      const s = state.screener;
+      const cfg = CALCS.screener;
+
+      const filtered = SCREENER_DATA.filter(stock => {
+        const peOk  = stock.pe >= s.peMin && stock.pe <= s.peMax;
+        const divOk = stock.div >= s.divYield;
+        let capOk   = true;
+        if(s.capFilter === 'Small Cap (<₹5k Cr)')         capOk = stock.cap < 500000;
+        else if(s.capFilter === 'Mid Cap (₹5k–₹20k Cr)') capOk = stock.cap >= 500000 && stock.cap < 2000000;
+        else if(s.capFilter === 'Large Cap (>₹20k Cr)')  capOk = stock.cap >= 2000000;
+        return peOk && divOk && capOk;
+      });
+
+      const count    = filtered.length;
+      const avgPE    = count > 0 ? (filtered.reduce((a,s)=>a+s.pe,0)/count).toFixed(1) : 'N/A';
+      const avgDiv   = count > 0 ? (filtered.reduce((a,s)=>a+s.div,0)/count).toFixed(1) : 'N/A';
+      const buyCount = filtered.filter(s=>s.tag==='buy').length;
+
+      setTop(count + ' stocks', 'Avg P/E: ' + avgPE, buyCount + ' Buy signals');
+      setWealthArea({
+        title:cfg.wealthTitle,
+        pill: count + ' Results',
+        pillClass: count > 5 ? 'green' : count > 0 ? 'gold' : 'red',
+        value: count + ' Stocks Found',
+        narrative: `${count} stocks match your screening criteria (P/E ${s.peMin}–${s.peMax}, min ${s.divYield}% dividend yield, ${s.capFilter}). Average P/E is ${avgPE}x, average dividend yield is ${avgDiv}%.`,
+        stat1:{label:'Stocks Found', value:count + ' stocks'},
+        stat2:{label:'Avg P/E', value:avgPE + 'x'},
+        stat3:{label:'Buy Signals', value:buyCount + ' stocks'},
+        mood: count > 5 ? 'Rich Universe' : count > 0 ? 'Selective' : 'No Match',
+        power: 'Avg Div ' + avgDiv + '%'
+      });
+      $('wealthNumber').textContent = count + ' Stocks';
+      setInsights(
+        {title: count > 5 ? 'Good screening match.' : count > 0 ? 'Narrow but quality set.' : 'No matching stocks.',
+         text:  count > 0 ? `${buyCount} stocks have a Buy signal. Research each further before allocating capital.` : 'Try widening your P/E range or adjusting dividend yield criteria.'},
+        {title:'Screener is a starting point.', text:'Quantitative screening identifies candidates. Always follow up with qualitative research — management quality, sector outlook, and competitive moat.'},
+        {title:'Valuation ≠ quality.', text:'A low P/E can signal opportunity or a value trap. High dividend yield can signal income strength or a struggling business distributing cash.'}
+      );
+
+      if(count > 0){
+        renderBarChart(filtered.map(s=>s.name), filtered.map(s=>s.pe), 'rgba(79,163,255,.75)', cfg.chartTitle, cfg.chartMeta);
+      } else {
+        if(chart) chart.destroy();
+        $('chartLegend').innerHTML = '';
+        $('chartTitle').textContent = cfg.chartTitle;
+        $('chartMeta').textContent  = 'No stocks match current criteria — try wider filters.';
+      }
+
+      $('screenerBody').innerHTML = filtered.map(s=>`
+        <tr>
+          <td style="font-weight:800">${s.name}</td>
+          <td style="color:var(--muted)">${s.sector}</td>
+          <td>${s.pe}x</td>
+          <td>${(s.cap/100000).toFixed(0)}k Cr</td>
+          <td style="color:var(--green)">${s.div}%</td>
+          <td><span class="tag tag-${s.tag}">${s.tag.toUpperCase()}</span></td>
+        </tr>
+      `).join('');
+      showSections(false, true);
+    }
+
+    // ─── UPDATE DISPATCHER ─────────────────────────────────────────────────────
+    function update(){
+      const cfg = CALCS[active];
+      $('modeHeadline').textContent = cfg.title;
+      $('modeSub').textContent      = cfg.sub;
+
+      if(active === 'stockreturn') calcStockReturn();
+      else if(active === 'pevaluation') calcPE();
+      else if(active === 'marketcap')   calcMarketCap();
+      else if(active === 'portfolio')   calcPortfolio();
+      else if(active === 'brokerage')   calcBrokerage();
+      else if(active === 'dividend')    calcDividend();
+      else if(active === 'ipo')         calcIPO();
+      else if(active === 'rights')      calcRights();
+      else if(active === 'screener')    calcScreener();
+    }
+
+    function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smooth', block:'start'}); }
+    function openAdvisor(){ window.open('https://justinvesting.in','_blank'); }
+    function copySummary(){
+      const summary = `investpercent Stock Dashboard
+Tool: ${CALCS[active].label}
+Result: ${$('wealthNumber').textContent}
+${$('stat1Label').textContent}: ${$('stat1Value').textContent}
+${$('stat2Label').textContent}: ${$('stat2Value').textContent}
+${$('stat3Label').textContent}: ${$('stat3Value').textContent}`;
+      navigator.clipboard.writeText(summary).then(()=>{
+        const old = $('miniInsight').textContent;
+        $('miniInsight').textContent = 'Summary Copied!';
+        setTimeout(()=> $('miniInsight').textContent = old, 1500);
+      });
+    }
+
+    initState();
+    renderTabs();
+    renderControls();
+    update();
+  </script>
+
+  <script>
+    fetch("components/navbar.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+        const currentPath = window.location.pathname.split("/").pop() || "index.html";
+        const links = document.querySelectorAll(".nav a, .mobile-drawer a");
+        links.forEach(link => {
+          const href = link.getAttribute("href");
+          if (href === currentPath) link.classList.add("active");
+        });
+      });
+
+    function toggleMenu(){
+      document.getElementById("mobileDrawer")?.classList.toggle("open");
+    }
+  </script>
+</body>
+</html>
