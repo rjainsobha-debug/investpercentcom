@@ -477,7 +477,8 @@
           <div class="advisor-stance" id="advisorStance">Neutral</div>
         </div>
 
-        <div class="advisor-summary" id="advisorSummary">
+        <div id="advDecision" style="display:none;font-size:13px;font-weight:800;letter-spacing:.06em;padding:8px 16px;border-radius:10px;margin-bottom:12px;text-align:center;text-transform:uppercase"></div>
+          <div class="advisor-summary" id="advisorSummary">
           Tune the inputs on the left to receive a personalised AI advisory reading for your current setup.
         </div>
 
@@ -2014,6 +2015,27 @@ function updateAdvisor(){
   stanceEl.textContent=r.stance.charAt(0).toUpperCase()+r.stance.slice(1);
   stanceEl.className='advisor-stance stance-'+r.stance;
 
+    // BUY / HOLD / AVOID decision label
+    (function(){
+      const decEl=$('advDecision');
+      if(!decEl) return;
+      const stanceDecisionMap={
+        bullish:   {label:'BUY',   bg:'rgba(0,230,118,.15)',  border:'rgba(0,230,118,.35)',  color:'#00e676'},
+        neutral:   {label:'HOLD',  bg:'rgba(79,163,255,.12)', border:'rgba(79,163,255,.3)',  color:'#4fa3ff'},
+        balanced:  {label:'HOLD',  bg:'rgba(79,163,255,.12)', border:'rgba(79,163,255,.3)',  color:'#4fa3ff'},
+        cautious:  {label:'AVOID', bg:'rgba(255,96,125,.12)', border:'rgba(255,96,125,.3)',  color:'#ff607d'},
+        income:    {label:'HOLD',  bg:'rgba(0,212,255,.12)',  border:'rgba(0,212,255,.3)',   color:'#00d4ff'},
+        speculative:{label:'WATCH',bg:'rgba(255,215,106,.12)',border:'rgba(255,215,106,.3)', color:'#ffd76a'},
+        avoid:     {label:'AVOID', bg:'rgba(255,96,125,.12)', border:'rgba(255,96,125,.3)',  color:'#ff607d'}
+      };
+      const d=stanceDecisionMap[r.stance]||{label:'REVIEW',bg:'rgba(255,255,255,.06)',border:'rgba(255,255,255,.12)',color:'#9da9c6'};
+      decEl.textContent='Decision: '+d.label;
+      decEl.style.background=d.bg;
+      decEl.style.border='1px solid '+d.border;
+      decEl.style.color=d.color;
+      decEl.style.display='block';
+    })();
+
   // Summary — contextual prefix
     const prefixMap={
       stockreturn:'Based on your current inputs, ',
@@ -2219,37 +2241,30 @@ function fallbackCopy(txt, successCb){
   }
 
 function copySummary(){
-  const txt=`investpercent — Stock Dashboard
-Tool: ${CALCS[active].label}
-Result: ${$('wealthNumber').textContent}
-${$('stat1Label').textContent}: ${$('stat1Value').textContent}
-${$('stat2Label').textContent}: ${$('stat2Value').textContent}
-${$('stat3Label').textContent}: ${$('stat3Value').textContent}
-Signal: ${$('topV3').textContent}
-via justinvesting.in`;
-  copyToClipboard(txt,()=>{
-    const el=$('miniInsight');
-    const old=el.textContent;
-    el.textContent='✓ Copied!';
-    setTimeout(()=>el.textContent=old, 1600);
-  });
-}
+    const txt=`investpercent — Stock Dashboard
+  Tool: ${CALCS[active].label}
+  Result: ${$('wealthNumber').textContent}
+  ${$('stat1Label').textContent}: ${$('stat1Value').textContent}
+  ${$('stat2Label').textContent}: ${$('stat2Value').textContent}
+  ${$('stat3Label').textContent}: ${$('stat3Value').textContent}
+  Signal: ${$('topV3').textContent}
+  via justinvesting.in`;
+    copyToClipboard(txt,()=>alert('Copied successfully'));
+  }
 
 function copyAISummary(){
-  const txt=`AI Advisor — ${CALCS[active].label}
-Stance: ${$('advisorStance').textContent} | Confidence: ${$('confText').textContent}
-${$('advisorSummary').textContent}
+    const decision=$('advDecision')?$('advDecision').textContent:'';
+    const txt=`AI Advisor — ${CALCS[active].label}
+  Decision: ${decision} | Stance: ${$('advisorStance').textContent} | Confidence: ${$('confText').textContent}
+  ${$('advisorSummary').textContent}
 
-What Looks Good: ${$('advGood').textContent}
-What Needs Caution: ${$('advCaution').textContent}
-Suggested Next Step: ${$('advAction').textContent}
+  What Looks Good: ${$('advGood').textContent}
+  What Needs Caution: ${$('advCaution').textContent}
+  Suggested Next Step: ${$('advAction').textContent}
 
-via investpercent / justinvesting.in`;
-  copyToClipboard(txt,()=>{
-    const btn=document.querySelector('.advisor-ai-actions .btn.secondary');
-    if(btn){ const old=btn.textContent; btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent=old,1500); }
-  });
-}
+  via investpercent / justinvesting.in`;
+    copyToClipboard(txt,()=>alert('Copied successfully'));
+  }
 
 /* ═══════════════════════════════════════════════════════════
    BOOT
