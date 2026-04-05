@@ -337,6 +337,7 @@ let pendingResult = null;
 let activeChart = null;
 let tradeRound = 0, tradePnL = 0, tradeScore = 0;
 let currentQuizId = null, quizQ = 0, quizScore = 0;
+let totalGamesPlayed = 0;
 
 /* ─── LEVEL TABS ────────────────────────── */
 function switchLevel(level, btn) {
@@ -374,7 +375,8 @@ function calculateScore(correct, total) {
 function showModal(score, total, title) {
   const result = calculateScore(score, total);
   pendingResult = { score, total, title, result };
-  if (!leadCaptured) {
+  totalGamesPlayed++;
+  if (totalGamesPlayed > 2 && !leadCaptured) {
     closeModal('gameModal');
     showLeadCapture();
   } else {
@@ -493,12 +495,18 @@ function drawSIPChart(monthly, years, rate) {
   }
   const total = monthly * years * 12;
   const fv = Math.round(calcSIPFV(monthly, years, rate));
-  document.getElementById('sip-invested').textContent = fmtINR(total);
-  document.getElementById('sip-returns').textContent = fmtINR(fv - total);
-  document.getElementById('sip-maturity').textContent = fmtINR(fv);
-  document.getElementById('sip-mult').textContent = (fv/total).toFixed(2) + 'x';
-  if (activeChart) { try { activeChart.destroy(); } catch(e){} }
-  const ctx = document.getElementById('sipCanvas').getContext('2d');
+  const investedEl = document.getElementById('sip-invested');
+  const returnsEl = document.getElementById('sip-returns');
+  const maturityEl = document.getElementById('sip-maturity');
+  const multEl = document.getElementById('sip-mult');
+  if (investedEl) investedEl.textContent = fmtINR(total);
+  if (returnsEl) returnsEl.textContent = fmtINR(fv - total);
+  if (maturityEl) maturityEl.textContent = fmtINR(fv);
+  if (multEl) multEl.textContent = (fv/total).toFixed(2) + 'x';
+  if (activeChart) { try { activeChart.destroy(); } catch(e){} activeChart = null; }
+  const sipCanvas = document.getElementById('sipCanvas');
+  if (!sipCanvas) return;
+  const ctx = sipCanvas.getContext('2d');
   activeChart = new Chart(ctx, { type:'line', data:{ labels, datasets:[
     { label:'Amount Invested', data:invested, borderColor:'#4fa3ff', backgroundColor:'rgba(79,163,255,.15)', fill:true, tension:.4, pointRadius:0, borderWidth:2 },
     { label:'Maturity Value', data:maturity, borderColor:'#00d4ff', backgroundColor:'rgba(0,212,255,.08)', fill:true, tension:.4, pointRadius:0, borderWidth:2.5 }
@@ -1011,7 +1019,7 @@ function calcRE() {
   document.getElementById('re-result').innerHTML = `
     <table class="result-table">
       <tr><td>Total Rental Income (5yr)</td><td style="color:var(--green)">${fmtINR(totalRent)}</td></tr>
-      <tr><td>Capital Appreciation</td><td style="color:${capitalGain>=0?'var(--green)':'var(--red)}'}">${fmtINR(capitalGain)}</td></tr>
+      <tr><td>Capital Appreciation</td><td style="color:${capitalGain>=0?'var(--green)':'var(--red)'}">${fmtINR(capitalGain)}</td></tr>
       <tr><td>Total Maintenance</td><td style="color:var(--red)">${fmtINR(totalMaint)}</td></tr>
       <tr><td>Net Return</td><td style="color:${totalReturn>=0?'var(--cyan)':'var(--red)'}">${fmtINR(totalReturn)}</td></tr>
       <tr><td>Gross Rental Yield</td><td>${rentalYield}%</td></tr>
@@ -1127,11 +1135,17 @@ function finishQuiz() {
 
 /* ─── NAVBAR LOADER ─────────────────────── */
 fetch('components/navbar.html').then(r=>r.text()).then(d=>{
-  document.getElementById('navbar').innerHTML = d;
+  const el = document.getElementById('navbar');
+  if (el) el.innerHTML = d;
   const cur = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav a, .mobile-drawer a').forEach(l => { if (l.getAttribute('href') === cur) l.classList.add('active'); });
 }).catch(()=>{});
 function toggleMenu() { document.getElementById('mobileDrawer')?.classList.toggle('open'); }
+
+/* ─── GLOBAL INIT ───────────────────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Play Page Loaded');
+});
 </script>
 </body>
 </html>
