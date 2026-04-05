@@ -764,8 +764,9 @@
         </div>
         <div class="gam-divider"></div>
         <div class="badge-chips" id="badgeChips"></div>
-        <div class="gam-item" style="margin-left:auto">
+        <div class="gam-item" style="margin-left:auto;gap:8px">
           <button class="quiz-btn" onclick="generateCert()" style="padding:6px 12px;font-size:12px">&#x1F393; Certificate</button>
+          <button class="quiz-btn" onclick="downloadLeads()" style="padding:6px 12px;font-size:12px;background:rgba(0,230,118,.08);border-color:rgba(0,230,118,.22);color:#6effc0" title="Export captured leads as JSON">&#x1F4E5; Leads</button>
         </div>
       </div>
 
@@ -2090,7 +2091,11 @@
         /* 2 — AI lead intercept */
         if(typeof isAILeadQuery === 'function' && isAILeadQuery(query)){
           track('ai_lead_trigger');
-          addAIMessage(`I can create a personalized financial plan for you based on your income, goals, and risk appetite.<br><br><strong>&#x1F449; <span style="color:var(--cyan);cursor:pointer" onclick="showLeadPopup('ai')">Click here to get your plan →</span></strong>`, 'bot');
+          addAIMessage(`I can create a personalized financial plan for you based on your income, goals, and risk appetite.`, 'bot');
+          setTimeout(()=>{
+            addAIMessage(`&#x1F449; <span style="color:var(--cyan);cursor:pointer;font-weight:800" onclick="showLeadPopup('ai')">Click here to get your personalized plan →</span>`, 'bot');
+            showLeadPopup('ai');
+          }, 500);
           addAIHistory(query);
           return;
         }
@@ -2486,19 +2491,27 @@
     ══════════════════════════════════════ */
 
     /* 3 — ENGAGEMENT TRACKING */
+    /* trackEvent = canonical name, track = alias (both work throughout) */
+    function trackEvent(name){ track(name); }
     function track(event){
       const logs = JSON.parse(localStorage.getItem('events') || '[]');
       logs.push({event, time: Date.now()});
       localStorage.setItem('events', JSON.stringify(logs));
-      checkHighIntent();
+      triggerLeadSmart();
     }
 
-    /* 4 — HIGH INTENT USER DETECTION */
-    function checkHighIntent(){
+    /* 1 — SMART LEAD TRIGGER (replaces checkHighIntent) */
+    function triggerLeadSmart(){
       if(localStorage.getItem('leadCaptured')) return;
-      const events = JSON.parse(localStorage.getItem('events') || '[]');
-      if(events.length > 10) showLeadPopup('high_intent');
+      const currentXP  = parseInt(localStorage.getItem('xp') || '0');
+      const events     = JSON.parse(localStorage.getItem('events') || '[]');
+      /* soft trigger: engaged enough to see the popup */
+      if(currentXP > 80 || events.length > 8)  showLeadPopup('smart');
+      /* hard trigger: clearly a high-intent power user */
+      if(events.length > 12)                    showLeadPopup('high_intent');
     }
+    /* keep old name as alias so nothing breaks */
+    function checkHighIntent(){ triggerLeadSmart(); }
 
     /* 1 — LEAD POPUP */
     let leadTimeout = null;
@@ -2545,15 +2558,16 @@
     setTimeout(()=> showLeadPopup('timer'), 20000);
 
     /* 2 — AI → LEAD CONVERSION (checked inside sendAI before getBestAnswer) */
-    const AI_LEAD_KEYWORDS = ['plan','advice','help me','suggest','recommend','should i','best way','guide me','roadmap'];
+    const AI_LEAD_KEYWORDS = ['plan','invest','advice','help me','suggest','recommend','should i','best way','guide me','roadmap','where to invest','how to invest'];
     function isAILeadQuery(q){ return AI_LEAD_KEYWORDS.some(k=> q.toLowerCase().includes(k)); }
 
     /* 5 — SMART RECOMMENDATION ENGINE */
     function smartRecommend(){
-      if(xp < 50)  return {action:'Start with Basics of Finance',  btn:'Begin Learning', cat:'basics'};
-      if(xp < 150) return {action:'Explore Mutual Funds & SIP',     btn:'Learn MF',       cat:'mf'};
-      if(xp < 300) return {action:'Master Stock Market Analysis',   btn:'Study Stocks',   cat:'stocks'};
-      return                {action:'Build Your Wealth Portfolio',   btn:'Go Advanced',    cat:'advanced'};
+      const x = parseInt(localStorage.getItem('xp') || '0');
+      if(x < 50)  return {action:'Start Basics of Finance',            btn:'Begin Learning', cat:'basics'};
+      if(x < 120) return {action:'Learn SIP & Compounding',            btn:'Learn Investing', cat:'investing'};
+      if(x < 200) return {action:'Build Your Portfolio',               btn:'Explore Stocks',  cat:'stocks'};
+      return               {action:'Get Personalized Investment Plan',  btn:'Get My Plan',     cat:null};
     }
     function updateSmartCTA(){
       const rec    = smartRecommend();
@@ -2567,7 +2581,7 @@
     function handleCTAClick(){
       track('smart_cta_click');
       const rec = smartRecommend();
-      if(xp >= 300){ showLeadPopup('cta'); }
+      if(!rec.cat){ showLeadPopup('cta'); }
       else { switchCategory(rec.cat); }
     }
 
@@ -2595,7 +2609,7 @@
     renderBadges();
     /* conversion */
     if(typeof updateSmartCTA === 'function') updateSmartCTA();
-    checkHighIntent();
+    if(typeof triggerLeadSmart === 'function') triggerLeadSmart();
   </script>
   <script>
     function $$(id){ return document.getElementById(id); }
