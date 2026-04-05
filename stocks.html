@@ -523,7 +523,13 @@ function inrShort(v){
   if(Math.abs(v) >= 1e5)  return '₹' + (v/1e5).toFixed(2).replace(/\.00$/,'') + ' L';
   return inr(v);
 }
-function inrCr(v){ return (Number(v)/1e7).toFixed(2).replace(/\.00$/,'') + ' Cr'; }
+// Market cap formatter — input is already in ₹ Crore
+function capFmt(crVal){
+  crVal = Number(crVal);
+  if(crVal >= 100000) return '₹' + (crVal/100000).toFixed(2).replace(/\.00$/,'') + ' L Cr';
+  if(crVal >= 1000)   return '₹' + (crVal/1000).toFixed(2).replace(/\.00$/,'') + 'k Cr';
+  return '₹' + crVal.toFixed(0) + ' Cr';
+}
 function pct(v,d=1){ return Number(v).toFixed(d) + '%'; }
 function num(v){ return Math.round(Number(v)).toLocaleString('en-IN'); }
 
@@ -1116,12 +1122,49 @@ function calcPE(){
      x:upDown>15?`A ${pct(upDown,1)} upside to fair value offers a meaningful margin of safety for a long-horizon investor.`:upDown>0?'Mild undervaluation. Look for catalysts before committing capital.':'The stock is priced above peer multiples. Elevated return expectations are already baked in.'}
   );
 
-  // Bar chart: P/E comparison + fair value line
-  const labels=['Industry P/E','Current P/E','Premium/Discount'];
-  renderBar(labels,[
-    {label:'P/E',data:[s.industryPE, parseFloat(curPE.toFixed(1)), Math.abs(curPE-s.industryPE).toFixed(1)],
-     c:['rgba(0,212,255,.7)','rgba(79,163,255,.7)','rgba(123,97,255,.7)']}
-  ],'P/E comparison vs industry','How current stock P/E compares against the industry benchmark.');
+  // Upgraded P/E chart: current price vs fair value across P/E scenarios
+  // X-axis = multiples of industry P/E (0.5x to 1.75x), show fair value band
+  const peMultiples=[0.5,0.75,1.0,1.25,1.5,1.75];
+  const fvAtMultiple=peMultiples.map(m=>Math.round(s.eps*s.industryPE*m));
+  const curPriceLine=peMultiples.map(()=>Math.round(s.curPrice));
+  $('chartTitle').textContent='Fair Value vs Current Price across P/E multiples';
+  $('chartMeta').textContent=`Each bar = fair value at that P/E multiple. Red line = current price (${inr(s.curPrice)}). Where bars exceed the line = upside.`;
+  $('chartLegend').innerHTML=`
+    <div class="legend-item"><span class="dot" style="background:rgba(0,212,255,.7)"></span>Fair Value</div>
+    <div class="legend-item"><span class="dot" style="background:#ff607d"></span>Current Price</div>`;
+  $('chartToggle').innerHTML='';
+  destroyChart();
+  const peCtx=$('wealthChart').getContext('2d');
+  chart=new Chart(peCtx,{
+    type:'bar',
+    data:{
+      labels:peMultiples.map(m=>(m*s.industryPE).toFixed(1)+'x P/E'),
+      datasets:[
+        {label:'Fair Value',data:fvAtMultiple,backgroundColor:fvAtMultiple.map(fv=>fv>s.curPrice?'rgba(0,230,118,.7)':'rgba(255,96,125,.5)'),borderRadius:8,borderSkipped:false,order:2},
+        {label:'Current Price',data:curPriceLine,type:'line',borderColor:'#ff607d',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:4,tension:0,order:1,borderDash:[6,4]}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'rgba(7,12,28,.96)',borderColor:'rgba(255,255,255,.08)',borderWidth:1,
+          titleColor:'#fff',bodyColor:'#dce6ff',padding:12,
+          callbacks:{label:c=>{
+            if(c.dataset.label==='Current Price') return `Current Price: ${inr(c.raw)}`;
+            const gap=c.raw-s.curPrice;
+            return `Fair Value @ ${c.label}: ${inr(c.raw)} (${gap>=0?'+':''}${inr(gap)})`;
+          }}
+        }
+      },
+      scales:{
+        x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:11}}},
+        y:{beginAtZero:false,grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)',font:{size:11},callback:v=>inrShort(v)}}
+      }
+    }
+  });
 
   setScenario('Valuation Sensitivity','Fair value and upside at different EPS levels.',[
     {label:'EPS −20%',   value:inrShort(s.eps*0.8*s.industryPE), color:'var(--muted)', note:`FV at EPS ${inr(s.eps*0.8)}`},
@@ -1146,19 +1189,19 @@ function calcMarketCap(){
   else                     { cat='Mega Cap';   catCls='cyan';   vol='Low'; }
 
   setTop(
-    'Market Cap', inrShort(capCr*1e7), catCls,
+    'Market Cap', capFmt(capCr), catCls,
     'Category', cat, catCls,
     'Volatility', vol, vol==='Low'?'green':vol==='High'||vol==='Very High'?'red':'gold'
   );
   setWealth({
     title:'Market Cap Result', pill:cat, pillCls:catCls,
-    value:inrCr(capCr*1e7)+' Cr',
-    narrative:`${s.sharesOut} Cr shares at ₹${num(s.sharePrice)} per share → Market Cap: ₹${capCr.toFixed(0)} Cr. This classifies as a ${cat} with ${vol} volatility profile.`,
+    value:capFmt(capCr),
+    narrative:`${s.sharesOut} Cr shares at ₹${num(s.sharePrice)} per share → Market Cap: ${capFmt(capCr)}. Classifies as a ${cat} with ${vol} volatility profile.`,
     s1:{l:'Share Price', v:inr(s.sharePrice)},
     s2:{l:'Shares Outstanding', v:s.sharesOut+' Cr'},
     s3:{l:'Category', v:cat},
     mood: cat + ' Dynamics',
-    insight: 'Mkt Cap ₹' + (capCr>=100000?(capCr/100000).toFixed(1)+'L Cr':capCr.toFixed(0)+' Cr')
+    insight: 'Mkt Cap ' + capFmt(capCr)
   });
   setInsights(
     {t:cat+' characteristics.',
@@ -1202,12 +1245,18 @@ function calcPortfolio(){
   else if(eq >= 30) { style='Moderate';      pillCls='blue'; }
   else              { style='Conservative';  pillCls='green'; }
 
-  // Validation note
-  const diffNote = total !== 100 ? `Total: ${total}% (should be 100%)` : '';
+  // Validation note — always set (to clear stale warnings when total returns to 100)
   const noteEls = ['equity','debt','gold','others'].map(id=>$(`note-${id}`));
-  if(diffNote && noteEls[0]){
-    noteEls.forEach(el=>{ if(el){ el.textContent = diffNote; el.className='ctrl-warning'; } });
-  }
+  noteEls.forEach(el=>{
+    if(!el) return;
+    if(total !== 100){
+      el.textContent = `Total: ${total}% — allocations should sum to 100%.`;
+      el.className = 'ctrl-warning';
+    } else {
+      el.textContent = '';
+      el.className = 'ctrl-note';
+    }
+  });
 
   setTop(
     'Risk Score', riskScore+'/100', riskScore>70?'red':riskScore>45?'gold':'green',
@@ -1520,13 +1569,14 @@ function calcRights(){
    CALCULATOR: SCREENER
 ════════════════════════════════════════════════════════════ */
 function applyScreener(){
-  const s=state.screener;
-  s.capFilter = $('filterSector') ? state.screener.capFilter : s.capFilter;
+  // Sector and sort dropdowns live inside the screener card —
+  // just re-run update() so calcScreener() reads them fresh.
   update();
 }
 function setSortBy(col){
+  // col can be: pe | pe_desc | div | cap | name
   const el=$('sortBy'); if(!el) return;
-  el.value = col==='pe'?'pe':col==='cap'?'cap':'div';
+  el.value = col;
   applyScreener();
 }
 
@@ -1587,6 +1637,9 @@ function calcScreener(){
   );
 
   if(count>0){
+    // Hide empty-state overlay if it was previously shown
+    const prevEmpty=$('chartEmptyState');
+    if(prevEmpty) prevEmpty.style.display='none';
     const barColors=filtered.map(st=>st.tag==='buy'?'rgba(0,230,118,.7)':st.tag==='hold'?'rgba(255,215,106,.7)':'rgba(79,163,255,.65)');
     $('chartTitle').textContent='P/E distribution of filtered stocks';
     $('chartMeta').textContent='P/E ratio for each screened stock. Green = Buy signal, Yellow = Hold, Blue = Watch.';
@@ -1622,28 +1675,37 @@ function calcScreener(){
         <td style="font-weight:800;color:var(--text)">${st.name}</td>
         <td style="color:var(--muted)">${st.sector}</td>
         <td>${st.pe}x</td>
-        <td>${(st.capCr/100).toFixed(0)!=='0'?(st.capCr>=100000?'₹'+(st.capCr/100000).toFixed(1)+' L Cr':'₹'+(st.capCr/100).toFixed(0)+' Cr'):'—'}</td>
+        <td>${capFmt(st.capCr)}</td>
         <td style="color:var(--green)">${st.div}%</td>
         <td><span class="tag tag-${st.tag}">${st.tag.toUpperCase()}</span></td>
       </tr>
     `).join('');
   } else {
+    // Safe empty state — preserve canvas element, show overlay on top
     destroyChart();
-    $('chartTitle').textContent='No results';
-    $('chartMeta').textContent='Adjust your filters to find matching stocks.';
+    $('chartTitle').textContent='No stocks matched';
+    $('chartMeta').textContent='Adjust your filters to expand the screener universe.';
     $('chartLegend').innerHTML='';
     $('chartToggle').innerHTML='';
+    // Ensure canvas is still present (restore if somehow lost)
     const wrap=$('chartWrap');
-    wrap.innerHTML=`<div class="chart-empty">
-      <span class="empty-icon">🔍</span>
-      <strong>No stocks match your criteria</strong>
-      <span>Try widening your P/E range or reducing the minimum dividend yield.</span>
-    </div>`;
-    setTimeout(()=>{
-      if(!$('wealthChart')) wrap.innerHTML='<canvas id="wealthChart"></canvas>';
-    },100);
+    if(!$('wealthChart')) wrap.innerHTML='<canvas id="wealthChart"></canvas>';
+    // Show empty state as a CSS overlay via a sibling div
+    let emptyDiv=$('chartEmptyState');
+    if(!emptyDiv){
+      emptyDiv=document.createElement('div');
+      emptyDiv.id='chartEmptyState';
+      emptyDiv.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(6,9,21,.8);border-radius:16px;z-index:10';
+      wrap.style.position='relative';
+      wrap.appendChild(emptyDiv);
+    }
+    emptyDiv.style.display='flex';
+    emptyDiv.innerHTML=`
+      <span style="font-size:38px;opacity:.35">🔍</span>
+      <strong style="font-size:16px;font-weight:800;color:var(--text)">No stocks match your criteria</strong>
+      <span style="color:var(--muted);font-size:13px;text-align:center;max-width:260px">Try widening the P/E range, lowering the dividend yield filter, or removing the market cap filter.</span>`;
     $('screenerBody').innerHTML=`<tr><td colspan="6" class="screener-empty">
-      <span class="e-icon">🔍</span>
+      <span class="e-icon" style="font-size:30px;opacity:.3;display:block;margin-bottom:8px">🔍</span>
       <strong>No matching stocks</strong>
       <span>Adjust filters to see results</span>
     </td></tr>`;
@@ -1938,32 +2000,107 @@ function updateChipResponse(r){
   const chip=chips[activeChip]||'';
   const aiResp=$('aiResponse');
   aiResp.className='ai-response';
-
-  // Generate contextual response based on chip question + current calc result
-  let response='';
   const lower=chip.toLowerCase();
-  if(lower.includes('undervalued')||lower.includes('fair value'))
-    response=r.summary+' '+r.good;
-  else if(lower.includes('risk'))
-    response=r.caution;
-  else if(lower.includes('should i')||lower.includes('apply')||lower.includes('buy'))
-    response=r.action+' Advisor stance: '+r.stance.charAt(0).toUpperCase()+r.stance.slice(1)+'. Confidence: '+($('confText').textContent)+'.';
-  else if(lower.includes('diversif')||lower.includes('rebalance')||lower.includes('portfolio'))
-    response=r.summary;
-  else if(lower.includes('cagr')||lower.includes('return'))
-    response=r.good+' '+r.action;
-  else if(lower.includes('cost')||lower.includes('charge')||lower.includes('brokerage'))
-    response=r.summary+' '+r.action;
-  else if(lower.includes('drip')||lower.includes('dividend'))
-    response=r.good+' '+r.caution;
-  else if(lower.includes('ipo')||lower.includes('allotment'))
-    response=r.summary+' '+r.action;
-  else if(lower.includes('terp')||lower.includes('rights'))
-    response=r.summary+' '+r.action;
-  else
-    response=r.summary;
+  const s=state[active];
+  let response='';
 
-  aiResp.textContent=response;
+  // Tool-specific chip responses with current values woven in
+  if(active==='stockreturn'){
+    const invested=s.buyPrice*s.qty, finalVal=s.sellPrice*s.qty, totalDiv=s.divPS*s.qty;
+    const charges=(invested+finalVal)*(s.brokPct/100), netPL=finalVal-invested+totalDiv-charges;
+    const cagr=(Math.pow((finalVal+totalDiv)/invested,1/Math.max(s.holdYears,0.25))-1)*100;
+    if(lower.includes('profitable'))
+      response=netPL>0?`Yes — net P&L is ${inrShort(netPL)} after ${inrShort(charges)} in charges. CAGR: ${pct(cagr,1)}.`:`No — the position has a net loss of ${inrShort(Math.abs(netPL))}. Consider reviewing your exit strategy.`;
+    else if(lower.includes('cagr'))
+      response=`CAGR is ${pct(cagr,1)} over ${s.holdYears} year(s). ${cagr>15?'This outperforms the Nifty 50 long-run average (~12%) — excellent.':cagr>8?'Reasonable return. Compare against an index fund to benchmark.':'Below typical equity market returns. Evaluate if this holding meets your growth goals.'}`;
+    else if(lower.includes('fd')||lower.includes('fd?'))
+      response=`At ${pct(cagr,1)} CAGR, ${cagr>7?`this beats FD returns (~6–7%). A ${pct(cagr-7,1)} alpha over FD justifies equity risk.`:'this is close to or below FD rates. The equity risk may not be adequately rewarded.'}`;
+    else
+      response=`Holding longer ${cagr>10?'at this CAGR is compelling. Time in market is your strongest compounding lever.':'may or may not help — it depends on the stock\'s fundamentals. Re-evaluate the business case.'}`;
+  } else if(active==='pevaluation'){
+    const curPE=s.curPrice/s.eps, fairValue=s.eps*s.industryPE;
+    const upDown=((fairValue-s.curPrice)/fairValue)*100;
+    if(lower.includes('undervalued'))
+      response=upDown>10?`Yes — at ${pct(upDown,1)} below fair value (${inrShort(fairValue)}), the stock has a meaningful margin of safety. Current P/E: ${curPE.toFixed(1)}x vs industry: ${s.industryPE}x.`:`Not clearly — only ${pct(Math.abs(upDown),1)} ${upDown>0?'below':'above'} fair value. Not enough margin of safety for a high-conviction entry.`;
+    else if(lower.includes('fair value'))
+      response=`Fair value = EPS (${inr(s.eps)}) × Industry P/E (${s.industryPE}x) = ${inrShort(fairValue)}. Current price is ${inrShort(s.curPrice)}, which is ${pct(Math.abs(upDown),1)} ${upDown>0?'below':'above'} this estimate.`;
+    else if(lower.includes('should i buy')||lower.includes('this price'))
+      response=`${upDown>15?`At ${pct(upDown,1)} discount to fair value, fundamentals permitting, this is a reasonable entry. Use a staggered buy approach.`:upDown>0?`Mild undervaluation (${pct(upDown,1)}). Wait for a bigger margin of safety or a catalyst before buying.`:`Stock is ${pct(Math.abs(upDown),1)} above fair value. Better to wait for a correction to ${inrShort(fairValue)} or below.`}`;
+    else
+      response=`Current P/E of ${curPE.toFixed(1)}x ${curPE>s.industryPE?`exceeds the industry (${s.industryPE}x). High P/E signals premium pricing — only justified by strong, consistent earnings growth.`:`is below the industry (${s.industryPE}x). The market may be underpricing this stock, or reflecting genuine earnings risk.`}`;
+  } else if(active==='marketcap'){
+    const capCr=s.sharePrice*s.sharesOut;
+    if(lower.includes('category'))
+      response=`At ${capFmt(capCr)}, this is a ${capCr>=100000?'Mega Cap':capCr>=20000?'Large Cap':capCr>=5000?'Mid Cap':capCr>=500?'Small Cap':'Micro Cap'}. ${capCr>=20000?'Well-researched, institutional-grade stability.':capCr>=5000?'Growth potential with moderate risk.':'Higher risk but multi-bagger potential if business fundamentals hold.'}`;
+    else if(lower.includes('large cap')||lower.includes('small cap'))
+      response=`${capFmt(capCr)} puts this company in the ${capCr>=100000?'Mega Cap (>₹1L Cr) — index heavyweights like Reliance, TCS.':capCr>=20000?'Large Cap (₹20k–1L Cr) — core portfolio allocation.':capCr>=5000?'Mid Cap (₹5k–20k Cr) — growth + moderate risk.':capCr>=500?'Small Cap (₹500–5k Cr) — high growth, high risk.':'Micro Cap (<₹500 Cr) — very high risk, limited liquidity.'} category.`;
+    else
+      response=`Market cap = share price × shares outstanding = ${capFmt(capCr)}. It measures total company value at current market price, not intrinsic value. A company with high market cap isn't necessarily a good buy — always pair with valuation analysis.`;
+  } else if(active==='portfolio'){
+    const total=s.equity+s.debt+s.gold+s.others;
+    const eq=total>0?Math.round(s.equity/total*100):0;
+    const de=total>0?Math.round(s.debt/total*100):0;
+    const go=total>0?Math.round(s.gold/total*100):0;
+    if(lower.includes('diversified'))
+      response=`Your normalised allocation is Equity ${eq}%, Debt ${de}%, Gold ${go}%. ${eq<=70&&de+go>=20?'This is reasonably diversified across asset classes.':'Diversification could be improved — ensure at least 20% in debt/gold as a hedge.'}`;
+    else if(lower.includes('risk'))
+      response=`With ${eq}% equity, your portfolio risk is ${eq>=75?'Aggressive — expect 30–50% drawdowns in bear markets. Suitable only for 8+ year horizons.':eq>=50?'Balanced — moderate drawdowns (15–25%) with reasonable growth potential.':'Conservative — limited downside but growth may lag inflation over long periods.'}`;
+    else if(lower.includes('gold'))
+      response=`Your gold allocation is ${go}%. ${go>=10?'Good — gold acts as a hedge against inflation and currency depreciation. 10–15% is a healthy strategic allocation.':'Consider increasing gold to 10% — it provides meaningful portfolio insurance during equity crashes and high inflation periods.'}`;
+    else
+      response=`To rebalance: target Equity ~${Math.min(70,eq+5)}%, Debt ~${Math.max(20,de)}%, Gold ~${Math.max(10,go)}%. Rebalance annually or when any asset class drifts more than 5% from target. Use new investments to rebalance rather than selling to avoid tax events.`;
+  } else if(active==='brokerage'){
+    const discTotal=(Math.min(20,s.tradeAmt*0.0003)*2)+s.tradeAmt*0.001+s.tradeAmt*0.0000345*2+s.tradeAmt*0.000001*2+s.tradeAmt*0.00015;
+    const fullTotal=s.tradeAmt*(s.fullPct/100)*2*(1.18)+s.tradeAmt*0.001+s.tradeAmt*0.0000345*2+s.tradeAmt*0.000001*2+s.tradeAmt*0.00015;
+    if(lower.includes('cheaper'))
+      response=`Discount broker: ${inrShort(discTotal)} total. Full-service (${pct(s.fullPct,2)}%): ${inrShort(fullTotal)}. Discount saves ${inrShort(fullTotal-discTotal)} per round-trip on a ${inrShort(s.tradeAmt)} trade.`;
+    else if(lower.includes('charges')||lower.includes('total'))
+      response=`For a ${inrShort(s.tradeAmt)} round-trip — Discount: ${inrShort(discTotal)} | Full-service: ${inrShort(fullTotal)}. Fixed charges (STT, stamp, SEBI) are ${inrShort(s.tradeAmt*0.001+s.tradeAmt*0.0000345*2+s.tradeAmt*0.000001*2+s.tradeAmt*0.00015)} for both.`;
+    else if(lower.includes('profit'))
+      response=`Brokerage of ${inrShort(discTotal)} on a ${inrShort(s.tradeAmt)} trade = ${pct(discTotal/s.tradeAmt*100,3)} cost ratio. Your stock needs to move at least ${pct(discTotal/s.tradeAmt*100*2,3)} just to break even on charges.`;
+    else
+      response=`For active traders making 20+ trades/month, annual discount broker charges on ${inrShort(s.tradeAmt)} trades ≈ ${inrShort(discTotal*240)}. Full-service would cost ${inrShort(fullTotal*240)}/yr — a ${inrShort((fullTotal-discTotal)*240)} annual difference.`;
+  } else if(active==='dividend'){
+    if(lower.includes('drip worth'))
+      response=`At ${pct(s.reinvest)} reinvestment, ${s.reinvest>=80?'DRIP is highly effective — compounding shares over years multiplies your final portfolio value significantly vs taking cash.':'partial DRIP still compounds but at a slower pace than full reinvestment. Consider increasing to 80%+ for maximum effect.'}`;
+    else if(lower.includes('everything')||lower.includes('reinvest'))
+      response=`Reinvesting 100% means every dividend buys new shares, which earn future dividends, creating a powerful compounding loop. At ${pct(s.divGrowth,1)} dividend growth and ${pct(s.priceGrow,1)} price growth, your ${num(s.shares)} initial shares grow meaningfully over ${s.dripYears} years.`;
+    else if(lower.includes('cash'))
+      response=`With ${100-s.reinvest}% taken as cash, you'll receive dividends as income every year. Over ${s.dripYears} years at ${pct(s.divGrowth,1)} growth, cumulative cash income will be meaningful — but you forfeit the compounding on that portion.`;
+    else
+      response=`Dividend growth of ${pct(s.divGrowth,1)} year-on-year doubles your per-share income in ~${Math.ceil(72/s.divGrowth)} years (Rule of 72). Combine with DRIP and the effect is exponential over long holding periods.`;
+  } else if(active==='ipo'){
+    const retailLots=Math.floor(s.issueSize*1e7*0.35/(s.lotSize*s.lotPrice));
+    const overSub=s.totalApps*1e5/Math.max(1,retailLots);
+    const prob=Math.min(100,(1/Math.max(1,overSub))*100);
+    if(lower.includes('apply')||lower.includes('should i'))
+      response=overSub>25?`With ${overSub.toFixed(1)}x oversubscription and ~${pct(prob,1)} allotment odds, apply only if you're convinced of the listing pop or long-term value. Apply via family accounts to improve aggregate odds.`:`At ${overSub.toFixed(1)}x subscription, allotment probability is ~${pct(prob,1)}. Worth applying if fundamentals are solid — check D-RHP for revenue, promoter holding, and use of IPO proceeds.`;
+    else if(lower.includes('odds')||lower.includes('probability'))
+      response=`Estimated allotment probability: ~${pct(prob,1)} based on ${overSub.toFixed(1)}x oversubscription. ${overSub>50?'Very competitive — applying via multiple eligible accounts is the only way to meaningfully improve your aggregate odds.':overSub>10?'Moderate-to-low odds. GMP and fundamentals should guide your decision.':'Reasonable odds for a retail applicant.'}`;
+    else if(lower.includes('oversubscribed'))
+      response=`${overSub.toFixed(1)}x oversubscribed in the retail category (35% quota). ${overSub>50?'Extremely high demand — suggests either euphoric market conditions or a high-quality issue.':overSub>15?'Strong retail interest. Likely a quality or hyped issue — verify fundamentals aren\'t overpriced.':'Moderate demand. This isn\'t a frenzy — review the business model carefully.'}`;
+    else
+      response=`IPO allotments are determined by SEBI-mandated lottery among eligible retail applicants. Each applicant gets a max of 1 lot. Apply early (Day 1 or 2), use HNI category if investing >₹2L, and check GMP for listing premium sentiment.`;
+  } else if(active==='rights'){
+    const newShares=Math.round(s.curShares*s.rightRatio);
+    const avgPrice=(s.curShares*s.mktPrice+newShares*s.issuePrice)/(s.curShares+newShares);
+    const discount=((s.mktPrice-s.issuePrice)/s.mktPrice)*100;
+    if(lower.includes('subscribe')||lower.includes('rights issue'))
+      response=discount>15?`Yes — ${pct(discount,1)} discount is attractive. Subscribing reduces your avg cost from ${inr(s.mktPrice)} to ${inr(avgPrice)}, which is below current market price. Value accretive if fundamentals hold.`:`Discount of ${pct(discount,1)} is ${discount>5?'moderate':'thin'}. Subscription rationale should be based on company conviction, not just the discount.`;
+    else if(lower.includes('terp'))
+      response=`TERP (Theoretical Ex-Rights Price) = (${num(s.curShares)} × ${inr(s.mktPrice)} + ${num(newShares)} × ${inr(s.issuePrice)}) ÷ ${num(s.curShares+newShares)} = ${inr(avgPrice)}. This is where the stock theoretically trades post-issue if all rights are subscribed.`;
+    else if(lower.includes('not subscribe')||lower.includes('dilution'))
+      response=`If you don't subscribe, your proportionate stake is diluted by ${pct((newShares/(s.curShares+newShares))*100,1)}. You don't lose shares, but your % ownership falls. The stock price typically adjusts toward TERP (${inr(avgPrice)}) post-issue.`;
+    else
+      response=`Rights issues for ${discount>15?'capex or growth at strong discounts are generally positive.':'debt reduction may signal financial stress. Research the reason for capital raise before subscribing.'} Evaluate management track record and what the capital will be used for.`;
+  } else {
+    // Screener or generic
+    response = lower.includes('undervalued')?r.summary+' '+r.good:
+               lower.includes('dividend')?r.good+' '+r.caution:
+               r.action;
+  }
+
+  aiResp.textContent=response||r.summary;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1972,28 +2109,53 @@ function updateChipResponse(r){
 function scrollToControls(){ $('controlsAnchor').scrollIntoView({behavior:'smooth',block:'start'}); }
 function openAdvisor(){ window.open('https://justinvesting.in','_blank'); }
 
+/* Clipboard helper with graceful fallback */
+function copyToClipboard(txt, successCb){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(successCb).catch(()=>fallbackCopy(txt,successCb));
+  } else {
+    fallbackCopy(txt, successCb);
+  }
+}
+function fallbackCopy(txt, successCb){
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=txt; ta.style.cssText='position:fixed;left:-9999px;top:-9999px';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    successCb();
+  }catch(e){}
+}
+
 function copySummary(){
-  const txt=`investpercent Stock Dashboard
+  const txt=`investpercent — Stock Dashboard
 Tool: ${CALCS[active].label}
 Result: ${$('wealthNumber').textContent}
 ${$('stat1Label').textContent}: ${$('stat1Value').textContent}
 ${$('stat2Label').textContent}: ${$('stat2Value').textContent}
 ${$('stat3Label').textContent}: ${$('stat3Value').textContent}
-Signal: ${$('topV3').textContent}`;
-  navigator.clipboard.writeText(txt).then(()=>{
-    const old=$('miniInsight').textContent;
-    $('miniInsight').textContent='✓ Copied!';
-    setTimeout(()=>$('miniInsight').textContent=old,1600);
+Signal: ${$('topV3').textContent}
+via justinvesting.in`;
+  copyToClipboard(txt,()=>{
+    const el=$('miniInsight');
+    const old=el.textContent;
+    el.textContent='✓ Copied!';
+    setTimeout(()=>el.textContent=old, 1600);
   });
 }
 
 function copyAISummary(){
-  const txt=`AI Advisor — ${CALCS[active].label} | ${$('advisorStance').textContent}
+  const txt=`AI Advisor — ${CALCS[active].label}
+Stance: ${$('advisorStance').textContent} | Confidence: ${$('confText').textContent}
 ${$('advisorSummary').textContent}
-What looks good: ${$('advGood').textContent}
-Caution: ${$('advCaution').textContent}
-Next step: ${$('advAction').textContent}`;
-  navigator.clipboard.writeText(txt).then(()=>{
+
+What Looks Good: ${$('advGood').textContent}
+What Needs Caution: ${$('advCaution').textContent}
+Suggested Next Step: ${$('advAction').textContent}
+
+via investpercent / justinvesting.in`;
+  copyToClipboard(txt,()=>{
     const btn=document.querySelector('.advisor-ai-actions .btn.secondary');
     if(btn){ const old=btn.textContent; btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent=old,1500); }
   });
