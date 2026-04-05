@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="css/navbar.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Investment Dashboard — investpercent</title>
+ <title>Savings & FD Tools — investpercent</title>
   <meta name="description" content="Premium investment dashboard with SIP, Lump Sum, Step-Up SIP, SWP, CAGR, PPF, NPS, EPF and Sukanya calculators." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -229,7 +229,7 @@
       <div class="hero-top">
         <div class="hero-copy">
           <h1>Investment <span class="grad">Decision Dashboard</span></h1>
-          <p>One premium shell. Multiple calculators. Keep the product feel intact while switching between SIP, Lump Sum, Step-Up SIP, SWP, CAGR and India-focused long-term schemes.</p>
+          <p>All safe savings tools in one place — Fixed Deposits, Government Schemes, and Inflation-adjusted planning.</p>
         </div>
         <div class="hero-cta">
           <button class="btn primary" onclick="scrollToControls()">Start Planning</button>
@@ -359,60 +359,97 @@
 
   <script>
     const CALCS = {
-    const CALCS = {
 
-fd:{
-label:"FD",
-badge:"FIXED DEPOSIT",
-title:"Fixed Deposit Calculator",
-sub:"Safe and predictable returns",
-desc:"Calculate maturity value of fixed deposits",
+const CALCS = {
 
-wealthTitle:"FD Maturity Value",
-wealthPill:"Safe Returns",
-
+fd:{label:"FD",badge:"FD",title:"Fixed Deposit",
+sub:"Safe returns",
+desc:"Calculate FD maturity",
+wealthTitle:"FD Maturity",
+wealthPill:"Safe",
 controls:[
-{id:"amount",label:"Investment Amount",min:10000,max:5000000,step:10000,value:100000,format:"currency"},
-{id:"rate",label:"Interest Rate",min:3,max:10,step:0.1,value:7,format:"percent"},
-{id:"years",label:"Tenure",min:1,max:10,step:1,value:5,format:"years"}
-]
-},
+{id:"amount",label:"Amount",min:10000,max:5000000,value:100000,format:"currency"},
+{id:"rate",label:"Rate",min:3,max:10,value:7,format:"percent"},
+{id:"years",label:"Years",min:1,max:10,value:5,format:"years"}
+]},
 
-rd:{
-label:"RD",
-badge:"RECURRING",
-title:"Recurring Deposit Calculator",
-sub:"Monthly disciplined saving",
-desc:"Calculate maturity of recurring deposits",
-
-wealthTitle:"RD Maturity Value",
-wealthPill:"Monthly Saving",
-
+rd:{label:"RD",badge:"RD",title:"Recurring Deposit",
+sub:"Monthly savings",
+desc:"RD growth",
+wealthTitle:"RD Value",
+wealthPill:"Monthly",
 controls:[
-{id:"monthly",label:"Monthly Deposit",min:1000,max:100000,step:1000,value:5000,format:"currency"},
-{id:"rate",label:"Interest Rate",min:3,max:10,step:0.1,value:7,format:"percent"},
-{id:"years",label:"Tenure",min:1,max:10,step:1,value:5,format:"years"}
-]
-},
+{id:"monthly",label:"Monthly",min:1000,max:100000,value:5000,format:"currency"},
+{id:"rate",label:"Rate",min:3,max:10,value:7,format:"percent"},
+{id:"years",label:"Years",min:1,max:10,value:5,format:"years"}
+]},
 
-inflation:{
-label:"Inflation",
-badge:"REAL VALUE",
-title:"Inflation Adjusted Value",
-sub:"Understand real purchasing power",
-desc:"Calculate value after inflation",
+nsc:{label:"NSC",badge:"NSC",title:"National Savings Certificate",
+sub:"Govt scheme",
+desc:"Secure investment",
+wealthTitle:"NSC Value",
+wealthPill:"Govt",
+controls:[
+{id:"amount",label:"Amount",min:1000,max:500000,value:50000,format:"currency"},
+{id:"rate",label:"Rate",min:6,max:8,value:7.7,format:"percent"},
+{id:"years",label:"Years",min:5,max:5,value:5,format:"years"}
+]},
 
+kvp:{label:"KVP",badge:"KVP",title:"Kisan Vikas Patra",
+sub:"Double money scheme",
+desc:"Time to double",
+wealthTitle:"KVP Value",
+wealthPill:"Double",
+controls:[
+{id:"amount",label:"Amount",min:1000,max:500000,value:50000,format:"currency"},
+{id:"years",label:"Years",min:8,max:10,value:9,format:"years"}
+]},
+
+scss:{label:"SCSS",badge:"SCSS",title:"Senior Citizen Scheme",
+sub:"High interest",
+desc:"Quarterly payout",
+wealthTitle:"SCSS Value",
+wealthPill:"Senior",
+controls:[
+{id:"amount",label:"Amount",min:10000,max:3000000,value:500000,format:"currency"},
+{id:"rate",label:"Rate",min:7,max:9,value:8.2,format:"percent"},
+{id:"years",label:"Years",min:5,max:5,value:5,format:"years"}
+]},
+
+post:{label:"Post Office",badge:"POST",title:"Post Office Savings",
+sub:"Safe deposit",
+desc:"Low risk",
+wealthTitle:"Savings Value",
+wealthPill:"Secure",
+controls:[
+{id:"amount",label:"Amount",min:1000,max:1000000,value:50000,format:"currency"},
+{id:"rate",label:"Rate",min:3,max:6,value:4,format:"percent"},
+{id:"years",label:"Years",min:1,max:10,value:5,format:"years"}
+]},
+
+compare:{label:"Compare",badge:"COMPARE",title:"FD vs SIP vs RD",
+sub:"Compare returns",
+desc:"Decision tool",
+wealthTitle:"Comparison",
+wealthPill:"Decision",
+controls:[
+{id:"amount",label:"Amount",min:10000,max:500000,value:100000,format:"currency"},
+{id:"years",label:"Years",min:1,max:10,value:5,format:"years"}
+]},
+
+inflation:{label:"Inflation",badge:"REAL",title:"Inflation Adjusted",
+sub:"Real value",
+desc:"Future value",
 wealthTitle:"Real Value",
-wealthPill:"Inflation Impact",
-
+wealthPill:"Inflation",
 controls:[
-{id:"amount",label:"Current Amount",min:10000,max:10000000,step:10000,value:100000,format:"currency"},
-{id:"inflation",label:"Inflation Rate",min:1,max:10,step:0.1,value:6,format:"percent"},
-{id:"years",label:"Years",min:1,max:20,step:1,value:10,format:"years"}
-]
-}
+{id:"amount",label:"Amount",min:10000,max:10000000,value:100000,format:"currency"},
+{id:"inflation",label:"Inflation",min:1,max:10,value:6,format:"percent"},
+{id:"years",label:"Years",min:1,max:20,value:10,format:"years"}
+]}
 
-};  </script>
+};
+</script>
  <script>
 fetch("components/navbar.html")
   .then(res => res.text())
