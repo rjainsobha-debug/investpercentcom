@@ -19,7 +19,7 @@
       --grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%);
       --hero:radial-gradient(circle at 16% 20%,rgba(0,212,255,.18),transparent 28%),radial-gradient(circle at 88% 12%,rgba(123,97,255,.18),transparent 24%),linear-gradient(180deg,#070c18 0%,#091224 100%);
     }
-    *{box-sizing:border-box}html,body{margin:0;padding:0}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}html,body{margin:0;padding:0}
     body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(0,212,255,.06),transparent 18%),radial-gradient(circle at bottom right,rgba(123,97,255,.08),transparent 22%),var(--bg);min-height:100vh;overflow-x:hidden}
     body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 92%);z-index:0}
     a{text-decoration:none;color:inherit}button,input,select{font:inherit}
@@ -482,6 +482,7 @@
         </div>
         <div class="hero-cta">
           <button class="btn primary" onclick="document.getElementById('learnContent').scrollIntoView({behavior:'smooth'})">Start Learning</button>
+          <button class="btn secondary" onclick="switchPageSection('play',null);setTimeout(()=>document.getElementById('gamesSection')?.scrollIntoView({behavior:'smooth'}),300)">🎮 Practice Finance</button>
           <button class="btn secondary" onclick="window.open('https://investpercent.com','_blank')">Talk to Advisor</button>
           <div class="mode-toggle">
             <button class="mode-btn active" id="learnModeBtn" onclick="setMode('learn')">&#x1F4DA; Learn</button>
@@ -920,9 +921,9 @@ const UE = {
 };
 
 function getUserLevel(){
-  const interactions = (UE.get('topicsOpened',0))+(UE.get('gamesPlayed',0)*2)+(UE.get('quizzesTaken',0)*3);
-  if(interactions < 3)  return 'Beginner';
-  if(interactions < 10) return 'Intermediate';
+  const interactions = (UE.get('topicsOpened',0))+(UE.get('gamesPlayed',0))+(UE.get('quizzesTaken',0));
+  if(interactions < 5)  return 'Beginner';
+  if(interactions <= 15) return 'Intermediate';
   return 'Advanced';
 }
 
@@ -1030,8 +1031,16 @@ function downloadLeads(){
 ══════════════════════════════════════════════════════════ */
 const ALL_MODALS = ['gameModal','leadModal','resultModal','quizModal','certModal'];
 
+function closeAllModals(){
+  ALL_MODALS.forEach(m=>{ const el=$(m); if(el) el.classList.add('hidden'); });
+  const ap=$('aiPanel');      if(ap) ap.classList.remove('open');
+  const lo=$('leadOverlay');  if(lo) lo.style.display='none';
+  document.body.style.overflow = '';
+  if(activeChart){ try{ activeChart.destroy(); }catch(e){} activeChart = null; }
+}
+
 function openModal(id){
-  ALL_MODALS.forEach(m=>{ if(m!==id){ const el=$(m); if(el){ el.classList.add('hidden'); } } });
+  closeAllModals();
   const el = $(id);
   if(!el) return;
   el.classList.remove('hidden');
@@ -1071,9 +1080,17 @@ function switchPageSection(name, btn){
 /* ══════════════════════════════════════════════════════════
    BACK TO TOP + SCROLL
 ══════════════════════════════════════════════════════════ */
+let _scrollNudgeFired = false;
 window.addEventListener('scroll', function(){
   const btn = $('backToTop');
   if(btn) btn.classList.toggle('visible', window.scrollY > 400);
+  if(!_scrollNudgeFired){
+    const scrolled = window.scrollY/(document.documentElement.scrollHeight - window.innerHeight);
+    if(scrolled >= 0.40){
+      _scrollNudgeFired = true;
+      showLeadPopup('scroll_depth');
+    }
+  }
 }, { passive: true });
 
 /* ══════════════════════════════════════════════════════════
@@ -1577,6 +1594,25 @@ try{ xp         = parseInt(localStorage.getItem('xp')         || '0'); }catch(e)
 try{ streak     = parseInt(localStorage.getItem('streak')     || '1'); }catch(e){}
 try{ badges     = JSON.parse(localStorage.getItem('badges')   || '[]'); }catch(e){}
 try{ todayGoal  = parseInt(localStorage.getItem('todayGoal')  || '0'); }catch(e){}
+
+const APP_STATE = {
+  get xp()           { return parseInt(localStorage.getItem('xp')||'0'); },
+  get level()        { return getUserLevel(); },
+  get topicsOpened() { return UE.get('topicsOpened',0); },
+  get gamesPlayed()  { return UE.get('gamesPlayed',0); },
+  get quizzesTaken() { return UE.get('quizzesTaken',0); },
+  get streak()       { return parseInt(localStorage.getItem('streak')||'1'); },
+  get badges()       { try{ return JSON.parse(localStorage.getItem('badges')||'[]'); }catch(e){ return []; } },
+  get recent()       { try{ return JSON.parse(localStorage.getItem('recently_viewed')||'[]'); }catch(e){ return []; } },
+  sync: function(){
+    xp        = this.xp;
+    streak    = this.streak;
+    badges    = this.badges;
+    todayGoal = parseInt(localStorage.getItem('todayGoal')||'0');
+    updateLevelUI();
+    renderBadges();
+  }
+};
 
 function saveXP(points, label){
   xp += points;
