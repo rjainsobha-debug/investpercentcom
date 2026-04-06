@@ -964,7 +964,7 @@ function checkConversionTriggers(){
   const topicsOpened = UE.get('topicsOpened',0);
   const gamesPlayed  = UE.get('gamesPlayed',0);
   const quizzesTaken = UE.get('quizzesTaken',0);
-  if(topicsOpened >= 4 || gamesPlayed >= 1 || quizzesTaken >= 1){
+  if(topicsOpened >= 3 || gamesPlayed >= 1 || quizzesTaken >= 1){
     showLeadPopup('behavior');
   }
 }
