@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Investment Tools & Calculators — Wealthwise</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0b0f1a;
+    --card: #111827;
+    --card2: #1a2234;
+    --border: #1e2d45;
+    --primary: #0ea5e9;
+    --accent: #818cf8;
+    --green: #22c55e;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --radius: 12px;
+  }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(11,15,26,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; color: var(--text); }
+  .logo-icon { width: 32px; height: 32px; background: rgba(14,165,233,0.15); border: 1px solid rgba(14,165,233,0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a { padding: 6px 14px; border-radius: 8px; text-decoration: none; color: var(--muted); font-size: 0.875rem; font-weight: 500; transition: all .15s; }
+  .nav-links a:hover { color: var(--text); background: var(--card2); }
+  .nav-links a.active { color: var(--primary); background: rgba(14,165,233,0.12); }
+  .nav-badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 9999px; border: 1px solid var(--border); color: var(--muted); }
+
+  /* HERO */
+  .hero { text-align: center; padding: 60px 20px 40px; background: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(14,165,233,0.12), transparent); }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 9999px; border: 1px solid rgba(14,165,233,0.3); background: rgba(14,165,233,0.08); color: var(--primary); font-size: 0.75rem; font-weight: 500; margin-bottom: 20px; }
+  .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: pulse 2s infinite; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; margin-bottom: 14px; letter-spacing: -0.02em; }
+  .hero h1 em { font-style: normal; color: var(--primary); }
+  .hero p { color: var(--muted); font-size: 1.05rem; max-width: 500px; margin: 0 auto; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
+
+  /* LAYOUT */
+  .main { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* CATEGORY TABS */
+  .cat-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 28px; scrollbar-width: none; }
+  .cat-tabs::-webkit-scrollbar { display: none; }
+  .cat-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 10px; border: 1px solid transparent; background: none; color: var(--muted); font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all .2s; }
+  .cat-btn:hover { color: var(--text); background: var(--card2); }
+  .cat-btn.active { color: var(--primary); background: rgba(14,165,233,0.1); border-color: rgba(14,165,233,0.3); }
+
+  /* GRID */
+  .content-grid { display: grid; grid-template-columns: 260px 1fr; gap: 20px; }
+  @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; } }
+
+  /* TOOL LIST */
+  .tool-list { display: flex; flex-direction: column; gap: 8px; }
+  .tool-btn { padding: 14px 16px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); cursor: pointer; text-align: left; transition: all .2s; }
+  .tool-btn:hover { border-color: rgba(14,165,233,0.3); transform: translateY(-1px); }
+  .tool-btn.active { background: rgba(14,165,233,0.08); border-color: rgba(14,165,233,0.35); }
+  .tool-btn .tool-name { font-size: 0.875rem; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .tool-btn .tool-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+
+  /* CALCULATOR CARD */
+  .calc-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; box-shadow: 0 0 30px rgba(14,165,233,0.06); }
+  .calc-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+  .calc-desc { color: var(--muted); font-size: 0.875rem; margin-bottom: 24px; }
+
+  /* RESULT CARDS */
+  .result-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .result-card { border-radius: 10px; padding: 14px 16px; border: 1px solid; }
+  .result-card.primary { border-color: rgba(14,165,233,0.25); background: rgba(14,165,233,0.06); }
+  .result-card.accent { border-color: rgba(129,140,248,0.25); background: rgba(129,140,248,0.06); }
+  .result-card.green { border-color: rgba(34,197,94,0.25); background: rgba(34,197,94,0.06); }
+  .result-card.red { border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.06); }
+  .result-card.yellow { border-color: rgba(245,158,11,0.25); background: rgba(245,158,11,0.06); }
+  .result-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .result-value { font-size: 1.3rem; font-weight: 700; }
+  .result-value.primary { color: var(--primary); }
+  .result-value.accent { color: var(--accent); }
+  .result-value.green { color: var(--green); }
+  .result-value.red { color: var(--red); }
+  .result-value.yellow { color: var(--yellow); }
+  .result-sub { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+  /* SLIDERS */
+  .sliders-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .slider-group label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; }
+  .slider-group label span { font-weight: 600; color: var(--primary); }
+  input[type="range"] { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 3px; background: var(--card2); outline: none; cursor: pointer; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 8px rgba(14,165,233,0.5); transition: transform .15s; }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  .slider-minmax { display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--muted); margin-top: 3px; }
+
+  /* CHART */
+  .chart-wrap { position: relative; height: 220px; margin-bottom: 20px; }
+
+  /* EXPORT */
+  .export-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--card2); color: var(--text); font-size: 0.8rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: all .15s; }
+  .btn:hover { background: var(--border); }
+  .btn.primary { background: var(--primary); border-color: var(--primary); color: #000; }
+  .btn.primary:hover { opacity: 0.88; }
+
+  /* CALC PANEL */
+  .calc-panel { display: none; }
+  .calc-panel.active { display: block; }
+
+  /* XIRR */
+  .cashflow-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
+  .cashflow-pos { color: var(--green); font-weight: 600; }
+  .cashflow-neg { color: var(--red); font-weight: 600; }
+  .cf-inputs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  input[type="date"], input[type="number"], input[type="text"] { padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--card2); color: var(--text); font-size: 0.8rem; outline: none; }
+  input[type="date"]:focus, input[type="number"]:focus { border-color: var(--primary); }
+
+  /* BAR VISUAL */
+  .bar-visual { margin-top: 12px; }
+  .bar-item { margin-bottom: 10px; }
+  .bar-header { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px; }
+  .bar-track { height: 8px; border-radius: 4px; background: var(--card2); overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width .5s ease; }
+
+  /* Tooltip */
+  .chip { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+  .chip.green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .chip.red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .chip.blue { background: rgba(14,165,233,0.15); color: var(--primary); }
+
+  /* Responsive */
+  @media (max-width: 600px) { .sliders-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="/">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 7L9 10L12 5L14 7" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="7" r="1.5" fill="#0ea5e9"/></svg>
+      </div>
+      Wealthwise
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="investments.html" class="active">Investments</a>
+      <a href="personal-finance.html">Personal Finance</a>
+    </div>
+    <span class="nav-badge">100% Free Tools</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge"><span></span>Financial Tools Lab — Free & Instant</div>
+  <h1>Investment Tools &<br><em>Calculators</em></h1>
+  <p>Explore returns, compare strategies, and simulate wealth outcomes.</p>
+</div>
+
+<div class="main">
+  <!-- CATEGORY TABS -->
+  <div class="cat-tabs">
+    <button class="cat-btn active" data-cat="sip">📈 SIP & Returns</button>
+    <button class="cat-btn" data-cat="compare">⚖️ Comparison</button>
+    <button class="cat-btn" data-cat="advanced">⚡ Advanced</button>
+    <button class="cat-btn" data-cat="portfolio">🎯 Portfolio</button>
+    <button class="cat-btn" data-cat="goal">🏁 Goal Based</button>
+  </div>
+
+  <div class="content-grid">
+    <!-- TOOL LIST -->
+    <div class="tool-list" id="toolList"></div>
+
+    <!-- CALC AREA -->
+    <div class="calc-card" id="calcArea">
+      <div id="calcHeader">
+        <div class="calc-title" id="calcTitle">SIP Calculator</div>
+        <div class="calc-desc" id="calcDesc">Calculate future value of your monthly SIP investments</div>
+      </div>
+      <div id="calcContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── UTILS ───────────────────────────────────────────────
+const fmtINR = n => {
+  const a = Math.abs(n);
+  if (a >= 1e7) return '₹' + (a / 1e7).toFixed(2) + 'Cr';
+  if (a >= 1e5) return '₹' + (a / 1e5).toFixed(2) + 'L';
+  if (a >= 1e3) return '₹' + (a / 1e3).toFixed(1) + 'K';
+  return '₹' + Math.round(a).toLocaleString('en-IN');
+};
+const fmtN = n => Math.round(n).toLocaleString('en-IN');
+let chartInst = null;
+
+function drawChart(canvasId, type, labels, datasets, fmtTick = fmtINR) {
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+  if (chartInst) chartInst.destroy();
+  chartInst = new Chart(ctx, {
+    type,
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } }, tooltip: { callbacks: { label: c => ' ' + fmtTick(c.raw) } } },
+      scales: {
+        x: { grid: { color: '#1e2d45' }, ticks: { color: '#64748b', font: { size: 10 } } },
+        y: { grid: { color: '#1e2d45' }, ticks: { color: '#64748b', font: { size: 10 }, callback: fmtTick } }
+      }
+    }
+  });
+}
+
+function slider(id, label, val, min, max, step, pfx, sfx, onChange) {
+  return `<div class="slider-group">
+    <label>${label} <span id="${id}Lbl">${pfx}${fmtN(val)}${sfx}</span></label>
+    <input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}" oninput="document.getElementById('${id}Lbl').textContent='${pfx}'+Number(this.value).toLocaleString('en-IN')+'${sfx}';${onChange}">
+    <div class="slider-minmax"><span>${pfx}${fmtN(min)}${sfx}</span><span>${pfx}${fmtN(max)}${sfx}</span></div>
+  </div>`;
+}
+
+function resultCard(label, valId, cls, subId = '') {
+  return `<div class="result-card ${cls}"><div class="result-label">${label}</div><div class="result-value ${cls}" id="${valId}">—</div>${subId ? `<div class="result-sub" id="${subId}"></div>` : ''}</div>`;
+}
+
+function exportRow(idSuffix) {
+  return `<div class="export-row">
+    <button class="btn" onclick="copyResult('${idSuffix}')">📋 Copy Result</button>
+    <button class="btn" onclick="shareWA('${idSuffix}')">💬 Share via WhatsApp</button>
+  </div>`;
+}
+
+let resultTexts = {};
+function setResult(id, txt) { resultTexts[id] = txt; }
+function copyResult(id) { navigator.clipboard.writeText(resultTexts[id] || ''); const btn = event.target; btn.textContent = '✅ Copied!'; setTimeout(() => btn.textContent = '📋 Copy Result', 2000); }
+function shareWA(id) { window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(resultTexts[id] || ''), '_blank'); }
+
+// ─── CALCULATORS ─────────────────────────────────────────
+
+const CALCS = {
+
+// ── SIP ──
+'sip': {
+  name: 'SIP Calculator',
+  desc: 'Calculate future value of your monthly SIP investments',
+  html: () => `
+    ${resultCard('Future Value','sipFV','primary')}${resultCard('Total Invested','sipInv','accent')}${resultCard('Wealth Gained','sipGain','green')}
+    <div class="sliders-grid">
+      ${slider('sipM','Monthly SIP',10000,500,100000,500,'₹','',`calcSIP()`)}
+      ${slider('sipR','Expected Return',12,1,30,0.5,'','%',`calcSIP()`)}
+      ${slider('sipY','Time Period',10,1,40,1,'','Yrs',`calcSIP()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="sipChart"></canvas></div>
+    ${exportRow('sip')}`,
+  init: () => setTimeout(calcSIP, 50)
+},
+
+// ── LUMPSUM ──
+'lumpsum': {
+  name: 'Lumpsum Calculator',
+  desc: 'One-time investment growth projections',
+  html: () => `
+    ${resultCard('Maturity Value','lsFV','primary')}${resultCard('Principal','lsPr','accent')}${resultCard('Total Gains','lsGain','green')}
+    <div class="sliders-grid">
+      ${slider('lsP','Investment Amount',100000,10000,10000000,10000,'₹','',`calcLS()`)}
+      ${slider('lsR','Expected Return',12,1,30,0.5,'','%',`calcLS()`)}
+      ${slider('lsY','Time Period',10,1,40,1,'','Yrs',`calcLS()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="lsChart"></canvas></div>
+    ${exportRow('ls')}`,
+  init: () => setTimeout(calcLS, 50)
+},
+
+// ── STEP-UP SIP ──
+'stepup': {
+  name: 'Step-up SIP Calculator',
+  desc: 'Annual increment on your SIP amount',
+  html: () => `
+    ${resultCard('Final Corpus','suFV','primary')}${resultCard('Total Invested','suInv','accent')}${resultCard('Wealth Gained','suGain','green')}
+    <div class="sliders-grid">
+      ${slider('suM','Initial Monthly SIP',10000,500,100000,500,'₹','',`calcSU()`)}
+      ${slider('suR','Annual Return',12,1,30,0.5,'','%',`calcSU()`)}
+      ${slider('suY','Time Period',10,1,40,1,'','Yrs',`calcSU()`)}
+      ${slider('suS','Annual Step-up',10,0,50,1,'','%',`calcSU()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="suChart"></canvas></div>
+    ${exportRow('su')}`,
+  init: () => setTimeout(calcSU, 50)
+},
+
+// ── SWP ──
+'swp': {
+  name: 'SWP Calculator',
+  desc: 'Systematic Withdrawal Plan sustainability',
+  html: () => `
+    ${resultCard('Monthly Withdrawal','swpWD','primary')}${resultCard('Sustainability','swpSus','green')}${resultCard('Duration','swpDur','accent')}
+    <div class="sliders-grid">
+      ${slider('swpC','Corpus Amount',5000000,100000,50000000,100000,'₹','',`calcSWP()`)}
+      ${slider('swpW','Monthly Withdrawal',25000,1000,200000,1000,'₹','',`calcSWP()`)}
+      ${slider('swpR','Expected Return',8,1,20,0.5,'','%',`calcSWP()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="swpChart"></canvas></div>
+    ${exportRow('swp')}`,
+  init: () => setTimeout(calcSWP, 50)
+},
+
+// ── SIP vs FD vs RD ──
+'sipfd': {
+  name: 'SIP vs FD vs RD',
+  desc: 'Compare growth across three investment types',
+  html: () => `
+    ${resultCard('SIP Value','cmpSIP','primary','cmpSIPsub')}${resultCard('FD Value','cmpFD','accent','cmpFDsub')}${resultCard('RD Value','cmpRD','green','cmpRDsub')}
+    <div class="sliders-grid">
+      ${slider('cmpM','Monthly Amount',10000,500,100000,500,'₹','',`calcCMP()`)}
+      ${slider('cmpSR','SIP Return',12,1,30,0.5,'','%',`calcCMP()`)}
+      ${slider('cmpFR','FD Rate',7,1,15,0.25,'','%',`calcCMP()`)}
+      ${slider('cmpY','Time Period',10,1,30,1,'','Yrs',`calcCMP()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="cmpChart"></canvas></div>`,
+  init: () => setTimeout(calcCMP, 50)
+},
+
+// ── EQUITY vs DEBT ──
+'eqdebt': {
+  name: 'Equity vs Debt',
+  desc: 'Blended portfolio allocation impact',
+  html: () => `
+    ${resultCard('Blended Return','edBlend','primary','edBlendSub')}${resultCard('Final Corpus','edFV','accent')}${resultCard('Wealth Gained','edGain','green')}
+    <div class="sliders-grid">
+      ${slider('edEq','Equity Allocation',70,0,100,5,'','%',`calcED()`)}
+      ${slider('edM','Monthly SIP',10000,500,100000,500,'₹','',`calcED()`)}
+      ${slider('edY','Time Period',15,1,40,1,'','Yrs',`calcED()`)}
+    </div>
+    <div style="font-size:0.78rem;color:var(--muted);margin-bottom:16px">Assumed: Equity <b style="color:var(--primary)">14% p.a.</b>, Debt <b style="color:var(--accent)">7% p.a.</b></div>
+    <div class="chart-wrap"><canvas id="edChart"></canvas></div>`,
+  init: () => setTimeout(calcED, 50)
+},
+
+// ── LUMPSUM vs SIP ──
+'lsvssip': {
+  name: 'Lumpsum vs SIP',
+  desc: 'Which works better for your situation?',
+  html: () => `
+    ${resultCard('Lumpsum Value','lvsFV','primary','lvsLSsub')}${resultCard('SIP Value','lvsSIP','accent','lvsSIPsub')}${resultCard('Difference','lvsDiff','green','lvsDiffSub')}
+    <div class="sliders-grid">
+      ${slider('lvsAmt','Total Investment',1200000,100000,10000000,100000,'₹','',`calcLVS()`)}
+      ${slider('lvsR','Expected Return',12,1,30,0.5,'','%',`calcLVS()`)}
+      ${slider('lvsY','Time Period',10,1,30,1,'','Yrs',`calcLVS()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="lvsChart"></canvas></div>`,
+  init: () => setTimeout(calcLVS, 50)
+},
+
+// ── CAGR ──
+'cagr': {
+  name: 'CAGR Calculator',
+  desc: 'Compounded Annual Growth Rate from any two values',
+  html: () => `
+    ${resultCard('CAGR','cagrVal','primary')}${resultCard('Total Return','cagrTR','accent')}${resultCard('Multiplier','cagrMul','green')}
+    <div class="sliders-grid">
+      ${slider('cagrI','Initial Value',100000,10000,10000000,10000,'₹','',`calcCAGR()`)}
+      ${slider('cagrF','Final Value',350000,10000,50000000,10000,'₹','',`calcCAGR()`)}
+      ${slider('cagrY','Time Period',10,1,30,1,'','Yrs',`calcCAGR()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="cagrChart"></canvas></div>
+    ${exportRow('cagr')}`,
+  init: () => setTimeout(calcCAGR, 50)
+},
+
+// ── XIRR ──
+'xirr': {
+  name: 'XIRR Calculator',
+  desc: 'True returns on irregular cash flows',
+  html: () => `
+    ${resultCard('XIRR','xirrVal','primary')}${resultCard('Total Invested','xirrInv','accent')}${resultCard('Total Returns','xirrRet','green')}
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:20px">
+      <div style="font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:10px">Cash Flows (- = outflow, + = inflow)</div>
+      <div id="xirrFlows"></div>
+      <div class="cf-inputs">
+        <input type="date" id="xirrDate" />
+        <input type="number" id="xirrAmt" placeholder="Amount (e.g. -50000)" />
+        <button class="btn primary" onclick="addCF()">+ Add</button>
+      </div>
+    </div>
+    ${exportRow('xirr')}`,
+  init: () => {
+    window.cfData = [
+      { date: '2020-01-01', amount: -100000 },
+      { date: '2021-06-01', amount: -50000 },
+      { date: '2024-01-01', amount: 220000 }
+    ];
+    setTimeout(renderXIRR, 50);
+  }
+},
+
+// ── INFLATION ADJUSTED ──
+'inflation': {
+  name: 'Inflation-Adjusted Returns',
+  desc: 'Real returns after inflation erosion',
+  html: () => `
+    ${resultCard('Nominal Value','infNom','primary')}${resultCard('Real Value','infReal','accent','infRealSub')}${resultCard('Inflation Erosion','infEros','red')}
+    <div class="sliders-grid">
+      ${slider('infM','Monthly Investment',10000,500,100000,500,'₹','',`calcINF()`)}
+      ${slider('infR','Expected Return',12,1,30,0.5,'','%',`calcINF()`)}
+      ${slider('infI','Inflation Rate',6,1,15,0.5,'','%',`calcINF()`)}
+      ${slider('infY','Time Period',20,1,40,1,'','Yrs',`calcINF()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="infChart"></canvas></div>
+    ${exportRow('inf')}`,
+  init: () => setTimeout(calcINF, 50)
+},
+
+// ── ASSET ALLOCATION ──
+'asset': {
+  name: 'Asset Allocation Checker',
+  desc: 'Visualize and optimize your portfolio mix',
+  html: () => `
+    ${resultCard('Risk Profile','asRisk','primary')}${resultCard('Expected Return','asRet','green')}${resultCard('Total Allocated','asTotal','accent')}
+    <div class="sliders-grid">
+      ${slider('asEq','Equity',60,0,100,5,'','%',`calcAS()`)}
+      ${slider('asDt','Debt',25,0,100,5,'','%',`calcAS()`)}
+      ${slider('asGd','Gold',10,0,50,5,'','%',`calcAS()`)}
+      ${slider('asCh','Cash/Liquid',5,0,50,5,'','%',`calcAS()`)}
+    </div>
+    <div class="bar-visual" id="asBar"></div>`,
+  init: () => setTimeout(calcAS, 50)
+},
+
+// ── DIVERSIFICATION ──
+'divers': {
+  name: 'Diversification Score',
+  desc: 'Measure concentration risk in your portfolio',
+  html: () => `
+    ${resultCard('Diversification Score','dvScore','primary')}${resultCard('Active Classes','dvClasses','accent')}${resultCard('Concentration Risk','dvRisk','green')}
+    <div id="dvSliders" style="margin:20px 0"></div>`,
+  init: () => {
+    window.dvWeights = [40, 20, 10, 10, 15, 5];
+    setTimeout(renderDV, 50);
+  }
+},
+
+// ── RISK ANALYZER ──
+'risk': {
+  name: 'Risk Analyzer',
+  desc: 'Personalized risk profile and allocation suggestion',
+  html: () => `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div style="border:1px solid var(--border);border-radius:12px;background:var(--card2);padding:20px;text-align:center">
+        <div style="font-size:0.75rem;color:var(--muted);margin-bottom:6px">Risk Score</div>
+        <div style="font-size:3rem;font-weight:800;color:var(--primary)" id="riskScore">—</div>
+        <div style="font-size:0.85rem;font-weight:600;margin-top:4px" id="riskLabel">—</div>
+        <div style="height:6px;border-radius:3px;background:var(--border);margin-top:12px;overflow:hidden"><div id="riskBar" style="height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;transition:width .5s"></div></div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:12px;background:var(--card2);padding:20px">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:10px">Suggested Allocation</div>
+        <div id="riskAlloc"></div>
+      </div>
+    </div>
+    <div class="sliders-grid">
+      ${slider('rkAge','Age',30,18,70,1,'','yrs',`calcRisk()`)}
+      ${slider('rkHor','Investment Horizon',20,1,40,1,'','yrs',`calcRisk()`)}
+      ${slider('rkInc','Monthly Income',100000,10000,1000000,10000,'₹','',`calcRisk()`)}
+      ${slider('rkEF','Emergency Fund',6,0,24,1,'','mo',`calcRisk()`)}
+    </div>`,
+  init: () => setTimeout(calcRisk, 50)
+},
+
+// ── RETIREMENT ──
+'retire': {
+  name: 'Retirement Calculator',
+  desc: 'Plan the corpus you need to retire comfortably',
+  html: () => `
+    ${resultCard('Projected Corpus','retFV','primary')}${resultCard('Required Corpus','retReq','accent')}${resultCard('Status','retStatus','green','retStatusSub')}
+    <div class="sliders-grid">
+      ${slider('retAge','Current Age',30,18,55,1,'','yrs',`calcRet()`)}
+      ${slider('retRA','Retire at Age',60,45,70,1,'','yrs',`calcRet()`)}
+      ${slider('retExp','Monthly Expenses',50000,5000,500000,5000,'₹','',`calcRet()`)}
+      ${slider('retSav','Current Savings',500000,0,10000000,100000,'₹','',`calcRet()`)}
+      ${slider('retSIP','Monthly SIP',20000,1000,200000,1000,'₹','',`calcRet()`)}
+      ${slider('retR','Expected Return',12,1,20,0.5,'','%',`calcRet()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="retChart"></canvas></div>
+    ${exportRow('ret')}`,
+  init: () => setTimeout(calcRet, 50)
+},
+
+// ── EDUCATION ──
+'edu': {
+  name: 'Child Education Planner',
+  desc: 'Save for your child\'s future education costs',
+  html: () => `
+    ${resultCard('Future Cost','eduFC','primary','eduFCsub')}${resultCard('Required Monthly SIP','eduSIP','accent')}${resultCard('Years to Goal','eduY','green')}
+    <div class="sliders-grid">
+      ${slider('eduC','Current Education Cost',1500000,100000,10000000,100000,'₹','',`calcEdu()`)}
+      ${slider('eduCA','Child Age Now',5,0,17,1,'','yrs',`calcEdu()`)}
+      ${slider('eduEA','Education at Age',18,10,25,1,'','yrs',`calcEdu()`)}
+      ${slider('eduInf','Education Inflation',8,1,20,0.5,'','%',`calcEdu()`)}
+      ${slider('eduRet','Investment Return',12,1,20,0.5,'','%',`calcEdu()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="eduChart"></canvas></div>
+    ${exportRow('edu')}`,
+  init: () => setTimeout(calcEdu, 50)
+},
+
+// ── FIRE ──
+'fire': {
+  name: 'FIRE Calculator',
+  desc: 'Financial Independence, Retire Early — how close are you?',
+  html: () => `
+    ${resultCard('FIRE Target','fireTgt','primary','fireTgtSub')}${resultCard('Years to FIRE','fireYrs','accent')}${resultCard('Gap / Surplus','fireGap','green','fireGapSub')}
+    <div class="sliders-grid">
+      ${slider('fireExp','Monthly Expenses',60000,10000,500000,5000,'₹','',`calcFIRE()`)}
+      ${slider('fireCorp','Current Corpus',2000000,0,50000000,100000,'₹','',`calcFIRE()`)}
+      ${slider('fireSIP','Monthly Investment',50000,1000,500000,5000,'₹','',`calcFIRE()`)}
+      ${slider('fireR','Expected Return',12,1,20,0.5,'','%',`calcFIRE()`)}
+      ${slider('fireWR','Withdrawal Rate',4,2,8,0.25,'','%',`calcFIRE()`)}
+    </div>
+    <div class="chart-wrap"><canvas id="fireChart"></canvas></div>
+    ${exportRow('fire')}`,
+  init: () => setTimeout(calcFIRE, 50)
+}
+};
+
+// ─── CALCULATOR LOGIC ────────────────────────────────────
+
+function calcSIP() {
+  const m = +document.getElementById('sipM').value;
+  const r = +document.getElementById('sipR').value / 12 / 100;
+  const n = +document.getElementById('sipY').value * 12;
+  const fv = m * ((Math.pow(1+r, n)-1)/r) * (1+r);
+  const inv = m * n;
+  const gain = fv - inv;
+  document.getElementById('sipFV').textContent = fmtINR(fv);
+  document.getElementById('sipInv').textContent = fmtINR(inv);
+  document.getElementById('sipGain').textContent = fmtINR(gain);
+  const yrs = n / 12;
+  const labs = [], v1 = [], v2 = [];
+  for (let i = 1; i <= yrs; i++) {
+    const months = i * 12;
+    labs.push('Y'+i);
+    v1.push(Math.round(m * ((Math.pow(1+r, months)-1)/r) * (1+r)));
+    v2.push(m * months);
+  }
+  drawChart('sipChart', 'line', labs, [
+    { label:'Future Value', data: v1, borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.1)', fill:true, tension:.4, pointRadius:0 },
+    { label:'Amount Invested', data: v2, borderColor:'#818cf8', backgroundColor:'rgba(129,140,248,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('sip', `SIP: ₹${m.toLocaleString()}/mo @ ${document.getElementById('sipR').value}% for ${yrs}Y → ${fmtINR(fv)} (Invested: ${fmtINR(inv)}, Gains: ${fmtINR(gain)})`);
+}
+
+function calcLS() {
+  const p = +document.getElementById('lsP').value;
+  const r = +document.getElementById('lsR').value / 100;
+  const y = +document.getElementById('lsY').value;
+  const fv = p * Math.pow(1+r, y);
+  const gain = fv - p;
+  document.getElementById('lsFV').textContent = fmtINR(fv);
+  document.getElementById('lsPr').textContent = fmtINR(p);
+  document.getElementById('lsGain').textContent = fmtINR(gain);
+  const labs = [], v1 = [];
+  for (let i = 1; i <= y; i++) { labs.push('Y'+i); v1.push(Math.round(p * Math.pow(1+r, i))); }
+  drawChart('lsChart', 'line', labs, [
+    { label:'Growth Value', data: v1, borderColor:'#22c55e', backgroundColor:'rgba(34,197,94,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('ls', `Lumpsum: ₹${p.toLocaleString()} @ ${document.getElementById('lsR').value}% for ${y}Y → ${fmtINR(fv)}`);
+}
+
+function calcSU() {
+  const sip = +document.getElementById('suM').value;
+  const rate = +document.getElementById('suR').value / 12 / 100;
+  const years = +document.getElementById('suY').value;
+  const stepUp = +document.getElementById('suS').value / 100;
+  let corpus = 0, invested = 0;
+  const labs = [], v1 = [], v2 = [];
+  for (let y = 0; y < years; y++) {
+    const ms = sip * Math.pow(1+stepUp, y);
+    for (let m = 0; m < 12; m++) { corpus = (corpus + ms) * (1+rate); invested += ms; }
+    labs.push('Y'+(y+1)); v1.push(Math.round(corpus)); v2.push(Math.round(invested));
+  }
+  const gain = corpus - invested;
+  document.getElementById('suFV').textContent = fmtINR(corpus);
+  document.getElementById('suInv').textContent = fmtINR(invested);
+  document.getElementById('suGain').textContent = fmtINR(gain);
+  drawChart('suChart', 'line', labs, [
+    { label:'Step-up Corpus', data: v1, borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.1)', fill:true, tension:.4, pointRadius:0 },
+    { label:'Invested', data: v2, borderColor:'#818cf8', fill:false, tension:.4, pointRadius:0, borderDash:[5,5] }
+  ]);
+  setResult('su', `Step-up SIP: ₹${sip.toLocaleString()}/mo, ${document.getElementById('suS').value}% step-up @ ${document.getElementById('suR').value}% for ${years}Y → ${fmtINR(corpus)}`);
+}
+
+function calcSWP() {
+  const corpus = +document.getElementById('swpC').value;
+  const wd = +document.getElementById('swpW').value;
+  const rate = +document.getElementById('swpR').value / 12 / 100;
+  let bal = corpus;
+  const labs = [], v1 = [];
+  let totalMonths = 0;
+  for (let m = 1; m <= 360; m++) {
+    bal = bal * (1+rate) - wd;
+    if (bal <= 0) { totalMonths = m; break; }
+    if (m % 12 === 0) { labs.push('Y'+(m/12)); v1.push(Math.round(bal)); totalMonths = m; }
+  }
+  const isOk = wd <= corpus * rate;
+  document.getElementById('swpWD').textContent = fmtINR(wd);
+  const sus = document.getElementById('swpSus');
+  sus.textContent = isOk ? 'Sustainable' : 'Will Deplete';
+  sus.className = 'result-value ' + (isOk ? 'green' : 'red');
+  sus.closest('.result-card').className = 'result-card ' + (isOk ? 'green' : 'red');
+  document.getElementById('swpDur').textContent = Math.round(labs.length) + ' Yrs';
+  drawChart('swpChart', 'line', labs, [
+    { label:'Remaining Balance', data: v1, borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('swp', `SWP: Corpus ${fmtINR(corpus)}, Withdrawal ₹${wd.toLocaleString()}/mo @ ${document.getElementById('swpR').value}% → ${isOk?'Sustainable':'Will Deplete'} for ${labs.length} years`);
+}
+
+function calcCMP() {
+  const m = +document.getElementById('cmpM').value;
+  const sr = +document.getElementById('cmpSR').value / 12 / 100;
+  const fr = +document.getElementById('cmpFR').value;
+  const y = +document.getElementById('cmpY').value;
+  const n = y * 12;
+  const sipFV = m * ((Math.pow(1+sr, n)-1)/sr) * (1+sr);
+  const inv = m * n;
+  const fdFV = inv * Math.pow(1 + fr/400, y*4);
+  const rdR = fr/12/100;
+  const rdFV = m * ((Math.pow(1+rdR, n)-1)/rdR) * (1+rdR);
+  document.getElementById('cmpSIP').textContent = fmtINR(sipFV);
+  document.getElementById('cmpFD').textContent = fmtINR(fdFV);
+  document.getElementById('cmpRD').textContent = fmtINR(rdFV);
+  document.getElementById('cmpSIPsub').textContent = `@ ${document.getElementById('cmpSR').value}% p.a.`;
+  document.getElementById('cmpFDsub').textContent = `@ ${fr}% p.a.`;
+  document.getElementById('cmpRDsub').textContent = `@ ${fr}% p.a.`;
+  const labs = [], ds1 = [], ds2 = [], ds3 = [];
+  for (let i = 1; i <= y; i++) {
+    const mo = i*12; labs.push('Y'+i);
+    ds1.push(Math.round(m * ((Math.pow(1+sr, mo)-1)/sr) * (1+sr)));
+    ds2.push(Math.round(m*mo * Math.pow(1+fr/400, i*4)));
+    ds3.push(Math.round(m * ((Math.pow(1+rdR, mo)-1)/rdR) * (1+rdR)));
+  }
+  drawChart('cmpChart', 'line', labs, [
+    { label:'SIP', data:ds1, borderColor:'#0ea5e9', fill:false, tension:.4, pointRadius:0 },
+    { label:'FD', data:ds2, borderColor:'#f59e0b', fill:false, tension:.4, pointRadius:0 },
+    { label:'RD', data:ds3, borderColor:'#22c55e', fill:false, tension:.4, pointRadius:0 }
+  ]);
+}
+
+function calcED() {
+  const eq = +document.getElementById('edEq').value / 100;
+  const debt = 1 - eq;
+  const blended = eq * 0.14 + debt * 0.07;
+  const m = +document.getElementById('edM').value;
+  const y = +document.getElementById('edY').value;
+  const n = y * 12;
+  const r = blended / 12;
+  const fv = m * ((Math.pow(1+r, n)-1)/r) * (1+r);
+  const inv = m * n;
+  document.getElementById('edBlend').textContent = (blended*100).toFixed(1) + '%';
+  document.getElementById('edBlendSub').textContent = `${(eq*100).toFixed(0)}% Eq + ${(debt*100).toFixed(0)}% Debt`;
+  document.getElementById('edFV').textContent = fmtINR(fv);
+  document.getElementById('edGain').textContent = fmtINR(fv - inv);
+  const labs = [], ds1 = [], ds2 = [], ds3 = [];
+  for (let i = 1; i <= y; i++) {
+    const mo = i*12; labs.push('Y'+i);
+    ds1.push(Math.round(m * ((Math.pow(1+r, mo)-1)/r) * (1+r)));
+    ds2.push(Math.round(m * ((Math.pow(1+0.14/12, mo)-1)/(0.14/12)) * (1+0.14/12)));
+    ds3.push(Math.round(m * ((Math.pow(1+0.07/12, mo)-1)/(0.07/12)) * (1+0.07/12)));
+  }
+  drawChart('edChart', 'line', labs, [
+    { label:'Blended', data:ds1, borderColor:'#0ea5e9', fill:false, tension:.4, borderWidth:2.5, pointRadius:0 },
+    { label:'100% Equity', data:ds2, borderColor:'#22c55e', fill:false, tension:.4, pointRadius:0, borderDash:[5,5] },
+    { label:'100% Debt', data:ds3, borderColor:'#f59e0b', fill:false, tension:.4, pointRadius:0, borderDash:[5,5] }
+  ]);
+}
+
+function calcLVS() {
+  const amt = +document.getElementById('lvsAmt').value;
+  const r = +document.getElementById('lvsR').value;
+  const y = +document.getElementById('lvsY').value;
+  const monthly = amt / (y * 12);
+  const lsFV = amt * Math.pow(1+r/100, y);
+  const sr = r/12/100;
+  const n = y * 12;
+  const sipFV = monthly * ((Math.pow(1+sr, n)-1)/sr) * (1+sr);
+  const diff = Math.abs(lsFV - sipFV);
+  const winner = lsFV > sipFV ? 'Lumpsum wins' : 'SIP wins';
+  document.getElementById('lvsFV').textContent = fmtINR(lsFV);
+  document.getElementById('lvsSIP').textContent = fmtINR(sipFV);
+  document.getElementById('lvsDiff').textContent = fmtINR(diff);
+  document.getElementById('lvsLSsub').textContent = 'Invest all at once';
+  document.getElementById('lvsSIPsub').textContent = `₹${Math.round(monthly).toLocaleString()}/mo`;
+  document.getElementById('lvsDiffSub').textContent = winner;
+  const labs = [], ds1 = [], ds2 = [];
+  for (let i = 1; i <= y; i++) {
+    const mo = i*12; labs.push('Y'+i);
+    ds1.push(Math.round(amt * Math.pow(1+r/100, i)));
+    ds2.push(Math.round(monthly * ((Math.pow(1+sr, mo)-1)/sr) * (1+sr)));
+  }
+  drawChart('lvsChart', 'line', labs, [
+    { label:'Lumpsum', data:ds1, borderColor:'#0ea5e9', fill:false, tension:.4, pointRadius:0 },
+    { label:'SIP', data:ds2, borderColor:'#818cf8', fill:false, tension:.4, pointRadius:0 }
+  ]);
+}
+
+function calcCAGR() {
+  const init = +document.getElementById('cagrI').value;
+  const fin = +document.getElementById('cagrF').value;
+  const y = +document.getElementById('cagrY').value;
+  const cagr = (Math.pow(fin/init, 1/y) - 1) * 100;
+  const tr = ((fin - init) / init * 100);
+  document.getElementById('cagrVal').textContent = cagr.toFixed(2) + '%';
+  document.getElementById('cagrTR').textContent = tr.toFixed(1) + '%';
+  document.getElementById('cagrMul').textContent = (fin/init).toFixed(2) + 'x';
+  const labs = [], v1 = [];
+  for (let i = 1; i <= y; i++) { labs.push('Y'+i); v1.push(Math.round(init * Math.pow(1+cagr/100, i))); }
+  drawChart('cagrChart', 'line', labs, [
+    { label:'Projected Value', data:v1, borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('cagr', `CAGR: ₹${init.toLocaleString()} → ₹${fin.toLocaleString()} in ${y}Y = ${cagr.toFixed(2)}% CAGR`);
+}
+
+function xirr(cfs) {
+  const dates = cfs.map(f => new Date(f.date).getTime());
+  const amounts = cfs.map(f => f.amount);
+  const t0 = dates[0];
+  let rate = 0.1;
+  for (let i = 0; i < 100; i++) {
+    let npv = 0, dnpv = 0;
+    for (let j = 0; j < amounts.length; j++) {
+      const t = (dates[j] - t0) / (365.25 * 86400000);
+      npv += amounts[j] / Math.pow(1+rate, t);
+      dnpv -= t * amounts[j] / Math.pow(1+rate, t+1);
+    }
+    const nr = rate - npv/dnpv;
+    if (Math.abs(nr-rate) < 1e-7) return nr*100;
+    rate = nr;
+  }
+  return rate*100;
+}
+
+function addCF() {
+  const d = document.getElementById('xirrDate').value;
+  const a = +document.getElementById('xirrAmt').value;
+  if (!d || !a) return;
+  window.cfData.push({ date: d, amount: a });
+  window.cfData.sort((a,b) => a.date.localeCompare(b.date));
+  document.getElementById('xirrDate').value = '';
+  document.getElementById('xirrAmt').value = '';
+  renderXIRR();
+}
+
+function removeCF(i) {
+  window.cfData.splice(i, 1);
+  renderXIRR();
+}
+
+function renderXIRR() {
+  const cfs = window.cfData;
+  const container = document.getElementById('xirrFlows');
+  if (!container) return;
+  container.innerHTML = cfs.map((f,i) => `
+    <div class="cashflow-row">
+      <span style="color:var(--muted)">${f.date}</span>
+      <span class="${f.amount < 0 ? 'cashflow-neg' : 'cashflow-pos'}">${f.amount < 0 ? '-' : '+'} ₹${Math.abs(f.amount).toLocaleString()}</span>
+      <button class="btn" style="padding:3px 10px;font-size:0.7rem" onclick="removeCF(${i})">Remove</button>
+    </div>`).join('');
+  try {
+    const rate = xirr(cfs);
+    const inv = cfs.filter(f=>f.amount<0).reduce((s,f)=>s+Math.abs(f.amount),0);
+    const ret = cfs.filter(f=>f.amount>0).reduce((s,f)=>s+f.amount,0);
+    document.getElementById('xirrVal').textContent = rate.toFixed(2) + '%';
+    document.getElementById('xirrInv').textContent = fmtINR(inv);
+    document.getElementById('xirrRet').textContent = fmtINR(ret);
+    setResult('xirr', `XIRR: ${rate.toFixed(2)}% for ${cfs.length} cash flows`);
+  } catch(e) {}
+}
+
+function calcINF() {
+  const m = +document.getElementById('infM').value;
+  const r = +document.getElementById('infR').value / 12 / 100;
+  const inf = +document.getElementById('infI').value / 100;
+  const y = +document.getElementById('infY').value;
+  const n = y * 12;
+  const nomFV = m * ((Math.pow(1+r, n)-1)/r) * (1+r);
+  const realFV = nomFV / Math.pow(1+inf, y);
+  document.getElementById('infNom').textContent = fmtINR(nomFV);
+  document.getElementById('infReal').textContent = fmtINR(realFV);
+  document.getElementById('infRealSub').textContent = 'Inflation adjusted';
+  document.getElementById('infEros').textContent = fmtINR(nomFV - realFV);
+  const labs = [], ds1 = [], ds2 = [];
+  for (let i = 1; i <= y; i++) {
+    const mo = i*12;
+    labs.push('Y'+i);
+    ds1.push(Math.round(m * ((Math.pow(1+r, mo)-1)/r) * (1+r)));
+    ds2.push(Math.round(m * ((Math.pow(1+r, mo)-1)/r) * (1+r) / Math.pow(1+inf, i)));
+  }
+  drawChart('infChart', 'line', labs, [
+    { label:'Nominal Value', data:ds1, borderColor:'#0ea5e9', fill:false, tension:.4, pointRadius:0 },
+    { label:'Real Value', data:ds2, borderColor:'#f59e0b', fill:false, tension:.4, pointRadius:0 }
+  ]);
+  setResult('inf', `Inflation-adj: ₹${m.toLocaleString()}/mo @ ${document.getElementById('infR').value}% for ${y}Y → Nominal ${fmtINR(nomFV)}, Real ${fmtINR(realFV)}`);
+}
+
+function calcAS() {
+  const eq = +document.getElementById('asEq').value;
+  const dt = +document.getElementById('asDt').value;
+  const gd = +document.getElementById('asGd').value;
+  const ch = +document.getElementById('asCh').value;
+  const total = eq + dt + gd + ch;
+  const n = { eq: eq/total*100, dt: dt/total*100, gd: gd/total*100, ch: ch/total*100 };
+  const ret = (n.eq/100*14 + n.dt/100*7 + n.gd/100*9 + n.ch/100*4);
+  const profile = n.eq >= 70 ? 'Aggressive' : n.eq >= 50 ? 'Balanced' : n.eq >= 30 ? 'Moderate' : 'Conservative';
+  document.getElementById('asRisk').textContent = profile;
+  document.getElementById('asRet').textContent = ret.toFixed(1) + '% p.a.';
+  document.getElementById('asTotal').textContent = total + '%';
+  const bars = [
+    { label:'Equity', val:n.eq, color:'#0ea5e9' },
+    { label:'Debt', val:n.dt, color:'#818cf8' },
+    { label:'Gold', val:n.gd, color:'#f59e0b' },
+    { label:'Cash', val:n.ch, color:'#22c55e' }
+  ];
+  document.getElementById('asBar').innerHTML = bars.map(b => `
+    <div class="bar-item">
+      <div class="bar-header"><span>${b.label}</span><span style="font-weight:600">${b.val.toFixed(1)}%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${b.val}%;background:${b.color}"></div></div>
+    </div>`).join('');
+}
+
+const dvAssets = ['Large Cap Funds','Mid Cap Funds','Small Cap Funds','Intl Funds','Debt Funds','Gold ETF'];
+function renderDV() {
+  const w = window.dvWeights;
+  const total = w.reduce((s,v)=>s+v, 0) || 1;
+  const hhi = w.map(v => (v/total)**2).reduce((s,v)=>s+v, 0);
+  const active = w.filter(v=>v>0).length;
+  const score = Math.round((1-hhi)*100*(active/dvAssets.length));
+  document.getElementById('dvScore').textContent = score + '/100';
+  document.getElementById('dvClasses').textContent = active;
+  const risk = hhi < 0.2 ? 'Low' : hhi < 0.4 ? 'Medium' : 'High';
+  const el = document.getElementById('dvRisk');
+  el.textContent = risk;
+  el.className = 'result-value ' + (hhi<0.2?'green':hhi<0.4?'primary':'red');
+  document.getElementById('dvSliders').innerHTML = dvAssets.map((a,i) => `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="font-size:0.78rem;color:var(--muted);width:150px;flex-shrink:0">${a}</span>
+      <input type="range" min="0" max="100" step="5" value="${w[i]}" oninput="window.dvWeights[${i}]=Number(this.value);document.getElementById('dvW${i}').textContent=this.value+'%';renderDV()" style="flex:1">
+      <span id="dvW${i}" style="font-size:0.8rem;font-weight:600;width:36px;text-align:right">${w[i]}%</span>
+    </div>`).join('');
+}
+
+function calcRisk() {
+  const age = +document.getElementById('rkAge').value;
+  const hor = +document.getElementById('rkHor').value;
+  const inc = +document.getElementById('rkInc').value;
+  const ef = +document.getElementById('rkEF').value;
+  const score = Math.min(100, Math.round((1-age/100)*30 + (hor/40)*40 + (ef/12)*20 + (inc>100000?10:5)));
+  const profile = score>=70 ? {label:'Aggressive',eq:80,dt:15,gd:5}
+    : score>=50 ? {label:'Balanced',eq:60,dt:30,gd:10}
+    : score>=30 ? {label:'Moderate',eq:40,dt:45,gd:15}
+    : {label:'Conservative',eq:20,dt:60,gd:20};
+  document.getElementById('riskScore').textContent = score;
+  document.getElementById('riskLabel').textContent = profile.label;
+  document.getElementById('riskBar').style.width = score + '%';
+  document.getElementById('riskAlloc').innerHTML = [
+    {l:'Equity',v:profile.eq,c:'#0ea5e9'},{l:'Debt',v:profile.dt,c:'#818cf8'},{l:'Gold',v:profile.gd,c:'#f59e0b'}
+  ].map(a => `<div style="margin-bottom:8px">
+    <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:3px"><span style="color:var(--muted)">${a.l}</span><span style="font-weight:600">${a.v}%</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:${a.v}%;background:${a.c}"></div></div>
+  </div>`).join('');
+}
+
+function calcRet() {
+  const age = +document.getElementById('retAge').value;
+  const ra = +document.getElementById('retRA').value;
+  const exp = +document.getElementById('retExp').value;
+  const sav = +document.getElementById('retSav').value;
+  const sip = +document.getElementById('retSIP').value;
+  const rate = +document.getElementById('retR').value / 12 / 100;
+  const years = ra - age;
+  const n = years * 12;
+  const sipC = sip * ((Math.pow(1+rate, n)-1)/rate) * (1+rate);
+  const savC = sav * Math.pow(1 + +document.getElementById('retR').value/100, years);
+  const total = sipC + savC;
+  const futureExp = exp * Math.pow(1.06, years);
+  const needed = futureExp * 12 / 0.04;
+  const onTrack = total >= needed;
+  document.getElementById('retFV').textContent = fmtINR(total);
+  document.getElementById('retReq').textContent = fmtINR(needed);
+  const st = document.getElementById('retStatus');
+  st.textContent = onTrack ? 'On Track ✓' : 'Deficit ✗';
+  st.className = 'result-value ' + (onTrack?'green':'red');
+  st.closest('.result-card').className = 'result-card ' + (onTrack?'green':'red');
+  document.getElementById('retStatusSub').textContent = fmtINR(Math.abs(total-needed)) + (onTrack?' surplus':' gap');
+  const labs = [], v1 = [];
+  for (let i = 1; i <= years; i++) {
+    const mo = i*12;
+    labs.push('Age '+(age+i));
+    v1.push(Math.round(sip*((Math.pow(1+rate,mo)-1)/rate)*(1+rate) + sav*Math.pow(1++document.getElementById('retR').value/100,i)));
+  }
+  drawChart('retChart', 'line', labs, [
+    { label:'Corpus', data:v1, borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('ret', `Retirement by age ${ra}: Corpus ${fmtINR(total)} (need ${fmtINR(needed)}) — ${onTrack?'On Track':'Deficit: '+fmtINR(needed-total)}`);
+}
+
+function calcEdu() {
+  const cost = +document.getElementById('eduC').value;
+  const ca = +document.getElementById('eduCA').value;
+  const ea = +document.getElementById('eduEA').value;
+  const inf = +document.getElementById('eduInf').value / 100;
+  const ret = +document.getElementById('eduRet').value / 12 / 100;
+  const years = Math.max(1, ea - ca);
+  const n = years * 12;
+  const fc = cost * Math.pow(1+inf, years);
+  const reqSIP = fc / (((Math.pow(1+ret, n)-1)/ret) * (1+ret));
+  document.getElementById('eduFC').textContent = fmtINR(fc);
+  document.getElementById('eduFCsub').textContent = 'Inflation adjusted';
+  document.getElementById('eduSIP').textContent = fmtINR(reqSIP);
+  document.getElementById('eduY').textContent = years + ' yrs';
+  const labs = [], v1 = [];
+  for (let i = 1; i <= years; i++) { const mo = i*12; labs.push('Y'+i); v1.push(Math.round(reqSIP*((Math.pow(1+ret,mo)-1)/ret)*(1+ret))); }
+  drawChart('eduChart', 'line', labs, [
+    { label:'Corpus Built', data:v1, borderColor:'#818cf8', backgroundColor:'rgba(129,140,248,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('edu', `Education: ${fmtINR(cost)} today → ${fmtINR(fc)} in ${years}Y. Required SIP: ${fmtINR(reqSIP)}/mo`);
+}
+
+function calcFIRE() {
+  const exp = +document.getElementById('fireExp').value;
+  const corp = +document.getElementById('fireCorp').value;
+  const sip = +document.getElementById('fireSIP').value;
+  const ret = +document.getElementById('fireR').value / 12 / 100;
+  const wr = +document.getElementById('fireWR').value / 100;
+  const target = exp * 12 / wr;
+  let bal = corp, months = 0;
+  while (bal < target && months < 600) { bal = bal*(1+ret)+sip; months++; }
+  const yrs = months / 12;
+  const gap = target - corp;
+  document.getElementById('fireTgt').textContent = fmtINR(target);
+  document.getElementById('fireTgtSub').textContent = `@ ${document.getElementById('fireWR').value}% withdrawal`;
+  document.getElementById('fireYrs').textContent = yrs.toFixed(1) + ' yrs';
+  const surplus = bal >= target;
+  document.getElementById('fireGap').textContent = fmtINR(Math.abs(gap));
+  document.getElementById('fireGapSub').textContent = gap <= 0 ? 'You have surplus!' : 'Gap to fill';
+  const labs = [], v1 = [], v2 = [];
+  bal = corp;
+  for (let m = 0; m <= months; m+=12) {
+    labs.push('Y'+(m/12)); v1.push(Math.round(bal)); v2.push(target);
+    for (let i = 0; i < 12 && bal<target; i++) bal = bal*(1+ret)+sip;
+  }
+  drawChart('fireChart', 'line', labs, [
+    { label:'Your Corpus', data:v1, borderColor:'#0ea5e9', fill:false, tension:.4, pointRadius:0 },
+    { label:'FIRE Target', data:v2, borderColor:'#22c55e', fill:false, tension:.4, pointRadius:0, borderDash:[5,5] }
+  ]);
+  setResult('fire', `FIRE Target: ${fmtINR(target)} | ${fmtINR(corp)} current + ₹${sip.toLocaleString()}/mo → FIRE in ${yrs.toFixed(1)} years`);
+}
+
+// ─── CATEGORIES & ROUTING ────────────────────────────────
+const CATEGORIES = {
+  sip: ['sip','lumpsum','stepup','swp'],
+  compare: ['sipfd','eqdebt','lsvssip'],
+  advanced: ['cagr','xirr','inflation'],
+  portfolio: ['asset','divers','risk'],
+  goal: ['retire','edu','fire']
+};
+
+let currentCat = 'sip';
+let currentTool = 'sip';
+
+function renderToolList() {
+  const ids = CATEGORIES[currentCat];
+  document.getElementById('toolList').innerHTML = ids.map(id => `
+    <button class="tool-btn ${id === currentTool ? 'active' : ''}" onclick="loadTool('${id}')">
+      <div class="tool-name">${CALCS[id].name}</div>
+      <div class="tool-desc">${CALCS[id].desc}</div>
+    </button>`).join('');
+}
+
+function loadTool(id) {
+  currentTool = id;
+  const calc = CALCS[id];
+  document.getElementById('calcTitle').textContent = calc.name;
+  document.getElementById('calcDesc').textContent = calc.desc;
+  document.getElementById('calcContent').innerHTML = `<div class="result-row">${''}</div>` + calc.html();
+  if (calc.init) calc.init();
+  renderToolList();
+}
+
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    currentTool = CATEGORIES[currentCat][0];
+    renderToolList();
+    loadTool(currentTool);
+  });
+});
+
+// Boot
+renderToolList();
+loadTool('sip');
+</script>
+</body>
+</html>
