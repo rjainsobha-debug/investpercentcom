@@ -1,7 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="css/navbar.css">
+  <style>
+    /* ── NAVBAR (inline — no external fetch) ─────────────────────────── */
+    .nav{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 20px;margin-bottom:18px;border:1px solid var(--line);border-radius:22px;background:rgba(6,10,24,.75);backdrop-filter:blur(18px);box-shadow:0 12px 34px rgba(0,0,0,.24);overflow:visible}
+    .brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0}
+    .brand-mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--grad);color:#07101e;font-weight:800;box-shadow:0 10px 24px rgba(79,163,255,.22)}
+    .brand-name{font-family:Poppins,sans-serif;font-size:22px;font-weight:800;white-space:nowrap}
+    .brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .nav-links{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0;align-items:flex-end}
+    .nav-row{display:flex;gap:8px;justify-content:flex-end;width:100%;flex-wrap:wrap;min-width:0}
+    .nav-row.sub{justify-content:flex-end}
+    .nav-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border-radius:12px;color:var(--muted);font-weight:700;text-decoration:none;border:1px solid transparent;white-space:nowrap;transition:.2s ease;flex:0 0 auto}
+    .nav-link:hover{color:#fff;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.06)}
+    .nav-link.active{background:var(--grad);color:#071120}
+    .mobile-toggle{display:none;width:44px;height:44px;border:none;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer;flex-shrink:0}
+    .mobile-drawer{display:none;width:100%;margin-top:12px;border:1px solid var(--line);border-radius:16px;background:#0a1428;padding:12px}
+    .mobile-drawer.open{display:block}
+    .mobile-drawer .nav-link{display:block;width:100%;padding:12px;border-radius:10px;text-decoration:none;color:#d9e4ff;font-weight:600;transition:.2s ease;min-height:unset;border:none}
+    .mobile-drawer .nav-link:hover{background:rgba(255,255,255,.05);border-color:transparent;color:#fff}
+    .mobile-drawer .nav-link.active{background:var(--grad);color:#071120}
+    @media(max-width:1100px){.nav{gap:14px;padding:12px 16px}.nav-link{padding:8px 11px;font-size:.875rem}}
+    @media(max-width:900px){.nav{flex-wrap:wrap;align-items:center}.nav-links{display:none}.mobile-toggle{display:block;margin-left:auto}.mobile-drawer{order:3}}
+  </style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Insurance — investpercent</title>
@@ -340,9 +361,41 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <div class="page">
-    <div id="navbar"></div>
+    <!-- NAVBAR — fully inline, no JS fetch, no external files needed -->
+    <nav class="nav">
+      <div class="brand" onclick="location.href='index.html'">
+        <div class="brand-mark">%</div>
+        <div class="brand-name">invest<span>percent</span></div>
+      </div>
+      <button class="mobile-toggle" onclick="document.getElementById('mobileDrawer').classList.toggle('open')">☰</button>
+      <div class="nav-links">
+        <div class="nav-row">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="wealth.html" class="nav-link">Wealth</a>
+          <a href="insurance.html" class="nav-link active">Insurance</a>
+          <a href="travel.html" class="nav-link">Travel</a>
+          <a href="markets.html" class="nav-link">Markets</a>
+        </div>
+        <div class="nav-row sub">
+          <a href="tax.html" class="nav-link">Tax</a>
+          <a href="tools.html" class="nav-link">Tools</a>
+          <a href="learn.html" class="nav-link">Learn</a>
+          <a href="advisor.html" class="nav-link">Advisor</a>
+        </div>
+      </div>
+      <div id="mobileDrawer" class="mobile-drawer">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="wealth.html" class="nav-link">Wealth</a>
+        <a href="insurance.html" class="nav-link active">Insurance</a>
+        <a href="travel.html" class="nav-link">Travel</a>
+        <a href="markets.html" class="nav-link">Markets</a>
+        <a href="tax.html" class="nav-link">Tax</a>
+        <a href="tools.html" class="nav-link">Tools</a>
+        <a href="learn.html" class="nav-link">Learn</a>
+        <a href="advisor.html" class="nav-link">Advisor</a>
+      </div>
+    </nav>
 
     <!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
     <section class="hero">
@@ -601,7 +654,6 @@
     </div>
   </div>
 
-  <script src="js/main.js" onerror="void 0"></script>
 
   <script>
     /* ═══════════ UTILITIES ═══════════ */
@@ -924,17 +976,7 @@
     switchCalc('term', document.querySelector('.tab.active'));
     runAI();
 
-   /* ═══════════ NAVBAR LOAD (FINAL CLEAN VERSION) ═══════════ */
-fetch('components/navbar.html')
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById('navbar').innerHTML = data;
-
-    if (typeof setActiveLink === 'function') {
-      setActiveLink();
-    }
-  })
-  .catch(err => console.log('Navbar load error:', err));
+    /* Navbar is fully inline — no external fetch needed */
   </script>
 </body>
 </html>
