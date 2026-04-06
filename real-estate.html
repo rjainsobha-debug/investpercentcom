@@ -184,6 +184,8 @@ select option{background:#0f1830;color:var(--text)}
 </style>
 </head>
 <body>
+<div id="navbar"></div>
+
 <div class="page">
 
 <!-- HERO -->
@@ -810,6 +812,30 @@ initState();
 renderTabs();
 renderControls();
 update();
+</script>
+  <script>
+function loadNavbar() {
+  fetch('/components/navbar.html')
+    .then(res => {
+      if (!res.ok) throw new Error("Navbar not found");
+      return res.text();
+    })
+    .then(data => {
+      document.getElementById('navbar').innerHTML = data;
+
+      // highlight active page
+      const links = document.querySelectorAll('.nav-link');
+      links.forEach(link => {
+        if (window.location.pathname.includes(link.getAttribute('href'))) {
+          link.classList.add('active');
+        }
+      });
+
+    })
+    .catch(err => console.error('Navbar load error:', err));
+}
+
+document.addEventListener("DOMContentLoaded", loadNavbar);
 </script>
 </body>
 </html>
