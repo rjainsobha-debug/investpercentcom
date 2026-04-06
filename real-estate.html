@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-<link rel="stylesheet" href="components/navbar.css">
 <style>
 :root{--bg:#060915;--bg2:#0b1224;--panel:#0f1830;--soft:#18284d;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);--text:#f7fbff;--muted:#9da9c6;--cyan:#00d4ff;--blue:#4fa3ff;--violet:#7b61ff;--green:#00e676;--gold:#ffd76a;--red:#ff607d;--grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -182,10 +181,68 @@ select option{background:#0f1830;color:var(--text)}
 /* RESPONSIVE */
 @media(max-width:1180px){.top-metrics{grid-template-columns:1fr 1fr}.layout{grid-template-columns:1fr}.dash-top{grid-template-columns:1fr}.timeline-grid{grid-template-columns:1fr 1fr}.market-strip{grid-template-columns:1fr 1fr}.strategy-grid{grid-template-columns:repeat(3,1fr)}.mistake-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.hero{padding:12px}.hero h1{font-size:20px}.top-metrics{grid-template-columns:1fr}.dashboard-wrap,.controls-wrap{padding:12px}.chart-wrap{min-height:200px}.wealth-split,.timeline-grid,.mini-grid{grid-template-columns:1fr}.page{padding:10px 10px 20px}.market-strip{grid-template-columns:1fr 1fr}.strategy-grid{grid-template-columns:1fr 1fr}.mistake-grid{grid-template-columns:1fr}}
+
+/* ===== NAVBAR ===== */
+.nav{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 20px;margin-bottom:18px;border:1px solid var(--line);border-radius:22px;background:rgba(6,10,24,.75);backdrop-filter:blur(18px);box-shadow:0 12px 34px rgba(0,0,0,.24)}
+.brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0}
+.brand-mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--grad);color:#07101e;font-weight:800;font-size:18px;box-shadow:0 10px 24px rgba(79,163,255,.22)}
+.brand-name{font-family:Poppins,sans-serif;font-size:22px;font-weight:800;white-space:nowrap}
+.brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-links{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0;align-items:flex-end}
+.nav-row{display:flex;gap:8px;justify-content:flex-end;width:100%;flex-wrap:wrap}
+.nav-link{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border-radius:12px;color:var(--muted);font-weight:700;text-decoration:none;border:1px solid transparent;white-space:nowrap;transition:.25s ease;flex:0 0 auto}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08);transform:translateY(-1px)}
+.nav-link.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 8px 20px rgba(79,163,255,.25)}
+.nav-link.active::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:60%;height:2px;border-radius:999px;background:var(--grad);opacity:.9}
+.mobile-toggle{display:none;width:44px;height:44px;border:none;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer;flex-shrink:0;transition:.2s}
+.mobile-toggle:hover{background:rgba(255,255,255,.15)}
+.mobile-drawer{display:none;width:100%;margin-top:12px;border:1px solid var(--line);border-radius:16px;background:#0a1428;padding:12px;animation:navFadeIn .2s ease}
+.mobile-drawer.open{display:block}
+.mobile-drawer .nav-link{display:block;width:100%;padding:12px;border-radius:10px;color:#d9e4ff;font-weight:600;min-height:unset;border:none}
+.mobile-drawer .nav-link:hover{background:rgba(255,255,255,.05);color:#fff}
+.mobile-drawer .nav-link.active{background:var(--grad);color:#071120;box-shadow:none}
+@media(max-width:1100px){.nav{gap:14px;padding:12px 16px}.nav-link{padding:8px 11px;font-size:.875rem}}
+@media(max-width:900px){.nav{flex-wrap:wrap}.nav-links{display:none}.mobile-toggle{display:block;margin-left:auto}.mobile-drawer{order:3}}
+@keyframes navFadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
-<div id="navbar"></div>
+
+<!-- NAVBAR -->
+<nav class="nav">
+  <div class="brand" onclick="window.location.href='index.html'">
+    <div class="brand-mark">%</div>
+    <div class="brand-name">invest<span>percent</span></div>
+  </div>
+  <button class="mobile-toggle" type="button" aria-label="Open menu" onclick="toggleMenu()">☰</button>
+  <div class="nav-links">
+    <div class="nav-row">
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="personal-finance.html" class="nav-link" data-page="personal-finance">Personal Finance</a>
+      <a href="investments.html" class="nav-link" data-page="investments">Investments</a>
+      <a href="insurance.html" class="nav-link" data-page="insurance">Insurance</a>
+      <a href="travel.html" class="nav-link" data-page="travel">Travel</a>
+    </div>
+    <div class="nav-row">
+      <a href="real-estate.html" class="nav-link active" data-page="real-estate">Real Estate</a>
+      <a href="digital-assets.html" class="nav-link" data-page="digital-assets">Digital Assets</a>
+      <a href="global-finance.html" class="nav-link" data-page="global-finance">Global Finance</a>
+      <a href="learn.html" class="nav-link" data-page="learn">Learn</a>
+    </div>
+  </div>
+  <div id="mobileDrawer" class="mobile-drawer">
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="personal-finance.html" class="nav-link" data-page="personal-finance">Personal Finance</a>
+    <a href="investments.html" class="nav-link" data-page="investments">Investments</a>
+    <a href="insurance.html" class="nav-link" data-page="insurance">Insurance</a>
+    <a href="travel.html" class="nav-link" data-page="travel">Travel</a>
+    <a href="real-estate.html" class="nav-link active" data-page="real-estate">Real Estate</a>
+    <a href="digital-assets.html" class="nav-link" data-page="digital-assets">Digital Assets</a>
+    <a href="global-finance.html" class="nav-link" data-page="global-finance">Global Finance</a>
+    <a href="learn.html" class="nav-link" data-page="learn">Learn</a>
+  </div>
+</nav>
+
 <div class="page">
 
 <!-- HERO -->
@@ -814,23 +871,11 @@ renderControls();
 update();
 </script>
 
-<script src="components/main.js"></script>
 <script>
-function loadNavbar() {
-  fetch('components/navbar.html')
-    .then(res => {
-      if (!res.ok) throw new Error("Navbar not found");
-      return res.text();
-    })
-    .then(data => {
-      document.getElementById('navbar').innerHTML = data;
-      if (typeof setActiveLink === 'function') {
-        setActiveLink();
-      }
-    })
-    .catch(err => console.error('Navbar load error:', err));
+function toggleMenu(){
+  const d=document.getElementById('mobileDrawer');
+  if(d)d.classList.toggle('open');
 }
-document.addEventListener("DOMContentLoaded", loadNavbar);
 </script>
 </body>
 </html>
