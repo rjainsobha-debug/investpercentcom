@@ -281,9 +281,117 @@
     .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
 
     /* RESPONSIVE */
+    /* ── CRYPTO AI PRO ── */
+    .aipro-wrap{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;padding:22px;margin-bottom:14px;box-shadow:var(--shadow)
+    }
+    .aipro-top{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px}
+    .aipro-coin-row{
+      display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:10px;align-items:center;
+      background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;
+      padding:12px 14px;margin-bottom:8px;transition:.2s ease
+    }
+    .aipro-coin-row:hover{border-color:var(--line2)}
+    .aipro-coin-row select,.aipro-coin-row input{
+      background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;
+      padding:8px 10px;color:var(--text);font-size:13px;font-weight:600;outline:none;width:100%;transition:.2s
+    }
+    .aipro-coin-row select:focus,.aipro-coin-row input:focus{border-color:rgba(0,212,255,.4)}
+    .aipro-coin-row select option{background:#0b1224}
+    .aipro-remove-btn{
+      background:rgba(255,96,125,.1);border:1px solid rgba(255,96,125,.2);color:var(--red);
+      border-radius:10px;width:32px;height:32px;cursor:pointer;font-size:16px;font-weight:800;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s
+    }
+    .aipro-remove-btn:hover{background:rgba(255,96,125,.2)}
+    .aipro-add-btn{
+      background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.18);color:var(--cyan);
+      border-radius:12px;padding:10px 18px;cursor:pointer;font-size:13px;font-weight:800;transition:.2s
+    }
+    .aipro-add-btn:hover{background:rgba(0,212,255,.15);transform:translateY(-1px)}
+    .aipro-analyze-btn{
+      width:100%;padding:14px;border-radius:16px;border:none;cursor:pointer;
+      background:var(--grad);color:#071120;font-size:15px;font-weight:800;transition:.2s ease;margin-top:14px
+    }
+    .aipro-analyze-btn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(0,212,255,.25)}
+    .aipro-output{display:none;margin-top:20px;animation:fadeIn .4s ease}
+    .aipro-output.show{display:block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .aipro-summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+    .aipro-stat{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:16px
+    }
+    .aipro-stat .k{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+    .aipro-stat .v{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .aipro-coins-table{width:100%;border-collapse:separate;border-spacing:0 8px;margin-bottom:16px}
+    .aipro-coins-table th{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:0 14px 6px;text-align:left}
+    .aipro-coins-table td{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);
+      padding:12px 14px;font-size:13px;font-weight:700
+    }
+    .aipro-coins-table td:first-child{border-radius:12px 0 0 12px}
+    .aipro-coins-table td:last-child{border-radius:0 12px 12px 0}
+    .signal-chip{
+      display:inline-block;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.04em
+    }
+    .sig-buy{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.25);box-shadow:0 0 10px rgba(0,230,118,.15)}
+    .sig-hold{background:rgba(255,215,106,.1);color:var(--gold);border:1px solid rgba(255,215,106,.2);box-shadow:0 0 10px rgba(255,215,106,.1)}
+    .sig-sell{background:rgba(255,96,125,.1);color:var(--red);border:1px solid rgba(255,96,125,.2);box-shadow:0 0 10px rgba(255,96,125,.12)}
+    .sig-partial{background:rgba(255,159,64,.1);color:var(--orange);border:1px solid rgba(255,159,64,.2);box-shadow:0 0 10px rgba(255,159,64,.1)}
+    .best-coin td{background:rgba(0,230,118,.05)!important;border-color:rgba(0,230,118,.12)!important}
+    .worst-coin td{background:rgba(255,96,125,.05)!important;border-color:rgba(255,96,125,.12)!important}
+    .aipro-risk-panel{
+      display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px
+    }
+    .aipro-risk-box,.aipro-rebal-box{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:16px
+    }
+    .aipro-risk-label{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px}
+    .aipro-risk-badge-big{
+      display:inline-block;padding:8px 18px;border-radius:999px;font-size:14px;font-weight:800;margin-bottom:10px
+    }
+    .aipro-risk-high{background:rgba(255,96,125,.12);color:var(--red);border:1px solid rgba(255,96,125,.2)}
+    .aipro-risk-balanced{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+    .aipro-risk-moderate{background:rgba(255,215,106,.1);color:var(--gold);border:1px solid rgba(255,215,106,.2)}
+    .aipro-rebal-msg{font-size:14px;color:#d8e2ff;line-height:1.65}
+    .aipro-market-bar{
+      display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;
+      background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:12px 16px
+    }
+    .aipro-market-label{font-size:13px;font-weight:700;color:var(--muted);margin-right:4px}
+    .mkt-btn{
+      padding:7px 16px;border-radius:12px;border:1px solid var(--line);background:transparent;
+      color:var(--muted);font-size:13px;font-weight:800;cursor:pointer;transition:.2s
+    }
+    .mkt-btn.active{color:#071120;background:var(--grad);border-color:transparent}
+    .mkt-btn:hover:not(.active){color:var(--text);border-color:var(--line2)}
+    .aipro-wa-cta{
+      margin-top:16px;padding:18px 22px;border-radius:20px;
+      background:radial-gradient(circle at 10% 50%, rgba(37,211,102,.15), transparent 40%),
+        linear-gradient(135deg, rgba(0,212,255,.06), rgba(123,97,255,.08));
+      border:1px solid rgba(37,211,102,.2);
+      display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap
+    }
+    .aipro-wa-text h4{margin:0 0 6px;font-size:17px;font-weight:800;letter-spacing:-.02em}
+    .aipro-wa-text p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+    .wa-btn{
+      background:#25D366;color:#fff;border:none;border-radius:14px;padding:12px 22px;
+      font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap;transition:.2s;display:flex;align-items:center;gap:8px
+    }
+    .wa-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(37,211,102,.3)}
+    .aipro-alloc-bars{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+    .aipro-alloc-row{display:flex;align-items:center;gap:10px}
+    .aipro-alloc-name{font-size:12px;font-weight:700;color:var(--muted);min-width:40px}
+    .aipro-alloc-track{flex:1;height:8px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}
+    .aipro-alloc-fill{height:100%;border-radius:999px;transition:.6s ease}
+    .aipro-alloc-pct{font-size:12px;font-weight:800;min-width:34px;text-align:right}
+
     @media(max-width:1100px){
       .advisor-grid{grid-template-columns:1fr}
       .charts-grid{grid-template-columns:1fr}
+      .aipro-top{grid-template-columns:1fr}
+      .aipro-risk-panel{grid-template-columns:1fr}
     }
     @media(max-width:760px){
       .hero{padding:14px}
@@ -302,6 +410,10 @@
     }
     @media(max-width:480px){
       .crypto-grid{grid-template-columns:1fr}
+      .aipro-coin-row{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;}
+      .aipro-remove-btn{grid-column:2;grid-row:1;justify-self:end}
+      .aipro-wa-cta{flex-direction:column;text-align:center}
+      .wa-btn{width:100%;justify-content:center}
     }
   </style>
 </head>
@@ -800,6 +912,98 @@
     </div>
   </div>
 
+  <!-- ─── SECTION 11: CRYPTO AI PRO ─── -->
+  <div id="aipro"></div>
+  <div class="section-header">
+    <div class="section-title">Crypto AI <span class="grad">PRO</span></div>
+    <div class="section-badge">PORTFOLIO ANALYZER + SMART SIGNALS</div>
+  </div>
+
+  <div class="aipro-wrap">
+
+    <!-- MARKET MODE -->
+    <div class="aipro-market-bar">
+      <span class="aipro-market-label">Market Mode:</span>
+      <button class="mkt-btn active" id="mkt-bull" onclick="setMarket('bull')">Bull Market</button>
+      <button class="mkt-btn" id="mkt-bear" onclick="setMarket('bear')">Bear Market</button>
+      <button class="mkt-btn" id="mkt-side" onclick="setMarket('sideways')">Sideways</button>
+    </div>
+
+    <!-- PORTFOLIO INPUT -->
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">My Crypto Portfolio</div>
+        <div class="panel-desc">Add your coins, quantity, and buy price. Get instant AI signals and risk analysis.</div>
+      </div>
+      <div class="badge">AI SIGNAL ENGINE</div>
+    </div>
+
+    <!-- COIN ROWS HEADER -->
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:10px;padding:0 14px;margin-bottom:4px">
+      <div style="color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Coin</div>
+      <div style="color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Quantity</div>
+      <div style="color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Buy Price (₹)</div>
+      <div></div>
+    </div>
+
+    <div id="aipro-rows">
+      <!-- Rows injected by JS -->
+    </div>
+
+    <button class="aipro-add-btn" onclick="aiproAddRow()">+ Add Coin</button>
+    <button class="aipro-analyze-btn" onclick="aiproAnalyze()">Analyze My Portfolio</button>
+
+    <!-- OUTPUT PANEL -->
+    <div class="aipro-output" id="aipro-output">
+
+      <!-- SUMMARY STATS -->
+      <div class="aipro-summary">
+        <div class="aipro-stat"><div class="k">Total Invested</div><div class="v cyan" id="ap-invested">—</div></div>
+        <div class="aipro-stat"><div class="k">Current Value</div><div class="v green" id="ap-value">—</div></div>
+        <div class="aipro-stat"><div class="k">Profit / Loss</div><div class="v" id="ap-pnl">—</div></div>
+        <div class="aipro-stat"><div class="k">Overall Return</div><div class="v" id="ap-ret">—</div></div>
+      </div>
+
+      <!-- COIN SIGNAL TABLE -->
+      <div style="font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px">AI Signal Engine</div>
+      <div style="overflow-x:auto">
+        <table class="aipro-coins-table" id="ap-table">
+          <thead><tr>
+            <th>Coin</th><th>Invested</th><th>Current Value</th><th>P&L</th><th>Return %</th><th>Allocation</th><th>Signal</th>
+          </tr></thead>
+          <tbody id="ap-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- RISK + REBALANCING -->
+      <div class="aipro-risk-panel">
+        <div class="aipro-risk-box">
+          <div class="aipro-risk-label">Risk Analysis</div>
+          <div class="aipro-risk-badge-big" id="ap-risk-badge">Balanced Portfolio</div>
+          <div style="color:var(--muted);font-size:13px;line-height:1.55" id="ap-risk-detail">Your portfolio is well balanced between BTC/ETH and altcoins.</div>
+          <div class="aipro-alloc-bars" id="ap-alloc-bars" style="margin-top:14px"></div>
+        </div>
+        <div class="aipro-rebal-box">
+          <div class="aipro-risk-label">Rebalancing Suggestion</div>
+          <div class="aipro-rebal-msg" id="ap-rebal-msg">Analyzing your portfolio...</div>
+        </div>
+      </div>
+
+      <!-- WHATSAPP CTA -->
+      <div class="aipro-wa-cta">
+        <div class="aipro-wa-text">
+          <h4>Want Real-Time Buy/Sell Signals?</h4>
+          <p>Get live alerts, market updates, and coin picks directly on WhatsApp — free.</p>
+        </div>
+        <button class="wa-btn" onclick="openWA()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.528 5.849L0 24l6.29-1.508A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.852 0-3.587-.5-5.088-1.376l-.361-.214-3.735.895.943-3.647-.237-.373A9.963 9.963 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Get Signals on WhatsApp
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ─── SECTION 10: LEAD CAPTURE ─── -->
   <div class="section-header">
     <div class="section-title">Get Crypto <span class="grad">Updates</span></div>
@@ -1247,6 +1451,206 @@ function closePopup(e){
 }
 
 /* ═══════════════════════════════════════════
+   SECTION 11: CRYPTO AI PRO
+═══════════════════════════════════════════ */
+
+var AIPRO_PRICES={BTC:7000000,ETH:350000,SOL:18000,ADA:40,XRP:70};
+var AIPRO_COLORS={BTC:'var(--gold)',ETH:'var(--violet)',SOL:'var(--cyan)',ADA:'var(--blue)',XRP:'var(--green)'};
+var AIPRO_MARKET='bull';
+var AIPRO_ROW_ID=0;
+
+function setMarket(mode){
+  AIPRO_MARKET=mode;
+  ['bull','bear','side'].forEach(function(m){
+    var btn=el('mkt-'+m);if(btn)btn.classList.remove('active');
+  });
+  var map={bull:'bull',bear:'bear',sideways:'side'};
+  var btn=el('mkt-'+map[mode]);if(btn)btn.classList.add('active');
+}
+
+function aiproAddRow(coin,qty,buyPrice){
+  var id=++AIPRO_ROW_ID;
+  var container=el('aipro-rows');
+  if(!container)return;
+  var div=document.createElement('div');
+  div.className='aipro-coin-row';
+  div.id='aprow-'+id;
+  div.innerHTML=
+    '<select id="aprow-coin-'+id+'">'
+    +'<option value="BTC"'+(coin==='BTC'?' selected':'')+'>Bitcoin (BTC)</option>'
+    +'<option value="ETH"'+(coin==='ETH'?' selected':'')+'>Ethereum (ETH)</option>'
+    +'<option value="SOL"'+(coin==='SOL'?' selected':'')+'>Solana (SOL)</option>'
+    +'<option value="ADA"'+(coin==='ADA'?' selected':'')+'>Cardano (ADA)</option>'
+    +'<option value="XRP"'+(coin==='XRP'?' selected':'')+'>XRP</option>'
+    +'</select>'
+    +'<input type="number" id="aprow-qty-'+id+'" placeholder="Quantity" value="'+(qty||'')+'" min="0" step="any">'
+    +'<input type="number" id="aprow-buy-'+id+'" placeholder="Buy Price (₹)" value="'+(buyPrice||'')+'" min="0">'
+    +'<button class="aipro-remove-btn" onclick="aiproRemoveRow('+id+')">&#x2715;</button>';
+  container.appendChild(div);
+}
+
+function aiproRemoveRow(id){
+  var row=el('aprow-'+id);
+  if(row)row.remove();
+}
+
+function aiproGetSignal(retPct,market){
+  var signal,cls;
+  var bullAdj=market==='bull'?10:market==='bear'?-15:0;
+  var adjRet=retPct+bullAdj;
+  if(adjRet>80){signal='PARTIAL SELL';cls='sig-partial';}
+  else if(adjRet>=20){signal='HOLD';cls='sig-hold';}
+  else if(adjRet<-30){signal='HOLD (Long)';cls='sig-hold';}
+  else if(adjRet<20&&adjRet>=-30){signal='BUY MORE';cls='sig-buy';}
+  else{signal='HOLD';cls='sig-hold';}
+  if(market==='bear'&&adjRet>50){signal='SELL';cls='sig-sell';}
+  return {signal:signal,cls:cls};
+}
+
+function aiproAnalyze(){
+  var container=el('aipro-rows');
+  if(!container)return;
+  var rows=container.querySelectorAll('.aipro-coin-row');
+  if(!rows.length){alert('Please add at least one coin.');return;}
+
+  var coins=[];
+  rows.forEach(function(row){
+    var id=row.id.replace('aprow-','');
+    var coinEl=el('aprow-coin-'+id);
+    var qtyEl=el('aprow-qty-'+id);
+    var buyEl=el('aprow-buy-'+id);
+    if(!coinEl||!qtyEl||!buyEl)return;
+    var coin=coinEl.value;
+    var qty=parseFloat(qtyEl.value)||0;
+    var buyPrice=parseFloat(buyEl.value)||0;
+    if(qty<=0||buyPrice<=0)return;
+    var curPrice=AIPRO_PRICES[coin]||0;
+    var invested=buyPrice*qty;
+    var curValue=curPrice*qty;
+    var pnl=curValue-invested;
+    var retPct=invested>0?((curValue-invested)/invested*100):0;
+    coins.push({coin,qty,buyPrice,curPrice,invested,curValue,pnl,retPct});
+  });
+
+  if(!coins.length){alert('Please enter valid quantity and buy price.');return;}
+
+  var totalInvested=coins.reduce(function(s,c){return s+c.invested;},0);
+  var totalValue=coins.reduce(function(s,c){return s+c.curValue;},0);
+  var totalPnl=totalValue-totalInvested;
+  var totalRet=totalInvested>0?(totalPnl/totalInvested*100):0;
+
+  setEl('ap-invested',fmt(totalInvested));
+  setEl('ap-value',fmt(totalValue));
+  var pnlEl=el('ap-pnl');
+  if(pnlEl){pnlEl.textContent=(totalPnl>=0?'+':'')+fmt(totalPnl);pnlEl.className='v '+(totalPnl>=0?'green':'red');}
+  var retEl=el('ap-ret');
+  if(retEl){retEl.textContent=(totalRet>=0?'+':'')+totalRet.toFixed(2)+'%';retEl.className='v '+(totalRet>=0?'gold':'red');}
+
+  var bestIdx=0,worstIdx=0;
+  coins.forEach(function(c,i){
+    if(c.retPct>coins[bestIdx].retPct)bestIdx=i;
+    if(c.retPct<coins[worstIdx].retPct)worstIdx=i;
+  });
+
+  var tbody=el('ap-tbody');
+  if(tbody){
+    tbody.innerHTML='';
+    coins.forEach(function(c,i){
+      var alloc=totalValue>0?(c.curValue/totalValue*100):0;
+      var sig=aiproGetSignal(c.retPct,AIPRO_MARKET);
+      var tr=document.createElement('tr');
+      if(i===bestIdx&&coins.length>1)tr.className='best-coin';
+      if(i===worstIdx&&coins.length>1&&bestIdx!==worstIdx)tr.className='worst-coin';
+      var pnlStr=(c.pnl>=0?'+':'')+fmtRaw(Math.abs(c.pnl));
+      var retStr=(c.retPct>=0?'+':'')+c.retPct.toFixed(2)+'%';
+      var pnlColor=c.pnl>=0?'var(--green)':'var(--red)';
+      var retColor=c.retPct>=0?'var(--gold)':'var(--red)';
+      var coinColor=AIPRO_COLORS[c.coin]||'var(--cyan)';
+      tr.innerHTML=
+        '<td><strong style="color:'+coinColor+'">'+c.coin+'</strong></td>'
+        +'<td>'+fmtRaw(c.invested)+'</td>'
+        +'<td>'+fmtRaw(c.curValue)+'</td>'
+        +'<td style="color:'+pnlColor+'">'+pnlStr+'</td>'
+        +'<td style="color:'+retColor+'">'+retStr+'</td>'
+        +'<td>'+alloc.toFixed(1)+'%</td>'
+        +'<td><span class="signal-chip '+sig.cls+'">'+sig.signal+'</span></td>';
+      tbody.appendChild(tr);
+    });
+  }
+
+  var btcEthValue=coins.filter(function(c){return c.coin==='BTC'||c.coin==='ETH';}).reduce(function(s,c){return s+c.curValue;},0);
+  var altValue=totalValue-btcEthValue;
+  var btcEthPct=totalValue>0?(btcEthValue/totalValue*100):0;
+  var altPct=100-btcEthPct;
+
+  var riskBadge=el('ap-risk-badge');
+  var riskDetail=el('ap-risk-detail');
+  if(riskBadge&&riskDetail){
+    if(altPct>50){
+      riskBadge.textContent='High Risk Portfolio';
+      riskBadge.className='aipro-risk-badge-big aipro-risk-high';
+      riskDetail.textContent='Over 50% of your portfolio is in altcoins. Altcoins are highly volatile — consider rebalancing towards BTC/ETH for stability.';
+    } else if(btcEthPct>=60){
+      riskBadge.textContent='Balanced Portfolio';
+      riskBadge.className='aipro-risk-badge-big aipro-risk-balanced';
+      riskDetail.textContent='Great! Over 60% in BTC/ETH means your portfolio has a strong stability anchor. You are well positioned for a medium-risk strategy.';
+    } else {
+      riskBadge.textContent='Moderate Risk';
+      riskBadge.className='aipro-risk-badge-big aipro-risk-moderate';
+      riskDetail.textContent='Your BTC/ETH allocation is moderate. Consider increasing BTC weight for long-term resilience during bear markets.';
+    }
+  }
+
+  var barsEl=el('ap-alloc-bars');
+  if(barsEl){
+    var barColors=['var(--gold)','var(--violet)','var(--cyan)','var(--blue)','var(--green)'];
+    var coinTotals={};
+    coins.forEach(function(c){coinTotals[c.coin]=(coinTotals[c.coin]||0)+c.curValue;});
+    barsEl.innerHTML='';
+    Object.keys(coinTotals).forEach(function(coin,idx){
+      var pct=totalValue>0?(coinTotals[coin]/totalValue*100):0;
+      var color=AIPRO_COLORS[coin]||barColors[idx%barColors.length];
+      var div=document.createElement('div');
+      div.className='aipro-alloc-row';
+      div.innerHTML='<span class="aipro-alloc-name">'+coin+'</span>'
+        +'<div class="aipro-alloc-track"><div class="aipro-alloc-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'
+        +'<span class="aipro-alloc-pct" style="color:'+color+'">'+pct.toFixed(1)+'%</span>';
+      barsEl.appendChild(div);
+    });
+  }
+
+  var rebalEl=el('ap-rebal-msg');
+  if(rebalEl){
+    var msgs=[];
+    if(altPct>50)msgs.push('Reduce altcoin exposure by '+(altPct-40).toFixed(0)+'% and increase BTC allocation for portfolio stability.');
+    if(btcEthPct<40)msgs.push('Consider adding more BTC or ETH to create a solid portfolio foundation (target: 60%+ in majors).');
+    if(AIPRO_MARKET==='bear')msgs.push('In a bear market, consider moving 15–20% to stablecoins or BTC to reduce drawdown risk.');
+    if(AIPRO_MARKET==='bull')msgs.push('Bull market detected: consider taking partial profits on coins above 80% gains while keeping BTC/ETH for further upside.');
+    if(!msgs.length)msgs.push('Your portfolio looks well balanced! Continue DCA strategy and review allocations every 3 months.');
+    rebalEl.textContent=msgs.join(' ');
+  }
+
+  var outputEl=el('aipro-output');
+  if(outputEl){
+    outputEl.classList.add('show');
+    outputEl.classList.remove('show');
+    void outputEl.offsetWidth;
+    outputEl.classList.add('show');
+    outputEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+}
+
+function openWA(){
+  window.open('https://wa.me/919999999999?text=Hi!%20I%20want%20real-time%20crypto%20buy%2Fsell%20signals%20from%20investpercent.com','_blank');
+}
+
+function initAIPRO(){
+  aiproAddRow('BTC',0.5,6000000);
+  aiproAddRow('ETH',2,300000);
+  aiproAddRow('SOL',20,15000);
+}
+
+/* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded',function(){
@@ -1270,6 +1674,7 @@ document.addEventListener('DOMContentLoaded',function(){
   buildDCAChart();
   buildRiskChart();
   runAIAdvisor();
+  initAIPRO();
 });
 </script>
 </body>
