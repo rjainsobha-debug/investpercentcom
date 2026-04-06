@@ -301,9 +301,9 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 /* ---- MODAL ---- */
 .modal-overlay{
   position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
-  display:none;align-items:center;justify-content:center;
+  display:none;align-items:center;justify-content:center;pointer-events:none;
 }
-.modal-overlay.open{display:flex}
+.modal-overlay.open{display:flex;pointer-events:auto;}
 .modal-box{
   background:linear-gradient(180deg,#0f1830,#091224);border:1px solid var(--line);
   border-radius:24px;padding:32px;max-width:480px;width:90%;text-align:center;
@@ -324,6 +324,9 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 /* ---- GAP ---- */
 .gap{height:24px}
 .mb20{margin-bottom:20px}
+
+/* ---- NAVBAR ALWAYS ON TOP ---- */
+.navbar{z-index:10000!important;position:sticky;top:0}
 </style>
 </head>
 <body>
@@ -331,7 +334,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 <!-- NAVBAR -->
 <nav class="navbar" id="navbar">
-  <a class="brand" href="https://investpercent.com" target="_blank">
+  <a class="brand" href="index.html">
     <div class="brand-icon">%</div>
     <div class="brand-name">invest<span class="grad-text">percent</span></div>
   </a>
@@ -1174,7 +1177,14 @@ function copySummary(){
 /* ========================= EXIT MODAL ========================= */
 let exitShown=false;
 function closeModal(){document.getElementById('exitModal').classList.remove('open')}
-document.addEventListener('mouseleave',e=>{if(e.clientY<=10&&!exitShown){exitShown=true;document.getElementById('exitModal').classList.add('open')}});
+let userActive=false;
+document.addEventListener('click',()=>userActive=true);
+document.addEventListener('scroll',()=>userActive=true);
+setTimeout(()=>{
+  document.addEventListener('mouseleave',(e)=>{
+    if(e.clientY<=10&&!exitShown&&!userActive){exitShown=true;document.getElementById('exitModal').classList.add('open')}
+  });
+},8000);
 document.getElementById('exitModal').addEventListener('click',closeModal);
 document.getElementById('exitModal').querySelector('.modal-box').addEventListener('click',e=>e.stopPropagation());
 
@@ -1187,6 +1197,7 @@ document.getElementById('menuBtn').addEventListener('click',()=>{
 });
 
 /* ========================= INIT ========================= */
+document.getElementById('exitModal').classList.remove('open');
 renderEarnGrid();
 renderDashboard();
 renderOpps();
