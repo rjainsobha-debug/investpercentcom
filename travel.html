@@ -1034,13 +1034,14 @@ function aiSync(){
 /* ── TRAVEL COST CALCULATOR ── */
 let tvChart=null;
 function tvCalc(){
-  const travelers=+document.getElementById('tv_travelers').value||2;
-  const duration=+document.getElementById('tv_duration').value||7;
+  const travelers=parseFloat(document.getElementById('tv_travelers').value)||1;
+  const duration=parseFloat(document.getElementById('tv_duration').value)||1;
   const flightPP=+document.getElementById('tv_flightClass').value||50000;
   const stayPN=+document.getElementById('tv_stayType').value||10000;
-  const dailyUSD=+document.getElementById('tv_dailyExp').value||50;
-  const fxRate=+document.getElementById('tv_fxRate').value||83;
-  const visa=+document.getElementById('tv_visa').value||0;
+  const dailyUSD=parseFloat(document.getElementById('tv_dailyExp').value)||0;
+  const fxRate=parseFloat(document.getElementById('tv_fxRate').value)||83;
+  const visaInput=document.getElementById('tv_visa').value;
+  const visa=visaInput===''?0:+visaInput;
   const insurance=document.getElementById('tv_insurance').checked;
 
   const flightCost=travelers*flightPP;
@@ -1118,10 +1119,15 @@ function tvCalc(){
 function tvCopy(){
   const t=document.getElementById('tv_totalCost').textContent;
   const p=document.getElementById('tv_perPerson').textContent;
-  navigator.clipboard&&navigator.clipboard.writeText(`Travel Cost Estimate\nTotal: ${t}\n${p}\nPowered by investpercent.com`);
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(`Travel Cost Estimate\nTotal: ${t}\n${p}\nPowered by investpercent.com`);
+  } else {
+    alert('Copy not supported on this browser');
+  }
 }
 
 /* ── FOREX ENGINE ── */
+const FX_NAMES={USD:'US Dollar',EUR:'Euro',GBP:'British Pound',AED:'UAE Dirham',SGD:'Singapore Dollar',THB:'Thai Baht'};
 const FX_RATES={
   USD:{interbank:83.20,our:84.10,symbol:'$',flag:'🇺🇸'},
   EUR:{interbank:90.50,our:91.60,symbol:'€',flag:'🇪🇺'},
@@ -1132,7 +1138,8 @@ const FX_RATES={
 };
 function fxCalc(){
   const cur=document.getElementById('fx_currency').value||'USD';
-  const amt=+document.getElementById('fx_amount').value||1000;
+  const amtInput=document.getElementById('fx_amount').value;
+  const amt=amtInput===''?0:+amtInput;
   const rate=FX_RATES[cur]||FX_RATES.USD;
   const ibTotal=amt*rate.interbank;
   const ourTotal=amt*rate.our;
@@ -1153,7 +1160,7 @@ function fxCalc(){
         const mgn=(r.our-r.interbank).toFixed(2);
         const pct=((r.our-r.interbank)/r.interbank*100).toFixed(2);
         return `<tr>
-          <td>${r.flag} <strong>${c}</strong> — ${['USD','EUR','GBP','AED','SGD','THB'].indexOf(c)>=0?['US Dollar','Euro','British Pound','UAE Dirham','Singapore Dollar','Thai Baht'][['USD','EUR','GBP','AED','SGD','THB'].indexOf(c)]:c}</td>
+          <td>${r.flag} <strong>${c}</strong> — ${FX_NAMES[c]||c}</td>
           <td class="forex-rate-good">₹${r.interbank}</td>
           <td style="color:var(--cyan)">₹${r.our}</td>
           <td class="forex-rate-margin">+₹${mgn} (${pct}%)</td>
@@ -1172,7 +1179,11 @@ function fxCopy(){
   const cur=document.getElementById('fx_currency').value;
   const amt=document.getElementById('fx_amount').value;
   const pay=document.getElementById('fx_youPay').textContent;
-  navigator.clipboard&&navigator.clipboard.writeText(`Forex: ${amt} ${cur} = ${pay}\nRate: ₹${FX_RATES[cur].our}/${cur}\ninvestpercent.com`);
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(`Forex: ${amt} ${cur} = ${pay}\nRate: ₹${FX_RATES[cur].our}/${cur}\ninvestpercent.com`);
+  } else {
+    alert('Copy not supported on this browser');
+  }
 }
 
 /* ── TOUR PACKAGES ── */
@@ -1264,8 +1275,8 @@ function ldSubmit(){
   const budget=document.getElementById('ld_budget').value;
   const date=document.getElementById('ld_date').value.trim();
   const travelers=document.getElementById('ld_travelers').value;
-  if(!name||!phone){
-    alert('Please enter your name and phone number.');
+  if(!name||!phone||phone.length<8){
+    alert('Please enter valid details.');
     return;
   }
   // Log to console (backend integration ready)
@@ -1294,23 +1305,25 @@ function scrollToCalc(){
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded',function(){
   tvSync('travelers'); tvSync('duration'); tvSync('dailyExp'); tvSync('fxRate');
-  tvCalc();
-  fxCalc();
-  renderPackages();
-  aiSync(); aiAdvise();
+  if(typeof tvCalc==='function') tvCalc();
+  if(typeof fxCalc==='function') fxCalc();
+  if(typeof renderPackages==='function') renderPackages();
+  if(typeof aiSync==='function') aiSync();
+  if(typeof aiAdvise==='function') aiAdvise();
 });
 </script>
 
 <script>
 fetch("components/navbar.html")
-  .then(res=>{if(!res.ok) throw new Error();return res.text();})
+  .then(res=>res.text())
   .then(data=>{
-    const el=document.getElementById("navbar");if(el) el.innerHTML=data;
-    const pageName=window.location.pathname.split('/').filter(Boolean).pop()||'';
-    document.querySelectorAll(".nav a,.mobile-drawer a").forEach(link=>{
-      const href=(link.getAttribute("href")||'').split('/').pop();
-      if(href&&pageName.endsWith(href)) link.classList.add("active");
-    });
+    document.getElementById("navbar").innerHTML=data;
+    setTimeout(()=>{
+      const currentPage=window.location.pathname.split('/').pop()||'index.html';
+      document.querySelectorAll('.nav-link').forEach(link=>{
+        if(link.getAttribute('href')===currentPage) link.classList.add('active');
+      });
+    },100);
   }).catch(()=>{});
 </script>
 </body>
