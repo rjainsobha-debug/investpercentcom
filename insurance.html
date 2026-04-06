@@ -930,7 +930,6 @@ fetch('components/navbar.html')
   .then(data => {
     document.getElementById('navbar').innerHTML = data;
 
-    // optional active link highlight
     if (typeof setActiveLink === 'function') {
       setActiveLink();
     }
