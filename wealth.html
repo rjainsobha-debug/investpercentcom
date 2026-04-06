@@ -4,8 +4,8 @@
   <link rel="stylesheet" href="css/navbar.css">
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Personal Finance Super Page — investpercent</title>
-  <meta name="description" content="All-in-one personal finance super dashboard. Personal Finance, Savings, Tax, Investments and Loan calculators in one place."/>
+  <title>Wealth Planner — Smart Investment &amp; Finance Dashboard | investpercent</title>
+  <meta name="description" content="Plan investments, SIP, savings, tax and loans in one smart dashboard. Get personalized financial plans instantly."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -231,6 +231,10 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   .super-tabbar{gap:7px}
   .super-tab{padding:10px 14px;font-size:13px}
 }
+@media(max-width:768px){
+  .btn{width:100%}
+  #stickyCTA{flex-direction:column;gap:6px}
+}
 </style>
 </head>
 <body>
@@ -239,8 +243,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
   <!-- SUPER HERO & TAB NAV -->
   <div class="super-hero">
-    <h1>Personal Finance <span class="grad">Super Page</span></h1>
-    <p>Five complete financial dashboards in one place — Personal Finance, Savings, Tax, Investments and Loans.</p>
+    <h1>Wealth <span class="grad">Planner</span></h1>
+    <p>Your complete financial command center — investments, savings, tax and loans in one place.</p>
     <div class="super-tabbar">
       <button class="super-tab active" data-tab="pf" onclick="switchSuper('pf')">💰 Personal Finance</button>
       <button class="super-tab" data-tab="sv" onclick="switchSuper('sv')">🏦 Savings</button>
@@ -248,6 +252,18 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       <button class="super-tab" data-tab="iv" onclick="switchSuper('iv')">📈 Investments</button>
       <button class="super-tab" data-tab="ln" onclick="switchSuper('ln')">🏠 Loans</button>
     </div>
+    <div style="margin-top:15px;padding:14px;border-radius:14px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div style="font-weight:700">💡 Get your personalized investment plan in 30 seconds</div>
+      <button class="btn primary" onclick="openTelegram()">Start Now</button>
+    </div>
+    <div style="margin-top:12px">
+      <button class="btn primary" onclick="openTelegram()">Get Investment Plan</button>
+    </div>
+  </div>
+  <!-- TRUST LAYER -->
+  <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+    <div style="font-size:13px">✔ Free Planning | ✔ No Spam | ✔ Expert Guidance</div>
+    <button class="btn secondary" onclick="openTelegram()">Talk to Advisor</button>
   </div>
 
   <!-- ═══════════════════════════════════════
@@ -346,6 +362,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
       </section>
     </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Smart Suggestion: <span id="pf_aiSuggest">Start SIP + build emergency fund</span></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get Personal Plan</button></div>
   </div><!-- /section-pf -->
 
   <!-- ═══════════════════════════════════════
@@ -438,6 +456,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
       </section>
     </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Smart Suggestion: <span id="sv_aiSuggest">Combine FD + SIP for better returns</span></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get Personal Plan</button></div>
   </div><!-- /section-sv -->
 
   <!-- ═══════════════════════════════════════
@@ -452,7 +472,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
         <div class="hero-cta">
           <button class="btn primary" onclick="txScrollToControls()">Calculate Tax</button>
-          <button class="btn secondary" onclick="window.open('https://justinvesting.in','_blank')">Talk to Advisor</button>
+          <button class="btn secondary" onclick="openTelegram()">Talk to Advisor</button>
         </div>
       </div>
       <div class="tabbar" id="tx_tabs"></div>
@@ -478,7 +498,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <h4>Minimize your tax legally</h4>
           <p>Our advisors identify deductions, timing strategies and regime choices that save you thousands every year.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="window.open('https://justinvesting.in','_blank')">Talk to Tax Advisor</button>
+            <button class="btn primary" onclick="openTelegram()">Talk to Tax Advisor</button>
             <button class="btn secondary" onclick="txCopySummary()">Copy Summary</button>
           </div>
         </div>
@@ -518,6 +538,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
       </section>
     </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Smart Suggestion: <span id="tx_aiSuggest">Use 80C + NPS to reduce tax</span></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get Personal Plan</button></div>
   </div><!-- /section-tx -->
 
   <!-- ═══════════════════════════════════════
@@ -558,7 +580,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <h4>Ready to move from simulation to action?</h4>
           <p>Use the dashboard to explore possibilities, then take the next step with a guided investment conversation.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="ivOpenAdvisor()">Start with justinvesting.in</button>
+            <button class="btn primary" onclick="ivOpenAdvisor()">Start Investing Now</button>
             <button class="btn secondary" onclick="ivCopySummary()">Copy Summary</button>
           </div>
         </div>
@@ -597,6 +619,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
       </section>
     </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Smart Suggestion: <span id="iv_aiSuggest">Allocate 60% MF, 30% Stocks, 10% FD</span></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get Personal Plan</button></div>
   </div><!-- /section-iv -->
 
   <!-- ═══════════════════════════════════════
@@ -611,7 +635,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
         <div class="hero-cta">
           <button class="btn primary" onclick="lnScrollToControls()">Calculate Now</button>
-          <button class="btn secondary" onclick="window.open('https://justinvesting.in','_blank')">Talk to Advisor</button>
+          <button class="btn secondary" onclick="openTelegram()">Talk to Advisor</button>
         </div>
       </div>
       <div class="tabbar" id="ln_tabs"></div>
@@ -637,7 +661,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <h4>Want the best loan deal?</h4>
           <p>Our advisors compare lenders, negotiate rates and structure loans to minimize your total interest outgo.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="window.open('https://justinvesting.in','_blank')">Talk to Advisor</button>
+            <button class="btn primary" onclick="openTelegram()">Talk to Advisor</button>
             <button class="btn secondary" onclick="lnCopySummary()">Copy Summary</button>
           </div>
         </div>
@@ -676,6 +700,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
       </section>
     </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Smart Suggestion: <span id="ln_aiSuggest">Prepay high-interest loans first</span></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get Personal Plan</button></div>
   </div><!-- /section-ln -->
 
 </div><!-- /page -->
@@ -684,6 +710,22 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
      SUPER TAB SWITCHER
 ═══════════════════════════════════════════ -->
 <script>
+/* ── STEP 1: TELEGRAM ENGINE ── */
+function openTelegram(){
+  window.open("https://t.me/Mfddelhibot","_blank");
+}
+
+/* ── STEP 6: MICRO AI ADVISOR ── */
+function smartSuggest(context){
+  if(context==="pf") return "Start SIP + build emergency fund";
+  if(context==="sv") return "Combine FD + SIP for better returns";
+  if(context==="tx") return "Use 80C + NPS to reduce tax";
+  if(context==="iv") return "Allocate 60% MF, 30% Stocks, 10% FD";
+  if(context==="ln") return "Prepay high-interest loans first";
+  return "";
+}
+
+/* ── TAB SWITCHER (STEP 7 integrated) ── */
 function switchSuper(tab){
   ['pf','sv','tx','iv','ln'].forEach(t=>{
     const el = document.getElementById('section-'+t);
@@ -692,8 +734,30 @@ function switchSuper(tab){
   document.querySelectorAll('.super-tab').forEach(b=>{
     b.classList.toggle('active', b.dataset.tab===tab);
   });
+  const suggestEl = document.getElementById(tab+'_aiSuggest');
+  if(suggestEl) suggestEl.innerText = smartSuggest(tab);
 }
 function toggleMenu(){ document.getElementById("mobileDrawer")?.classList.toggle("open"); }
+
+/* ── STEP 8: LEAD INTENT TRIGGER ── */
+let clickCount = 0;
+document.addEventListener("click", function(){
+  clickCount++;
+  if(clickCount === 8){ openTelegram(); }
+});
+
+/* ── STEP 9: SCROLL TRIGGER ── */
+window.addEventListener("scroll", function(){
+  if(window.scrollY > 1200){
+    const bar = document.getElementById("stickyCTA");
+    if(bar) bar.style.display = "flex";
+  }
+});
+
+/* ── STEP 3: DEFAULT TO INVESTMENTS TAB ── */
+document.addEventListener("DOMContentLoaded", function(){
+  switchSuper('iv');
+});
 </script>
 
 <!-- ═══════════════════════════════════════════
@@ -1055,7 +1119,7 @@ function pfUpdate(){
 }
 
 window.pfScrollToControls=function(){document.getElementById('pf_controlsAnchor').scrollIntoView({behavior:'smooth',block:'start'});};
-window.pfOpenAdvisor=function(){window.open('https://justinvesting.in','_blank');};
+window.pfOpenAdvisor=function(){openTelegram();};
 window.pfCopySummary=function(){
   const score=pfCalcScore();
   const txt=`investpercent Personal Finance Report\nMode: ${CALCS[pfActive].label}\nHealth Score: ${score}/100\n${document.getElementById('pf_stat1Label').textContent}: ${document.getElementById('pf_stat1Value').textContent}\n${document.getElementById('pf_stat2Label').textContent}: ${document.getElementById('pf_stat2Value').textContent}\n${document.getElementById('pf_stat3Label').textContent}: ${document.getElementById('pf_stat3Value').textContent}\n10yr: ${document.getElementById('pf_proj10yr').textContent}\n20yr: ${document.getElementById('pf_proj20yr').textContent}`;
@@ -1284,7 +1348,7 @@ function svUpdate(){
 }
 
 window.svScrollToControls=function(){document.getElementById('sv_controlsAnchor').scrollIntoView({behavior:'smooth',block:'start'});};
-window.svOpenAdvisor=function(){window.open('https://justinvesting.in','_blank');};
+window.svOpenAdvisor=function(){openTelegram();};
 window.svCopySummary=function(){
   const txt=`investpercent Savings Report\nMode: ${CALCS_SV[svActive].title}\n${document.getElementById('sv_stat1Label').textContent}: ${document.getElementById('sv_stat1Value').textContent}\n${document.getElementById('sv_stat2Label').textContent}: ${document.getElementById('sv_stat2Value').textContent}`;
   navigator.clipboard.writeText(txt).then(()=>{const el=document.getElementById('sv_miniInsight');const old=el.textContent;el.textContent='Copied!';setTimeout(()=>el.textContent=old,1500);});
@@ -1489,7 +1553,7 @@ function txCompute(){
   if(aiBox) aiBox.style.display=R.aiRec?'':'none';
   set('insightAITitle',R.aiRec?'🤖 AI Recommendation':'');
   const aiTextEl=$t('insightAIText');
-  if(aiTextEl) aiTextEl.innerHTML=R.aiRec?R.aiRec+' <a href="https://justinvesting.in" target="_blank" style="color:var(--cyan);font-weight:700">Talk to Tax Advisor →</a>':'';
+  if(aiTextEl) aiTextEl.innerHTML=R.aiRec?R.aiRec+' <a href="https://t.me/Mfddelhibot" target="_blank" style="color:var(--cyan);font-weight:700">Talk to Tax Advisor →</a>':'';
   txRenderChart(R.chartData,R.legendColors||[],R.legendLabels||[]);
   const tg=$t('timelineGrid');
   if(tg&&R.timeline) tg.innerHTML=R.timeline.map(t=>`<div class="milestone"><div class="m-year">${t.label}</div><div class="m-amount">${t.val}</div><div class="m-note">${t.note}</div></div>`).join('');
@@ -1658,7 +1722,7 @@ function ivUpdate(){
 }
 
 window.ivScrollToControls=function(){document.getElementById('iv_controlsAnchor').scrollIntoView({behavior:'smooth',block:'start'});};
-window.ivOpenAdvisor=function(){window.open('https://justinvesting.in','_blank');};
+window.ivOpenAdvisor=function(){openTelegram();};
 window.ivCopySummary=function(){
   const txt=`investpercent Investment Dashboard\nMode: ${CALCS_IV[ivActive].label}\nResult: ${document.getElementById('iv_wealthNumber').textContent}\n${document.getElementById('iv_stat1Label').textContent}: ${document.getElementById('iv_stat1Value').textContent}`;
   navigator.clipboard.writeText(txt).then(()=>{const old=$i('miniInsight').textContent;$i('miniInsight').textContent='Copied!';setTimeout(()=>$i('miniInsight').textContent=old,1500);});
@@ -1853,5 +1917,24 @@ fetch("components/navbar.html")
     });
   }).catch(()=>{});
 </script>
+<!-- ── STEP 7: EXIT INTENT ── -->
+<script>
+let exitShown = false;
+document.addEventListener("mouseleave", function(e){
+  if(e.clientY < 10 && !exitShown){
+    exitShown = true;
+    setTimeout(()=>{
+      if(confirm("Get your personalized investment plan now?")){
+        openTelegram();
+      }
+    },300);
+  }
+});
+</script>
+<!-- ── STEP 4: STICKY CTA BAR ── -->
+<div id="stickyCTA" style="position:fixed;bottom:0;left:0;width:100%;background:#0b1224;border-top:1px solid rgba(255,255,255,.1);padding:10px 18px;display:none;justify-content:space-between;align-items:center;z-index:9999">
+  <div style="font-size:13px">Get your investment plan</div>
+  <button class="btn primary" onclick="openTelegram()">Start</button>
+</div>
 </body>
 </html>
