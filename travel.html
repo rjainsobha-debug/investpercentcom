@@ -1002,12 +1002,16 @@ function switchTravel(tab){
 
 /* ── FORMAT HELPERS ── */
 function fmtINR(n){
+  n=(!isFinite(n)||isNaN(n))?0:n;
   if(n>=10000000) return '₹'+(n/10000000).toFixed(2)+' Cr';
   if(n>=100000)   return '₹'+(n/100000).toFixed(1)+' L';
   if(n>=1000)     return '₹'+(n/1000).toFixed(1)+'K';
   return '₹'+Math.round(n).toLocaleString('en-IN');
 }
-function fmtINRFull(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
+function fmtINRFull(n){
+  n=(!isFinite(n)||isNaN(n))?0:n;
+  return '₹'+Math.round(n).toLocaleString('en-IN');
+}
 function fmtFX(n,cur){ return cur+(n>=1000?n.toLocaleString('en-IN'):n); }
 
 /* ── SYNC SLIDERS ── */
@@ -1062,10 +1066,13 @@ function tvCalc(){
   document.getElementById('tv_perPerson').textContent=fmtINRFull(perPerson)+' per traveller for your selected itinerary.';
   document.getElementById('tv_forexNeeded').textContent=`Approximately $${forexUSD.toLocaleString('en-IN')} in foreign currency required.`;
 
-  // Top metrics
-  document.getElementById('tv_topTotal').textContent=fmtINR(total);
-  document.getElementById('tv_topForex').textContent='$'+(forexUSD*travelers).toLocaleString('en-IN');
-  document.getElementById('tv_topPerPerson').textContent=fmtINR(perPerson);
+  // Top metrics — always update, never NaN
+  const safeTotal=isFinite(total)&&!isNaN(total)?total:0;
+  const safeForex=isFinite(forexUSD*travelers)&&!isNaN(forexUSD*travelers)?forexUSD*travelers:0;
+  const safePerPerson=travelers>0&&isFinite(total/travelers)?total/travelers:0;
+  document.getElementById('tv_topTotal').textContent=fmtINR(safeTotal);
+  document.getElementById('tv_topForex').textContent='$'+Math.round(safeForex).toLocaleString('en-IN');
+  document.getElementById('tv_topPerPerson').textContent=fmtINR(safePerPerson);
 
   // Mood
   const stayN=+document.getElementById('tv_stayType').value;
@@ -1089,10 +1096,11 @@ function tvCalc(){
   document.getElementById('tv_luxuryTotal').textContent=fmtINRFull(luxury.total);
   document.getElementById('tv_luxuryPer').textContent=fmtINRFull(luxury.pp)+' / person';
 
-  // Chart
-  const ctx=document.getElementById('tv_chart');
-  if(ctx){
-    if(tvChart) tvChart.destroy();
+  // Chart — safe guard before creation
+  (function(){
+    const ctx=document.getElementById('tv_chart');
+    if(!ctx) return;
+    if(tvChart){ tvChart.destroy(); tvChart=null; }
     tvChart=new Chart(ctx,{
       type:'doughnut',
       data:{
@@ -1105,7 +1113,7 @@ function tvCalc(){
       },
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtINRFull(c.raw)}}}}
     });
-  }
+  })();
 
   // Milestones
   const ms=document.getElementById('tv_milestones');
