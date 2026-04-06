@@ -752,9 +752,16 @@ function toggleMenu(){ document.getElementById("mobileDrawer")?.classList.toggle
 
 /* ── STEP 8: LEAD INTENT TRIGGER ── */
 let clickCount = 0;
+let triggered = false;
+
 document.addEventListener("click", function(){
+  if(triggered) return;
+
   clickCount++;
-  if(clickCount === 8){ openTelegram(); }
+  if(clickCount === 8){
+    triggered = true;
+    openTelegram();
+  }
 });
 
 /* ── STEP 9: SCROLL TRIGGER ── */
