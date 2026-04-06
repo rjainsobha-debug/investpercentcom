@@ -1000,6 +1000,12 @@ function switchTravel(tab){
   document.getElementById('tv_modeSub').textContent=info.sub||'';
 }
 
+/* ── SAFE DOM SETTER ── */
+function setText(id,value){
+  const el=document.getElementById(id);
+  if(el) el.textContent=value;
+}
+
 /* ── FORMAT HELPERS ── */
 function fmtINR(n){
   n=(!isFinite(n)||isNaN(n))?0:n;
@@ -1038,8 +1044,10 @@ function aiSync(){
 /* ── TRAVEL COST CALCULATOR ── */
 let tvChart=null;
 function tvCalc(){
-  const travelers=parseFloat(document.getElementById('tv_travelers').value)||1;
-  const duration=parseFloat(document.getElementById('tv_duration').value)||1;
+  let travelers=parseFloat(document.getElementById('tv_travelers').value)||1;
+  let duration=parseFloat(document.getElementById('tv_duration').value)||1;
+  travelers=Math.max(1,travelers);
+  duration=Math.max(1,duration);
   const flightPP=+document.getElementById('tv_flightClass').value||50000;
   const stayPN=+document.getElementById('tv_stayType').value||10000;
   const dailyUSD=parseFloat(document.getElementById('tv_dailyExp').value)||0;
@@ -1054,53 +1062,54 @@ function tvCalc(){
   const visCost=visa*travelers;
   const insCost=insurance?1500*travelers:0;
   const total=flightCost+stayCost+expCost+visCost+insCost;
-  const perPerson=total/travelers;
-  const forexUSD=dailyUSD*duration;
+  const perPerson=travelers>0?total/travelers:0;
+  const forexUSD=dailyUSD*duration*travelers;
 
-  document.getElementById('tv_totalCost').textContent=fmtINRFull(total);
-  document.getElementById('tv_pill').textContent=travelers>1?travelers+' Travellers':'1 Traveller';
-  document.getElementById('tv_narrative').textContent=`A ${duration}-night trip for ${travelers} traveller${travelers>1?'s':''} including flights, ${document.getElementById('tv_stayType').options[document.getElementById('tv_stayType').selectedIndex].text.split('(')[0].trim()} and daily expenses.`;
-  document.getElementById('tv_flightCostOut').textContent=fmtINR(flightCost);
-  document.getElementById('tv_stayCostOut').textContent=fmtINR(stayCost);
-  document.getElementById('tv_expCostOut').textContent=fmtINR(expCost);
-  document.getElementById('tv_perPerson').textContent=fmtINRFull(perPerson)+' per traveller for your selected itinerary.';
-  document.getElementById('tv_forexNeeded').textContent=`Approximately $${forexUSD.toLocaleString('en-IN')} in foreign currency required.`;
+  const stayLabel=document.getElementById('tv_stayType').options[document.getElementById('tv_stayType').selectedIndex].text.split('(')[0].trim();
+  setText('tv_totalCost',fmtINRFull(total));
+  setText('tv_pill',travelers>1?travelers+' Travellers':'1 Traveller');
+  setText('tv_narrative',`A ${duration}-night trip for ${travelers} traveller${travelers>1?'s':''} including flights, ${stayLabel} and daily expenses.`);
+  setText('tv_flightCostOut',fmtINR(flightCost));
+  setText('tv_stayCostOut',fmtINR(stayCost));
+  setText('tv_expCostOut',fmtINR(expCost));
+  setText('tv_perPerson',fmtINRFull(perPerson)+' per traveller for your selected itinerary.');
+  setText('tv_forexNeeded',`Approximately $${Math.round(forexUSD).toLocaleString('en-IN')} total forex needed for all ${travelers} traveller${travelers>1?'s':''}.`);
 
-  // Top metrics — always update, never NaN
+  // Top metrics — always update, never NaN (forexUSD is already total across all travelers)
   const safeTotal=isFinite(total)&&!isNaN(total)?total:0;
-  const safeForex=isFinite(forexUSD*travelers)&&!isNaN(forexUSD*travelers)?forexUSD*travelers:0;
-  const safePerPerson=travelers>0&&isFinite(total/travelers)?total/travelers:0;
-  document.getElementById('tv_topTotal').textContent=fmtINR(safeTotal);
-  document.getElementById('tv_topForex').textContent='$'+Math.round(safeForex).toLocaleString('en-IN');
-  document.getElementById('tv_topPerPerson').textContent=fmtINR(safePerPerson);
+  const safeForex=isFinite(forexUSD)&&!isNaN(forexUSD)?forexUSD:0;
+  const safePerPerson=travelers>0&&isFinite(perPerson)?perPerson:0;
+  setText('tv_topTotal',fmtINR(safeTotal));
+  setText('tv_topForex','$'+Math.round(safeForex).toLocaleString('en-IN'));
+  setText('tv_topPerPerson',fmtINR(safePerPerson));
 
   // Mood
   const stayN=+document.getElementById('tv_stayType').value;
   const mood=stayN<=3000?'Budget':stayN<=6000?'Economy':stayN<=10000?'Comfort':'Luxury';
-  document.getElementById('tv_miniMood').textContent=mood;
+  setText('tv_miniMood',mood);
 
   // Scenarios
   const scenarioCalc=(fp,sp)=>{
     const f=travelers*fp;
     const s=duration*sp*travelers;
     const t=f+s+expCost+visCost+(insurance?1500*travelers:0);
-    return{total:t,pp:t/travelers};
+    return{total:t,pp:travelers>0?t/travelers:0};
   };
   const budget=scenarioCalc(50000,3000);
   const comfort=scenarioCalc(50000,10000);
   const luxury=scenarioCalc(150000,18000);
-  document.getElementById('tv_budgetTotal').textContent=fmtINRFull(budget.total);
-  document.getElementById('tv_budgetPer').textContent=fmtINRFull(budget.pp)+' / person';
-  document.getElementById('tv_comfortTotal').textContent=fmtINRFull(comfort.total);
-  document.getElementById('tv_comfortPer').textContent=fmtINRFull(comfort.pp)+' / person';
-  document.getElementById('tv_luxuryTotal').textContent=fmtINRFull(luxury.total);
-  document.getElementById('tv_luxuryPer').textContent=fmtINRFull(luxury.pp)+' / person';
+  setText('tv_budgetTotal',fmtINRFull(budget.total));
+  setText('tv_budgetPer',fmtINRFull(budget.pp)+' / person');
+  setText('tv_comfortTotal',fmtINRFull(comfort.total));
+  setText('tv_comfortPer',fmtINRFull(comfort.pp)+' / person');
+  setText('tv_luxuryTotal',fmtINRFull(luxury.total));
+  setText('tv_luxuryPer',fmtINRFull(luxury.pp)+' / person');
 
   // Chart — safe guard before creation
   (function(){
     const ctx=document.getElementById('tv_chart');
     if(!ctx) return;
-    if(tvChart){ tvChart.destroy(); tvChart=null; }
+    if(tvChart instanceof Chart){ tvChart.destroy(); tvChart=null; }
     tvChart=new Chart(ctx,{
       type:'doughnut',
       data:{
@@ -1128,7 +1137,9 @@ function tvCopy(){
   const t=document.getElementById('tv_totalCost').textContent;
   const p=document.getElementById('tv_perPerson').textContent;
   if(navigator.clipboard){
-    navigator.clipboard.writeText(`Travel Cost Estimate\nTotal: ${t}\n${p}\nPowered by investpercent.com`);
+    navigator.clipboard.writeText(`Travel Cost Estimate\nTotal: ${t}\n${p}\nPowered by investpercent.com`)
+      .then(()=>alert('Copied to clipboard ✅'))
+      .catch(()=>alert('Copy not supported on this browser'));
   } else {
     alert('Copy not supported on this browser');
   }
@@ -1152,13 +1163,13 @@ function fxCalc(){
   const ibTotal=amt*rate.interbank;
   const ourTotal=amt*rate.our;
   const margin=ourTotal-ibTotal;
-  document.getElementById('fx_youPay').textContent=fmtINRFull(ourTotal);
-  document.getElementById('fx_payDesc').textContent=`For ${rate.symbol}${amt.toLocaleString('en-IN')} at our current rate of ₹${rate.our}`;
-  document.getElementById('fx_ibTotal').textContent=fmtINRFull(ibTotal);
-  document.getElementById('fx_ourTotal').textContent=fmtINRFull(ourTotal);
-  document.getElementById('fx_margin').textContent=fmtINRFull(margin);
-  document.getElementById('fx_miniInterbank').textContent='₹'+rate.interbank;
-  document.getElementById('fx_miniOurRate').textContent='₹'+rate.our;
+  setText('fx_youPay',fmtINRFull(ourTotal));
+  setText('fx_payDesc',`For ${rate.symbol}${amt.toLocaleString('en-IN')} at our current rate of ₹${rate.our}`);
+  setText('fx_ibTotal',fmtINRFull(ibTotal));
+  setText('fx_ourTotal',fmtINRFull(ourTotal));
+  setText('fx_margin',fmtINRFull(margin));
+  setText('fx_miniInterbank','₹'+rate.interbank);
+  setText('fx_miniOurRate','₹'+rate.our);
 
   // Build rate table
   const tbl=document.getElementById('fx_table');
@@ -1188,7 +1199,9 @@ function fxCopy(){
   const amt=document.getElementById('fx_amount').value;
   const pay=document.getElementById('fx_youPay').textContent;
   if(navigator.clipboard){
-    navigator.clipboard.writeText(`Forex: ${amt} ${cur} = ${pay}\nRate: ₹${FX_RATES[cur].our}/${cur}\ninvestpercent.com`);
+    navigator.clipboard.writeText(`Forex: ${amt} ${cur} = ${pay}\nRate: ₹${FX_RATES[cur].our}/${cur}\ninvestpercent.com`)
+      .then(()=>alert('Copied to clipboard ✅'))
+      .catch(()=>alert('Copy not supported on this browser'));
   } else {
     alert('Copy not supported on this browser');
   }
@@ -1287,6 +1300,10 @@ function ldSubmit(){
     alert('Please enter valid details.');
     return;
   }
+  if(!dest){
+    alert('Please enter destination');
+    return;
+  }
   // Log to console (backend integration ready)
   console.log('Travel Lead Captured:',{name,phone,dest,budget,date,travelers,timestamp:new Date().toISOString()});
   // Show success
@@ -1310,14 +1327,27 @@ function scrollToCalc(){
   if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+/* ── MOBILE RESIZE OPTIMIZATION ── */
+let resizeTimer;
+window.addEventListener('resize',()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(()=>{
+    if(typeof tvCalc==='function') tvCalc();
+  },300);
+});
+
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded',function(){
-  tvSync('travelers'); tvSync('duration'); tvSync('dailyExp'); tvSync('fxRate');
-  if(typeof tvCalc==='function') tvCalc();
-  if(typeof fxCalc==='function') fxCalc();
-  if(typeof renderPackages==='function') renderPackages();
-  if(typeof aiSync==='function') aiSync();
-  if(typeof aiAdvise==='function') aiAdvise();
+  try{
+    tvSync('travelers'); tvSync('duration'); tvSync('dailyExp'); tvSync('fxRate');
+    tvCalc();
+    fxCalc();
+    renderPackages();
+    aiSync();
+    aiAdvise();
+  } catch(e){
+    console.log('Init error:',e);
+  }
 });
 </script>
 
