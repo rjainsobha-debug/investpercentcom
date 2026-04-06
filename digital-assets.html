@@ -327,6 +327,11 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 /* ---- NAVBAR ALWAYS ON TOP ---- */
 .navbar{z-index:10000!important;position:sticky;top:0}
+
+/* ---- CLICK PRIORITY HARD FIX ---- */
+.navbar,.navbar *{pointer-events:auto!important}
+.modal-overlay{pointer-events:none!important}
+.modal-overlay.open{pointer-events:auto!important}
 </style>
 </head>
 <body>
@@ -340,24 +345,24 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   </a>
   <div class="nav-links">
     <div class="nav-row">
-      <a href="#" class="nav-link">Home</a>
-      <a href="#" class="nav-link">Personal Finance</a>
-      <a href="#" class="nav-link">Investments</a>
-      <a href="#" class="nav-link">Insurance</a>
-      <a href="#" class="nav-link">Travel</a>
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="personal-finance.html" class="nav-link">Personal Finance</a>
+      <a href="investment.html" class="nav-link">Investments</a>
+      <a href="insurance.html" class="nav-link">Insurance</a>
+      <a href="travel.html" class="nav-link">Travel</a>
     </div>
     <div class="nav-row">
-      <a href="#" class="nav-link">Real Estate</a>
-      <a href="#" class="nav-link active">Digital Assets</a>
-      <a href="#" class="nav-link">Global Finance</a>
-      <a href="#" class="nav-link">Learn</a>
+      <a href="real-estate.html" class="nav-link">Real Estate</a>
+      <a href="digital-assets.html" class="nav-link active">Digital Assets</a>
+      <a href="global-finance.html" class="nav-link">Global Finance</a>
+      <a href="learn.html" class="nav-link">Learn</a>
     </div>
   </div>
   <button class="menu-btn" id="menuBtn">☰</button>
   <div id="mobileMenu" style="display:none" class="mobile-menu">
-    <a href="#">Home</a><a href="#">Personal Finance</a><a href="#">Investments</a>
-    <a href="#">Insurance</a><a href="#">Travel</a><a href="#">Real Estate</a>
-    <a href="#" class="active">Digital Assets</a><a href="#">Global Finance</a><a href="#">Learn</a>
+    <a href="index.html">Home</a><a href="personal-finance.html">Personal Finance</a><a href="investment.html">Investments</a>
+    <a href="insurance.html">Insurance</a><a href="travel.html">Travel</a><a href="real-estate.html">Real Estate</a>
+    <a href="digital-assets.html" class="active">Digital Assets</a><a href="global-finance.html">Global Finance</a><a href="learn.html">Learn</a>
   </div>
 </nav>
 
@@ -1175,16 +1180,8 @@ function copySummary(){
 }
 
 /* ========================= EXIT MODAL ========================= */
-let exitShown=false;
+let exitShown=true;
 function closeModal(){document.getElementById('exitModal').classList.remove('open')}
-let userActive=false;
-document.addEventListener('click',()=>userActive=true);
-document.addEventListener('scroll',()=>userActive=true);
-setTimeout(()=>{
-  document.addEventListener('mouseleave',(e)=>{
-    if(e.clientY<=10&&!exitShown&&!userActive){exitShown=true;document.getElementById('exitModal').classList.add('open')}
-  });
-},8000);
 document.getElementById('exitModal').addEventListener('click',closeModal);
 document.getElementById('exitModal').querySelector('.modal-box').addEventListener('click',e=>e.stopPropagation());
 
@@ -1194,6 +1191,9 @@ window.addEventListener('scroll',()=>{document.getElementById('stickyCta').class
 /* ========================= MOBILE MENU ========================= */
 document.getElementById('menuBtn').addEventListener('click',()=>{
   const m=document.getElementById('mobileMenu');m.style.display=m.style.display==='none'?'flex':'none';
+});
+document.querySelectorAll('.nav-link').forEach(link=>{
+  link.addEventListener('click',function(e){if(this.getAttribute('href')==='#') e.preventDefault()});
 });
 
 /* ========================= INIT ========================= */
