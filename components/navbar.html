@@ -1,47 +1,109 @@
 <nav class="nav">
-
   <!-- BRAND -->
-  <div class="brand" onclick="location.href='index.html'">
+  <div class="brand" onclick="window.location.href='index.html'">
     <div class="brand-mark">%</div>
     <div class="brand-name">invest<span>percent</span></div>
   </div>
 
   <!-- MOBILE TOGGLE -->
-  <button class="mobile-toggle" onclick="toggleMenu()">☰</button>
+  <button class="mobile-toggle" type="button" aria-label="Open menu" onclick="toggleMenu()">☰</button>
 
   <!-- DESKTOP NAV -->
   <div class="nav-links">
-
-    <!-- ROW 1 (CORE BUSINESS) -->
+    <!-- ROW 1 -->
     <div class="nav-row">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="personal-finance.html" class="nav-link">Personal Finance</a>
-      <a href="investments.html" class="nav-link">Investments</a>
-      <a href="insurance.html" class="nav-link">Insurance</a>
-      <a href="travel.html" class="nav-link">Travel</a>
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="personal-finance.html" class="nav-link" data-page="personal-finance">Personal Finance</a>
+      <a href="investments.html" class="nav-link" data-page="investments">Investments</a>
+      <a href="insurance.html" class="nav-link" data-page="insurance">Insurance</a>
+      <a href="travel.html" class="nav-link" data-page="travel">Travel</a>
     </div>
 
-    <!-- ROW 2 (SUPPORT + DEPTH) -->
+    <!-- ROW 2 -->
     <div class="nav-row sub">
-      <a href="real-estate.html" class="nav-link">Real Estate</a>
-      <a href="digital-assets.html" class="nav-link">Digital Assets</a>
-      <a href="global-finance.html" class="nav-link">Global Finance</a>
-      <a href="learn.html" class="nav-link">Learn</a>
+      <a href="real-estate.html" class="nav-link" data-page="real-estate">Real Estate</a>
+      <a href="digital-assets.html" class="nav-link" data-page="digital-assets">Digital Assets</a>
+      <a href="global-finance.html" class="nav-link" data-page="global-finance">Global Finance</a>
+      <a href="learn.html" class="nav-link" data-page="learn">Learn</a>
     </div>
-
   </div>
 
   <!-- MOBILE DRAWER -->
   <div id="mobileDrawer" class="mobile-drawer">
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="personal-finance.html" class="nav-link">Personal Finance</a>
-    <a href="investments.html" class="nav-link">Investments</a>
-    <a href="insurance.html" class="nav-link">Insurance</a>
-    <a href="travel.html" class="nav-link">Travel</a>
-    <a href="real-estate.html" class="nav-link">Real Estate</a>
-    <a href="digital-assets.html" class="nav-link">Digital Assets</a>
-    <a href="global-finance.html" class="nav-link">Global Finance</a>
-    <a href="learn.html" class="nav-link">Learn</a>
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="personal-finance.html" class="nav-link" data-page="personal-finance">Personal Finance</a>
+    <a href="investments.html" class="nav-link" data-page="investments">Investments</a>
+    <a href="insurance.html" class="nav-link" data-page="insurance">Insurance</a>
+    <a href="travel.html" class="nav-link" data-page="travel">Travel</a>
+    <a href="real-estate.html" class="nav-link" data-page="real-estate">Real Estate</a>
+    <a href="digital-assets.html" class="nav-link" data-page="digital-assets">Digital Assets</a>
+    <a href="global-finance.html" class="nav-link" data-page="global-finance">Global Finance</a>
+    <a href="learn.html" class="nav-link" data-page="learn">Learn</a>
   </div>
-
 </nav>
+
+<script>
+  function toggleMenu() {
+    const drawer = document.getElementById("mobileDrawer");
+    if (drawer) drawer.classList.toggle("open");
+  }
+
+  function normalizePath(path) {
+    if (!path) return "index";
+    path = path.toLowerCase().trim();
+
+    // remove leading slash
+    if (path.startsWith("/")) path = path.slice(1);
+
+    // remove query/hash if any
+    path = path.split("?")[0].split("#")[0];
+
+    // root
+    if (path === "" || path === "/") return "index";
+
+    // remove .html
+    if (path.endsWith(".html")) path = path.replace(".html", "");
+
+    return path;
+  }
+
+  function getCurrentPageKey() {
+    const path = normalizePath(window.location.pathname);
+    return path;
+  }
+
+  function highlightActiveNav() {
+    const currentPage = getCurrentPageKey();
+    const links = document.querySelectorAll(".nav-link");
+
+    links.forEach(link => {
+      link.classList.remove("active");
+
+      const linkPage = (link.dataset.page || "").toLowerCase().trim();
+      const linkHref = normalizePath(link.getAttribute("href") || "");
+
+      if (
+        currentPage === linkPage ||
+        currentPage === linkHref
+      ) {
+        link.classList.add("active");
+      }
+    });
+  }
+
+  function closeMobileMenuOnLinkClick() {
+    const drawer = document.getElementById("mobileDrawer");
+    const mobileLinks = drawer ? drawer.querySelectorAll(".nav-link") : [];
+
+    mobileLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        drawer.classList.remove("open");
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    highlightActiveNav();
+    closeMobileMenuOnLinkClick();
+  });
+</script>
