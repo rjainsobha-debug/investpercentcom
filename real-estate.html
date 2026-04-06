@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real Estate Intelligence Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#060915;--bg2:#0b1224;--panel:#0f1830;--soft:#18284d;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);--text:#f7fbff;--muted:#9da9c6;--cyan:#00d4ff;--blue:#4fa3ff;--violet:#7b61ff;--green:#00e676;--gold:#ffd76a;--red:#ff607d;--grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(0,212,255,.06),transparent 18%),radial-gradient(circle at bottom right,rgba(123,97,255,.08),transparent 22%),var(--bg);min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.page{max-width:1450px;margin:0 auto;padding:12px 14px 40px}
+
+/* HERO */
+.hero{background:radial-gradient(circle at 16% 20%,rgba(0,212,255,.18),transparent 28%),radial-gradient(circle at 88% 12%,rgba(123,97,255,.18),transparent 24%),linear-gradient(180deg,#070c18,#091224);border:1px solid var(--line);border-radius:24px;padding:20px 24px;margin-bottom:14px;overflow:hidden;position:relative}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.hero h1{font-family:Poppins,sans-serif;font-size:clamp(24px,3.5vw,42px);line-height:1.1;letter-spacing:-.045em}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:8px 0 0;color:var(--muted);font-size:15px;max-width:760px;line-height:1.6}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+
+/* BUTTONS */
+.btn{border:none;cursor:pointer;border-radius:14px;padding:10px 16px;font-size:14px;font-weight:800;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+.btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+
+/* TABS */
+.tab-category-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px}
+.tabbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.tab{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer;transition:.2s;font-size:13px}
+.tab:hover{color:var(--text);border-color:var(--line2)}
+.tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
+
+/* TOP METRICS */
+.top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:10px;margin-top:14px}
+.metric-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:22px;padding:14px;min-height:90px}
+.metric-label{color:var(--muted);font-size:12px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+.metric-value{font-size:clamp(20px,2.5vw,30px);font-weight:800;letter-spacing:-.04em;line-height:1}
+.metric-sub{margin-top:8px;color:#8390b1;font-size:13px}
+
+/* MARKET STRIP */
+.market-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.city-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:18px;padding:14px}
+.city-name{font-size:15px;font-weight:800;margin-bottom:8px;color:var(--cyan)}
+.city-stat{font-size:13px;color:var(--muted);margin-bottom:4px}
+.city-stat span{color:var(--text);font-weight:700}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:14px;margin-top:12px}
+
+/* PANEL */
+.panel{background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));border:1px solid var(--line);border-radius:28px;box-shadow:0 22px 70px rgba(0,0,0,.38)}
+.controls-wrap{padding:16px}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
+.panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+.panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+.badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
+
+/* SCENARIO */
+.scenario-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.scenario-bar label{font-size:13px;font-weight:800;color:var(--muted);white-space:nowrap}
+.scenario-bar select{flex:1;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;outline:none}
+
+/* CONTROLS */
+.control-group{margin-bottom:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.control-name{font-size:14px;font-weight:700}
+.control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
+input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)}
+input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)}
+.select-group{margin-bottom:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.select-group select{width:100%;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:14px;font-weight:700;cursor:pointer;outline:none;appearance:none;margin-top:8px}
+select option{background:#0f1830;color:var(--text)}
+
+/* MINI GRID */
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.mini .v{font-size:17px;font-weight:800;letter-spacing:-.03em}
+
+/* ADVISOR CARD */
+.advisor-card{margin-top:18px;padding:18px;border-radius:20px;background:radial-gradient(circle at top left,rgba(0,212,255,.18),transparent 36%),linear-gradient(135deg,rgba(79,163,255,.12),rgba(123,97,255,.14));border:1px solid rgba(255,255,255,.1)}
+.advisor-card h4{margin:0 0 8px;font-size:17px;font-weight:800;letter-spacing:-.03em}
+.advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
+.advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
+.advisor-actions .btn{flex:1;min-width:130px;justify-content:center}
+
+/* LEAD BOX */
+.lead-box{margin-top:16px;padding:16px;border-radius:18px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.12)}
+.lead-box h4{margin:0 0 12px;font-size:15px;font-weight:800}
+.lead-box input{width:100%;padding:10px 14px;border-radius:12px;margin-bottom:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:14px;font-weight:600;outline:none}
+.lead-box input::placeholder{color:var(--muted)}
+.lead-box .btn{width:100%;margin-top:4px;justify-content:center}
+
+/* MATCH CTA */
+.match-cta-box{margin-top:14px;padding:18px;border-radius:18px;background:radial-gradient(circle at top left,rgba(0,212,255,.18),transparent 36%),linear-gradient(135deg,rgba(79,163,255,.12),rgba(123,97,255,.14));border:1px solid rgba(255,255,255,.1);text-align:center}
+.match-cta-box h5{margin:0 0 12px;font-size:16px;font-weight:800}
+
+/* DASHBOARD */
+.dashboard-wrap{padding:14px;display:flex;flex-direction:column;gap:14px}
+.dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
+.wealth-card,.insight-card,.chart-card,.timeline-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px}
+.wealth-card{padding:18px;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 20% 20%,rgba(0,212,255,.14),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02))}
+.wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.wealth-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
+.wealth-number{font-size:clamp(36px,4vw,60px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px}
+.wealth-sub{color:var(--muted);font-size:14px;line-height:1.6}
+.wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.wealth-stat{padding:12px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.s-value{font-size:22px;font-weight:800;letter-spacing:-.03em}
+.insight-card{padding:18px;display:flex;flex-direction:column;gap:10px}
+.insight-title{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.insight-box{padding:12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);flex:1}
+.insight-box strong{display:block;font-size:14px;margin-bottom:5px;letter-spacing:-.02em}
+.insight-box span{color:var(--muted);font-size:13px;line-height:1.5}
+.chart-card{padding:18px;min-height:280px;display:flex;flex-direction:column}
+.chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+.chart-title{font-size:19px;font-weight:800;letter-spacing:-.03em}
+.chart-meta{color:var(--muted);font-size:13px;margin-top:5px}
+.legend{display:flex;gap:10px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;font-weight:700;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:7px 10px;border-radius:999px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
+.chart-wrap{position:relative;flex:1;min-height:240px;margin-top:8px}
+.timeline-card{padding:18px}
+.timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.timeline-title{font-size:19px;font-weight:800;letter-spacing:-.03em}
+.timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.milestone{padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+.m-amount{font-size:22px;font-weight:800;letter-spacing:-.04em;margin-bottom:6px}
+.m-note{color:#8390b1;font-size:12px;line-height:1.45}
+
+/* VERDICT */
+.verdict-card{padding:20px;background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));border:1px solid var(--line);border-radius:28px}
+.verdict-box{font-size:clamp(20px,2.8vw,30px);font-weight:800;letter-spacing:-.04em;margin:12px 0;padding:16px 20px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+.verdict-reasons{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.verdict-reason{padding:11px 16px;border-radius:12px;font-size:14px;line-height:1.5;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--muted)}
+.score-tags{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.score-tag{padding:8px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:13px;color:var(--muted)}
+
+/* ACTION CARD */
+.action-card{padding:20px;background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));border:1px solid var(--line);border-radius:28px}
+.action-card ul{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.action-card li{padding:12px 16px;border-radius:14px;font-size:14px;line-height:1.5;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.14)}
+.action-card li::before{content:"→  ";color:var(--cyan);font-weight:800}
+
+/* STRATEGY SECTION */
+.section-wrap{margin-top:28px}
+.section-title{font-size:26px;font-weight:800;letter-spacing:-.04em;margin-bottom:6px}
+.section-sub{color:var(--muted);font-size:15px;margin-bottom:20px}
+.strategy-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.strategy-card{padding:20px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--line);display:flex;flex-direction:column;gap:12px;transition:.2s}
+.strategy-card:hover{transform:translateY(-2px);border-color:var(--line2)}
+.strategy-icon{font-size:28px}
+.strategy-name{font-size:15px;font-weight:800}
+.strategy-desc{color:var(--muted);font-size:13px;line-height:1.55;flex:1}
+
+/* MISTAKES */
+.mistake-section{padding:28px;border-radius:28px;background:linear-gradient(135deg,rgba(255,96,125,.06),rgba(123,97,255,.06));border:1px solid rgba(255,96,125,.12);margin:24px 0}
+.mistake-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.mistake-item{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,96,125,.12)}
+.mistake-num{font-size:32px;font-weight:800;color:var(--red);opacity:.3;margin-bottom:8px}
+.mistake-title{font-size:14px;font-weight:800;margin-bottom:6px}
+.mistake-desc{color:var(--muted);font-size:13px;line-height:1.5}
+
+/* FINAL CTA */
+.final-cta{padding:48px 28px;text-align:center;border-radius:28px;background:radial-gradient(circle at 20% 50%,rgba(0,212,255,.12),transparent 40%),radial-gradient(circle at 80% 50%,rgba(123,97,255,.12),transparent 40%),linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));border:1px solid var(--line);margin:24px 0}
+.final-cta h2{font-family:Poppins,sans-serif;font-size:clamp(26px,4vw,46px);font-weight:800;letter-spacing:-.04em;margin:0 0 12px}
+.final-cta p{color:var(--muted);font-size:16px;margin:0 0 24px}
+
+/* RESPONSIVE */
+@media(max-width:1180px){.top-metrics{grid-template-columns:1fr 1fr}.layout{grid-template-columns:1fr}.dash-top{grid-template-columns:1fr}.timeline-grid{grid-template-columns:1fr 1fr}.market-strip{grid-template-columns:1fr 1fr}.strategy-grid{grid-template-columns:repeat(3,1fr)}.mistake-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.hero{padding:12px}.hero h1{font-size:20px}.top-metrics{grid-template-columns:1fr}.dashboard-wrap,.controls-wrap{padding:12px}.chart-wrap{min-height:200px}.wealth-split,.timeline-grid,.mini-grid{grid-template-columns:1fr}.page{padding:10px 10px 20px}.market-strip{grid-template-columns:1fr 1fr}.strategy-grid{grid-template-columns:1fr 1fr}.mistake-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-top">
+    <div>
+      <h1>Stop Guessing Property Deals. <span class="grad">Start Investing Smart.</span></h1>
+      <p>Analyze ROI, Rental Yield, EMI vs Rent, and Location Score — then instantly discover real properties matching your exact strategy.</p>
+    </div>
+    <div class="hero-btns">
+      <button class="btn primary" onclick="openMatch()">Find Matching Properties</button>
+      <button class="btn secondary" onclick="document.getElementById('controlsAnchor').scrollIntoView({behavior:'smooth'})">Start Analysis</button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div id="tabsWrap"></div>
+
+  <!-- TOP METRICS -->
+  <div class="top-metrics">
+    <div class="metric-card">
+      <div class="metric-label">Current Tool</div>
+      <div class="metric-value grad" id="metricTool" style="font-size:20px">Property ROI Calculator</div>
+      <div class="metric-sub" id="metricSub">Calculate total return on your real estate investment.</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Key Output</div>
+      <div class="metric-value" id="metricMain" style="color:var(--green)">—</div>
+      <div class="metric-sub" id="metricMainLabel">Main result</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Secondary Metric</div>
+      <div class="metric-value" id="metricSec" style="color:var(--cyan)">—</div>
+      <div class="metric-sub" id="metricSecLabel">Supporting figure</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Reference Value</div>
+      <div class="metric-value" id="metricRef" style="color:var(--gold)">—</div>
+      <div class="metric-sub" id="metricRefLabel">Selected assumption</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Investment Score</div>
+      <div class="metric-value" id="investmentScore" style="color:var(--cyan)">—</div>
+      <div class="metric-sub" id="scoreGrade" style="font-weight:800">—</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET STRIP -->
+<div class="market-strip">
+  <div class="city-card"><div class="city-name">Delhi</div><div class="city-stat">Avg Price: <span>₹7,500/sqft</span></div><div class="city-stat">Rental Yield: <span>2.8%</span></div><div class="city-stat">Growth: <span>6%</span></div></div>
+  <div class="city-card"><div class="city-name">Mumbai</div><div class="city-stat">Avg Price: <span>₹18,000/sqft</span></div><div class="city-stat">Rental Yield: <span>2.5%</span></div><div class="city-stat">Growth: <span>5%</span></div></div>
+  <div class="city-card"><div class="city-name">Bangalore</div><div class="city-stat">Avg Price: <span>₹8,500/sqft</span></div><div class="city-stat">Rental Yield: <span>3.5%</span></div><div class="city-stat">Growth: <span>8%</span></div></div>
+  <div class="city-card"><div class="city-name">Pune</div><div class="city-stat">Avg Price: <span>₹6,500/sqft</span></div><div class="city-stat">Rental Yield: <span>3.2%</span></div><div class="city-stat">Growth: <span>7%</span></div></div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+  <!-- LEFT: CONTROLS -->
+  <aside class="panel" id="controlsAnchor">
+    <div class="controls-wrap">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Control Panel</div>
+          <div class="panel-desc" id="controlDesc">Adjust the sliders to model your investment.</div>
+        </div>
+        <div class="badge" id="panelBadge">ROI MODE</div>
+      </div>
+      <div class="scenario-bar">
+        <label>Scenario:</label>
+        <select id="scenarioMode" onchange="update()">
+          <option value="conservative">Conservative</option>
+          <option value="realistic" selected>Realistic</option>
+          <option value="aggressive">Aggressive</option>
+        </select>
+      </div>
+      <div id="dynamicControls"></div>
+      <div class="mini-grid">
+        <div class="mini"><div class="k">Signal</div><div class="v" id="miniSignal">—</div></div>
+        <div class="mini"><div class="k">Key insight</div><div class="v" id="miniPower">—</div></div>
+      </div>
+      <div class="advisor-card">
+        <h4>Ready to find the right property?</h4>
+        <p>Model your strategy here, then explore real listings with expert guidance.</p>
+        <div class="advisor-actions">
+          <button class="btn primary" onclick="openMatch()">Find Matching Properties</button>
+          <button class="btn secondary" onclick="copyAnalysis()">Copy Analysis</button>
+        </div>
+        <div class="lead-box">
+          <h4>Get Handpicked Property Deals</h4>
+          <input type="text" id="leadName" placeholder="Name">
+          <input type="tel" id="leadPhone" placeholder="Phone">
+          <input type="text" id="leadCity" placeholder="City">
+          <input type="text" id="leadBudget" placeholder="Budget (e.g. 50L)">
+          <button class="btn primary" onclick="submitLead()">Send Deals on WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT: DASHBOARD -->
+  <section class="panel">
+    <div class="dashboard-wrap">
+      <div class="dash-top">
+        <div class="wealth-card">
+          <div>
+            <div class="wealth-head">
+              <div class="wealth-title" id="wealthTitle">Net Property ROI</div>
+              <div class="pill" id="wealthPill">Full ROI</div>
+            </div>
+            <div class="wealth-number"><span class="grad" id="wealthValue">—</span></div>
+            <div class="wealth-sub" id="wealthNarrative">Adjust the sliders to see your projected results.</div>
+          </div>
+          <div class="wealth-split">
+            <div class="wealth-stat"><div class="s-label" id="stat1Label">—</div><div class="s-value" id="stat1Value">—</div></div>
+            <div class="wealth-stat"><div class="s-label" id="stat2Label">—</div><div class="s-value" id="stat2Value">—</div></div>
+            <div class="wealth-stat"><div class="s-label" id="stat3Label">—</div><div class="s-value" id="stat3Value">—</div></div>
+          </div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-title">Decision Insights</div>
+          <div class="insight-box"><strong id="ins1Title"></strong><span id="ins1Text"></span></div>
+          <div class="insight-box"><strong id="ins2Title"></strong><span id="ins2Text"></span></div>
+          <div class="insight-box"><strong id="ins3Title"></strong><span id="ins3Text"></span></div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-head">
+          <div>
+            <div class="chart-title" id="chartTitleEl">Year-wise wealth growth</div>
+            <div class="chart-meta" id="chartMetaEl">Projected value curve based on your inputs.</div>
+          </div>
+          <div class="legend" id="chartLegend"></div>
+        </div>
+        <div class="chart-wrap"><canvas id="wealthChart"></canvas></div>
+      </div>
+      <div class="timeline-card">
+        <div class="timeline-head">
+          <div>
+            <div class="timeline-title" id="timelineTitleEl">Milestones</div>
+            <div class="chart-meta" id="timelineMetaEl">Key value checkpoints from your analysis.</div>
+          </div>
+        </div>
+        <div class="timeline-grid" id="timelineGrid"></div>
+      </div>
+      <div class="verdict-card">
+        <div class="panel-title">AI Property Decision Engine</div>
+        <div class="verdict-box" id="verdictBox">—</div>
+        <div class="score-tags">
+          <div class="score-tag">Score: <span id="verdictScore" style="font-weight:800">—</span></div>
+          <div class="score-tag">Risk: <span id="verdictRisk" style="font-weight:800;color:var(--text)">—</span></div>
+        </div>
+        <div class="verdict-reasons" id="verdictReasons"></div>
+      </div>
+      <div class="action-card">
+        <div class="panel-title">What Should You Do Next?</div>
+        <ul id="actionSteps"><li>Adjust inputs above to get personalized recommendations.</li></ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- STRATEGY SECTION -->
+<div class="section-wrap">
+  <div class="section-title">Investment <span class="grad">Strategy Center</span></div>
+  <div class="section-sub">Choose your approach and explore matching properties instantly.</div>
+  <div class="strategy-grid">
+    <div class="strategy-card"><div class="strategy-icon">🏠</div><div class="strategy-name">Rental Income Strategy</div><div class="strategy-desc">Buy residential property in high-demand areas. Generate consistent monthly rental income of 3–5% yield.</div><button class="btn primary" style="width:100%;justify-content:center" onclick="openMatch()">Explore Deals</button></div>
+    <div class="strategy-card"><div class="strategy-icon">🔄</div><div class="strategy-name">Flip Strategy</div><div class="strategy-desc">Buy undervalued properties, renovate, and sell at a premium. Target 15–25% ROI in 12–24 months.</div><button class="btn primary" style="width:100%;justify-content:center" onclick="openMatch()">Explore Deals</button></div>
+    <div class="strategy-card"><div class="strategy-icon">📈</div><div class="strategy-name">Long Term Hold</div><div class="strategy-desc">Buy in growth corridors and hold for 7–10 years. Compound capital appreciation of 8–12% CAGR.</div><button class="btn primary" style="width:100%;justify-content:center" onclick="openMatch()">Explore Deals</button></div>
+    <div class="strategy-card"><div class="strategy-icon">🌍</div><div class="strategy-name">Plot Investment</div><div class="strategy-desc">Invest in land in growth corridors. Lower entry cost, high appreciation potential as infrastructure develops.</div><button class="btn primary" style="width:100%;justify-content:center" onclick="openMatch()">Explore Deals</button></div>
+    <div class="strategy-card"><div class="strategy-icon">🏢</div><div class="strategy-name">Commercial Investment</div><div class="strategy-desc">Office spaces and retail units offer 6–9% rental yields with long-term lease stability and capital growth.</div><button class="btn primary" style="width:100%;justify-content:center" onclick="openMatch()">Explore Deals</button></div>
+  </div>
+</div>
+
+<!-- MISTAKES -->
+<div class="mistake-section">
+  <div class="section-title">Biggest Property Investment <span class="grad">Mistakes</span></div>
+  <div class="section-sub">Avoid these costly errors before committing your capital.</div>
+  <div class="mistake-grid">
+    <div class="mistake-item"><div class="mistake-num">01</div><div class="mistake-title">Buying without ROI analysis</div><div class="mistake-desc">Most buyers never model ROI. Use this tool before signing any agreement — every deal should show >8% ROI.</div></div>
+    <div class="mistake-item"><div class="mistake-num">02</div><div class="mistake-title">Ignoring rental yield</div><div class="mistake-desc">Net yield below 3% means your property can't service its EMI from rent. Calculate net yield first.</div></div>
+    <div class="mistake-item"><div class="mistake-num">03</div><div class="mistake-title">Overleveraging EMI</div><div class="mistake-desc">EMI above 40% of income leaves no buffer for repairs, vacancies or life events. Keep it manageable.</div></div>
+    <div class="mistake-item"><div class="mistake-num">04</div><div class="mistake-title">Wrong location selection</div><div class="mistake-desc">Location drives 70% of return. Score infrastructure, connectivity and rental demand before buying.</div></div>
+  </div>
+  <button class="btn primary" onclick="document.getElementById('controlsAnchor').scrollIntoView({behavior:'smooth'})">Analyze Before You Invest</button>
+</div>
+
+<!-- FINAL CTA -->
+<div class="final-cta">
+  <h2>Still Confused?</h2>
+  <p>Let our system find the best property for you. Get personalized deals matched to your exact budget and strategy.</p>
+  <button class="btn primary" style="font-size:16px;padding:14px 32px" onclick="openMatch()">Get Matching Deals</button>
+</div>
+
+</div><!-- end .page -->
+
+<script>
+/* ===================== DATA ===================== */
+const CALCS = {
+  roi:{label:"Property ROI",badge:"ROI MODE",title:"Property ROI Calculator",sub:"Calculate total return on your real estate investment including rental income and capital appreciation.",desc:"Adjust property price, loan, rental yield and holding period to model full investment ROI.",wealthTitle:"Net Property ROI",wealthPill:"Full ROI",chartTitle:"Year-wise wealth growth",chartMeta:"Cumulative property value vs. total investment over the holding period.",timelineTitle:"ROI Milestones",timelineMeta:"Key value checkpoints during the holding period.",controls:[{id:"price",label:"Property Price (₹)",min:500000,max:50000000,step:100000,value:5000000,format:"currency"},{id:"down",label:"Down Payment (₹)",min:100000,max:20000000,step:100000,value:1000000,format:"currency"},{id:"loanRate",label:"Loan Interest Rate",min:5,max:20,step:0.1,value:8.5,format:"percent"},{id:"tenure",label:"Loan Tenure",min:5,max:30,step:1,value:20,format:"years"},{id:"rentalYield",label:"Annual Rental Yield",min:1,max:12,step:0.1,value:3,format:"percent"},{id:"appreciation",label:"Annual Appreciation",min:1,max:20,step:0.5,value:6,format:"percent"},{id:"holding",label:"Holding Period",min:1,max:30,step:1,value:10,format:"years"},{id:"maintenance",label:"Annual Maintenance",min:0.1,max:3,step:0.1,value:0.5,format:"percent"}]},
+  yield:{label:"Rental Yield",badge:"YIELD MODE",title:"Rental Yield Calculator",sub:"Measure gross and net rental yield and rate your property's income performance.",desc:"Enter monthly rent, property value, vacancy and maintenance to calculate net yield.",wealthTitle:"Net Rental Yield",wealthPill:"Income Metric",chartTitle:"Gross vs Net Yield at different rent levels",chartMeta:"How gross and net yield change as monthly rent varies.",timelineTitle:"Yield Milestones",timelineMeta:"Yield at various rent and property value scenarios.",controls:[{id:"rent",label:"Monthly Rent (₹)",min:5000,max:500000,step:1000,value:25000,format:"currency"},{id:"propValue",label:"Property Value (₹)",min:500000,max:50000000,step:100000,value:5000000,format:"currency"},{id:"vacancy",label:"Vacancy",min:0,max:30,step:1,value:5,format:"percent"},{id:"maintenance",label:"Annual Maintenance",min:0,max:5,step:0.1,value:0.5,format:"percent"}]},
+  buyvrent:{label:"Buy vs Rent",badge:"BUY/RENT",title:"EMI vs Rent Decision",sub:"Compare total EMI outgo vs total rent paid over your horizon and find the break-even.",desc:"Enter property price, interest rate, monthly rent and expected rent growth to get a clear recommendation.",wealthTitle:"Cost Comparison",wealthPill:"Decision Tool",chartTitle:"Cumulative EMI vs Cumulative Rent",chartMeta:"Year-by-year comparison of total home loan EMI paid vs total rent paid.",timelineTitle:"Milestones",timelineMeta:"Cumulative cost checkpoints for buy vs rent.",controls:[{id:"price",label:"Property Price (₹)",min:500000,max:50000000,step:100000,value:5000000,format:"currency"},{id:"loanRate",label:"Interest Rate",min:5,max:20,step:0.1,value:8.5,format:"percent"},{id:"tenure",label:"Loan Tenure",min:5,max:30,step:1,value:20,format:"years"},{id:"rent",label:"Monthly Rent (₹)",min:2000,max:200000,step:1000,value:20000,format:"currency"},{id:"rentRise",label:"Annual Rent Increase",min:0,max:15,step:0.5,value:5,format:"percent"}]},
+  afford:{label:"Affordability",badge:"AFFORD MODE",title:"Property Affordability",sub:"Find out how much property you can afford based on your income and existing EMIs.",desc:"Your EMI should not exceed 40% of monthly income. Adjust income and obligations to see your ceiling.",wealthTitle:"Max Affordable Price",wealthPill:"Eligibility",chartTitle:"Loan eligibility across income levels",chartMeta:"Eligible loan amount as monthly income varies.",timelineTitle:"Affordability at Different Incomes",timelineMeta:"Eligible property price and loan at multiple income levels.",controls:[{id:"income",label:"Monthly Income (₹)",min:20000,max:500000,step:5000,value:100000,format:"currency"},{id:"existEMI",label:"Existing EMIs (₹)",min:0,max:200000,step:2000,value:10000,format:"currency"},{id:"loanRate",label:"Interest Rate",min:5,max:20,step:0.1,value:8.5,format:"percent"},{id:"tenure",label:"Loan Tenure",min:5,max:30,step:1,value:20,format:"years"}]},
+  stamp:{label:"Stamp Duty",badge:"STAMP DUTY",title:"Stamp Duty Calculator",sub:"Estimate stamp duty and registration charges for property purchase across Indian states.",desc:"Select property value, state and buyer gender to calculate total government charges.",wealthTitle:"Total Govt. Charges",wealthPill:"India Specific",chartTitle:"Charge breakdown by component",chartMeta:"Stamp duty vs registration charges as property value changes.",timelineTitle:"Charge Milestones",timelineMeta:"Total charges at various property values.",controls:[{id:"propValue",label:"Property Value (₹)",min:500000,max:50000000,step:100000,value:5000000,format:"currency"}],selects:[{id:"state",label:"State",options:["Maharashtra","Delhi","Karnataka","Tamil Nadu","Uttar Pradesh","West Bengal","Gujarat","Rajasthan","Telangana","Kerala","Haryana","Madhya Pradesh","Andhra Pradesh","Punjab","Bihar"]},{id:"gender",label:"Buyer Gender",options:["Male","Female"]}]},
+  irr:{label:"Real Estate IRR",badge:"IRR MODE",title:"Real Estate IRR Calculator",sub:"Calculate Internal Rate of Return on a property investment using cash flows and exit value.",desc:"Enter down payment, EMI, rental income and exit value to estimate your true annualized return.",wealthTitle:"Estimated IRR",wealthPill:"True Return",chartTitle:"Net annual cash flow trajectory",chartMeta:"Year-wise net cash flow and cumulative profit over the holding period.",timelineTitle:"Cash Flow Milestones",timelineMeta:"Key cash flow and profit checkpoints.",controls:[{id:"downPayment",label:"Down Payment (₹)",min:100000,max:20000000,step:100000,value:1000000,format:"currency"},{id:"emi",label:"Monthly EMI (₹)",min:5000,max:300000,step:1000,value:40000,format:"currency"},{id:"rentalIncome",label:"Monthly Rental (₹)",min:1000,max:200000,step:1000,value:20000,format:"currency"},{id:"years",label:"Holding Period",min:1,max:30,step:1,value:10,format:"years"},{id:"exitValue",label:"Exit Value (₹)",min:500000,max:100000000,step:100000,value:9000000,format:"currency"}]},
+  flip:{label:"Flip Profit",badge:"FLIP MODE",title:"Flip Profit Calculator",sub:"Estimate net profit and ROI from buying, renovating and selling a property.",desc:"Enter purchase price, renovation cost, holding cost and selling price to see your flip margin.",wealthTitle:"Net Flip Profit",wealthPill:"Flip Analysis",chartTitle:"Profit waterfall",chartMeta:"How each cost component reduces your gross profit from the sale price.",timelineTitle:"Flip Breakdown",timelineMeta:"Cost and profit breakdown for this flip transaction.",controls:[{id:"purchase",label:"Purchase Price (₹)",min:500000,max:50000000,step:100000,value:4000000,format:"currency"},{id:"renovation",label:"Renovation Cost (₹)",min:50000,max:5000000,step:50000,value:500000,format:"currency"},{id:"holding",label:"Holding Cost (₹)",min:10000,max:2000000,step:10000,value:200000,format:"currency"},{id:"selling",label:"Selling Price (₹)",min:500000,max:100000000,step:100000,value:6000000,format:"currency"}]},
+  compare:{label:"vs MF vs Gold",badge:"COMPARE",title:"Property vs MF vs Gold",sub:"Compare how the same investment amount grows across Real Estate, Mutual Funds and Gold.",desc:"Set your investment, time horizon and growth rates to find the best-performing asset class.",wealthTitle:"Best Asset Return",wealthPill:"Asset Comparison",chartTitle:"Asset class growth comparison",chartMeta:"Year-by-year final value across Real Estate, Mutual Funds and Gold.",timelineTitle:"Asset Value Milestones",timelineMeta:"Comparative value at key time checkpoints.",controls:[{id:"amount",label:"Investment Amount (₹)",min:100000,max:50000000,step:100000,value:2000000,format:"currency"},{id:"years",label:"Time Horizon",min:1,max:40,step:1,value:15,format:"years"},{id:"reRate",label:"Real Estate CAGR",min:1,max:25,step:0.5,value:7,format:"percent"},{id:"mfRate",label:"Mutual Fund CAGR",min:1,max:30,step:0.5,value:12,format:"percent"},{id:"goldRate",label:"Gold CAGR",min:1,max:20,step:0.5,value:8,format:"percent"}]},
+  location:{label:"Location Score",badge:"LOCATION",title:"Location Score Engine",sub:"Score a location based on infrastructure, connectivity, rental demand and growth potential.",desc:"Rate your location across four key parameters to get a composite investment signal.",wealthTitle:"Location Score",wealthPill:"Score /100",chartTitle:"Score component breakdown",chartMeta:"How the location scores across the four key real estate investment parameters.",timelineTitle:"Location Analysis",timelineMeta:"Score breakdown and investment signal.",controls:[{id:"infra",label:"Infrastructure Score",min:0,max:30,step:1,value:22,format:"raw"},{id:"connectivity",label:"Connectivity Score",min:0,max:25,step:1,value:18,format:"raw"},{id:"rental",label:"Rental Demand Score",min:0,max:25,step:1,value:20,format:"raw"},{id:"growth",label:"Growth Potential Score",min:0,max:20,step:1,value:15,format:"raw"}]},
+  growth:{label:"Price Growth",badge:"GROWTH SIM",title:"Price Growth Simulator",sub:"Simulate future property value under best-case, base-case and worst-case growth scenarios.",desc:"Enter current price and expected growth rate to see three scenarios over your time horizon.",wealthTitle:"Projected Future Value",wealthPill:"Growth Sim",chartTitle:"Price growth: best / base / worst scenarios",chartMeta:"Three growth trajectories based on your base rate ± a scenario spread.",timelineTitle:"Value Milestones",timelineMeta:"Projected property value at key years under the base scenario.",controls:[{id:"price",label:"Current Property Price (₹)",min:500000,max:100000000,step:100000,value:5000000,format:"currency"},{id:"baseRate",label:"Base Growth Rate",min:1,max:20,step:0.5,value:6,format:"percent"},{id:"years",label:"Projection Period",min:1,max:30,step:1,value:15,format:"years"}]},
+  loanelig:{label:"Loan Eligibility",badge:"LOAN ELIG.",title:"Home Loan Eligibility",sub:"Estimate the home loan you are eligible for based on income, obligations and tenure.",desc:"EMI capacity is capped at 50% of net income after existing obligations.",wealthTitle:"Eligible Loan Amount",wealthPill:"Bank Estimate",chartTitle:"Eligible loan across income levels",chartMeta:"Eligible loan amount as monthly income scales from ₹20,000 to ₹5,00,000.",timelineTitle:"Income vs Eligibility",timelineMeta:"Eligible loan and property price at various income levels.",controls:[{id:"income",label:"Monthly Net Income (₹)",min:20000,max:500000,step:5000,value:100000,format:"currency"},{id:"existEMI",label:"Existing EMIs (₹)",min:0,max:200000,step:2000,value:10000,format:"currency"},{id:"loanRate",label:"Interest Rate",min:5,max:20,step:0.1,value:8.5,format:"percent"},{id:"tenure",label:"Loan Tenure",min:5,max:30,step:1,value:20,format:"years"}]},
+  prepay:{label:"Prepayment",badge:"PREPAY",title:"Prepayment Impact",sub:"Find out how much time and interest you save by making a one-time prepayment.",desc:"Enter your loan details and extra payment to see the exact savings in interest and tenure.",wealthTitle:"Interest Saved",wealthPill:"Prepay Analysis",chartTitle:"Outstanding loan balance — with vs without prepayment",chartMeta:"Year-wise outstanding principal showing how prepayment accelerates debt payoff.",timelineTitle:"Prepayment Milestones",timelineMeta:"Loan balance checkpoints with and without prepayment.",controls:[{id:"loan",label:"Loan Amount (₹)",min:100000,max:50000000,step:100000,value:4000000,format:"currency"},{id:"loanRate",label:"Interest Rate",min:5,max:20,step:0.1,value:8.5,format:"percent"},{id:"tenure",label:"Loan Tenure",min:5,max:30,step:1,value:20,format:"years"},{id:"extra",label:"Extra Payment (₹)",min:0,max:5000000,step:10000,value:500000,format:"currency"}]},
+  advisor:{label:"AI Advisor",badge:"AI ADVISOR",title:"AI Property Decision Engine",sub:"Get a simulated strategy recommendation based on your budget, purpose and risk profile.",desc:"Fill in your investment profile to receive a personalized real estate strategy suggestion.",wealthTitle:"Strategy Output",wealthPill:"AI Simulated",chartTitle:"Strategy fit across risk levels",chartMeta:"Indicative yield expectation across Low / Medium / High risk profiles.",timelineTitle:"Strategy Milestones",timelineMeta:"Projected value milestones for the recommended strategy.",controls:[{id:"budget",label:"Budget (₹)",min:500000,max:100000000,step:500000,value:5000000,format:"currency"},{id:"years",label:"Investment Horizon",min:1,max:30,step:1,value:10,format:"years"}],selects:[{id:"purpose",label:"Purpose",options:["Investment","Self-use","Both"]},{id:"risk",label:"Risk Level",options:["Low","Medium","High"]}]},
+  match:{label:"Property Match",badge:"MATCH",title:"Smart Property Match",sub:"Find matching properties on justproperty.in based on your budget, city preference and BHK.",desc:"Set your search criteria to get a direct link to matching live property listings.",wealthTitle:"Your Search Profile",wealthPill:"Property Finder",chartTitle:"Budget range feasibility",chartMeta:"How your budget compares to typical price ranges for different BHK configurations.",timelineTitle:"Budget Benchmarks",timelineMeta:"Typical price ranges for different BHK configurations in metro and tier-2 cities.",controls:[{id:"budget",label:"Budget (₹)",min:500000,max:100000000,step:500000,value:5000000,format:"currency"}],selects:[{id:"bhk",label:"BHK Configuration",options:["1 BHK","2 BHK","3 BHK","4 BHK","Villa","Plot"]},{id:"city",label:"City",options:["Mumbai","Delhi","Bangalore","Hyderabad","Chennai","Pune","Ahmedabad","Kolkata","Jaipur","Lucknow","Surat","Chandigarh","Nagpur","Bhopal","Indore"]}]}
+};
+
+const TAB_CATEGORIES = [
+  {label:"Investment Analysis",keys:["roi","irr","yield","flip"]},
+  {label:"Financial Planning",keys:["buyvrent","afford","stamp","loanelig","prepay"]},
+  {label:"Market Intelligence",keys:["location","growth","compare"]},
+  {label:"Property Discovery",keys:["match","advisor"]}
+];
+
+const STAMP_RATES = {
+  "Maharashtra":{male:0.05,female:0.04,reg:0.01},"Delhi":{male:0.06,female:0.04,reg:0.01},"Karnataka":{male:0.056,female:0.056,reg:0.01},"Tamil Nadu":{male:0.07,female:0.07,reg:0.01},"Uttar Pradesh":{male:0.07,female:0.06,reg:0.01},"West Bengal":{male:0.06,female:0.06,reg:0.01},"Gujarat":{male:0.0475,female:0.045,reg:0.01},"Rajasthan":{male:0.06,female:0.05,reg:0.01},"Telangana":{male:0.05,female:0.05,reg:0.005},"Kerala":{male:0.08,female:0.08,reg:0.02},"Haryana":{male:0.05,female:0.03,reg:0.01},"Madhya Pradesh":{male:0.075,female:0.075,reg:0.01},"Andhra Pradesh":{male:0.05,female:0.05,reg:0.005},"Punjab":{male:0.06,female:0.04,reg:0.01},"Bihar":{male:0.063,female:0.063,reg:0.02}
+};
+
+/* ===================== STATE ===================== */
+let state = {}, selectState = {}, active = 'roi', chart;
+
+function initState(){
+  Object.keys(CALCS).forEach(k=>{
+    state[k]={};
+    CALCS[k].controls.forEach(c=>state[k][c.id]=c.value);
+    selectState[k]={};
+    if(CALCS[k].selects) CALCS[k].selects.forEach(s=>selectState[k][s.id]=s.options[0]);
+  });
+}
+
+/* ===================== UTILS ===================== */
+const $=id=>document.getElementById(id);
+function fmtCur(v){return'₹'+Math.round(v).toLocaleString('en-IN')}
+function fmtShort(v){if(Math.abs(v)>=10000000)return'₹'+(v/10000000).toFixed(2).replace(/\.00$/,'')+' Cr';if(Math.abs(v)>=100000)return'₹'+(v/100000).toFixed(2).replace(/\.00$/,'')+' L';return fmtCur(v)}
+function fmtVal(v,kind){v=Number(v);if(kind==='currency')return'₹'+Math.round(v).toLocaleString('en-IN');if(kind==='percent')return Number(v).toFixed(1).replace(/\.0$/,'')+'%';if(kind==='years')return Math.round(v)+' yrs';return Math.round(v)}
+function calcEMI(P,r,t){const rv=r/12/100,n=t*12;if(rv===0)return P/n;return P*rv*Math.pow(1+rv,n)/(Math.pow(1+rv,n)-1)}
+function calcIRR(cf,iter=200){let lo=-0.99,hi=10;for(let i=0;i<iter;i++){const mid=(lo+hi)/2;const npv=cf.reduce((s,c,t)=>s+c/Math.pow(1+mid,t),0);if(npv>0)lo=mid;else hi=mid}return(lo+hi)/2*100}
+
+/* ===================== TABS ===================== */
+function renderTabs(){
+  const wrap=$('tabsWrap');
+  wrap.innerHTML='';
+  TAB_CATEGORIES.forEach(cat=>{
+    const lbl=document.createElement('div');lbl.className='tab-category-label';lbl.textContent=cat.label;wrap.appendChild(lbl);
+    const bar=document.createElement('div');bar.className='tabbar';
+    cat.keys.forEach(k=>{
+      const btn=document.createElement('button');btn.className='tab'+(k===active?' active':'');
+      btn.textContent=CALCS[k].label;btn.onclick=()=>{active=k;renderTabs();renderControls();update()};
+      bar.appendChild(btn);
+    });
+    wrap.appendChild(bar);
+  });
+}
+
+/* ===================== CONTROLS ===================== */
+function renderControls(){
+  const cfg=CALCS[active];
+  $('panelBadge').textContent=cfg.badge;
+  $('controlDesc').textContent=cfg.desc;
+  let html=cfg.controls.map(c=>`
+    <div class="control-group">
+      <div class="control-top">
+        <div class="control-name">${c.label}</div>
+        <div class="control-value" id="view-${c.id}">${fmtVal(state[active][c.id],c.format)}</div>
+      </div>
+      <input type="range" id="ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${state[active][c.id]}"
+        oninput="state['${active}']['${c.id}']=+this.value;$('view-${c.id}').textContent=fmtVal(this.value,'${c.format}');update()">
+    </div>`).join('');
+  if(cfg.selects){
+    html+=cfg.selects.map(s=>`
+      <div class="select-group">
+        <div class="control-name">${s.label}</div>
+        <select onchange="selectState['${active}']['${s.id}']=this.value;update()">
+          ${s.options.map(o=>`<option value="${o}"${selectState[active][s.id]===o?' selected':''}>${o}</option>`).join('')}
+        </select>
+      </div>`).join('');
+  }
+  if(active==='match'){
+    html+=`<div class="match-cta-box"><h5>View Matching Properties</h5><button class="btn primary" style="width:100%;justify-content:center" onclick="openMatch()">View on justproperty.in</button></div>`;
+  }
+  $('dynamicControls').innerHTML=html;
+}
+
+/* ===================== CHART ===================== */
+function renderChart(labels,datasets,title,meta){
+  $('chartTitleEl').textContent=title;
+  $('chartMetaEl').textContent=meta;
+  $('chartLegend').innerHTML=datasets.map(d=>`<div class="legend-item"><span class="dot" style="background:${d.color}"></span>${d.label}</div>`).join('');
+  if(chart)chart.destroy();
+  const ctx=$('wealthChart').getContext('2d');
+  chart=new Chart(ctx,{
+    type:'line',
+    data:{labels,datasets:datasets.map(d=>({label:d.label,data:d.data,borderColor:d.color,backgroundColor:d.fill?hexAlpha(d.color,.12):'transparent',fill:d.fill,tension:.4,pointRadius:labels.length<=12?4:2,pointHoverRadius:6,borderWidth:2.5}))},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(7,12,28,.96)',borderColor:'rgba(255,255,255,.08)',borderWidth:1,titleColor:'#fff',bodyColor:'#dce6ff',padding:12,callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmtShort(+ctx.raw)}`}}},
+      scales:{x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)',font:{size:11},callback:v=>fmtShort(+v)}}}}
+  });
+}
+function hexAlpha(color,a){// convert hex or var() to rgba fallback
+  const map={'#00d4ff':`rgba(0,212,255,${a})`,'#00e676':`rgba(0,230,118,${a})`,'#4fa3ff':`rgba(79,163,255,${a})`,'#ffd76a':`rgba(255,215,106,${a})`,'#7b61ff':`rgba(123,97,255,${a})`,'#ff607d':`rgba(255,96,125,${a})`};
+  return map[color]||`rgba(0,212,255,${a})`;
+}
+
+/* ===================== MILESTONES ===================== */
+function renderMilestones(title,meta,items){
+  $('timelineTitleEl').textContent=title;
+  $('timelineMetaEl').textContent=meta;
+  $('timelineGrid').innerHTML=items.map(m=>`<div class="milestone"><div class="m-year">${m.label}</div><div class="m-amount">${typeof m.value==='number'?fmtShort(m.value):m.value}</div><div class="m-note">${m.note||''}</div></div>`).join('');
+}
+function buildMilestones(labels,main,base){
+  const n=labels.length;
+  const picks=[0,Math.floor(n/3),Math.floor(n*2/3),n-1].filter((v,i,a)=>a.indexOf(v)===i);
+  return picks.map(i=>({label:labels[i]||'',value:main[i]||0,note:base&&base[i]!==undefined?`Base: ${fmtShort(base[i])}`:''}));
+}
+
+/* ===================== PANELS ===================== */
+function setTop(main,sec,ref,mL,sL,rL){
+  $('metricMain').textContent=main;$('metricMainLabel').textContent=mL;
+  $('metricSec').textContent=sec;$('metricSecLabel').textContent=sL;
+  $('metricRef').textContent=ref;$('metricRefLabel').textContent=rL;
+}
+function setWealth(o){
+  $('wealthTitle').textContent=o.title;$('wealthPill').textContent=o.pill;
+  $('wealthValue').textContent=o.value;$('wealthNarrative').textContent=o.narrative;
+  $('stat1Label').textContent=o.stat1.label;$('stat1Value').textContent=o.stat1.value;
+  $('stat2Label').textContent=o.stat2.label;$('stat2Value').textContent=o.stat2.value;
+  $('stat3Label').textContent=o.stat3.label;$('stat3Value').textContent=o.stat3.value;
+  $('miniSignal').textContent=o.mood;$('miniPower').textContent=o.power;
+}
+function setInsights(a,b,c){
+  $('ins1Title').textContent=a.title;$('ins1Text').textContent=a.text;
+  $('ins2Title').textContent=b.title;$('ins2Text').textContent=b.text;
+  $('ins3Title').textContent=c.title;$('ins3Text').textContent=c.text;
+}
+function setVerdict(text,color,reasons,score){
+  const vb=$('verdictBox');vb.textContent=text;vb.style.color=color;
+  const grade=score>=80?'Excellent':score>=60?'Good':score>=40?'Average':'Weak';
+  const sc=score>=80?'var(--green)':score>=60?'var(--cyan)':score>=40?'var(--gold)':'var(--red)';
+  $('investmentScore').textContent=score+'/100';$('investmentScore').style.color=sc;
+  $('scoreGrade').textContent=grade;$('scoreGrade').style.color=sc;
+  $('verdictScore').textContent=score+'/100 ('+grade+')';$('verdictScore').style.color=sc;
+  $('verdictRisk').textContent=score>=70?'Low-Moderate':score>=40?'Moderate':'High';
+  $('verdictReasons').innerHTML=reasons.map(r=>`<div class="verdict-reason">• ${r}</div>`).join('');
+}
+function setActions(steps){
+  $('actionSteps').innerHTML=steps.map(s=>`<li>${s}</li>`).join('');
+}
+function setMeta(tool,sub){
+  $('metricTool').textContent=tool;$('metricSub').textContent=sub;
+}
+
+/* ===================== SCENARIO ===================== */
+function getScenario(){
+  const mode=($('scenarioMode')||{}).value||'realistic';
+  if(mode==='conservative')return{app:-2,yld:-0.7};
+  if(mode==='aggressive')return{app:+3,yld:+1.0};
+  return{app:0,yld:0};
+}
+
+/* ===================== UPDATE ===================== */
+function update(){
+  const s=state[active]||{};
+  const ss=selectState[active]||{};
+  const cfg=CALCS[active];
+  const sc=getScenario();
+  setMeta(cfg.title,cfg.sub);
+
+  /* ---- ROI ---- */
+  if(active==='roi'){
+    const adj=s.appreciation+sc.app, adjY=s.rentalYield+sc.yld;
+    const loan=s.price-s.down, emi=calcEMI(loan,s.loanRate,s.tenure);
+    const inv=s.down+emi*s.tenure*12, rent=s.price*(adjY/100), exit=s.price*Math.pow(1+adj/100,s.holding);
+    const maint=s.price*(s.maintenance/100)*s.holding, profit=exit+rent*s.holding-maint-inv;
+    const roi=(profit/inv)*100;
+    const labels=[],corpus=[],base=[];
+    for(let y=1;y<=s.holding;y++){labels.push('Year '+y);corpus.push(Math.round(s.price*Math.pow(1+adj/100,y)+rent*y-s.price*(s.maintenance/100)*y));base.push(Math.round(s.down+emi*Math.min(y,s.tenure)*12));}
+    setTop(fmtShort(exit),roi.toFixed(1)+'%',fmtVal(adj,'percent'),'Exit Value','ROI %','Annual Appreciation');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:fmtShort(exit),narrative:`A property at ${fmtShort(s.price)} can be worth ${fmtShort(exit)} after ${s.holding} years. Net profit: ${fmtShort(profit)}.`,stat1:{label:'Net Profit',value:fmtShort(profit)},stat2:{label:'Total Rental',value:fmtShort(rent*s.holding)},stat3:{label:'ROI',value:roi.toFixed(1)+'%'},mood:roi>15?'High Return':roi>8?'Moderate':'Low Yield',power:`EMI: ${fmtShort(emi)}/mo`});
+    setInsights({title:'Location drives appreciation.',text:`At ${fmtVal(adj,'percent')} appreciation, your property ${(exit/s.price).toFixed(1)}x-es in ${s.holding} years.`},{title:'Rental yield supplements growth.',text:`Rental income of ${fmtShort(rent*s.holding)} adds to total returns beyond capital gain.`},{title:'True ROI includes all costs.',text:'Maintenance, registration and EMI costs reduce net profit — this calculator accounts for them.'});
+    renderChart(labels,[{label:'Property value + rental',data:corpus,color:'#00d4ff',fill:true},{label:'Total invested',data:base,color:'#4fa3ff',fill:false}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,buildMilestones(labels,corpus,base));
+    const verdict=roi>15?{t:'STRONG BUY',c:'var(--green)',r:[`ROI of ${roi.toFixed(1)}% exceeds the 15% threshold.`,`Appreciation of ${adj.toFixed(1)}% is primary growth driver.`,`Rental yield covers ${((rent/emi/12)*100).toFixed(0)}% of EMI.`]}:roi>8?{t:'GOOD INVESTMENT',c:'var(--cyan)',r:[`ROI of ${roi.toFixed(1)}% is above the 8% benchmark.`,'Rental income supplements capital gains.','Acceptable risk-return profile.']}:roi>5?{t:'AVERAGE — REVIEW DEAL',c:'var(--gold)',r:[`ROI of ${roi.toFixed(1)}% is marginal.`,'Explore better-yielding locations.','Negotiate price or improve rental income.']}:{t:'AVOID — LOW RETURN',c:'var(--red)',r:[`ROI of ${roi.toFixed(1)}% is poor.`,'Costs outweigh returns at current assumptions.','Consider alternative investments.']};
+    const rs=Math.min(40,Math.max(0,roi/20*40)),ys=Math.min(20,adjY/6*20),rsk=Math.max(0,20-(s.loanRate-7)*3),af=Math.min(20,(s.down/s.price*100)/25*20);
+    setVerdict(verdict.t,verdict.c,verdict.r,Math.round(rs+ys+rsk+af));
+    setActions([`Target appreciation: 7%+ (currently ${adj.toFixed(1)}%)`,`Rental yield: ${adjY.toFixed(1)}% — target 4%+`,`EMI: ${fmtShort(emi)}/mo — keep below 35% of income`,s.loanRate>8.5?`Shop for lower rate — 8.5% saves ${fmtShort((calcEMI(loan,s.loanRate,s.tenure)-calcEMI(loan,8.5,s.tenure))*s.tenure*12)}`:'Interest rate looks competitive']);
+  }
+
+  /* ---- YIELD ---- */
+  else if(active==='yield'){
+    const gross=(s.rent*12/s.propValue)*100,vacL=s.rent*12*(s.vacancy/100),maint=s.propValue*(s.maintenance/100);
+    const netAnn=s.rent*12-vacL-maint,net=(netAnn/s.propValue)*100;
+    const pts=[.5,.75,1,1.25,1.5].map(f=>Math.round(s.rent*f));
+    const grossA=pts.map(r=>(r*12/s.propValue)*100);
+    const netA=pts.map(r=>{const a=r*12,v=a*(s.vacancy/100),m=s.propValue*(s.maintenance/100);return((a-v-m)/s.propValue)*100;});
+    setTop(gross.toFixed(2)+'%',net.toFixed(2)+'%',net>=5?'Good':net>=2?'Average':'Poor','Gross Yield','Net Yield','Rating');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:net.toFixed(2)+'%',narrative:`Property at ${fmtShort(s.propValue)}: Gross yield ${gross.toFixed(2)}%, Net yield ${net.toFixed(2)}%.`,stat1:{label:'Gross Yield',value:gross.toFixed(2)+'%'},stat2:{label:'Net Annual Rent',value:fmtShort(netAnn)},stat3:{label:'Rating',value:net>=5?'Good':net>=2?'Average':'Poor'},mood:net>=5?'Strong Income':'Below par',power:`Net: ${net.toFixed(2)}%`});
+    setInsights({title:'Net yield is what matters.',text:'Vacancy and maintenance reduce gross yield by 1–3% — always calculate net yield.'},{title:net>=5?'Strong rental performer.':'Improve rental terms.',text:net>=5?'Net yield above 5% is hard to find in Indian metros.':'Consider increasing rent or reducing vacancy.'},{title:'Benchmark against FD returns.',text:'Compare net yield to FD rates (6-7%) to evaluate if the return justifies illiquidity.'});
+    renderChart(pts.map(r=>fmtShort(r)+'/mo'),[{label:'Gross Yield %',data:grossA.map(v=>+v.toFixed(2)),color:'#00d4ff',fill:true},{label:'Net Yield %',data:netA.map(v=>+v.toFixed(2)),color:'#00e676',fill:false}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[{label:'50% rent',value:grossA[0].toFixed(2)+'%',note:'Gross yield'},{label:'75% rent',value:grossA[1].toFixed(2)+'%',note:'Gross yield'},{label:'Current',value:grossA[2].toFixed(2)+'%',note:`Net: ${netA[2].toFixed(2)}%`},{label:'150% rent',value:grossA[4].toFixed(2)+'%',note:'Gross yield'}]);
+    setVerdict(net>=5?'STRONG RENTAL PERFORMER':net>=3?'MODERATE YIELD':'WEAK — BELOW FD RATE',net>=5?'var(--green)':net>=3?'var(--cyan)':'var(--gold)',[`Net yield of ${net.toFixed(2)}% ${net>=5?'beats most FD rates.':'may not justify illiquidity.'}`,`Vacancy at ${s.vacancy}% costs ${fmtShort(s.rent*12*s.vacancy/100)}/yr.`,`Maintenance eats ${s.maintenance}% of property value annually.`],Math.round(Math.min(100,Math.max(0,net/8*100))));
+    setActions([`Increase rent by ${fmtShort(Math.round(s.propValue*.01/12))}/mo to push yield to 4%`,`Reduce vacancy from ${s.vacancy}% to 5%`,'Renovate to premium spec and target 20% higher rent','Compare net yield vs FD rate — if below 5.5%, REITs may offer better income.']);
+  }
+
+  /* ---- BUY VS RENT ---- */
+  else if(active==='buyvrent'){
+    const emi=calcEMI(s.price,s.loanRate,s.tenure);
+    let totalRent=0,mr=s.rent,labels=[],emiArr=[],rentArr=[];
+    for(let y=1;y<=s.tenure;y++){totalRent+=mr*12;mr*=(1+s.rentRise/100);labels.push('Year '+y);emiArr.push(Math.round(emi*y*12));rentArr.push(Math.round(totalRent));}
+    const cumEMI=emi*s.tenure*12,rec=cumEMI<=totalRent?'BUY':'RENT';
+    setTop(fmtShort(cumEMI),fmtShort(totalRent),rec,'Total EMI','Total Rent','Recommendation');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:rec,narrative:`Over ${s.tenure} years, EMI outgo: ${fmtShort(cumEMI)} vs rent: ${fmtShort(totalRent)}.`,stat1:{label:'Total EMI',value:fmtShort(cumEMI)},stat2:{label:'Total Rent',value:fmtShort(totalRent)},stat3:{label:'Difference',value:fmtShort(Math.abs(cumEMI-totalRent))},mood:rec==='BUY'?'Buy Signal':'Rent Signal',power:`EMI: ${fmtShort(emi)}/mo`});
+    setInsights({title:'EMI builds equity; rent does not.',text:'When you pay EMI, you are building ownership. Rent is pure cash outflow.'},{title:'Rent escalation changes the picture.',text:`A ${fmtVal(s.rentRise,'percent')} annual rent increase means rent grows significantly over a 20-year horizon.`},{title:'Factor in down payment.',text:'This tool compares cash outgo only. Include down payment opportunity cost and property appreciation for full picture.'});
+    renderChart(labels,[{label:'Cumulative EMI',data:emiArr,color:'#00d4ff',fill:true},{label:'Cumulative Rent',data:rentArr,color:'#ffd76a',fill:false}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,buildMilestones(labels,emiArr,rentArr));
+    setVerdict(emi<=s.rent?'BUY — EMI ≤ RENT':'RENT — EMI > CURRENT RENT',emi<=s.rent?'var(--green)':'var(--cyan)',[`Monthly EMI: ${fmtShort(emi)}, current rent: ${fmtShort(s.rent)}.`,'EMI builds equity; rent is pure outflow.',`Rent at ${s.rentRise}%/yr will cross EMI level eventually.`],Math.round(Math.min(100,Math.max(0,(2-(emi/s.rent))/1.5*100))));
+    setActions([`Negotiate property price down by 10% → EMI drops to ${fmtShort(calcEMI(s.price*.9,s.loanRate,s.tenure))}/mo`,'Increase down payment to reduce EMI','Add co-applicant for better loan terms']);
+  }
+
+  /* ---- AFFORD ---- */
+  else if(active==='afford'){
+    const maxEMI=(s.income*.4)-s.existEMI,r=s.loanRate/12/100,n=s.tenure*12;
+    const maxLoan=maxEMI>0?maxEMI*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n)):0;
+    const maxProp=maxLoan/.80,dp=maxProp*.20;
+    const steps=[20000,50000,75000,100000,150000,200000,300000];
+    const lArr=steps.map(inc=>{const c=(inc*.4)-s.existEMI;if(c<=0)return 0;return Math.round(c*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n)));});
+    setTop(fmtShort(maxProp),fmtShort(maxLoan),fmtShort(dp),'Max Property Price','Max Loan','20% Down Payment');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:fmtShort(maxProp),narrative:`With ${fmtShort(s.income)}/mo income and ${fmtShort(s.existEMI)}/mo obligations, max property: ${fmtShort(maxProp)}.`,stat1:{label:'Max Loan',value:fmtShort(maxLoan)},stat2:{label:'Down Payment',value:fmtShort(dp)},stat3:{label:'Max EMI Capacity',value:fmtShort(Math.max(0,maxEMI))},mood:maxLoan>5000000?'High Affordability':maxLoan>2000000?'Moderate':'Entry Level',power:'40% rule applied'});
+    setInsights({title:'Keep EMI below 40% of income.',text:'Banks allow up to 50% FOIR, but 40% leaves room for savings and lifestyle flexibility.'},{title:'Existing obligations reduce eligibility.',text:`Current EMI of ${fmtShort(s.existEMI)}/mo significantly reduces home loan eligibility.`},{title:'Down payment builds negotiating power.',text:'Higher down payment reduces EMI and improves your interest rate negotiation.'});
+    renderChart(steps.map(i=>fmtShort(i)),[{label:'Eligible Loan',data:lArr,color:'#00d4ff',fill:true},{label:'Max Property',data:lArr.map(l=>Math.round(l/.80)),color:'#00e676',fill:false}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[0,2,4,6].map(i=>({label:fmtShort(steps[i])+'/mo',value:Math.round(lArr[i]/.80),note:`Loan: ${fmtShort(lArr[i])}`})));
+    setVerdict(maxLoan>5000000?'STRONG AFFORDABILITY':maxLoan>2000000?'MODERATE BUDGET':'LIMITED — IMPROVE ELIGIBILITY',maxLoan>5000000?'var(--green)':maxLoan>2000000?'var(--cyan)':'var(--gold)',[`Max loan: ${fmtShort(maxLoan)}.`,'Close existing loans first to boost eligibility.','Add spouse as co-applicant for combined income.'],Math.round(Math.min(100,Math.max(0,(maxEMI/s.income)/.4*80))));
+    setActions(['Close existing loans first to boost eligibility','Add spouse as co-applicant for combined income',`Extend tenure to 25 years to reduce EMI requirement`]);
+  }
+
+  /* ---- STAMP ---- */
+  else if(active==='stamp'){
+    const st=ss.state||'Maharashtra',gen=ss.gender||'Male';
+    const rates=STAMP_RATES[st]||STAMP_RATES['Maharashtra'],rate=gen==='Female'?rates.female:rates.male;
+    const stamp=s.propValue*rate,reg=s.propValue*rates.reg,total=stamp+reg;
+    const steps=[1000000,2000000,3000000,5000000,7000000,10000000];
+    const sArr=steps.map(v=>Math.round(v*rate)),rArr=steps.map(v=>Math.round(v*rates.reg)),tArr=steps.map((_,i)=>sArr[i]+rArr[i]);
+    setTop(fmtShort(stamp),fmtShort(reg),(rate*100).toFixed(1)+'%','Stamp Duty','Registration Cost','Stamp Duty Rate');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:fmtShort(total),narrative:`In ${st}, a ${gen.toLowerCase()} buyer pays ${(rate*100).toFixed(1)}% stamp duty on ${fmtShort(s.propValue)}. Total charges: ${fmtShort(total)}.`,stat1:{label:'Stamp Duty',value:fmtShort(stamp)},stat2:{label:'Registration',value:fmtShort(reg)},stat3:{label:'Total Charges',value:fmtShort(total)},mood:rate>=.07?'High Tax State':rate>=.05?'Moderate':'Low Stamp Duty',power:`Rate: ${(rate*100).toFixed(1)}%`});
+    setInsights({title:'Stamp duty is non-negotiable.',text:'These charges must be paid upfront and are not included in the home loan.'},{title:`${st} rate: ${(rate*100).toFixed(1)}% for ${gen}.`,text:'Many states offer discounted rates for female buyers to encourage property ownership.'},{title:'Registration is separate from stamp duty.',text:`Registration charges of ${(rates.reg*100).toFixed(1)}% add to the total. Both must be paid at registration.`});
+    renderChart(steps.map(v=>fmtShort(v)),[{label:'Stamp Duty',data:sArr,color:'#00d4ff',fill:true},{label:'Registration',data:rArr,color:'#ffd76a',fill:false},{label:'Total Charges',data:tArr,color:'#00e676',fill:false}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[0,1,3,5].map(i=>({label:fmtShort(steps[i]),value:tArr[i],note:`Stamp: ${fmtShort(sArr[i])}`})));
+    setVerdict(rate<.05?'LOW STAMP DUTY STATE':rate<.07?'MODERATE STAMP DUTY':'HIGH STAMP DUTY — BUDGET CAREFULLY',rate<.05?'var(--green)':rate<.07?'var(--cyan)':'var(--gold)',[`Stamp duty rate: ${(rate*100).toFixed(1)}%`,`Total charges for this property: ${fmtShort(total)}`,'Factor this into your acquisition budget.'],rate<.05?85:rate<.07?65:45);
+    setActions(['Include stamp duty in your budget upfront',gen==='Male'?`Female buyer discount saves ${fmtShort(s.propValue*Math.abs(rates.male-rates.female))}`:'You are availing the female buyer discount','Verify if concessional zone rates apply in your area']);
+  }
+
+  /* ---- IRR ---- */
+  else if(active==='irr'){
+    const annNet=(s.rentalIncome-s.emi)*12,cf=[-s.downPayment];
+    for(let y=1;y<=s.years;y++)cf.push(y===s.years?annNet+s.exitValue:annNet);
+    const irr=calcIRR(cf);
+    const labels=[],cumArr=[];let cum=-s.downPayment;
+    for(let y=1;y<=s.years;y++){const c=y===s.years?annNet+s.exitValue:annNet;cum+=c;labels.push('Year '+y);cumArr.push(Math.round(cum));}
+    const profit=s.exitValue+annNet*s.years-s.downPayment;
+    setTop(irr.toFixed(1)+'%',fmtShort(profit),fmtShort(s.exitValue),'Estimated IRR','Total Profit','Exit Value');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:irr.toFixed(1)+'%',narrative:`With ${fmtShort(s.downPayment)} down, ${fmtShort(s.rentalIncome)}/mo rental and exit at ${fmtShort(s.exitValue)}, IRR over ${s.years} years: ${irr.toFixed(1)}%.`,stat1:{label:'Total Profit',value:fmtShort(profit)},stat2:{label:'Net Annual CF',value:fmtShort(annNet)},stat3:{label:'IRR',value:irr.toFixed(1)+'%'},mood:irr>15?'Excellent Deal':irr>8?'Good Return':'Review Deal',power:`Rental cover: ${(s.rentalIncome/s.emi*100).toFixed(0)}%`});
+    setInsights({title:'IRR is the true measure of return.',text:'Unlike simple ROI, IRR accounts for the timing of cash flows — more accurate for long-term analysis.'},{title:annNet>0?'Positive cash flow from day one.':'Negative carry — top-up required.',text:annNet>0?'Monthly rental exceeds EMI, making this self-sustaining.':`You need to fund a ${fmtShort(Math.abs(annNet/12))}/mo shortfall.`},{title:'Exit value drives the bulk of returns.',text:'In most property deals, 60–80% of total profit comes from capital appreciation at exit.'});
+    renderChart(labels,[{label:'Cumulative Profit',data:cumArr,color:'#00d4ff',fill:true}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,buildMilestones(labels,cumArr,[]));
+    setVerdict(irr>15?'EXCELLENT IRR — STRONG DEAL':irr>8?'GOOD RETURN — PROCEED':'REVIEW DEAL — IRR TOO LOW',irr>15?'var(--green)':irr>8?'var(--cyan)':'var(--gold)',[`IRR of ${irr.toFixed(1)}% ${irr>15?'beats most equity benchmarks.':'may not justify illiquidity.'}`,annNet>0?'Positive monthly cash flow.':'Negative carry — monitor closely.',`Exit value of ${fmtShort(s.exitValue)} drives returns.`],Math.round(Math.min(100,Math.max(0,irr/20*100))));
+    setActions([annNet<0?`Increase rental by ${fmtShort(Math.abs(annNet/12))}/mo to break even`:'Positive cash flow — reinvest surplus',`Each ₹5L increase in exit price adds ~${(500000/s.downPayment*100).toFixed(1)}% to total return`,'Refinance at lower rate after 3 years']);
+  }
+
+  /* ---- FLIP ---- */
+  else if(active==='flip'){
+    const total=s.purchase+s.renovation+s.holding,profit=s.selling-total,roi=(profit/total)*100;
+    setTop(fmtShort(profit),roi.toFixed(1)+'%',fmtShort(total),'Net Profit','ROI %','Total Cost');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:fmtShort(profit),narrative:`Purchase ${fmtShort(s.purchase)} + Reno ${fmtShort(s.renovation)} + Holding ${fmtShort(s.holding)} → Sell at ${fmtShort(s.selling)} = Profit ${fmtShort(profit)}.`,stat1:{label:'Total Cost',value:fmtShort(total)},stat2:{label:'Gross Profit',value:fmtShort(s.selling-s.purchase)},stat3:{label:'ROI',value:roi.toFixed(1)+'%'},mood:roi>20?'Flip Success':roi>10?'Decent Flip':profit<0?'Loss Alert':'Thin Margin',power:profit>0?'Profitable':'Not Profitable'});
+    setInsights({title:'Renovation cost overruns kill profits.',text:'Always budget a 15–20% buffer on renovation costs — delays and material costs routinely exceed estimates.'},{title:'Holding cost is often underestimated.',text:'Holding cost includes property tax, loan interest, maintenance and opportunity cost.'},{title:'Sell fast to maximise IRR.',text:'The absolute profit may look good, but if it takes 3 years to sell, the annualized return may be poor.'});
+    renderChart(['Purchase','Renovation','Holding','Total Cost','Sale Price','Net Profit'],[{label:'Amount',data:[s.purchase,s.renovation,s.holding,total,s.selling,Math.max(0,profit)].map(Math.round),color:'#00d4ff',fill:true}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[{label:'Purchase',value:s.purchase,note:'Acquisition cost'},{label:'Renovation',value:s.renovation,note:'Upgrade cost'},{label:'Holding',value:s.holding,note:'Carrying cost'},{label:'Net Profit',value:Math.max(0,profit),note:roi.toFixed(1)+'% ROI'}]);
+    setVerdict(roi>20?'GREAT FLIP — EXECUTE NOW':roi>10?'DECENT FLIP':profit<0?'LOSS — DO NOT PROCEED':'THIN MARGIN — NEGOTIATE',roi>20?'var(--green)':roi>10?'var(--cyan)':profit<0?'var(--red)':'var(--gold)',[`Net profit: ${fmtShort(profit)} (${roi.toFixed(1)}% ROI)`,s.renovation>s.purchase*.15?'Renovation exceeds 15% of purchase — reduce scope.':'Renovation budget looks controlled.','Get 3 contractor quotes before committing.'],Math.round(Math.min(100,Math.max(0,roi/30*100))));
+    setActions([s.renovation>s.purchase*.15?'Renovation exceeds 15% of purchase — reduce scope':'Renovation budget is controlled',`Negotiate purchase down 5% — saves ${fmtShort(s.purchase*.05)}`,'Buffer 15% on renovation for cost overruns']);
+  }
+
+  /* ---- COMPARE ---- */
+  else if(active==='compare'){
+    const adj=s.reRate+sc.app;
+    const reV=s.amount*Math.pow(1+adj/100,s.years),mfV=s.amount*Math.pow(1+s.mfRate/100,s.years),gV=s.amount*Math.pow(1+s.goldRate/100,s.years);
+    const best=reV>=mfV&&reV>=gV?'Real Estate':mfV>=gV?'Mutual Funds':'Gold';
+    const labels=[],reA=[],mfA=[],gA=[];
+    for(let y=1;y<=s.years;y++){labels.push('Year '+y);reA.push(Math.round(s.amount*Math.pow(1+adj/100,y)));mfA.push(Math.round(s.amount*Math.pow(1+s.mfRate/100,y)));gA.push(Math.round(s.amount*Math.pow(1+s.goldRate/100,y)));}
+    setTop(fmtShort(Math.max(reV,mfV,gV)),best,fmtVal(Math.max(adj,s.mfRate,s.goldRate),'percent'),'Best Final Value','Winner','Highest CAGR');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:best,narrative:`Over ${s.years} years, ${fmtShort(s.amount)} grows to: RE ${fmtShort(reV)}, MF ${fmtShort(mfV)}, Gold ${fmtShort(gV)}.`,stat1:{label:'Real Estate',value:fmtShort(reV)},stat2:{label:'Mutual Funds',value:fmtShort(mfV)},stat3:{label:'Gold',value:fmtShort(gV)},mood:best+' wins',power:`By ${fmtShort(Math.max(reV,mfV,gV)-Math.min(reV,mfV,gV))}`});
+    setInsights({title:'Each asset serves a different purpose.',text:'Real estate offers leverage and rental income, mutual funds give liquidity, gold acts as a hedge.'},{title:'Time horizon shifts the winner.',text:'Equity funds often outperform over 15+ years due to compounding.'},{title:'Tax and liquidity matter too.',text:'Real estate: 20% LTCG, MF: 12.5% LTCG, Gold: capital gains tax — factor this in.'});
+    renderChart(labels,[{label:'Real Estate',data:reA,color:'#00d4ff',fill:true},{label:'Mutual Funds',data:mfA,color:'#00e676',fill:false},{label:'Gold',data:gA,color:'#ffd76a',fill:false}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,buildMilestones(labels,mfA,reA));
+    setVerdict(best==='Real Estate'?'REAL ESTATE WINS':best==='Mutual Funds'?'MUTUAL FUNDS WIN':'GOLD WINS','var(--cyan)',[`Over ${s.years} yrs: RE ${fmtShort(reV)}, MF ${fmtShort(mfV)}, Gold ${fmtShort(gV)}.`,'Each asset class has different liquidity and tax profile.','Diversify across all three to reduce portfolio risk.'],Math.round(Math.min(100,(reV/mfV)*60)));
+    setActions(best==='Mutual Funds'?['Allocate primary savings to equity mutual funds','Keep real estate exposure through REITs','Use gold as 10–15% portfolio hedge']:best==='Real Estate'?['Real estate leads — buy in a high-growth corridor','Ensure 20% down payment is ready','Consider REITs for liquid real estate exposure']:['Gold leads — consider Sovereign Gold Bonds','Diversify across asset classes','Review MF allocation for long-term compounding']);
+  }
+
+  /* ---- LOCATION ---- */
+  else if(active==='location'){
+    const total=s.infra+s.connectivity+s.rental+s.growth;
+    const rec=total>=75?'HOT — Invest Now':total>=50?'MODERATE — Watch & Wait':'AVOID — Poor Fundamentals';
+    setTop(total+'/100',rec,total>=75?'Hot':total>=50?'Moderate':'Avoid','Location Score','Verdict','Signal');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:total+'/100',narrative:`Total location score: ${total}/100. ${rec}. Based on infrastructure (max 30), connectivity (max 25), rental demand (max 25) and growth potential (max 20).`,stat1:{label:'Infrastructure',value:s.infra+'/30'},stat2:{label:'Connectivity',value:s.connectivity+'/25'},stat3:{label:'Rental Demand',value:s.rental+'/25'},mood:total>=75?'HOT Zone':total>=50?'Watch Zone':'Avoid Zone',power:`Growth: ${s.growth}/20`});
+    setInsights({title:total>=75?'Strong fundamentals across all pillars.':total>=50?'Mixed fundamentals — be selective.':'Weak fundamentals signal risk.',text:total>=75?'Infrastructure, connectivity and rental demand all score well.':'Some pillars are strong but others need improvement.'},{title:'Infrastructure is the top driver.',text:'Roads, metro, schools, hospitals and malls are the most critical factors for long-term price appreciation.'},{title:'Rental demand signals real end-use.',text:'Strong rental demand means real occupiers — not just speculative buyers.'});
+    renderChart(['Infrastructure (max 30)','Connectivity (max 25)','Rental Demand (max 25)','Growth Potential (max 20)'],[{label:'Score',data:[s.infra,s.connectivity,s.rental,s.growth],color:'#00d4ff',fill:true}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[{label:'Infrastructure',value:s.infra+'/30',note:'Roads, metro, amenities'},{label:'Connectivity',value:s.connectivity+'/25',note:'Transport access'},{label:'Rental Demand',value:s.rental+'/25',note:'Occupier interest'},{label:'Total Score',value:total+'/100',note:rec}]);
+    setVerdict(total>=75?'HOT LOCATION — INVEST NOW':total>=50?'MODERATE — WATCH & WAIT':'AVOID — POOR FUNDAMENTALS',total>=75?'var(--green)':total>=50?'var(--cyan)':'var(--red)',[`Composite score: ${total}/100.`,`Infrastructure (${s.infra}/30) is the top driver.`,`Rental demand (${s.rental}/25) confirms real end-use.`],total);
+    setActions([s.infra<20?'Infrastructure score low — wait for metro/road completion':'Good infrastructure — enter now',s.rental<15?'Low rental demand — verify occupancy before buy-to-let':'Strong rental demand supports investment','Track RERA registrations in this micro-market']);
+  }
+
+  /* ---- GROWTH ---- */
+  else if(active==='growth'){
+    const best=s.baseRate+3,worst=Math.max(.5,s.baseRate-3);
+    const bV=s.price*Math.pow(1+s.baseRate/100,s.years),bsV=s.price*Math.pow(1+best/100,s.years),wV=s.price*Math.pow(1+worst/100,s.years);
+    const labels=[],bA=[],bsA=[],wA=[];
+    for(let y=1;y<=s.years;y++){labels.push('Year '+y);bA.push(Math.round(s.price*Math.pow(1+s.baseRate/100,y)));bsA.push(Math.round(s.price*Math.pow(1+best/100,y)));wA.push(Math.round(s.price*Math.pow(1+worst/100,y)));}
+    setTop(fmtShort(bV),fmtShort(bsV-wV),fmtVal(s.baseRate,'percent'),'Base Scenario','Best vs Worst Gap','Base Growth Rate');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:fmtShort(bV),narrative:`${fmtShort(s.price)} over ${s.years} years: Base (${fmtVal(s.baseRate,'percent')}): ${fmtShort(bV)}, Best (${fmtVal(best,'percent')}): ${fmtShort(bsV)}, Worst (${fmtVal(worst,'percent')}): ${fmtShort(wV)}.`,stat1:{label:'Base Case',value:fmtShort(bV)},stat2:{label:'Best Case',value:fmtShort(bsV)},stat3:{label:'Worst Case',value:fmtShort(wV)},mood:s.baseRate>=8?'High Growth':s.baseRate>=5?'Moderate':'Conservative',power:`${s.years}yr outlook`});
+    setInsights({title:'Location dictates the range.',text:'The spread between best and worst is driven by infrastructure development, supply and economic cycles.'},{title:'Historical Indian property CAGR: 6–9%.',text:'Residential property has delivered 6–9% annual appreciation over 10+ year periods across most cities.'},{title:'Plan for the worst, invest for the best.',text:'Size your EMI so you can survive the worst-case. The base and best are upside — not guaranteed.'});
+    renderChart(labels,[{label:'Base Scenario',data:bA,color:'#00d4ff',fill:true},{label:'Best Scenario',data:bsA,color:'#00e676',fill:false},{label:'Worst Scenario',data:wA,color:'#ff607d',fill:false}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,buildMilestones(labels,bA,Array(s.years).fill(s.price)));
+    setVerdict(s.baseRate>=8?'HIGH GROWTH CORRIDOR':s.baseRate>=5?'STEADY GROWTH':'SLOW MARKET — WAIT',s.baseRate>=8?'var(--green)':s.baseRate>=5?'var(--cyan)':'var(--gold)',[`Base growth rate: ${s.baseRate}% → ${fmtShort(bV)} in ${s.years} years.`,'Historical Indian CAGR: 6–9% — calibrate accordingly.',s.baseRate>=8?'Enter now before prices are widely discovered.':'Consider waiting for a specific infrastructure trigger.'],Math.round(Math.min(100,s.baseRate/15*100)));
+    setActions([s.baseRate<5?'Slow market — wait for price correction before entering':'Growth corridor — buy early and hold','Plan exit at peak of next cycle (7–10 years)','Compare against MF CAGR of 12% for opportunity cost']);
+  }
+
+  /* ---- LOAN ELIG ---- */
+  else if(active==='loanelig'){
+    const maxEMI=(s.income*.50)-s.existEMI,r=s.loanRate/12/100,n=s.tenure*12;
+    const maxLoan=maxEMI>0?maxEMI*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n)):0;
+    const maxProp=maxLoan/.80;
+    const steps=[20000,50000,75000,100000,150000,200000,300000,400000,500000];
+    const lArr=steps.map(inc=>{const c=(inc*.50)-s.existEMI;if(c<=0)return 0;return Math.round(c*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n)));});
+    setTop(fmtShort(maxLoan),fmtShort(maxProp),fmtShort(Math.max(0,maxEMI)),'Eligible Loan','Max Property','Available EMI');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:fmtShort(maxLoan),narrative:`Based on ${fmtShort(s.income)}/mo income and ${fmtShort(s.existEMI)}/mo obligations, eligible loan: ${fmtShort(maxLoan)}, property up to ${fmtShort(maxProp)}.`,stat1:{label:'Eligible Loan',value:fmtShort(maxLoan)},stat2:{label:'Max Property',value:fmtShort(maxProp)},stat3:{label:'Available EMI',value:fmtShort(Math.max(0,maxEMI))},mood:maxLoan>5000000?'Strong Eligibility':maxLoan>2000000?'Moderate':'Limited',power:'50% FOIR rule'});
+    setInsights({title:'Reduce obligations to boost eligibility.',text:'Paying off a car/personal loan before applying can increase your eligible amount by lakhs.'},{title:'Joint application increases limit.',text:'Adding a co-applicant with income can significantly increase the combined eligible loan amount.'},{title:'Longer tenure = lower EMI = higher loan.',text:'Stretching tenure from 15 to 25 years reduces EMI and can increase eligible loan amount.'});
+    renderChart(steps.map(i=>fmtShort(i)),[{label:'Eligible Loan',data:lArr,color:'#00d4ff',fill:true}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[0,2,4,6,8].filter(i=>i<steps.length).map(i=>({label:fmtShort(steps[i])+'/mo',value:lArr[i],note:`Property up to ${fmtShort(Math.round(lArr[i]/.80))}`})));
+    setVerdict(maxLoan>5000000?'STRONG ELIGIBILITY':maxLoan>2000000?'MODERATE ELIGIBILITY':'LIMITED — IMPROVE PROFILE',maxLoan>5000000?'var(--green)':maxLoan>2000000?'var(--cyan)':'var(--gold)',[`Eligible loan: ${fmtShort(maxLoan)}.`,maxLoan>2000000?'Get bank pre-approval to speed up purchase.':'Clear personal/car loans before applying.',maxLoan>2000000?'Compare at least 3 lenders for best rate.':'Add spouse as co-applicant.'],Math.round(Math.min(100,Math.max(0,(maxEMI/s.income)/.5*80))));
+    setActions(maxLoan<2000000?['Clear personal/car loans first','Consider joint home loan with spouse','Extend tenure to 25 years to reduce EMI']:['Get pre-approval from 3 banks','Compare interest rates — 0.25% matters over 20 years','Negotiate processing fees and rate waiver']);
+  }
+
+  /* ---- PREPAY ---- */
+  else if(active==='prepay'){
+    const emi=calcEMI(s.loan,s.loanRate,s.tenure),intN=(emi*s.tenure*12)-s.loan;
+    const laf=Math.max(0,s.loan-s.extra),eaf=calcEMI(laf,s.loanRate,s.tenure),intP=(eaf*s.tenure*12)-laf;
+    const saved=intN-intP,redEMI=emi-eaf;
+    const labels=[],nB=[],pB=[];let b1=s.loan,b2=laf,r=s.loanRate/12/100;
+    for(let y=1;y<=s.tenure;y++){for(let m=0;m<12;m++){b1=Math.max(0,b1*(1+r)-emi);b2=Math.max(0,b2*(1+r)-eaf);}labels.push('Year '+y);nB.push(Math.round(b1));pB.push(Math.round(b2));}
+    setTop(fmtShort(saved),fmtShort(redEMI)+'/mo',fmtShort(s.extra),'Interest Saved','EMI Reduction','Prepayment Amount');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:fmtShort(saved),narrative:`Prepaying ${fmtShort(s.extra)} on a ${fmtShort(s.loan)} loan reduces EMI by ${fmtShort(redEMI)}/mo and saves ${fmtShort(saved)} total interest.`,stat1:{label:'Normal Total Interest',value:fmtShort(intN)},stat2:{label:'Interest After Prepay',value:fmtShort(intP)},stat3:{label:'Interest Saved',value:fmtShort(saved)},mood:saved>500000?'Big Saving':saved>100000?'Good Saving':'Modest Saving',power:`EMI ↓ ${fmtShort(redEMI)}/mo`});
+    setInsights({title:'Prepayment in early years saves the most.',text:'Interest is front-loaded in a home loan — every rupee prepaid in the first 5 years saves 3–5x.'},{title:'Choose: reduce EMI or reduce tenure.',text:'Reducing tenure saves more total interest. Reducing EMI improves monthly cash flow.'},{title:'No prepayment penalty on floating rate loans.',text:'RBI mandates zero prepayment charges on individual floating rate home loans.'});
+    renderChart(labels,[{label:'Without Prepayment',data:nB,color:'#ff607d',fill:false},{label:'With Prepayment',data:pB,color:'#00d4ff',fill:true}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,buildMilestones(labels,pB,nB));
+    setVerdict(saved>500000?'BIG SAVINGS — PREPAY NOW':saved>100000?'GOOD MOVE — WORTH PREPAYING':'MODEST IMPACT',saved>500000?'var(--green)':'var(--cyan)',[`Interest saved: ${fmtShort(saved)} — guaranteed return.`,'Prepaying in early years saves 3–5x.','No penalty on floating rate loans per RBI.'],Math.round(Math.min(100,saved/s.loan*200)));
+    setActions(['Make prepayments in early loan years for maximum interest savings','Use annual bonus to prepay principal — zero penalty on floating loans',saved>500000?'Prioritize prepayment over investments yielding < loan rate':'Invest surplus where returns > loan interest rate']);
+  }
+
+  /* ---- ADVISOR ---- */
+  else if(active==='advisor'){
+    const pur=ss.purpose||'Investment',risk=ss.risk||'Medium';
+    let pType,strategy,yld,narrative,mood,power;
+    if(pur==='Investment'&&risk==='High'){pType='Commercial / Pre-launch Residential';strategy='Flip or Short-term Hold (3–5 years)';yld='12–18%';narrative=`High-risk investors with ${fmtShort(s.budget)} should explore pre-launch residential or commercial properties in emerging corridors. Target 12–18% IRR.`;mood='Aggressive Growth';power='Target IRR: 12–18%';}
+    else if(pur==='Investment'&&risk==='Medium'){pType='2–3 BHK Residential in Growth Corridors';strategy='Buy and Hold with Rental Income (7–10 years)';yld='7–12%';narrative=`A medium-risk investor with ${fmtShort(s.budget)} should target ready-to-move 2–3 BHK in growth corridors. Target 8–10% overall IRR.`;mood='Balanced Strategy';power='Target IRR: 7–12%';}
+    else if(pur==='Self-use'){pType='Ready-to-Move Residential';strategy='Buy and Occupy — prioritise location and livability';yld='Non-financial';narrative=`For self-use, prioritise commute, school catchment, community and amenities. With ${fmtShort(s.budget)}, target an established area with good infrastructure.`;mood='Quality of Life';power='Livability Focus';}
+    else{pType='Established Residential or REITs';strategy='Long-term Buy and Hold or REIT allocation';yld='5–8%';narrative=`Conservative investors with ${fmtShort(s.budget)} should focus on established areas or REITs. Target 5–8% total return.`;mood='Capital Preservation';power='Target IRR: 5–8%';}
+    const riskMap={Low:55,Medium:72,High:85};const yMap={Low:[5,6,7],Medium:[8,10,12],High:[12,15,18]};const riskLevels=['Low','Medium','High'];
+    setTop(pType,strategy,yld,'Property Type','Strategy','Target Yield');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:yld,narrative,stat1:{label:'Property Type',value:pType.split(' ')[0]},stat2:{label:'Strategy',value:strategy.split(' ')[0]},stat3:{label:'Target Yield',value:yld},mood,power});
+    setInsights({title:`Match strategy to your ${s.years}-year timeline.`,text:s.years>=10?'Long enough for a buy-and-hold to play out fully.':'May be better suited for a flip or shorter hold strategy.'},{title:`${pur} buyer profile noted.`,text:pur==='Self-use'?'Focus on livability, not returns. The home you live in builds equity — not an investment first.':'Investment buyers should always model IRR and ensure rental income supports the mortgage.'},{title:`${risk} risk appetite acknowledged.`,text:risk==='High'?'High risk means pre-launch, under-construction and commercial — higher upside but also higher delay risk.':risk==='Low'?'Low risk means ready inventory in established localities — lower upside but predictable.':'Medium risk balances growth corridors with proven demand.'});
+    renderChart(riskLevels,[{label:'Target Yield %',data:riskLevels.map(r=>yMap[r][1]),color:'#00d4ff',fill:true}],cfg.chartTitle,cfg.chartMeta);
+    const yldNum=yMap[risk][1]||8;const futVal=s.budget*Math.pow(1+yldNum/100,s.years);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,[{label:'Budget',value:s.budget,note:'Starting investment'},{label:'3 yrs',value:Math.round(s.budget*Math.pow(1+yMap['Medium'][1]/100,3)),note:'Mid-term estimate'},{label:'5 yrs',value:Math.round(s.budget*Math.pow(1+yMap['Medium'][1]/100,5)),note:'Medium-term'},{label:s.years+' yrs',value:Math.round(futVal),note:'Target horizon value'}]);
+    setVerdict(risk==='High'?'AGGRESSIVE — HIGH RISK HIGH REWARD':risk==='Low'?'CONSERVATIVE — STABLE GROWTH':'BALANCED STRATEGY',risk==='High'?'var(--green)':risk==='Low'?'var(--cyan)':'var(--blue)',[`Purpose: ${pur} | Risk: ${risk}`,`Recommended: ${pType}`,`Target Yield: ${yld}`],riskMap[risk]||70);
+    setActions(['Get pre-approved for a home loan before shortlisting properties','Visit 5+ properties in your target micro-market before making an offer','Check RERA registration and builder delivery track record before booking']);
+  }
+
+  /* ---- MATCH ---- */
+  else if(active==='match'){
+    const bhk=ss.bhk||'2 BHK',city=ss.city||'Mumbai';
+    const bm={'1 BHK':{metro:[2000000,5000000],tier2:[800000,2000000]},'2 BHK':{metro:[4000000,12000000],tier2:[1500000,4000000]},'3 BHK':{metro:[8000000,25000000],tier2:[3000000,8000000]},'4 BHK':{metro:[15000000,50000000],tier2:[6000000,15000000]},'Villa':{metro:[20000000,100000000],tier2:[8000000,30000000]},'Plot':{metro:[5000000,30000000],tier2:[1000000,8000000]}};
+    const metros=['Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Pune'];const isMet=metros.includes(city);const tier=isMet?'metro':'tier2';
+    const range=bm[bhk]?.[tier]||[3000000,10000000];
+    const fit=s.budget>=range[0]&&s.budget<=range[1]?'Good Fit':s.budget<range[0]?'Stretch Budget':'Premium Budget';
+    const bhkTypes=['1 BHK','2 BHK','3 BHK','4 BHK'];
+    setTop(fit,fmtShort(range[0])+' – '+fmtShort(range[1]),isMet?'Metro':'Tier 2','Budget Fit','Typical Range','City Tier');
+    setWealth({title:cfg.wealthTitle,pill:cfg.wealthPill,value:fit,narrative:`Budget ${fmtShort(s.budget)} for ${bhk} in ${city} (${isMet?'Metro':'Tier 2'}) — typical range ${fmtShort(range[0])} to ${fmtShort(range[1])}. Status: ${fit}.`,stat1:{label:'Budget',value:fmtShort(s.budget)},stat2:{label:'Typical Min',value:fmtShort(range[0])},stat3:{label:'Typical Max',value:fmtShort(range[1])},mood:fit,power:`${city} • ${bhk}`});
+    setInsights({title:`${fit} for ${bhk} in ${city}.`,text:fit==='Good Fit'?'Your budget is within the typical range. You should find multiple options.':fit==='Stretch Budget'?'Consider a smaller configuration, a peripheral location, or increasing budget.':'Budget is above typical range — explore premium or larger units.'},{title:'Explore listings on justproperty.in.',text:'Click the button below to see live matching property listings filtered by your city, budget and BHK.'},{title:`${city} market snapshot.`,text:isMet?`${city} is a metro market with high demand, rental yields of 3–5% and consistent price growth.`:`${city} is a Tier 2 market offering better value for money with growing infrastructure.`});
+    renderChart(bhkTypes,[{label:'Min Price',data:bhkTypes.map(b=>bm[b]?.[tier]?.[0]||0),color:'#4fa3ff',fill:false},{label:'Max Price',data:bhkTypes.map(b=>bm[b]?.[tier]?.[1]||0),color:'#00d4ff',fill:true}],cfg.chartTitle,cfg.chartMeta);
+    renderMilestones(cfg.timelineTitle,cfg.timelineMeta,bhkTypes.map(b=>({label:b,value:bm[b]?.[tier]?.[0]||0,note:`Up to ${fmtShort(bm[b]?.[tier]?.[1]||0)}`})));
+    setVerdict(fit==='Good Fit'?'PERFECT MATCH — EXPLORE NOW':fit==='Stretch Budget'?'STRETCH — ADJUST CRITERIA':'PREMIUM BUDGET — EXPLORE MORE',fit==='Good Fit'?'var(--green)':fit==='Stretch Budget'?'var(--gold)':'var(--cyan)',[fit==='Good Fit'?`Budget fits ${bhk} in ${city}.`:fit==='Stretch Budget'?'Budget is below typical range.':'Budget exceeds typical range.',fit==='Good Fit'?'Shortlist 3–5 properties and negotiate hard.':fit==='Stretch Budget'?'Consider smaller configuration or peripheral area.':'Explore premium or luxury options.',`Check RERA registration before any advance payment.`],fit==='Good Fit'?80:fit==='Premium Budget'?90:50);
+    setActions([`Shortlist 3 properties in ${city} and negotiate 5–8% below asking`,'Get independent valuation before finalising','Verify society maintenance charges and hidden costs']);
+  }
+}
+
+/* ===================== HELPERS ===================== */
+function openMatch(){
+  const city=(selectState['match']&&selectState['match'].city)||'Delhi';
+  const budget=(state['match']&&state['match'].budget)||5000000;
+  const bhk=(selectState['match']&&selectState['match'].bhk)||'2 BHK';
+  window.open(`https://justproperty.in/?city=${encodeURIComponent(city)}&budget=${budget}&bhk=${encodeURIComponent(bhk)}`,'_blank');
+}
+function copyAnalysis(){
+  const tool=CALCS[active].title;
+  const main=$('metricMain').textContent,sec=$('metricSec').textContent,score=$('investmentScore').textContent,verdict=$('verdictBox').textContent;
+  const text=`Real Estate Analysis — ${tool}\nKey Output: ${main}\nSecondary: ${sec}\nScore: ${score}\nVerdict: ${verdict}`;
+  navigator.clipboard&&navigator.clipboard.writeText(text).then(()=>alert('Analysis copied to clipboard!'));
+}
+function submitLead(){
+  const n=$('leadName').value,p=$('leadPhone').value;
+  if(!n||!p){alert('Please fill in your name and phone.');return;}
+  alert('Our team will contact you with matching deals.');
+  $('leadName').value='';$('leadPhone').value='';$('leadCity').value='';$('leadBudget').value='';
+}
+
+/* ===================== INIT ===================== */
+initState();
+renderTabs();
+renderControls();
+update();
+</script>
+</body>
+</html>
