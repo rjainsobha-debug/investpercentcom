@@ -1931,6 +1931,7 @@ fetch("components/navbar.html")
 <!-- ── STEP 7: EXIT INTENT ── -->
 <script>
 let exitShown = false;
+
 document.addEventListener("mouseleave", function(e){
   if(e.clientY < 10 && !exitShown){
     exitShown = true;
@@ -1939,6 +1940,21 @@ document.addEventListener("mouseleave", function(e){
         openTelegram();
       }
     },300);
+  }
+});
+
+// ✅ ADD THIS BELOW (INSIDE SAME SCRIPT)
+
+let interactionCount = 0;
+let triggered = false;
+
+document.addEventListener("click", function(){
+  if(triggered) return;
+
+  interactionCount++;
+  if(interactionCount === 6){
+    triggered = true;
+    openTelegram();
   }
 });
 </script>
