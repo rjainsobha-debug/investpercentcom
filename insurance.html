@@ -413,10 +413,10 @@
       </div>
 
       <div class="tabbar" id="calcTabs">
-        <div class="tab active" data-key="term">Term Insurance</div>
-        <div class="tab" data-key="health">Health Insurance</div>
-        <div class="tab" data-key="car">Car Insurance</div>
-        <div class="tab" data-key="child">Child Education</div>
+        <div class="tab active"  id="tab-term"   onclick="insTab('term')">Term Insurance</div>
+        <div class="tab"         id="tab-health" onclick="insTab('health')">Health Insurance</div>
+        <div class="tab"         id="tab-car"    onclick="insTab('car')">Car Insurance</div>
+        <div class="tab"         id="tab-child"  onclick="insTab('child')">Child Education</div>
       </div>
 
       <div class="top-metrics">
@@ -1094,19 +1094,27 @@
       }
     });
 
-    /* ═══════════ TAB LISTENERS ═══════════ */
-    /* Script is bottom-of-body — DOM is already ready, run directly */
-    document.querySelectorAll('.tab').forEach(function(tab){
-      tab.addEventListener('click', function(){
-        var key = this.getAttribute('data-key');
-        document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
-        this.classList.add('active');
-        switchCalc(key, this);
+    /* ═══════════ TAB SWITCHER (called by inline onclick) ═══════════ */
+    function insTab(key){
+      /* 1. Hide all category sections */
+      var sections = ['term','health','car','child'];
+      sections.forEach(function(k){
+        var s = document.getElementById('section-'+k);
+        if(s) s.style.display = (k === key) ? 'block' : 'none';
       });
-    });
+
+      /* 2. Update active tab style */
+      sections.forEach(function(k){
+        var t = document.getElementById('tab-'+k);
+        if(t) t.className = 'tab' + (k === key ? ' active' : '');
+      });
+
+      /* 3. Update calculator */
+      switchCalc(key, document.getElementById('tab-'+key));
+    }
 
     /* ═══════════ INIT ═══════════ */
-    switchCalc('term', document.querySelector('[data-key="term"]'));
+    insTab('term');
     runAI();
 
     /* Navbar is fully inline — no external fetch needed */
