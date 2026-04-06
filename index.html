@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>InvestPercent</title>
+<title>InvestPercent — India's Smartest Financial Platform</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 
@@ -15,6 +15,10 @@
   --muted:#9da9c6;
   --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 45%, #7b61ff 100%);
 }
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
 
 body{
   margin:0;
@@ -29,126 +33,356 @@ body{
   padding:16px;
 }
 
-/* HEADER */
-.header{
+/* ─── NAVBAR ──────────────────────────────────────── */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
   display:flex;
   align-items:center;
-  gap:14px;
+  justify-content:space-between;
+  gap:20px;
+  padding:14px 20px;
   margin-bottom:18px;
-}
-
-.logo-mark{
-  width:42px;height:42px;
-  border-radius:14px;
-  display:grid;place-items:center;
-  background:var(--grad);
-  color:#071120;
-  font-weight:800;
-}
-
-.logo-text{
-  font-family:Poppins,sans-serif;
-  font-size:24px;
-  font-weight:800;
-}
-.logo-text span{
-  background:var(--grad);
-  -webkit-background-clip:text;
-  color:transparent;
-}
-
-/* HERO */
-.hero{
-  text-align:center;
-  padding:60px 20px 34px;
   border:1px solid var(--line);
-  border-radius:28px;
-  background:linear-gradient(180deg,#07101f 0%, #081225 100%);
+  border-radius:22px;
+  background:rgba(6,10,24,.75);
+  backdrop-filter:blur(18px);
+  box-shadow:0 12px 34px rgba(0,0,0,.24);
+  overflow:visible;
 }
+.brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0}
+.brand-mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--grad);color:#07101e;font-weight:800;box-shadow:0 10px 24px rgba(79,163,255,.22)}
+.brand-name{font-family:Poppins,sans-serif;font-size:22px;font-weight:800;white-space:nowrap}
+.brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-links{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0;align-items:flex-end}
+.nav-row{display:flex;gap:8px;justify-content:flex-end;width:100%;flex-wrap:wrap;min-width:0}
+.nav-row.sub{justify-content:flex-end}
+.nav-link{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border-radius:12px;color:var(--muted);font-weight:700;text-decoration:none;border:1px solid transparent;white-space:nowrap;transition:.25s ease;flex:0 0 auto}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08);transform:translateY(-1px)}
+.nav-link.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 8px 20px rgba(79,163,255,.25)}
+.nav-link.active::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:60%;height:2px;border-radius:999px;background:var(--grad);opacity:.9}
+.mobile-toggle{display:none;width:44px;height:44px;border:none;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer;flex-shrink:0;transition:.2s ease}
+.mobile-toggle:hover{background:rgba(255,255,255,.15)}
+.mobile-drawer{display:none;width:100%;margin-top:12px;border:1px solid var(--line);border-radius:16px;background:#0a1428;padding:12px;animation:fadeIn .2s ease}
+.mobile-drawer.open{display:block}
+.mobile-drawer .nav-link{display:block;width:100%;padding:12px;border-radius:10px;text-decoration:none;color:#d9e4ff;font-weight:600;transition:.2s ease;min-height:unset;border:none}
+.mobile-drawer .nav-link:hover{background:rgba(255,255,255,.05);color:#fff}
+.mobile-drawer .nav-link.active{background:var(--grad);color:#071120;box-shadow:none}
+@media(max-width:1100px){.nav{gap:14px;padding:12px 16px}.nav-link{padding:8px 11px;font-size:.875rem}}
+@media(max-width:900px){.nav{flex-wrap:wrap;align-items:center}.nav-links{display:none}.mobile-toggle{display:block;margin-left:auto}.mobile-drawer{order:3}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
 
-.hero h1{
-  margin:0;
-  font-family:Poppins,sans-serif;
-  font-size:clamp(34px,6vw,64px);
-  font-weight:800;
-}
-
-.hero p{
-  max-width:800px;
-  margin:16px auto 0;
-  color:var(--muted);
-}
-
-.hero-actions{
-  margin-top:24px;
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
+/* ─── BTN ─────────────────────────────────────────── */
 .btn{
-  padding:12px 20px;
+  padding:12px 24px;
   border-radius:12px;
   border:none;
   font-weight:700;
   cursor:pointer;
+  font-size:15px;
+  font-family:Inter,sans-serif;
+  transition:.2s ease;
 }
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .primary{background:var(--grad);color:#071120}
 .secondary{background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff}
+.secondary:hover{background:rgba(255,255,255,.05)}
 
-/* GRID (8 x 2) */
+/* ─── SECTION LABELS ──────────────────────────────── */
+.section-label{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#4fa3ff;background:rgba(79,163,255,.1);
+  border:1px solid rgba(79,163,255,.2);
+  padding:5px 12px;border-radius:999px;margin-bottom:12px;
+}
+.section-title{
+  font-family:Poppins,sans-serif;font-size:clamp(22px,3.5vw,38px);font-weight:800;
+  margin:0 0 10px;
+}
+.section-sub{color:var(--muted);font-size:15px;margin:0 0 32px;max-width:600px}
+
+/* ─── HERO ────────────────────────────────────────── */
+.hero{
+  text-align:center;
+  padding:64px 20px 40px;
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:linear-gradient(180deg,#07101f 0%, #081225 100%);
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+  width:600px;height:300px;
+  background:radial-gradient(ellipse,rgba(79,163,255,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero h1{margin:0;font-family:Poppins,sans-serif;font-size:clamp(34px,6vw,64px);font-weight:800;line-height:1.1}
+.hero h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{max-width:800px;margin:16px auto 0;color:var(--muted);font-size:16px;line-height:1.6}
+.hero-actions{margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* SIP CALCULATOR */
+.sip-box{
+  margin:36px auto 0;
+  max-width:600px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;
+  padding:28px 28px 24px;
+  text-align:left;
+}
+.sip-box h4{margin:0 0 18px;font-size:15px;font-weight:700;color:#fff;text-align:center}
+.sip-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.sip-field label{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:6px;letter-spacing:.04em}
+.sip-field input{
+  width:100%;padding:10px 14px;
+  border-radius:10px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);color:#fff;
+  font-size:15px;font-weight:600;font-family:Inter,sans-serif;
+  outline:none;transition:.2s ease;
+}
+.sip-field input:focus{border-color:rgba(79,163,255,.5);background:rgba(79,163,255,.06)}
+.sip-result{
+  margin-top:4px;
+  background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(123,97,255,.08));
+  border:1px solid rgba(79,163,255,.2);
+  border-radius:12px;padding:14px 16px;text-align:center;
+}
+.sip-result .result-val{
+  font-family:Poppins,sans-serif;font-size:22px;font-weight:800;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sip-result .result-line{font-size:13px;color:var(--muted);margin-top:4px}
+.delay-warning{
+  margin-top:14px;
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,87,51,.08);border:1px solid rgba(255,87,51,.2);
+  border-radius:10px;padding:10px 14px;
+  font-size:13px;color:#ff9580;font-weight:600;
+}
+
+/* ─── SECTION WRAPPER ─────────────────────────────── */
+.section{margin-top:56px}
+
+/* ─── START HERE: 8 MAIN NAV CARDS ───────────────── */
+.main-nav-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+@media(max-width:900px){.main-nav-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.main-nav-grid{grid-template-columns:1fr 1fr}}
+
+.main-nav-card{
+  display:block;
+  text-decoration:none;
+  color:#fff;
+  padding:28px 22px 24px;
+  border-radius:22px;
+  border:1px solid var(--line);
+  background:linear-gradient(160deg,#0f1830 0%,#121f3d 100%);
+  transition:.25s ease;
+  position:relative;
+  overflow:hidden;
+}
+.main-nav-card::before{
+  content:"";position:absolute;inset:0;
+  background:var(--grad);opacity:0;
+  transition:.3s ease;border-radius:22px;
+}
+.main-nav-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4);border-color:rgba(79,163,255,.3)}
+.main-nav-card:hover::before{opacity:.04}
+.main-nav-card .card-icon-lg{
+  width:52px;height:52px;border-radius:16px;
+  display:grid;place-items:center;font-size:24px;
+  background:rgba(255,255,255,.07);
+  margin-bottom:16px;position:relative;z-index:1;
+  transition:.25s ease;
+}
+.main-nav-card:hover .card-icon-lg{background:rgba(79,163,255,.15);transform:scale(1.05)}
+.main-nav-card h3{margin:0 0 6px;font-size:17px;font-weight:700;position:relative;z-index:1}
+.main-nav-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5;position:relative;z-index:1}
+.main-nav-card .card-arrow{
+  position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  font-size:20px;color:rgba(255,255,255,.2);transition:.25s ease;
+}
+.main-nav-card:hover .card-arrow{color:rgba(79,163,255,.7);transform:translateY(-50%) translateX(3px)}
+
+/* ─── FEATURED EXPERIENCES ────────────────────────── */
+.feat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+@media(max-width:900px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.feat-grid{grid-template-columns:1fr}}
+
+.feat-card{
+  padding:24px;
+  border-radius:20px;
+  border:1px solid var(--line);
+  background:linear-gradient(160deg,#0e1728 0%,#111b35 100%);
+  transition:.25s ease;
+}
+.feat-card:hover{transform:translateY(-3px);border-color:rgba(79,163,255,.25);box-shadow:0 12px 32px rgba(0,0,0,.35)}
+.feat-card .feat-icon{font-size:28px;margin-bottom:14px}
+.feat-card h4{margin:0 0 8px;font-size:16px;font-weight:700}
+.feat-card p{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.5}
+.feat-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:700;color:#4fa3ff;text-decoration:none;
+  transition:.2s ease;
+}
+.feat-link:hover{color:#00d4ff;gap:10px}
+
+/* ─── SMART INSIGHTS ──────────────────────────────── */
+.insights-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+@media(max-width:900px){.insights-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.insights-grid{grid-template-columns:1fr}}
+
+.insight-card{
+  padding:26px;
+  border-radius:20px;
+  border:1px solid var(--line);
+  background:linear-gradient(160deg,#0e1728 0%,#111b35 100%);
+}
+.insight-card h4{margin:0 0 18px;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.insight-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px}
+.insight-row:last-child{border-bottom:none;padding-bottom:0}
+.insight-row .label{color:var(--muted)}
+.insight-row .val{font-weight:700;font-size:14px}
+.val-green{color:#4ade80}
+.val-red{color:#f87171}
+.val-blue{color:#60a5fa}
+
+/* ─── CATEGORY GRID ───────────────────────────────── */
 .grid{
   display:grid;
   grid-template-columns:repeat(8,1fr);
   gap:14px;
-  margin-top:26px;
+  margin-top:20px;
 }
-
 .card{
-  padding:16px;
-  border-radius:18px;
-  border:1px solid var(--line);
+  padding:16px;border-radius:18px;border:1px solid var(--line);
   background:linear-gradient(180deg,#0f1830,#121f3d);
-  text-decoration:none;
-  color:#fff;
-  transition:.2s ease;
+  text-decoration:none;color:#fff;transition:.2s ease;
 }
 .card:hover{transform:translateY(-2px)}
+.card-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,0.06);margin-bottom:8px;font-size:18px}
+.card h3{margin:0;font-size:15px;font-weight:700}
+.card p{margin:3px 0 0;color:var(--muted);font-size:12px}
+@media(max-width:1200px){.grid{grid-template-columns:repeat(6,1fr)}}
+@media(max-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
 
-.card-icon{
-  width:38px;height:38px;
-  border-radius:12px;
-  display:grid;place-items:center;
-  background:rgba(255,255,255,0.06);
-  margin-bottom:8px;
-  font-size:18px;
+/* ─── TRUST STRIP ─────────────────────────────────── */
+.trust-strip{
+  margin-top:56px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
 }
+@media(max-width:700px){.trust-strip{grid-template-columns:repeat(2,1fr)}}
 
-.card h3{
-  margin:0;
-  font-size:15px;
-  font-weight:700;
+.trust-pill{
+  display:flex;align-items:center;gap:12px;
+  padding:18px 20px;border-radius:16px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.03);
+  transition:.2s ease;
 }
+.trust-pill:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)}
+.trust-pill .trust-icon{font-size:22px;flex-shrink:0}
+.trust-pill .trust-text strong{display:block;font-size:14px;font-weight:700;margin-bottom:2px}
+.trust-pill .trust-text span{font-size:12px;color:var(--muted)}
 
-.card p{
-  margin:3px 0 0;
-  color:var(--muted);
-  font-size:12px;
+/* ─── LEAD CTA ────────────────────────────────────── */
+.lead-cta{
+  margin-top:56px;
+  text-align:center;
+  padding:56px 24px;
+  border-radius:28px;
+  background:linear-gradient(135deg,#0a1830 0%,#0d1f40 50%,#0a1830 100%);
+  border:1px solid rgba(79,163,255,.15);
+  position:relative;overflow:hidden;
 }
+.lead-cta::before{
+  content:"";position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+  width:500px;height:300px;
+  background:radial-gradient(ellipse,rgba(79,163,255,.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+.lead-cta h2{margin:0 0 10px;font-family:Poppins,sans-serif;font-size:clamp(22px,3vw,36px);font-weight:800;position:relative;z-index:1}
+.lead-cta h2 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead-cta p{color:var(--muted);font-size:15px;max-width:480px;margin:0 auto 28px;position:relative;z-index:1}
+.lead-cta .btn{position:relative;z-index:1;font-size:16px;padding:14px 32px}
 
-/* RESPONSIVE */
-@media(max-width:1200px){
-  .grid{grid-template-columns:repeat(6,1fr)}
+/* ─── LEARN PREVIEW ───────────────────────────────── */
+.learn-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
 }
+@media(max-width:700px){.learn-grid{grid-template-columns:1fr}}
 
-@media(max-width:900px){
-  .grid{grid-template-columns:repeat(4,1fr)}
+.learn-card{
+  display:block;text-decoration:none;color:#fff;
+  padding:24px;border-radius:20px;
+  border:1px solid var(--line);
+  background:linear-gradient(160deg,#0e1728 0%,#111b35 100%);
+  transition:.25s ease;
 }
+.learn-card:hover{transform:translateY(-3px);border-color:rgba(79,163,255,.25);box-shadow:0 12px 32px rgba(0,0,0,.3)}
+.learn-card .learn-tag{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 10px;border-radius:999px;margin-bottom:12px;
+}
+.tag-green{background:rgba(74,222,128,.12);color:#4ade80;border:1px solid rgba(74,222,128,.2)}
+.tag-blue{background:rgba(96,165,250,.12);color:#60a5fa;border:1px solid rgba(96,165,250,.2)}
+.tag-purple{background:rgba(167,139,250,.12);color:#a78bfa;border:1px solid rgba(167,139,250,.2)}
+.learn-card h4{margin:0 0 8px;font-size:16px;font-weight:700}
+.learn-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.learn-card .read-more{margin-top:14px;font-size:12px;font-weight:700;color:#4fa3ff;display:flex;align-items:center;gap:4px}
 
-@media(max-width:600px){
-  .grid{grid-template-columns:repeat(3,1fr)}  /* 🔥 KEY FIX */
+/* ─── FINAL CTA ───────────────────────────────────── */
+.final-cta{
+  margin-top:56px;margin-bottom:56px;
+  text-align:center;padding:72px 24px;
+  border-radius:28px;
+  background:linear-gradient(160deg,#071325 0%,#0a1a38 50%,#050e1f 100%);
+  border:1px solid var(--line);
+  position:relative;overflow:hidden;
 }
+.final-cta::after{
+  content:"";position:absolute;bottom:-80px;right:-80px;
+  width:350px;height:350px;
+  background:radial-gradient(circle,rgba(123,97,255,.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+.final-cta::before{
+  content:"";position:absolute;top:-60px;left:-60px;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(0,212,255,.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.final-cta h2{
+  margin:0 0 14px;
+  font-family:Poppins,sans-serif;font-size:clamp(26px,4vw,46px);font-weight:800;
+  position:relative;z-index:1;
+}
+.final-cta h2 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.final-cta p{color:var(--muted);font-size:16px;max-width:520px;margin:0 auto 32px;position:relative;z-index:1;line-height:1.6}
+.final-cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+
+/* ─── DIVIDER ─────────────────────────────────────── */
+.divider{height:1px;background:var(--line);margin:56px 0 0;border:none}
 
 </style>
 </head>
@@ -156,47 +390,452 @@ body{
 <body>
 <div class="container">
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo-mark">%</div>
-  <div class="logo-text">Invest<span>Percent</span></div>
-</div>
+<!-- ═══════════════════════════════════════════════
+     NAVBAR (unchanged)
+══════════════════════════════════════════════════ -->
+<nav class="nav">
+  <div class="brand" onclick="window.location.href='index.html'">
+    <div class="brand-mark">%</div>
+    <div class="brand-name">invest<span>percent</span></div>
+  </div>
+  <button class="mobile-toggle" type="button" aria-label="Open menu" onclick="toggleMenu()">☰</button>
+  <div class="nav-links">
+    <div class="nav-row">
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="personal.html" class="nav-link" data-page="personal">Personal Finance</a>
+      <a href="investment.html" class="nav-link" data-page="investment">Investments</a>
+      <a href="insurance.html" class="nav-link" data-page="insurance">Insurance</a>
+      <a href="travel.html" class="nav-link" data-page="travel">Travel</a>
+    </div>
+    <div class="nav-row sub">
+      <a href="real-estate.html" class="nav-link" data-page="real-estate">Real Estate</a>
+      <a href="digital.html" class="nav-link" data-page="digital">Digital Assets</a>
+      <a href="global.html" class="nav-link" data-page="global">Global Finance</a>
+      <a href="learn.html" class="nav-link" data-page="learn">Learn</a>
+    </div>
+  </div>
+  <div id="mobileDrawer" class="mobile-drawer">
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="personal.html" class="nav-link" data-page="personal">Personal Finance</a>
+    <a href="investment.html" class="nav-link" data-page="investment">Investments</a>
+    <a href="insurance.html" class="nav-link" data-page="insurance">Insurance</a>
+    <a href="travel.html" class="nav-link" data-page="travel">Travel</a>
+    <a href="real-estate.html" class="nav-link" data-page="real-estate">Real Estate</a>
+    <a href="digital.html" class="nav-link" data-page="digital">Digital Assets</a>
+    <a href="global.html" class="nav-link" data-page="global">Global Finance</a>
+    <a href="learn.html" class="nav-link" data-page="learn">Learn</a>
+  </div>
+</nav>
 
-<!-- HERO -->
+<!-- ═══════════════════════════════════════════════
+     SECTION 1 — HERO
+══════════════════════════════════════════════════ -->
 <div class="hero">
-  <h1>India’s Smartest Financial Platform</h1>
-  <p>Plan. Calculate. Grow your money with powerful financial tools.</p>
+  <h1>India's <span>Smartest</span> Financial Platform</h1>
+  <p class="hero-sub">Plan. Calculate. Grow your money with powerful financial tools built for every Indian.</p>
 
   <div class="hero-actions">
     <button class="btn primary" onclick="location.href='investment.html'">Start Planning</button>
-    <button class="btn secondary" onclick="document.getElementById('categories').scrollIntoView()">Explore Tools</button>
+    <button class="btn secondary" onclick="document.getElementById('start-here').scrollIntoView({behavior:'smooth'})">Explore Tools</button>
+  </div>
+
+  <!-- MINI SIP CALCULATOR -->
+  <div class="sip-box">
+    <h4>Quick SIP Calculator — See your money grow</h4>
+    <div class="sip-row">
+      <div class="sip-field">
+        <label>Monthly Amount (₹)</label>
+        <input type="number" id="sipAmount" value="5000" min="100" oninput="calcSIP()">
+      </div>
+      <div class="sip-field">
+        <label>Investment Period (Years)</label>
+        <input type="number" id="sipYears" value="10" min="1" max="40" oninput="calcSIP()">
+      </div>
+    </div>
+    <div class="sip-result">
+      <div class="result-val" id="sipResult">₹11.6 Lakhs</div>
+      <div class="result-line" id="sipLine">₹5,000/month → ₹11.6 Lakhs in 10 years at 12% p.a.</div>
+    </div>
+    <div class="delay-warning" id="delayWarning">
+      ⚠️ Waiting 1 year to start will cost you <strong id="delayCost">₹1.4 Lakhs</strong> in potential returns.
+    </div>
   </div>
 </div>
 
-<!-- GRID -->
-<div id="categories" class="grid">
+<!-- ═══════════════════════════════════════════════
+     SECTION 2 — START HERE
+══════════════════════════════════════════════════ -->
+<div class="section" id="start-here">
+  <div class="section-label">⚡ Start Here</div>
+  <div class="section-title">Everything You Need to Master Money</div>
+  <p class="section-sub">Choose your financial goal and find the right tools instantly.</p>
 
-  <!-- ROW 1 -->
-  <a class="card" href="investment.html"><div class="card-icon">💰</div><h3>Investment</h3><p>SIP tools</p></a>
-  <a class="card" href="loan.html"><div class="card-icon">🏠</div><h3>Loan</h3><p>EMI tools</p></a>
-  <a class="card" href="tax.html"><div class="card-icon">🧾</div><h3>Tax</h3><p>Tax tools</p></a>
-  <a class="card" href="savings.html"><div class="card-icon">🏦</div><h3>Savings</h3><p>FD tools</p></a>
-  <a class="card" href="retirement.html"><div class="card-icon">🪙</div><h3>Retirement</h3><p>Planning</p></a>
-  <a class="card" href="personal.html"><div class="card-icon">👤</div><h3>Personal</h3><p>Budget</p></a>
-  <a class="card" href="global.html"><div class="card-icon">🌍</div><h3>Global</h3><p>Forex</p></a>
-  <a class="card" href="stocks.html"><div class="card-icon">📈</div><h3>Stocks</h3><p>Market</p></a>
-
-  <!-- ROW 2 -->
-  <a class="card" href="crypto.html"><div class="card-icon">₿</div><h3>Crypto</h3><p>Assets</p></a>
-  <a class="card" href="business.html"><div class="card-icon">🚀</div><h3>Business</h3><p>Startup</p></a>
-  <a class="card" href="insurance.html"><div class="card-icon">🛡️</div><h3>Insurance</h3><p>Plans</p></a>
-  <a class="card" href="play.html"><div class="card-icon">🎮</div><h3>Play</h3><p>Tools</p></a>
-  <a class="card" href="learn.html"><div class="card-icon">📚</div><h3>Learn</h3><p>Guides</p></a>
-  <a class="card" href="digital.html"><div class="card-icon">💻</div><h3>Digital</h3><p>Utilities</p></a>
-  <a class="card" href="Real-Estate.html"><div class="card-icon">🏢</div><h3>Real Estate</h3><p>Property</p></a>
-
+  <div class="main-nav-grid">
+    <a class="main-nav-card" href="personal.html">
+      <div class="card-icon-lg">👤</div>
+      <h3>Personal Finance</h3>
+      <p>Budget planning, expense tracking, and savings goals for your everyday finances.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="main-nav-card" href="investment.html">
+      <div class="card-icon-lg">💰</div>
+      <h3>Investment</h3>
+      <p>SIP calculators, mutual fund returns, and wealth-building tools for every investor.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="main-nav-card" href="insurance.html">
+      <div class="card-icon-lg">🛡️</div>
+      <h3>Insurance</h3>
+      <p>Compare term, health, and life insurance plans to protect what matters most.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="main-nav-card" href="travel.html">
+      <div class="card-icon-lg">✈️</div>
+      <h3>Travel</h3>
+      <p>Plan your travel budget, forex, and trip expenses with smart travel tools.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="main-nav-card" href="real-estate.html">
+      <div class="card-icon-lg">🏢</div>
+      <h3>Real Estate</h3>
+      <p>Property ROI, EMI calculators, rent vs buy analysis, and home loan tools.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="main-nav-card" href="digital.html">
+      <div class="card-icon-lg">💻</div>
+      <h3>Digital Assets</h3>
+      <p>Crypto portfolio, NFT tools, and digital investment calculators in one place.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="main-nav-card" href="global.html">
+      <div class="card-icon-lg">🌍</div>
+      <h3>Global Finance</h3>
+      <p>Forex rates, NRI tools, international transfers, and cross-border investments.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="main-nav-card" href="learn.html">
+      <div class="card-icon-lg">📚</div>
+      <h3>Learn</h3>
+      <p>Free guides, explainers, and courses on investing, taxes, and personal finance.</p>
+      <span class="card-arrow">→</span>
+    </a>
+  </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════
+     SECTION 3 — FEATURED EXPERIENCES
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">✨ Featured</div>
+  <div class="section-title">Popular Financial Experiences</div>
+  <p class="section-sub">The most-used tools, hand-picked for you.</p>
+
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon">🎯</div>
+      <h4>Build Your Wealth Plan</h4>
+      <p>Set financial goals, map your income, expenses, and create a personalised roadmap to wealth.</p>
+      <a class="feat-link" href="investment.html">Build Plan →</a>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🏠</div>
+      <h4>Calculate EMI</h4>
+      <p>Instantly calculate home, car, or personal loan EMIs. Compare lenders and plan repayments.</p>
+      <a class="feat-link" href="real-estate.html">Calculate EMI →</a>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">✈️</div>
+      <h4>Plan Travel Budget</h4>
+      <p>Estimate costs for flights, hotels, forex, and daily spending for any destination.</p>
+      <a class="feat-link" href="travel.html">Plan Trip →</a>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🛡️</div>
+      <h4>Compare Insurance</h4>
+      <p>Find the right term or health insurance coverage at the best premium for your life stage.</p>
+      <a class="feat-link" href="insurance.html">Compare Plans →</a>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📊</div>
+      <h4>Property ROI</h4>
+      <p>Calculate returns on real estate investments, rental yield, and appreciation projections.</p>
+      <a class="feat-link" href="real-estate.html">Check ROI →</a>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">₿</div>
+      <h4>Digital Asset Tracker</h4>
+      <p>Track crypto and digital asset portfolio performance and calculate long-term projections.</p>
+      <a class="feat-link" href="digital.html">Track Assets →</a>
+    </div>
+  </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 4 — SMART INSIGHTS
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">🧠 Smart Insights</div>
+  <div class="section-title">Live Financial Comparisons</div>
+  <p class="section-sub">Data-driven answers to India's most common money questions.</p>
+
+  <div class="insights-grid">
+    <!-- FD vs SIP -->
+    <div class="insight-card">
+      <h4>🏦 FD vs SIP — ₹10,000/month for 10 Years</h4>
+      <div class="insight-row"><span class="label">Fixed Deposit (6.5% p.a.)</span><span class="val val-blue" id="fdVal">—</span></div>
+      <div class="insight-row"><span class="label">SIP in Mutual Fund (12% p.a.)</span><span class="val val-green" id="sipFdVal">—</span></div>
+      <div class="insight-row"><span class="label">Difference in Returns</span><span class="val val-green" id="fdDiff">—</span></div>
+      <div class="insight-row"><span class="label">Total Invested</span><span class="val">₹12,00,000</span></div>
+    </div>
+    <!-- Rent vs Buy -->
+    <div class="insight-card">
+      <h4>🏠 Rent vs Buy — Mumbai, ₹80L Property</h4>
+      <div class="insight-row"><span class="label">Monthly Rent (avg)</span><span class="val val-blue">₹25,000</span></div>
+      <div class="insight-row"><span class="label">Home Loan EMI (20yr, 8.5%)</span><span class="val val-red" id="emiVal">—</span></div>
+      <div class="insight-row"><span class="label">EMI vs Rent difference</span><span class="val val-red" id="emiDiff">—</span></div>
+      <div class="insight-row"><span class="label">Break-even horizon</span><span class="val">~12–15 years</span></div>
+    </div>
+    <!-- Delay Loss -->
+    <div class="insight-card">
+      <h4>⏰ Cost of Delaying Investment by 5 Years</h4>
+      <div class="insight-row"><span class="label">Start Today (₹5k/mo, 25 yrs, 12%)</span><span class="val val-green" id="startNow">—</span></div>
+      <div class="insight-row"><span class="label">Start 5 Yrs Later (₹5k/mo, 20 yrs)</span><span class="val val-red" id="startLater">—</span></div>
+      <div class="insight-row"><span class="label">Wealth Lost by Waiting</span><span class="val val-red" id="wealthLost">—</span></div>
+      <div class="insight-row"><span class="label">Extra months of work needed</span><span class="val val-red">~60 months</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 5 — CATEGORY GRID (Explore All Tools)
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">🗂️ All Tools</div>
+  <div class="section-title">Explore All Tools</div>
+  <p class="section-sub">Every financial calculator and guide, all in one place.</p>
+
+  <div id="categories" class="grid">
+    <a class="card" href="investment.html"><div class="card-icon">💰</div><h3>Investment</h3><p>SIP tools</p></a>
+    <a class="card" href="loan.html"><div class="card-icon">🏠</div><h3>Loan</h3><p>EMI tools</p></a>
+    <a class="card" href="tax.html"><div class="card-icon">🧾</div><h3>Tax</h3><p>Tax tools</p></a>
+    <a class="card" href="savings.html"><div class="card-icon">🏦</div><h3>Savings</h3><p>FD tools</p></a>
+    <a class="card" href="retirement.html"><div class="card-icon">🪙</div><h3>Retirement</h3><p>Planning</p></a>
+    <a class="card" href="personal.html"><div class="card-icon">👤</div><h3>Personal</h3><p>Budget</p></a>
+    <a class="card" href="global.html"><div class="card-icon">🌍</div><h3>Global</h3><p>Forex</p></a>
+    <a class="card" href="stocks.html"><div class="card-icon">📈</div><h3>Stocks</h3><p>Market</p></a>
+    <a class="card" href="crypto.html"><div class="card-icon">₿</div><h3>Crypto</h3><p>Assets</p></a>
+    <a class="card" href="business.html"><div class="card-icon">🚀</div><h3>Business</h3><p>Startup</p></a>
+    <a class="card" href="insurance.html"><div class="card-icon">🛡️</div><h3>Insurance</h3><p>Plans</p></a>
+    <a class="card" href="play.html"><div class="card-icon">🎮</div><h3>Play</h3><p>Tools</p></a>
+    <a class="card" href="learn.html"><div class="card-icon">📚</div><h3>Learn</h3><p>Guides</p></a>
+    <a class="card" href="digital.html"><div class="card-icon">💻</div><h3>Digital</h3><p>Utilities</p></a>
+    <a class="card" href="real-estate.html"><div class="card-icon">🏢</div><h3>Real Estate</h3><p>Property</p></a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 6 — TRUST STRIP
+══════════════════════════════════════════════════ -->
+<div class="trust-strip">
+  <div class="trust-pill">
+    <span class="trust-icon">🇮🇳</span>
+    <div class="trust-text">
+      <strong>Built for India</strong>
+      <span>₹, taxes, and Indian markets</span>
+    </div>
+  </div>
+  <div class="trust-pill">
+    <span class="trust-icon">🔒</span>
+    <div class="trust-text">
+      <strong>No Login Required</strong>
+      <span>100% anonymous, no account</span>
+    </div>
+  </div>
+  <div class="trust-pill">
+    <span class="trust-icon">✅</span>
+    <div class="trust-text">
+      <strong>Free Tools</strong>
+      <span>Every calculator, forever free</span>
+    </div>
+  </div>
+  <div class="trust-pill">
+    <span class="trust-icon">⚡</span>
+    <div class="trust-text">
+      <strong>Instant Results</strong>
+      <span>No waiting, no loading screens</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 7 — LEAD CTA
+══════════════════════════════════════════════════ -->
+<div class="lead-cta">
+  <h2>Get your <span>personalised financial plan</span> in 60 seconds</h2>
+  <p>Answer 3 quick questions and get a custom roadmap for wealth, insurance, and taxes — completely free.</p>
+  <button class="btn primary" onclick="openTelegram()">Get My Free Plan →</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 8 — LEARN PREVIEW
+══════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label">📚 Learn</div>
+  <div class="section-title">Financial Knowledge Base</div>
+  <p class="section-sub">Free, jargon-free guides written for real people.</p>
+
+  <div class="learn-grid">
+    <a class="learn-card" href="learn.html">
+      <span class="learn-tag tag-green">Investing</span>
+      <h4>How SIP Works: The Ultimate Beginner's Guide</h4>
+      <p>Understand how Systematic Investment Plans compound wealth over time and why starting early is the biggest advantage.</p>
+      <div class="read-more">Read Guide →</div>
+    </a>
+    <a class="learn-card" href="learn.html">
+      <span class="learn-tag tag-blue">Tax</span>
+      <h4>Save More Tax in India: Section 80C &amp; Beyond</h4>
+      <p>A practical guide to all major tax-saving instruments — ELSS, PPF, NPS, and more — and how to use them together.</p>
+      <div class="read-more">Read Guide →</div>
+    </a>
+    <a class="learn-card" href="learn.html">
+      <span class="learn-tag tag-purple">Insurance</span>
+      <h4>Term vs Whole Life Insurance: Which is Right for You?</h4>
+      <p>A clear breakdown of coverage types, premium differences, and which policy makes financial sense at each life stage.</p>
+      <div class="read-more">Read Guide →</div>
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 9 — FINAL CTA
+══════════════════════════════════════════════════ -->
+<div class="final-cta">
+  <h2>Start planning your <span>money</span> today</h2>
+  <p>Join thousands of Indians using InvestPercent to take control of their finances — no sign-up, no fees, no excuses.</p>
+  <div class="final-cta-btns">
+    <button class="btn primary" onclick="document.getElementById('start-here').scrollIntoView({behavior:'smooth'})">Explore All Tools</button>
+    <button class="btn secondary" onclick="openTelegram()">Talk to an Expert</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════════ -->
+<script>
+/* ── NAVBAR ─────────────────────────────── */
+function toggleMenu() {
+  const drawer = document.getElementById("mobileDrawer");
+  if (drawer) drawer.classList.toggle("open");
+}
+
+function normalizePath(path) {
+  if (!path) return "index";
+  path = path.toLowerCase().trim();
+  if (path.startsWith("/")) path = path.slice(1);
+  path = path.split("?")[0].split("#")[0];
+  if (path === "" || path === "/") return "index";
+  if (path.endsWith(".html")) path = path.replace(".html", "");
+  return path;
+}
+
+function highlightActiveNav() {
+  const currentPage = normalizePath(window.location.pathname);
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.classList.remove("active");
+    const linkPage = (link.dataset.page || "").toLowerCase().trim();
+    const linkHref = normalizePath(link.getAttribute("href") || "");
+    if (currentPage === linkPage || currentPage === linkHref) {
+      link.classList.add("active");
+    }
+  });
+}
+
+/* ── FORMATTING HELPERS ─────────────────── */
+function fmt(n) {
+  if (n >= 1e7) return "₹" + (n / 1e7).toFixed(2) + " Cr";
+  if (n >= 1e5) return "₹" + (n / 1e5).toFixed(2) + " Lakhs";
+  return "₹" + Math.round(n).toLocaleString("en-IN");
+}
+
+/* ── SIP CALCULATOR ─────────────────────── */
+function sipFV(monthly, years, rate) {
+  const r = rate / 100 / 12;
+  const n = years * 12;
+  return monthly * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+}
+
+function calcSIP() {
+  const amt   = parseFloat(document.getElementById("sipAmount").value) || 5000;
+  const yrs   = parseFloat(document.getElementById("sipYears").value)  || 10;
+  const rate  = 12;
+
+  const fv      = sipFV(amt, yrs, rate);
+  const fvDelay = sipFV(amt, yrs - 1, rate);
+  const loss    = fv - fvDelay;
+
+  document.getElementById("sipResult").textContent = fmt(fv);
+  document.getElementById("sipLine").textContent =
+    "₹" + amt.toLocaleString("en-IN") + "/month → " + fmt(fv) + " in " + yrs + " years at " + rate + "% p.a.";
+  document.getElementById("delayCost").textContent = fmt(loss);
+}
+
+/* ── SMART INSIGHTS ─────────────────────── */
+function calcInsights() {
+  const monthly = 10000;
+  const years   = 10;
+  const n       = years * 12;
+
+  // FD (simple interest monthly compounding approx)
+  const fdRate = 0.065 / 12;
+  const fdFV   = monthly * ((Math.pow(1 + fdRate, n) - 1) / fdRate) * (1 + fdRate);
+
+  // SIP 12%
+  const sipRate = 0.12 / 12;
+  const sipFV2  = monthly * ((Math.pow(1 + sipRate, n) - 1) / sipRate) * (1 + sipRate);
+
+  document.getElementById("fdVal").textContent    = fmt(fdFV);
+  document.getElementById("sipFdVal").textContent = fmt(sipFV2);
+  document.getElementById("fdDiff").textContent   = "+" + fmt(sipFV2 - fdFV);
+
+  // EMI: ₹80L loan, 8.5%, 20yr
+  const P   = 8000000;
+  const r   = 0.085 / 12;
+  const nEmi = 240;
+  const emi = P * r * Math.pow(1 + r, nEmi) / (Math.pow(1 + r, nEmi) - 1);
+  document.getElementById("emiVal").textContent  = "₹" + Math.round(emi).toLocaleString("en-IN");
+  document.getElementById("emiDiff").textContent = "+" + Math.round(emi - 25000).toLocaleString("en-IN") + " more/mo";
+
+  // Delay cost
+  const sm  = 5000;
+  const s25 = sipFV(sm, 25, 12);
+  const s20 = sipFV(sm, 20, 12);
+  document.getElementById("startNow").textContent   = fmt(s25);
+  document.getElementById("startLater").textContent = fmt(s20);
+  document.getElementById("wealthLost").textContent = "-" + fmt(s25 - s20);
+}
+
+/* ── TELEGRAM ───────────────────────────── */
+function openTelegram() {
+  window.open("https://t.me/investpercent", "_blank");
+}
+
+/* ── INIT ───────────────────────────────── */
+document.addEventListener("DOMContentLoaded", function () {
+  highlightActiveNav();
+  calcSIP();
+  calcInsights();
+
+  // close mobile drawer on link click
+  const drawer = document.getElementById("mobileDrawer");
+  if (drawer) {
+    drawer.querySelectorAll(".nav-link").forEach(link => {
+      link.addEventListener("click", () => drawer.classList.remove("open"));
+    });
+  }
+});
+</script>
+
 </body>
 </html>
