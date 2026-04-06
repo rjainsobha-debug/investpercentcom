@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="components/navbar.css">
 <style>
 :root{--bg:#060915;--bg2:#0b1224;--panel:#0f1830;--soft:#18284d;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);--text:#f7fbff;--muted:#9da9c6;--cyan:#00d4ff;--blue:#4fa3ff;--violet:#7b61ff;--green:#00e676;--gold:#ffd76a;--red:#ff607d;--grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -185,7 +186,6 @@ select option{background:#0f1830;color:var(--text)}
 </head>
 <body>
 <div id="navbar"></div>
-
 <div class="page">
 
 <!-- HERO -->
@@ -813,28 +813,23 @@ renderTabs();
 renderControls();
 update();
 </script>
-  <script>
+
+<script src="components/main.js"></script>
+<script>
 function loadNavbar() {
-  fetch('/components/navbar.html')
+  fetch('components/navbar.html')
     .then(res => {
       if (!res.ok) throw new Error("Navbar not found");
       return res.text();
     })
     .then(data => {
       document.getElementById('navbar').innerHTML = data;
-
-      // highlight active page
-      const links = document.querySelectorAll('.nav-link');
-      links.forEach(link => {
-        if (window.location.pathname.includes(link.getAttribute('href'))) {
-          link.classList.add('active');
-        }
-      });
-
+      if (typeof setActiveLink === 'function') {
+        setActiveLink();
+      }
     })
     .catch(err => console.error('Navbar load error:', err));
 }
-
 document.addEventListener("DOMContentLoaded", loadNavbar);
 </script>
 </body>
