@@ -359,6 +359,244 @@
         </div>
       </section>
     </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- NEW SECTIONS — appended below main dashboard, no UI changes   -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <!-- SECTION 1: MF PLANNING LEAD ENGINE -->
+  <section class="panel" style="margin-top:14px;padding:22px">
+    <div class="panel-head" style="margin-bottom:18px">
+      <div>
+        <div class="panel-title">Mutual Fund Planning</div>
+        <div class="panel-desc">Enter your goal, timeline and expected return — get the exact SIP you need to start today.</div>
+      </div>
+      <div class="badge">LEAD ENGINE</div>
+    </div>
+
+    <div class="mini-grid" style="grid-template-columns:repeat(3,1fr);margin-top:0">
+      <div class="mini">
+        <div class="k">Goal Amount (₹)</div>
+        <input id="mfGoal" type="number" value="1000000" min="10000" step="10000"
+          style="width:100%;margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:16px;font-weight:800;outline:none">
+      </div>
+      <div class="mini">
+        <div class="k">Years to Goal</div>
+        <input id="mfYears" type="number" value="10" min="1" max="40"
+          style="width:100%;margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:16px;font-weight:800;outline:none">
+      </div>
+      <div class="mini">
+        <div class="k">Expected Return (%)</div>
+        <input id="mfReturn" type="number" value="12" min="1" max="30" step="0.1"
+          style="width:100%;margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:16px;font-weight:800;outline:none">
+      </div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn primary" onclick="calculateMF()">Calculate Required SIP</button>
+      <button class="btn secondary" onclick="openTelegram()">Start SIP via Advisor</button>
+    </div>
+
+    <div id="mfResult" style="display:none;margin-top:18px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div class="wealth-stat">
+          <div class="s-label">Required Monthly SIP</div>
+          <div class="s-value" id="mfSIPValue" style="color:var(--cyan)">—</div>
+        </div>
+        <div class="wealth-stat">
+          <div class="s-label">Total Invested</div>
+          <div class="s-value" id="mfTotalInvested">—</div>
+        </div>
+        <div class="wealth-stat">
+          <div class="s-label">Wealth Gain</div>
+          <div class="s-value" id="mfGain" style="color:var(--green)">—</div>
+        </div>
+      </div>
+      <div id="mfInsight" style="margin-top:14px;padding:14px 16px;border-radius:14px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.14);font-size:14px;color:#c8e6ff;line-height:1.6;font-weight:500"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: RECOMMENDED FUNDS (STATIC) -->
+  <section class="panel" style="margin-top:14px;padding:22px">
+    <div class="panel-head" style="margin-bottom:18px">
+      <div>
+        <div class="panel-title">Recommended Mutual Funds</div>
+        <div class="panel-desc">A curated starter list across categories. Get personalised recommendations via our advisor.</div>
+      </div>
+      <div class="badge">FUND SELECTOR</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div class="wealth-stat" style="border-color:rgba(0,212,255,.2)">
+        <div class="s-label" style="color:var(--cyan)">Large Cap</div>
+        <div style="font-size:16px;font-weight:800;margin:8px 0 4px">HDFC Top 100</div>
+        <div style="font-size:12px;color:var(--muted)">Stable, market-leader focused</div>
+        <div style="margin-top:10px;font-size:12px;font-weight:800;color:var(--green)">~12–13% CAGR (10yr hist.)</div>
+      </div>
+      <div class="wealth-stat" style="border-color:rgba(79,163,255,.2)">
+        <div class="s-label" style="color:var(--blue)">Mid Cap</div>
+        <div style="font-size:16px;font-weight:800;margin:8px 0 4px">Kotak Emerging</div>
+        <div style="font-size:12px;color:var(--muted)">Growth-oriented, higher upside</div>
+        <div style="margin-top:10px;font-size:12px;font-weight:800;color:var(--green)">~15–17% CAGR (10yr hist.)</div>
+      </div>
+      <div class="wealth-stat" style="border-color:rgba(123,97,255,.2)">
+        <div class="s-label" style="color:var(--violet)">Small Cap</div>
+        <div style="font-size:16px;font-weight:800;margin:8px 0 4px">Nippon Small Cap</div>
+        <div style="font-size:12px;color:var(--muted)">High risk, high long-term reward</div>
+        <div style="margin-top:10px;font-size:12px;font-weight:800;color:var(--green)">~18–22% CAGR (10yr hist.)</div>
+      </div>
+      <div class="wealth-stat" style="border-color:rgba(0,230,118,.2)">
+        <div class="s-label" style="color:var(--green)">Index Fund</div>
+        <div style="font-size:16px;font-weight:800;margin:8px 0 4px">Nifty 50 Index</div>
+        <div style="font-size:12px;color:var(--muted)">Lowest cost, market returns</div>
+        <div style="margin-top:10px;font-size:12px;font-weight:800;color:var(--green)">~13% CAGR (long-term avg)</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;padding:14px 16px;border-radius:14px;background:rgba(255,215,106,.05);border:1px solid rgba(255,215,106,.15);font-size:13px;color:#ffd76a;line-height:1.6">
+      Past performance does not guarantee future returns. These are illustrative fund names for planning purposes. Always consult a SEBI-registered advisor before investing.
+    </div>
+
+    <button class="btn primary" style="margin-top:16px" onclick="openTelegram()">Get Personalised Fund Recommendation</button>
+  </section>
+
+  <!-- SECTION 3: STOCK CALCULATOR -->
+  <section class="panel" style="margin-top:14px;padding:22px">
+    <div class="panel-head" style="margin-bottom:18px">
+      <div>
+        <div class="panel-title">Stock Return Calculator</div>
+        <div class="panel-desc">Calculate profit, loss, ROI and brokerage impact for any stock trade instantly.</div>
+      </div>
+      <div class="badge">STOCK LITE</div>
+    </div>
+
+    <div class="mini-grid" style="grid-template-columns:repeat(3,1fr);margin-top:0">
+      <div class="mini">
+        <div class="k">Buy Price (₹ per share)</div>
+        <input id="buy" type="number" placeholder="e.g. 450" min="0" step="0.01"
+          style="width:100%;margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:16px;font-weight:800;outline:none">
+      </div>
+      <div class="mini">
+        <div class="k">Sell Price (₹ per share)</div>
+        <input id="sell" type="number" placeholder="e.g. 600" min="0" step="0.01"
+          style="width:100%;margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:16px;font-weight:800;outline:none">
+      </div>
+      <div class="mini">
+        <div class="k">Quantity (shares)</div>
+        <input id="qty" type="number" placeholder="e.g. 100" min="1" step="1"
+          style="width:100%;margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:16px;font-weight:800;outline:none">
+      </div>
+    </div>
+
+    <button class="btn primary" style="margin-top:16px" onclick="calcStock()">Calculate Return</button>
+
+    <div id="stockResult" style="display:none;margin-top:18px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="wealth-stat">
+          <div class="s-label">Invested</div>
+          <div class="s-value" id="stockInvested">—</div>
+        </div>
+        <div class="wealth-stat">
+          <div class="s-label">Current Value</div>
+          <div class="s-value" id="stockValue">—</div>
+        </div>
+        <div class="wealth-stat">
+          <div class="s-label">Profit / Loss</div>
+          <div class="s-value" id="stockPnL">—</div>
+        </div>
+        <div class="wealth-stat">
+          <div class="s-label">ROI</div>
+          <div class="s-value" id="stockROI">—</div>
+        </div>
+      </div>
+      <div id="stockInsight" style="margin-top:14px;padding:14px 16px;border-radius:14px;font-size:14px;color:#c8e6ff;line-height:1.6;font-weight:500"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: CRYPTO ROI & RISK -->
+  <section class="panel" style="margin-top:14px;padding:22px">
+    <div class="panel-head" style="margin-bottom:18px">
+      <div>
+        <div class="panel-title">Crypto ROI &amp; Risk</div>
+        <div class="panel-desc">Calculate crypto trade ROI with a built-in volatility risk flag. Always invest only what you can afford to lose.</div>
+      </div>
+      <div class="badge" style="color:var(--gold);border-color:rgba(255,215,106,.25)">HIGH RISK</div>
+    </div>
+
+    <div class="mini-grid" style="grid-template-columns:repeat(2,1fr);margin-top:0">
+      <div class="mini">
+        <div class="k">Buy Price (₹ or $)</div>
+        <input id="cryptoBuy" type="number" placeholder="e.g. 3200000" min="0" step="any"
+          style="width:100%;margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:16px;font-weight:800;outline:none">
+      </div>
+      <div class="mini">
+        <div class="k">Sell / Current Price</div>
+        <input id="cryptoSell" type="number" placeholder="e.g. 4800000" min="0" step="any"
+          style="width:100%;margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:16px;font-weight:800;outline:none">
+      </div>
+    </div>
+
+    <button class="btn primary" style="margin-top:16px" onclick="calcCrypto()">Calculate ROI</button>
+
+    <div id="cryptoResult" style="display:none;margin-top:18px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div class="wealth-stat">
+          <div class="s-label">ROI</div>
+          <div class="s-value" id="cryptoROIVal">—</div>
+        </div>
+        <div class="wealth-stat">
+          <div class="s-label">Price Change</div>
+          <div class="s-value" id="cryptoChange">—</div>
+        </div>
+        <div class="wealth-stat" style="border-color:rgba(255,96,125,.25)">
+          <div class="s-label" style="color:var(--red)">Risk Level</div>
+          <div class="s-value" id="cryptoRiskVal" style="color:var(--red)">VERY HIGH</div>
+        </div>
+      </div>
+      <div id="cryptoInsight" style="margin-top:14px;padding:14px 16px;border-radius:14px;background:rgba(255,96,125,.06);border:1px solid rgba(255,96,125,.18);font-size:14px;color:#ffa8b8;line-height:1.6;font-weight:500"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: SMART AI INVESTMENT ADVISOR -->
+  <section class="panel" style="margin-top:14px;padding:22px">
+    <div class="panel-head" style="margin-bottom:18px">
+      <div>
+        <div class="panel-title">Smart Investment Advisor</div>
+        <div class="panel-desc">Choose your risk appetite and get an instant allocation blueprint — equity, debt, gold and alternatives.</div>
+      </div>
+      <div class="badge" style="color:var(--cyan);border-color:rgba(0,212,255,.2)">AI POWERED</div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px">
+      <button class="btn primary" onclick="advisor('safe')" id="planBtnSafe" style="flex:1;min-width:140px">Low Risk Plan</button>
+      <button class="btn primary" onclick="advisor('balanced')" id="planBtnBalanced" style="flex:1;min-width:140px">Balanced Plan</button>
+      <button class="btn primary" onclick="advisor('aggressive')" id="planBtnAggressive" style="flex:1;min-width:140px">High Growth Plan</button>
+    </div>
+
+    <div id="advisorOutput" style="display:none">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px" id="advisorAllocation"></div>
+      <div id="advisorNarrative" style="padding:16px;border-radius:16px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.14);font-size:14px;color:#c8e6ff;line-height:1.7;font-weight:500;margin-bottom:14px"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="wealth-stat">
+          <div class="s-label">Expected Return (CAGR)</div>
+          <div class="s-value" id="advisorReturn" style="color:var(--green)">—</div>
+        </div>
+        <div class="wealth-stat">
+          <div class="s-label">Risk Level</div>
+          <div class="s-value" id="advisorRisk">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn secondary" onclick="openTelegram()">Get Personalised Plan from Advisor</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- END OF NEW SECTIONS                                           -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
   </div>
 
   <script>
@@ -951,6 +1189,179 @@ ${$('stat3Label').textContent}: ${$('stat3Value').textContent}`;
         setTimeout(()=> $('miniInsight').textContent = old, 1500);
       });
     }
+
+    // ════════════════════════════════════════════════════════════════
+    // NEW SECTION JS — MF Planning, Stock, Crypto, Advisor, Telegram
+    // ════════════════════════════════════════════════════════════════
+
+    function calculateMF(){
+      const goal  = parseFloat(document.getElementById('mfGoal').value)  || 0;
+      const years = parseFloat(document.getElementById('mfYears').value) || 0;
+      const rate  = parseFloat(document.getElementById('mfReturn').value) || 0;
+
+      if(!goal || !years || !rate){
+        document.getElementById('mfResult').style.display = 'none';
+        return;
+      }
+
+      const r      = rate / 100 / 12;
+      const months = years * 12;
+      const sip    = goal * r / (Math.pow(1 + r, months) - 1);
+      const totalInvested = sip * months;
+      const gain   = goal - totalInvested;
+
+      document.getElementById('mfSIPValue').textContent    = fmtCurrency(Math.round(sip));
+      document.getElementById('mfTotalInvested').textContent = fmtShort(Math.round(totalInvested));
+      document.getElementById('mfGain').textContent        = fmtShort(Math.round(gain));
+      document.getElementById('mfGain').style.color        = gain >= 0 ? 'var(--green)' : 'var(--red)';
+
+      const doubleYrs = yearsToDouble(rate);
+      document.getElementById('mfInsight').textContent =
+        `To reach ${fmtShort(goal)} in ${years} years at ${rate}% CAGR, start a SIP of ${fmtCurrency(Math.round(sip))}/month today. ` +
+        `You will invest ${fmtShort(Math.round(totalInvested))} and the market does the rest — creating ${fmtShort(Math.round(gain))} in gains. ` +
+        `At ${rate}%, money doubles every ~${doubleYrs} years.`;
+
+      document.getElementById('mfResult').style.display = 'block';
+    }
+
+    function calcStock(){
+      const buy  = parseFloat(document.getElementById('buy').value)  || 0;
+      const sell = parseFloat(document.getElementById('sell').value) || 0;
+      const qty  = parseFloat(document.getElementById('qty').value)  || 0;
+
+      if(!buy || !sell || !qty){
+        document.getElementById('stockResult').style.display = 'none';
+        return;
+      }
+
+      const invested = buy  * qty;
+      const current  = sell * qty;
+      const pnl      = current - invested;
+      const roi      = ((sell - buy) / buy) * 100;
+      const isProfit = pnl >= 0;
+
+      document.getElementById('stockInvested').textContent = fmtCurrency(Math.round(invested));
+      document.getElementById('stockValue').textContent    = fmtCurrency(Math.round(current));
+      document.getElementById('stockPnL').textContent     = (isProfit ? '+' : '') + fmtCurrency(Math.round(pnl));
+      document.getElementById('stockPnL').style.color     = isProfit ? 'var(--green)' : 'var(--red)';
+      document.getElementById('stockROI').textContent     = (isProfit ? '+' : '') + roi.toFixed(2) + '%';
+      document.getElementById('stockROI').style.color     = isProfit ? 'var(--green)' : 'var(--red)';
+
+      const insightEl = document.getElementById('stockInsight');
+      insightEl.style.background = isProfit ? 'rgba(0,230,118,.06)' : 'rgba(255,96,125,.06)';
+      insightEl.style.border     = isProfit ? '1px solid rgba(0,230,118,.18)' : '1px solid rgba(255,96,125,.18)';
+      insightEl.style.color      = isProfit ? '#a8ffd5' : '#ffa8b8';
+      insightEl.textContent = isProfit
+        ? `A ${roi.toFixed(2)}% gain on ${qty} shares. If you had invested ${fmtCurrency(Math.round(invested))} in a 12% SIP instead, you would have had ${fmtShort(Math.round(invested * 1.12))} in a year — your stock beat / matched that at ${roi.toFixed(2)}%.`
+        : `A loss of ${fmtCurrency(Math.abs(Math.round(pnl)))} (${Math.abs(roi).toFixed(2)}%). The #1 lesson: never invest without a stop-loss plan. Consider averaging down only if the business fundamentals are intact.`;
+
+      document.getElementById('stockResult').style.display = 'block';
+    }
+
+    function calcCrypto(){
+      const buy  = parseFloat(document.getElementById('cryptoBuy').value)  || 0;
+      const sell = parseFloat(document.getElementById('cryptoSell').value) || 0;
+
+      if(!buy || !sell){
+        document.getElementById('cryptoResult').style.display = 'none';
+        return;
+      }
+
+      const roi    = ((sell - buy) / buy) * 100;
+      const change = sell - buy;
+      const isUp   = change >= 0;
+
+      // Risk band based on ROI magnitude
+      let riskLabel, riskColor;
+      if(Math.abs(roi) > 100)      { riskLabel = 'EXTREME RISK'; riskColor = '#ff607d'; }
+      else if(Math.abs(roi) > 50)  { riskLabel = 'VERY HIGH RISK'; riskColor = '#ff607d'; }
+      else if(Math.abs(roi) > 20)  { riskLabel = 'HIGH RISK'; riskColor = '#ffd76a'; }
+      else                          { riskLabel = 'HIGH RISK'; riskColor = '#ffd76a'; }
+
+      document.getElementById('cryptoROIVal').textContent  = (isUp ? '+' : '') + roi.toFixed(2) + '%';
+      document.getElementById('cryptoROIVal').style.color  = isUp ? 'var(--green)' : 'var(--red)';
+      document.getElementById('cryptoChange').textContent  = (isUp ? '+' : '') + change.toFixed(2);
+      document.getElementById('cryptoChange').style.color  = isUp ? 'var(--green)' : 'var(--red)';
+      document.getElementById('cryptoRiskVal').textContent = riskLabel;
+      document.getElementById('cryptoRiskVal').style.color = riskColor;
+
+      document.getElementById('cryptoInsight').textContent = isUp
+        ? `A ${roi.toFixed(2)}% gain — impressive. Crypto can deliver outsized returns but also 80%+ drawdowns. Never allocate more than 5–10% of your portfolio to any single crypto asset. Consider booking partial profits.`
+        : `A ${Math.abs(roi).toFixed(2)}% loss. Crypto is the highest-risk asset class — drawdowns of 70-80% are common even in strong projects. Invest only surplus capital you can afford to lose completely.`;
+
+      document.getElementById('cryptoResult').style.display = 'block';
+    }
+
+    function advisor(type){
+      const plans = {
+        safe: {
+          alloc: [
+            {label:'Fixed Deposits / Debt Funds', pct:'40%', color:'var(--blue)'},
+            {label:'Hybrid / Balanced Funds',     pct:'30%', color:'var(--cyan)'},
+            {label:'Large Cap Equity',             pct:'20%', color:'var(--green)'},
+            {label:'Gold ETF',                     pct:'10%', color:'var(--gold)'}
+          ],
+          narrative: 'A low-risk plan prioritises capital protection over high returns. FDs and debt funds anchor the portfolio while a modest equity allocation provides some inflation-beating growth. Ideal for near-term goals within 3–5 years or risk-averse investors.',
+          cagr:  '9–11% (est.)',
+          risk:  'Low Risk',
+          riskColor: 'var(--green)'
+        },
+        balanced: {
+          alloc: [
+            {label:'Diversified Equity MF',   pct:'50%', color:'var(--cyan)'},
+            {label:'Debt / Hybrid Funds',      pct:'20%', color:'var(--blue)'},
+            {label:'Index Funds (Nifty 50)',   pct:'20%', color:'var(--violet)'},
+            {label:'Gold ETF',                 pct:'10%', color:'var(--gold)'}
+          ],
+          narrative: 'A balanced plan blends growth and stability. Equity drives long-term wealth while debt provides cushion during market corrections. This allocation suits most working professionals with a 7–12 year horizon. Rebalance annually.',
+          cagr:  '11–13% (est.)',
+          risk:  'Moderate Risk',
+          riskColor: 'var(--gold)'
+        },
+        aggressive: {
+          alloc: [
+            {label:'Small / Mid Cap Equity',   pct:'40%', color:'var(--violet)'},
+            {label:'Large Cap / Index Funds',  pct:'30%', color:'var(--cyan)'},
+            {label:'International MF',         pct:'20%', color:'var(--green)'},
+            {label:'Crypto / Alternatives',    pct:'10%', color:'var(--red)'}
+          ],
+          narrative: 'A high-growth plan is designed for investors with a 15+ year horizon and tolerance for significant short-term volatility. Small and mid-cap allocations can deliver 18–22% CAGR in strong cycles but can also fall 40–50% in corrections. Discipline and STP usage are critical.',
+          cagr:  '14–17% (est.)',
+          risk:  'High Risk',
+          riskColor: 'var(--red)'
+        }
+      };
+
+      const plan = plans[type];
+
+      document.getElementById('advisorAllocation').innerHTML = plan.alloc.map(a => `
+        <div class="wealth-stat" style="border-color:${a.color}33">
+          <div class="s-label" style="color:${a.color}">${a.pct}</div>
+          <div style="font-size:14px;font-weight:700;margin-top:4px;line-height:1.4">${a.label}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('advisorNarrative').textContent = plan.narrative;
+      document.getElementById('advisorReturn').textContent    = plan.cagr;
+      document.getElementById('advisorRisk').textContent      = plan.risk;
+      document.getElementById('advisorRisk').style.color      = plan.riskColor;
+      document.getElementById('advisorOutput').style.display  = 'block';
+
+      // Highlight active plan button
+      ['planBtnSafe','planBtnBalanced','planBtnAggressive'].forEach(id => {
+        document.getElementById(id).style.opacity = '0.6';
+      });
+      const activeId = type === 'safe' ? 'planBtnSafe' : type === 'balanced' ? 'planBtnBalanced' : 'planBtnAggressive';
+      document.getElementById(activeId).style.opacity = '1';
+    }
+
+    function openTelegram(){
+      window.open('https://t.me/Mfddelhibot', '_blank');
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // END NEW SECTION JS
+    // ════════════════════════════════════════════════════════════════
 
     initState();
     renderTabs();
