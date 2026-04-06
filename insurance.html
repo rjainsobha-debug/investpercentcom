@@ -443,31 +443,177 @@
       </div>
     </section>
 
-    <!-- ═══════════════════════════ INSURANCE CATEGORY CARDS ═══════════════════════════ -->
-    <div class="categories-grid">
-      <div class="cat-card">
-        <div class="cat-icon">🛡️</div>
-        <div class="cat-name">Term Insurance</div>
-        <div class="cat-desc">Pure life cover at low premiums. Protect your family's income for decades.</div>
-        <button class="btn wa" onclick="wa('Hi, I want term insurance plan')">Get Term Plan</button>
+    <!-- ═══════════════════════════ CATEGORY SECTIONS (one visible at a time) ═══════════════════════════ -->
+
+    <!-- TERM INSURANCE -->
+    <div id="section-term" class="ins-section">
+      <div class="categories-grid" style="grid-template-columns:1fr">
+        <div class="cat-card" style="display:flex;flex-direction:row;align-items:center;gap:20px">
+          <div class="cat-icon" style="font-size:42px;flex-shrink:0">🛡️</div>
+          <div>
+            <div class="cat-name">Term Insurance</div>
+            <div class="cat-desc" style="margin-bottom:0">Pure life cover at low premiums. Protect your family's income for decades. Use the HLV calculator below to find your exact requirement.</div>
+          </div>
+          <button class="btn wa" style="flex-shrink:0;margin-left:auto" onclick="wa('Hi, I want term insurance plan')">📲 Get Term Plan</button>
+        </div>
       </div>
-      <div class="cat-card">
-        <div class="cat-icon">🏥</div>
-        <div class="cat-name">Health Insurance</div>
-        <div class="cat-desc">Cover hospitalisation, critical illness and medical inflation. Don't let one bill wipe savings.</div>
-        <button class="btn wa" onclick="wa('Hi, I need health insurance')">Get Health Plan</button>
+      <div class="plan-card" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:18px;margin-top:14px">
+        <div class="plan-title">Recommended Term Plans</div>
+        <div class="plans-grid">
+          <div class="plan-rec">
+            <div class="plan-badge popular">Most Popular</div>
+            <div class="plan-rec-name">Best Term Plan</div>
+            <div class="plan-rec-cover">₹1 Cr</div>
+            <div class="plan-rec-detail">Pure protection — maximum cover at minimum premium.</div>
+            <ul class="plan-features"><li>Critical illness rider available</li><li>Tax benefit under 80C</li><li>Claim settlement &gt;95%</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Best Term Plan')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+          <div class="plan-rec">
+            <div class="plan-badge popular">High Cover</div>
+            <div class="plan-rec-name">Premium Term Plan</div>
+            <div class="plan-rec-cover">₹2 Cr</div>
+            <div class="plan-rec-detail">For high-income earners with significant liabilities.</div>
+            <ul class="plan-features"><li>Accidental death benefit</li><li>Income payout option</li><li>Return of premium add-on</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Premium Term Plan')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+          <div class="plan-rec">
+            <div class="plan-badge family">Combo</div>
+            <div class="plan-rec-name">Term + Health Combo</div>
+            <div class="plan-rec-cover">₹50 L + ₹10 L</div>
+            <div class="plan-rec-detail">Bundled life and health cover for complete protection.</div>
+            <ul class="plan-features"><li>Single premium payment</li><li>Family floater health included</li><li>Waiver of premium on disability</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Term + Health Combo')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+        </div>
       </div>
-      <div class="cat-card">
-        <div class="cat-icon">🚗</div>
-        <div class="cat-name">Car Insurance</div>
-        <div class="cat-desc">Comprehensive and zero-dep car plans. Renew on time and stay legally protected.</div>
-        <button class="btn wa" onclick="wa('Hi, I need car insurance renewal')">Renew Car Insurance</button>
+    </div>
+
+    <!-- HEALTH INSURANCE -->
+    <div id="section-health" class="ins-section hidden">
+      <div class="categories-grid" style="grid-template-columns:1fr">
+        <div class="cat-card" style="display:flex;flex-direction:row;align-items:center;gap:20px">
+          <div class="cat-icon" style="font-size:42px;flex-shrink:0">🏥</div>
+          <div>
+            <div class="cat-name">Health Insurance</div>
+            <div class="cat-desc" style="margin-bottom:0">Cover hospitalisation, critical illness and medical inflation. Don't let one bill wipe your savings.</div>
+          </div>
+          <button class="btn wa" style="flex-shrink:0;margin-left:auto" onclick="wa('Hi, I need health insurance')">📲 Get Health Plan</button>
+        </div>
       </div>
-      <div class="cat-card">
-        <div class="cat-icon">🎓</div>
-        <div class="cat-name">Life Planning</div>
-        <div class="cat-desc">Child education planning, retirement corpus, and long-term goal mapping.</div>
-        <button class="btn wa" onclick="wa('Hi, I need life planning advice')">Start Planning</button>
+      <div class="plan-card" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:18px;margin-top:14px">
+        <div class="plan-title">Recommended Health Plans</div>
+        <div class="plans-grid">
+          <div class="plan-rec">
+            <div class="plan-badge family">Family Favourite</div>
+            <div class="plan-rec-name">Family Health Plan</div>
+            <div class="plan-rec-cover">₹10 L</div>
+            <div class="plan-rec-detail">Floater plan covering the entire family with no-claim bonus.</div>
+            <ul class="plan-features"><li>Day-care procedures covered</li><li>No room-rent capping</li><li>Restoration benefit</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Family Health Plan')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+          <div class="plan-rec">
+            <div class="plan-badge popular">Best Value</div>
+            <div class="plan-rec-name">Individual Health Plan</div>
+            <div class="plan-rec-cover">₹5 L</div>
+            <div class="plan-rec-detail">Individual cover with comprehensive benefits.</div>
+            <ul class="plan-features"><li>OPD cover available</li><li>Maternity add-on</li><li>Annual health check-up</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Individual Health Plan')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+          <div class="plan-rec">
+            <div class="plan-badge popular">Premium</div>
+            <div class="plan-rec-name">Super Top-Up Plan</div>
+            <div class="plan-rec-cover">₹90 L</div>
+            <div class="plan-rec-detail">Kicks in after ₹10 L deductible — catastrophic cover at low cost.</div>
+            <ul class="plan-features"><li>Highest cover per rupee</li><li>Existing policy compatible</li><li>Covers pre-existing post waiting</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Super Top-Up Plan')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAR INSURANCE -->
+    <div id="section-car" class="ins-section hidden">
+      <div class="categories-grid" style="grid-template-columns:1fr">
+        <div class="cat-card" style="display:flex;flex-direction:row;align-items:center;gap:20px">
+          <div class="cat-icon" style="font-size:42px;flex-shrink:0">🚗</div>
+          <div>
+            <div class="cat-name">Car Insurance</div>
+            <div class="cat-desc" style="margin-bottom:0">Comprehensive and zero-dep car plans. Renew on time and stay legally protected on every road.</div>
+          </div>
+          <button class="btn wa" style="flex-shrink:0;margin-left:auto" onclick="wa('Hi, I need car insurance renewal')">📲 Renew Now</button>
+        </div>
+      </div>
+      <div class="plan-card" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:18px;margin-top:14px">
+        <div class="plan-title">Recommended Car Plans</div>
+        <div class="plans-grid">
+          <div class="plan-rec">
+            <div class="plan-badge car">Best Value</div>
+            <div class="plan-rec-name">Zero Dep Car Plan</div>
+            <div class="plan-rec-cover">Full Cover</div>
+            <div class="plan-rec-detail">Comprehensive cover + zero depreciation add-on for new/newer cars.</div>
+            <ul class="plan-features"><li>Zero-depreciation on parts</li><li>Roadside assistance</li><li>NCB protection</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Zero Dep Car Plan')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+          <div class="plan-rec">
+            <div class="plan-badge popular">Standard</div>
+            <div class="plan-rec-name">Comprehensive Car Plan</div>
+            <div class="plan-rec-cover">IDV Based</div>
+            <div class="plan-rec-detail">Standard comprehensive plan covering own damage and third party.</div>
+            <ul class="plan-features"><li>Own damage cover</li><li>Third-party liability</li><li>Personal accident cover</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Comprehensive Car Plan')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+          <div class="plan-rec">
+            <div class="plan-badge car">Legal Must-Have</div>
+            <div class="plan-rec-name">Third Party Only</div>
+            <div class="plan-rec-cover">TP Cover</div>
+            <div class="plan-rec-detail">Mandatory by law — covers third-party liability and injury.</div>
+            <ul class="plan-features"><li>Third-party property damage</li><li>Bodily injury to third party</li><li>Personal accident cover for owner</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in Third Party Car Insurance')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHILD EDUCATION -->
+    <div id="section-child" class="ins-section hidden">
+      <div class="categories-grid" style="grid-template-columns:1fr">
+        <div class="cat-card" style="display:flex;flex-direction:row;align-items:center;gap:20px">
+          <div class="cat-icon" style="font-size:42px;flex-shrink:0">🎓</div>
+          <div>
+            <div class="cat-name">Child Education Planner</div>
+            <div class="cat-desc" style="margin-bottom:0">Plan today to fund your child's education goal with the right savings target and life cover.</div>
+          </div>
+          <button class="btn wa" style="flex-shrink:0;margin-left:auto" onclick="wa('Hi, I need child education planning advice')">📲 Start Planning</button>
+        </div>
+      </div>
+      <div class="plan-card" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:18px;margin-top:14px">
+        <div class="plan-title">Recommended Child Plans</div>
+        <div class="plans-grid">
+          <div class="plan-rec">
+            <div class="plan-badge popular">Most Popular</div>
+            <div class="plan-rec-name">Child Education Plan</div>
+            <div class="plan-rec-cover">Goal Linked</div>
+            <div class="plan-rec-detail">ULIP-based child plan — invest now, collect at college entry.</div>
+            <ul class="plan-features"><li>Waiver of premium on parent death</li><li>Corpus guaranteed at maturity</li><li>Partial withdrawal allowed</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Child Education Plan')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+          <div class="plan-rec">
+            <div class="plan-badge family">Safe &amp; Steady</div>
+            <div class="plan-rec-name">Endowment Child Plan</div>
+            <div class="plan-rec-cover">Guaranteed</div>
+            <div class="plan-rec-detail">Traditional plan with guaranteed maturity benefit and bonus.</div>
+            <ul class="plan-features"><li>Guaranteed sum assured</li><li>Annual bonus addition</li><li>No market risk</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in the Endowment Child Plan')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+          <div class="plan-rec">
+            <div class="plan-badge car">Flexible</div>
+            <div class="plan-rec-name">SIP + Term Combo</div>
+            <div class="plan-rec-cover">Market Linked</div>
+            <div class="plan-rec-detail">Invest in SIP for growth + term insurance for protection.</div>
+            <ul class="plan-features"><li>Higher potential returns</li><li>Full life cover for parent</li><li>Flexible investment amount</li></ul>
+            <button class="btn wa" onclick="wa('Hi, I am interested in SIP + Term Combo for child education')" style="width:100%;justify-content:center">📲 Get This Plan</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -539,13 +685,6 @@
           </div>
         </div>
 
-        <!-- RECOMMENDED PLANS -->
-        <div class="plan-card">
-          <div class="plan-title">Recommended Plans</div>
-          <div class="plans-grid" id="recPlansGrid">
-            <!-- dynamically rendered -->
-          </div>
-        </div>
       </section>
     </section>
 
@@ -899,6 +1038,11 @@
       vals = {};
       document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
       if(tabEl) tabEl.classList.add('active');
+
+      /* Show only the matching section */
+      document.querySelectorAll('.ins-section').forEach(s=>s.classList.add('hidden'));
+      document.getElementById('section-'+key).classList.remove('hidden');
+
       const c = CALCS[key];
       document.getElementById('modeHeadline').textContent = c.mode;
       document.getElementById('modeSub').textContent      = c.modeSub;
@@ -910,31 +1054,7 @@
       document.getElementById('stat1Label').textContent   = 'Key Output 1';
       document.getElementById('stat2Label').textContent   = 'Key Output 2';
       renderControls(key);
-      renderPlans(key);
       calculate();
-    }
-
-    /* ═══════════ RENDER RECOMMENDED PLANS ═══════════ */
-    function renderPlans(key){
-      const plans = CALCS[key].plans || [];
-      const grid = document.getElementById('recPlansGrid');
-      let html = '';
-      plans.forEach(p=>{
-        const waMsg = encodeURIComponent('Hi, I am interested in the '+p.name+' you recommended');
-        html += `<div class="plan-rec">
-          <div class="plan-badge ${p.badge}">${p.label}</div>
-          <div class="plan-rec-name">${p.name}</div>
-          <div class="plan-rec-cover">${p.cover}</div>
-          <div class="plan-rec-detail">${p.detail}</div>
-          <ul class="plan-features">
-            ${p.features.map(f=>`<li>${f}</li>`).join('')}
-          </ul>
-          <button class="btn wa" onclick="wa('Hi, I am interested in the ${p.name}')" style="width:100%;justify-content:center">
-            📲 Get This Plan
-          </button>
-        </div>`;
-      });
-      grid.innerHTML = html;
     }
 
     /* ═══════════ AI ADVISOR ═══════════ */
