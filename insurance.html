@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="css/navbar.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insurance — investpercent</title>
+  <meta name="description" content="Term Insurance, Health Insurance, Car Insurance calculators and AI advisor. Get your free personalized plan on WhatsApp." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#060915;
+      --bg2:#0b1224;
+      --panel:#0f1830;
+      --panel2:#121e3c;
+      --soft:#18284d;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.13);
+      --text:#f7fbff;
+      --muted:#9da9c6;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --red:#ff607d;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
+      --hero:
+        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
+        linear-gradient(180deg,#070c18 0%,#091224 100%);
+      --wa:#25D366;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
+      z-index:0;
+    }
+    a{text-decoration:none;color:inherit}
+    button,input,select{font:inherit}
+    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:12px 14px 24px}
+
+    /* HERO */
+    .hero{
+      background:var(--hero);border:1px solid var(--line);border-radius:24px;padding:18px 22px;
+      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:14px
+    }
+    .hero::after{
+      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);pointer-events:none
+    }
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+    .hero-copy h1{
+      margin:0;font-family:Poppins,sans-serif;font-size:clamp(26px,3.5vw,42px);
+      line-height:1.1;letter-spacing:-.045em;max-width:840px
+    }
+    .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy p{margin:8px 0 0;color:var(--muted);font-size:15px;max-width:760px;line-height:1.6}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+    .btn{
+      border:none;cursor:pointer;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:800;transition:.2s ease;display:inline-flex;align-items:center;gap:7px
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .btn.wa{background:#25D366;color:#fff;box-shadow:0 12px 26px rgba(37,211,102,.28)}
+    .btn.wa:hover{background:#1fb855}
+
+    /* TABS */
+    .tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .tab{
+      background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
+      padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease
+    }
+    .tab:hover{color:var(--text);border-color:var(--line2)}
+    .tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
+
+    /* TOP METRICS */
+    .top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}
+    .metric-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:14px;min-height:90px;position:relative;overflow:hidden
+    }
+    .metric-card::before{
+      content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
+      background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
+    }
+    .metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+    .metric-value{font-size:clamp(22px,2.5vw,32px);font-weight:800;letter-spacing:-.04em;line-height:1}
+    .metric-value.cyan{color:var(--cyan)} .metric-value.green{color:var(--green)} .metric-value.gold{color:var(--gold)}
+    .metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
+
+    /* LAYOUT */
+    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:14px;margin-top:12px}
+    .panel{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
+    .controls{padding:16px;position:relative;overflow:hidden}
+    .controls::after{
+      content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle, rgba(123,97,255,.12), transparent 60%);pointer-events:none
+    }
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
+    .panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+    .badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
+
+    /* CONTROLS */
+    .control-group{
+      margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)
+    }
+    .control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .control-name{font-size:14px;font-weight:700;color:var(--text)}
+    .control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
+    input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
+    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-webkit-slider-thumb{
+      appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
+      border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-moz-range-thumb{
+      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    select.ctrl-select{
+      width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;
+      color:var(--text);padding:8px 10px;margin-top:6px;cursor:pointer
+    }
+    select.ctrl-select option{background:#0f1830}
+
+    /* MINI GRID */
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+    .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+    .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
+
+    /* ADVISOR CARD */
+    .advisor-card{
+      margin-top:18px;padding:18px;border-radius:20px;
+      background:radial-gradient(circle at top left, rgba(0,212,255,.18), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.12), rgba(123,97,255,.14));
+      border:1px solid rgba(255,255,255,.1)
+    }
+    .advisor-card h4{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
+    .advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .advisor-actions .btn{flex:1;min-width:150px}
+
+    /* DASHBOARD */
+    .dashboard{padding:14px;display:flex;flex-direction:column;gap:14px}
+    .dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
+    .wealth-card,.insight-card,.chart-card,.plan-card{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px
+    }
+    .wealth-card{
+      padding:18px;display:flex;flex-direction:column;justify-content:space-between;
+      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.14), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))
+    }
+    .wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+    .wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
+    .wealth-number{
+      font-size:clamp(36px,3.5vw,56px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff
+    }
+    .wealth-number .grad{
+      background:linear-gradient(135deg, #ffffff 0%, #9feeff 38%, #00e676 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .wealth-sub{color:var(--muted);font-size:14px;line-height:1.6;max-width:660px}
+    .wealth-split{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+    .wealth-stat{padding:12px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .wealth-stat .s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+    .wealth-stat .s-value{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .insight-card{padding:18px;display:flex;flex-direction:column;gap:12px}
+    .insight-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .insight-box strong{display:block;font-size:15px;margin-bottom:6px;letter-spacing:-.02em}
+    .insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
+    .plan-card{padding:18px}
+    .plan-title{font-size:20px;font-weight:800;letter-spacing:-.03em;margin-bottom:14px}
+
+    /* SECTION TITLES */
+    .section-title{font-size:20px;font-weight:800;letter-spacing:-.03em;margin:0 0 6px}
+    .section-meta{color:var(--muted);font-size:14px;margin:0 0 16px}
+
+    /* INSURANCE CATEGORY CARDS */
+    .categories-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+    .cat-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:18px;position:relative;overflow:hidden;
+      transition:.2s ease
+    }
+    .cat-card:hover{border-color:var(--line2);transform:translateY(-2px)}
+    .cat-card::before{
+      content:"";position:absolute;top:-30%;right:-15%;width:180px;height:180px;
+      background:radial-gradient(circle, rgba(255,255,255,.05), transparent 60%);pointer-events:none
+    }
+    .cat-icon{font-size:32px;margin-bottom:10px}
+    .cat-name{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+    .cat-desc{color:var(--muted);font-size:13px;line-height:1.55;margin-bottom:14px}
+
+    /* RECOMMENDED PLANS */
+    .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+    .plan-rec{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:18px;position:relative;overflow:hidden;
+      transition:.2s ease
+    }
+    .plan-rec:hover{border-color:var(--line2);transform:translateY(-2px)}
+    .plan-rec::before{
+      content:"";position:absolute;top:-30%;right:-15%;width:160px;height:160px;
+      background:radial-gradient(circle, rgba(255,255,255,.05), transparent 60%);pointer-events:none
+    }
+    .plan-badge{display:inline-block;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}
+    .plan-badge.popular{background:rgba(0,212,255,.15);border:1px solid rgba(0,212,255,.3);color:var(--cyan)}
+    .plan-badge.family{background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.25);color:var(--green)}
+    .plan-badge.car{background:rgba(255,215,106,.12);border:1px solid rgba(255,215,106,.25);color:var(--gold)}
+    .plan-rec-name{font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+    .plan-rec-cover{font-size:28px;font-weight:800;letter-spacing:-.04em;margin-bottom:4px;color:var(--cyan)}
+    .plan-rec-detail{color:var(--muted);font-size:13px;line-height:1.55;margin-bottom:14px}
+    .plan-features{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:6px}
+    .plan-features li{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+    .plan-features li::before{content:"✓";color:var(--green);font-weight:800;font-size:12px}
+
+    /* INSIGHTS */
+    .insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+    .ins-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);border-radius:22px;padding:20px;position:relative;overflow:hidden
+    }
+    .ins-card::before{
+      content:"";position:absolute;top:-30%;right:-15%;width:160px;height:160px;
+      background:radial-gradient(circle, rgba(255,255,255,.05), transparent 60%);pointer-events:none
+    }
+    .ins-stat{font-size:clamp(32px,3vw,48px);font-weight:800;letter-spacing:-.05em;margin-bottom:10px}
+    .ins-stat.red{color:var(--red)}
+    .ins-stat.gold{color:var(--gold)}
+    .ins-stat.cyan{color:var(--cyan)}
+    .ins-label{font-size:15px;font-weight:700;margin-bottom:6px}
+    .ins-desc{color:var(--muted);font-size:13px;line-height:1.55}
+
+    /* AI ADVISOR SECTION */
+    .ai-advisor{
+      background:radial-gradient(circle at top left, rgba(0,212,255,.12), transparent 36%), linear-gradient(135deg, rgba(79,163,255,.08), rgba(123,97,255,.1));
+      border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:22px;margin-bottom:14px
+    }
+    .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .ai-inputs{}
+    .ai-output{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:18px;
+      display:flex;flex-direction:column;gap:12px
+    }
+    .ai-output-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px}
+    .ai-result-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+    .ai-result-row .label{color:var(--muted);font-size:13px;font-weight:700}
+    .ai-result-row .value{font-size:15px;font-weight:800;color:var(--cyan)}
+
+    /* STICKY WHATSAPP BUTTON */
+    .wa-fab{
+      position:fixed;bottom:24px;right:24px;z-index:9999;
+      background:#25D366;color:#fff;border:none;border-radius:999px;
+      padding:13px 20px;font-size:15px;font-weight:800;cursor:pointer;
+      display:flex;align-items:center;gap:8px;
+      box-shadow:0 8px 28px rgba(37,211,102,.4);
+      transition:.2s ease
+    }
+    .wa-fab:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(37,211,102,.5)}
+
+    /* POPUP OVERLAY */
+    .popup-overlay{
+      display:none;position:fixed;inset:0;z-index:10000;
+      background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+      align-items:center;justify-content:center
+    }
+    .popup-overlay.show{display:flex}
+    .popup-box{
+      background:linear-gradient(135deg, #0f1830, #121e3c);
+      border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:30px;
+      max-width:420px;width:90%;box-shadow:0 32px 80px rgba(0,0,0,.6);text-align:center
+    }
+    .popup-icon{font-size:42px;margin-bottom:12px}
+    .popup-title{font-size:22px;font-weight:800;letter-spacing:-.03em;margin-bottom:8px}
+    .popup-msg{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:20px}
+    .popup-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .popup-actions .btn{flex:1}
+
+    /* HIDDEN */
+    .hidden{display:none !important}
+
+    /* RESPONSIVE */
+    @media(max-width:1180px){
+      .top-metrics{grid-template-columns:1fr 1fr}
+      .layout{grid-template-columns:1fr}
+      .categories-grid{grid-template-columns:1fr 1fr}
+      .plans-grid{grid-template-columns:1fr 1fr}
+      .ai-grid{grid-template-columns:1fr}
+      .dash-top{grid-template-columns:1fr}
+    }
+    @media(max-width:760px){
+      .hero{padding:14px}
+      .hero-copy h1{font-size:22px}
+      .hero-copy p{font-size:13px}
+      .btn{padding:8px 10px;font-size:13px}
+      .top-metrics{grid-template-columns:1fr}
+      .metric-card{padding:12px}
+      .categories-grid{grid-template-columns:1fr}
+      .plans-grid{grid-template-columns:1fr}
+      .insights-grid{grid-template-columns:1fr}
+      .wealth-split,.mini-grid{grid-template-columns:1fr}
+      .page{padding:10px 10px 20px}
+      .controls,.dashboard{padding:12px}
+      body{overflow-x:hidden}
+      .wa-fab{bottom:16px;right:16px;padding:11px 16px;font-size:14px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div class="page">
+    <div id="navbar"></div>
+
+    <!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>Protect Your Wealth <span class="grad">Before You Grow It</span></h1>
+          <p>Term Insurance &nbsp;|&nbsp; Health Insurance &nbsp;|&nbsp; Car Insurance &nbsp;|&nbsp; Life Planning</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn wa" onclick="wa('Hi, I need insurance advice')">
+            <span>📲</span> Get Instant Quote
+          </button>
+          <button class="btn secondary" onclick="scrollToCalc()">Calculate My Coverage</button>
+        </div>
+      </div>
+
+      <div class="tabbar" id="calcTabs">
+        <div class="tab active" onclick="switchCalc('term',this)">Term Insurance</div>
+        <div class="tab" onclick="switchCalc('health',this)">Health Insurance</div>
+        <div class="tab" onclick="switchCalc('car',this)">Car Insurance</div>
+        <div class="tab" onclick="switchCalc('child',this)">Child Education</div>
+      </div>
+
+      <div class="top-metrics">
+        <div class="metric-card">
+          <div class="metric-label">Calculator Mode</div>
+          <div class="metric-value cyan" id="modeHeadline">Term Insurance (HLV)</div>
+          <div class="metric-sub" id="modeSub">Human Life Value method — estimate how much cover you actually need.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Recommended Cover</div>
+          <div class="metric-value green" id="topCover">₹1.20 Cr</div>
+          <div class="metric-sub">Based on current inputs</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Coverage Gap</div>
+          <div class="metric-value cyan" id="topGap">₹1.20 Cr</div>
+          <div class="metric-sub">vs. existing cover of ₹0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Est. Annual Premium</div>
+          <div class="metric-value gold" id="topPremium">₹12,000</div>
+          <div class="metric-sub">Approximate indicative cost</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ INSURANCE CATEGORY CARDS ═══════════════════════════ -->
+    <div class="categories-grid">
+      <div class="cat-card">
+        <div class="cat-icon">🛡️</div>
+        <div class="cat-name">Term Insurance</div>
+        <div class="cat-desc">Pure life cover at low premiums. Protect your family's income for decades.</div>
+        <button class="btn wa" onclick="wa('Hi, I want term insurance plan')">Get Term Plan</button>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🏥</div>
+        <div class="cat-name">Health Insurance</div>
+        <div class="cat-desc">Cover hospitalisation, critical illness and medical inflation. Don't let one bill wipe savings.</div>
+        <button class="btn wa" onclick="wa('Hi, I need health insurance')">Get Health Plan</button>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🚗</div>
+        <div class="cat-name">Car Insurance</div>
+        <div class="cat-desc">Comprehensive and zero-dep car plans. Renew on time and stay legally protected.</div>
+        <button class="btn wa" onclick="wa('Hi, I need car insurance renewal')">Renew Car Insurance</button>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">🎓</div>
+        <div class="cat-name">Life Planning</div>
+        <div class="cat-desc">Child education planning, retirement corpus, and long-term goal mapping.</div>
+        <button class="btn wa" onclick="wa('Hi, I need life planning advice')">Start Planning</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════ CALCULATORS + DASHBOARD ═══════════════════════════ -->
+    <section class="layout" id="calcAnchor">
+      <!-- LEFT: CONTROLS -->
+      <aside class="panel controls">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title" id="panelTitle">Term Insurance Calculator</div>
+            <div class="panel-desc" id="panelDesc">Use the HLV method to find how much life cover your family needs.</div>
+          </div>
+          <div class="badge" id="panelBadge">HLV</div>
+        </div>
+
+        <div id="dynamicControls"></div>
+
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="k">Adequacy</div>
+            <div class="v" id="miniMood">High</div>
+          </div>
+          <div class="mini">
+            <div class="k">Risk Level</div>
+            <div class="v" id="miniInsight">Moderate</div>
+          </div>
+        </div>
+
+        <div class="advisor-card">
+          <h4>Get your personalised plan now</h4>
+          <p>Our advisor will suggest the best-fit insurance plan based on your calculator results — no sales pressure, just clarity.</p>
+          <div class="advisor-actions">
+            <button class="btn wa" onclick="wa('Hi, based on calculator result suggest best plan')">
+              <span>📲</span> Get Plan on WhatsApp
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT: DASHBOARD -->
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title" id="wealthTitle">Recommended Cover</div>
+                <div class="pill" id="wealthPill">Live Calc</div>
+              </div>
+              <div class="wealth-number"><span class="grad" id="wealthNumber">₹1,20,00,000</span></div>
+              <div class="wealth-sub" id="wealthNarrative">Based on your income, expenses and liabilities — this is the minimum cover your family needs to maintain their lifestyle.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label" id="stat1Label">Gross Requirement</div>
+                <div class="s-value" id="stat1Value">₹1.20 Cr</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label" id="stat2Label">Gap to Fill</div>
+                <div class="s-value" id="stat2Value">₹1.20 Cr</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-card">
+            <div class="insight-title">Coverage Insights</div>
+            <div class="insight-box"><strong id="insight1Title">HLV Basis</strong><span id="insight1Text">Your Human Life Value is estimated from income, expenses, and remaining earning years.</span></div>
+            <div class="insight-box"><strong id="insight2Title">Premium Efficiency</strong><span id="insight2Text">At your age, term plans offer maximum cover per rupee of premium.</span></div>
+            <div class="insight-box"><strong id="insight3Title">Action Required</strong><span id="insight3Text">Talk to an advisor to compare plans and lock in your premium before your next birthday.</span></div>
+          </div>
+        </div>
+
+        <!-- RECOMMENDED PLANS -->
+        <div class="plan-card">
+          <div class="plan-title">Recommended Plans</div>
+          <div class="plans-grid" id="recPlansGrid">
+            <!-- dynamically rendered -->
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ═══════════════════════════ INSIGHTS SECTION ═══════════════════════════ -->
+    <div class="insights-grid" style="margin-top:14px">
+      <div class="ins-card">
+        <div class="ins-stat red">70%</div>
+        <div class="ins-label">Indians Are Underinsured</div>
+        <div class="ins-desc">Most families carry less than 10% of the life cover they actually need. Don't be a statistic.</div>
+      </div>
+      <div class="ins-card">
+        <div class="ins-stat gold">12–15%</div>
+        <div class="ins-label">Medical Inflation Per Year</div>
+        <div class="ins-desc">A ₹5L health cover today may only be worth ₹2L in real terms a decade from now. Plan ahead.</div>
+      </div>
+      <div class="ins-card">
+        <div class="ins-stat cyan">1 Bill</div>
+        <div class="ins-label">Can Wipe Out Savings</div>
+        <div class="ins-desc">A single hospitalisation can cost ₹2–10 lakhs. Without cover, your wealth goals collapse overnight.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════ AI ADVISOR ═══════════════════════════ -->
+    <div class="ai-advisor" style="margin-top:14px" id="aiSection">
+      <div style="margin-bottom:18px">
+        <div class="section-title">🤖 AI Insurance Advisor</div>
+        <div class="section-meta">Tell us about yourself — get instant coverage recommendations.</div>
+      </div>
+      <div class="ai-grid">
+        <div class="ai-inputs">
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Your Age</div>
+              <div class="control-value" id="aiAgeVal">30 yrs</div>
+            </div>
+            <input type="range" min="18" max="65" step="1" value="30" oninput="aiAgeVal.textContent=this.value+' yrs';runAI()">
+          </div>
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Annual Income</div>
+              <div class="control-value" id="aiIncomeVal">₹6 L</div>
+            </div>
+            <input type="range" min="200000" max="5000000" step="100000" value="600000" oninput="aiIncomeVal.textContent='₹'+fmtL(+this.value);runAI()">
+          </div>
+          <div class="control-group">
+            <div class="control-top">
+              <div class="control-name">Family Members</div>
+              <div class="control-value" id="aiFamilyVal">3</div>
+            </div>
+            <input type="range" min="1" max="8" step="1" value="3" oninput="aiFamilyVal.textContent=this.value;runAI()">
+          </div>
+          <button class="btn wa" style="width:100%;justify-content:center;margin-top:6px" onclick="wa('Hi, I need AI-based insurance advice for my family')">
+            <span>📲</span> Get My Plan on WhatsApp
+          </button>
+        </div>
+        <div class="ai-output">
+          <div class="ai-output-title">Your Suggested Coverage</div>
+          <div class="ai-result-row"><span class="label">Term Cover</span><span class="value" id="aiTermCover">₹1.20 Cr</span></div>
+          <div class="ai-result-row"><span class="label">Health Cover</span><span class="value" id="aiHealthCover">₹10 L</span></div>
+          <div class="ai-result-row"><span class="label">Car Plan</span><span class="value" id="aiCarPlan">Comprehensive</span></div>
+          <div class="ai-result-row"><span class="label">Annual Budget</span><span class="value" id="aiPremBudget">₹24,000</span></div>
+          <div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--line)">
+            <div style="color:var(--muted);font-size:12px;line-height:1.6">
+              These are AI-generated estimates based on standard actuarial assumptions. 
+              Get a personalised plan from our advisor for exact quotes.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- .page -->
+
+  <!-- ═══════════════════════════ STICKY WHATSAPP FAB ═══════════════════════════ -->
+  <button class="wa-fab" onclick="wa('Hi, I need insurance advice')">
+    <span>📲</span> WhatsApp Advisor
+  </button>
+
+  <!-- ═══════════════════════════ AUTO POPUP (20s) ═══════════════════════════ -->
+  <div class="popup-overlay" id="autoPopup">
+    <div class="popup-box">
+      <div class="popup-icon">🛡️</div>
+      <div class="popup-title">Most People Are Underinsured</div>
+      <div class="popup-msg">Get your free personalised insurance plan in less than 2 minutes — no forms, no waiting, just a quick WhatsApp chat.</div>
+      <div class="popup-actions">
+        <button class="btn wa" onclick="wa('Hi, I need insurance advice');closePopup('autoPopup')">
+          <span>📲</span> WhatsApp Now
+        </button>
+        <button class="btn secondary" onclick="closePopup('autoPopup')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ EXIT INTENT POPUP ═══════════════════════════ -->
+  <div class="popup-overlay" id="exitPopup">
+    <div class="popup-box">
+      <div class="popup-icon">⚡</div>
+      <div class="popup-title">Before You Leave…</div>
+      <div class="popup-msg">Get your personalised insurance plan in 30 seconds. Our advisor is available on WhatsApp right now.</div>
+      <div class="popup-actions">
+        <button class="btn wa" onclick="wa('Hi, I need a quick insurance plan');closePopup('exitPopup')">
+          <span>📲</span> Get Plan Now
+        </button>
+        <button class="btn secondary" onclick="closePopup('exitPopup')">Maybe Later</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js" onerror="void 0"></script>
+
+  <script>
+    /* ═══════════ UTILITIES ═══════════ */
+    const WA_BASE = 'https://wa.me/919718773000';
+    function wa(msg){window.open(WA_BASE+'?text='+encodeURIComponent(msg),'_blank')}
+    function fmtINR(n){
+      if(n>=10000000) return '₹'+(n/10000000).toFixed(2)+' Cr';
+      if(n>=100000)   return '₹'+(n/100000).toFixed(2)+' L';
+      if(n>=1000)     return '₹'+(n/1000).toFixed(1)+' K';
+      return '₹'+n;
+    }
+    function fmtL(n){
+      if(n>=10000000) return (n/10000000).toFixed(1)+' Cr';
+      if(n>=100000)   return (n/100000).toFixed(1)+' L';
+      if(n>=1000)     return (n/1000).toFixed(1)+' K';
+      return n;
+    }
+    function scrollToCalc(){document.getElementById('calcAnchor').scrollIntoView({behavior:'smooth'})}
+    function closePopup(id){document.getElementById(id).classList.remove('show')}
+
+    /* ═══════════ CALCULATOR CONFIGS ═══════════ */
+    const CALCS = {
+      term:{
+        badge:'HLV',
+        title:'Term Insurance Calculator',
+        desc:'Use the HLV method to find how much life cover your family needs.',
+        mode:'Term Insurance (HLV)',
+        modeSub:'Human Life Value method — estimate how much cover you actually need.',
+        wealthTitle:'Recommended Cover',
+        wealthPill:'HLV Mode',
+        controls:[
+          {id:'income',label:'Monthly Income',min:10000,max:500000,step:5000,value:50000,format:'currency'},
+          {id:'age',label:'Current Age',min:18,max:60,step:1,value:30,format:'years'},
+          {id:'expense',label:'Monthly Expenses %',min:20,max:90,step:5,value:60,format:'percent'},
+          {id:'liabilities',label:'Total Liabilities',min:0,max:10000000,step:100000,value:2000000,format:'currency'}
+        ],
+        calc(v){
+          const annualIncome = v.income * 12;
+          const workingYears = Math.max(60 - v.age, 1);
+          const netIncome = annualIncome * (1 - v.expense/100);
+          const pvFactor = (1 - Math.pow(1.07,-workingYears)) / 0.07;
+          const hlv = netIncome * pvFactor + v.liabilities;
+          const annualPrem = Math.round(hlv * 0.005 / 1000) * 1000;
+          return{
+            cover: hlv,
+            gap: hlv,
+            premium: annualPrem,
+            s1: fmtINR(hlv),
+            s2: fmtINR(hlv),
+            mood: workingYears > 20 ? 'High' : workingYears > 10 ? 'Moderate' : 'Critical',
+            risk: v.liabilities > 2000000 ? 'High' : 'Moderate',
+            narrative:'Based on your income, expenses and liabilities — this is the minimum cover your family needs to maintain their lifestyle.',
+            i1t:'HLV Basis',i1x:'Your Human Life Value is estimated from income, net savings, and remaining earning years.',
+            i2t:'Liability Inclusion',i2x:'Outstanding loans (₹'+fmtINR(v.liabilities)+') are added on top of the income-replacement cover.',
+            i3t:'Act Early',i3x:'At '+v.age+' years, premiums are lowest. Each year you delay can raise premiums by 4–8%.'
+          }
+        },
+        plans:[
+          {badge:'popular',label:'Most Popular',name:'Best Term Plan',cover:'₹1 Cr',detail:'Pure protection — maximum cover at minimum premium.',features:['Critical illness rider available','Tax benefit under 80C','Claim settlement >95%']},
+          {badge:'popular',label:'High Cover',name:'Premium Term Plan',cover:'₹2 Cr',detail:'For high-income earners with significant liabilities.',features:['Accidental death benefit','Income payout option','Return of premium add-on']},
+          {badge:'family',label:'Combo',name:'Term + Health Combo',cover:'₹50 L + ₹10 L',detail:'Bundled life and health cover for complete protection.',features:['Single premium payment','Family floater health included','Waiver of premium on disability']}
+        ]
+      },
+      health:{
+        badge:'HEALTH',
+        title:'Health Insurance Calculator',
+        desc:'Find the right sum insured for your family based on city and age.',
+        mode:'Health Insurance',
+        modeSub:'Calculate adequate health cover for your family size and location.',
+        wealthTitle:'Suggested Health Cover',
+        wealthPill:'Floater Plan',
+        controls:[
+          {id:'members',label:'Family Members',min:1,max:8,step:1,value:3,format:'count'},
+          {id:'age',label:'Eldest Member Age',min:18,max:75,step:1,value:35,format:'years'},
+          {id:'city',label:'City Tier',min:1,max:3,step:1,value:1,format:'tier'}
+        ],
+        calc(v){
+          const base = v.city===1 ? 1000000 : v.city===2 ? 700000 : 500000;
+          const memberAdj = 1 + (v.members - 1) * 0.25;
+          const ageAdj = v.age > 50 ? 1.5 : v.age > 40 ? 1.2 : 1;
+          const cover = Math.round(base * memberAdj * ageAdj / 100000) * 100000;
+          const labelCover = cover >= 2000000 ? '₹20 L' : cover >= 1000000 ? '₹10 L' : '₹5 L';
+          const annualPrem = Math.round((cover * 0.025 * (v.age > 45 ? 1.4 : 1)) / 1000) * 1000;
+          return{
+            cover,gap:cover,premium:annualPrem,
+            s1: fmtINR(cover)+' Sum Insured',
+            s2: '₹'+fmtL(annualPrem)+' /yr approx',
+            mood: cover >= 1000000 ? 'Adequate' : 'Basic',
+            risk: v.age > 50 ? 'High' : 'Moderate',
+            narrative:'A '+labelCover+' floater policy is recommended for your '+v.members+'-member family in a Tier-'+v.city+' city.',
+            i1t:'Floater vs. Individual',i1x:'A family floater plan covers all members under one policy — usually cheaper than separate plans.',
+            i2t:'Medical Inflation',i2x:'At 12–15% medical inflation, this cover may halve in real value in 5 years. Review annually.',
+            i3t:'Super Top-Up',i3x:'Consider a ₹90 L super top-up with ₹10 L deductible for catastrophic hospitalisation at low cost.'
+          }
+        },
+        plans:[
+          {badge:'family',label:'Family Favourite',name:'Family Health Plan',cover:'₹10 L',detail:'Floater plan covering the entire family with no-claim bonus.',features:['Day-care procedures covered','No room-rent capping','Restoration benefit']},
+          {badge:'popular',label:'Best Value',name:'Individual Health Plan',cover:'₹5 L',detail:'Individual cover with comprehensive benefits.',features:['OPD cover available','Maternity add-on','Annual health check-up']},
+          {badge:'popular',label:'Premium',name:'Super Top-Up Plan',cover:'₹90 L',detail:'Kicks in after ₹10 L deductible — catastrophic cover at low cost.',features:['Highest cover per rupee','Existing policy compatible','Covers pre-existing post waiting']}
+        ]
+      },
+      car:{
+        badge:'CAR',
+        title:'Car Insurance Calculator',
+        desc:'Estimate IDV and premium for your car based on current market value and age.',
+        mode:'Car Insurance',
+        modeSub:'Calculate IDV and estimated premium for your vehicle.',
+        wealthTitle:'Insured Declared Value (IDV)',
+        wealthPill:'Car Cover',
+        controls:[
+          {id:'carval',label:'Car Current Value (ex-showroom)',min:200000,max:5000000,step:50000,value:800000,format:'currency'},
+          {id:'carage',label:'Car Age (years)',min:0,max:15,step:1,value:3,format:'years'}
+        ],
+        calc(v){
+          const depreciation = [0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75];
+          const dep = depreciation[Math.min(v.carage,15)] || 0.75;
+          const idv = Math.round(v.carval * (1 - dep) / 1000) * 1000;
+          const basePrem = Math.round(idv * 0.022 / 100) * 100;
+          const zeroDep = Math.round(basePrem * 0.18 / 100) * 100;
+          const totalPrem = basePrem + zeroDep;
+          return{
+            cover:idv, gap:idv, premium:totalPrem,
+            s1: fmtINR(idv)+' IDV',
+            s2: '₹'+fmtL(totalPrem)+' with zero-dep',
+            mood: v.carage <= 3 ? 'Excellent' : v.carage <= 7 ? 'Good' : 'Average',
+            risk: v.carage > 7 ? 'Higher' : 'Standard',
+            narrative:'Your car's IDV is ₹'+fmtINR(idv)+' after '+v.carage+' years of depreciation. Comprehensive cover with zero-dep add-on is recommended.',
+            i1t:'IDV Explained',i1x:'IDV (Insured Declared Value) is the max compensation you receive if the car is stolen or totalled.',
+            i2t:'Zero-Dep Add-On',i2x:'Zero-depreciation cover ensures claim settlement at full part replacement cost without deduction.',
+            i3t:'NCB Benefit',i3x:'No-claim bonus can reduce premiums by 20–50% over 5 years of no claims.'
+          }
+        },
+        plans:[
+          {badge:'car',label:'Best Value',name:'Zero Dep Car Plan',cover:'Full Cover',detail:'Comprehensive cover + zero depreciation add-on for new/newer cars.',features:['Zero-depreciation on parts','Roadside assistance','NCB protection']},
+          {badge:'popular',label:'Standard',name:'Comprehensive Car Plan',cover:'IDV Based',detail:'Standard comprehensive plan covering own damage and third party.',features:['Own damage cover','Third-party liability','Personal accident cover']},
+          {badge:'car',label:'Legal Must-Have',name:'Third Party Only',cover:'TP Cover',detail:'Mandatory by law — covers third-party liability and injury.',features:['Third-party property damage','Bodily injury to third party','Personal accident cover for owner']}
+        ]
+      },
+      child:{
+        badge:'CHILD',
+        title:'Child Education Planner',
+        desc:'Plan today to fund your child's education goal with the right savings target.',
+        mode:'Child Education Planner',
+        modeSub:'Estimate the future cost of education and the monthly savings required.',
+        wealthTitle:'Future Education Cost',
+        wealthPill:'Goal Tracker',
+        controls:[
+          {id:'childage',label:'Child\'s Current Age',min:0,max:17,step:1,value:5,format:'years'},
+          {id:'goalage',label:'Goal Age (College Entry)',min:16,max:25,step:1,value:18,format:'years'},
+          {id:'currentcost',label:'Current Education Cost',min:200000,max:10000000,step:100000,value:1500000,format:'currency'},
+          {id:'inflation',label:'Education Inflation %',min:5,max:20,step:1,value:10,format:'percent'}
+        ],
+        calc(v){
+          const years = Math.max(v.goalage - v.childage, 1);
+          const futureCost = v.currentcost * Math.pow(1 + v.inflation/100, years);
+          const monthlySavings = futureCost / ((Math.pow(1+0.12/12, years*12) - 1) / (0.12/12));
+          const annualPrem = Math.round(monthlySavings * 12 / 1000) * 1000;
+          return{
+            cover: futureCost, gap: futureCost, premium: annualPrem,
+            s1: fmtINR(futureCost)+' needed',
+            s2: '₹'+fmtL(Math.round(monthlySavings))+' /mo savings',
+            mood: years > 10 ? 'Great Start' : years > 5 ? 'On Track' : 'Urgent',
+            risk: v.inflation > 12 ? 'High' : 'Moderate',
+            narrative:'In '+years+' years, today\'s education cost of '+fmtINR(v.currentcost)+' will grow to '+fmtINR(Math.round(futureCost))+' at '+v.inflation+'% inflation.',
+            i1t:'Inflation Impact',i1x:'Education inflates faster than general CPI — budget for '+v.inflation+'% or more per year.',
+            i2t:'Child Plan',i2x:'A dedicated child ULIP or endowment plan locks in cover and savings in one product.',
+            i3t:'Time is Key',i3x:'Starting early can halve the monthly savings needed. Begin immediately if you haven\'t.'
+          }
+        },
+        plans:[
+          {badge:'popular',label:'Most Popular',name:'Child Education Plan',cover:'Goal Linked',detail:'ULIP-based child plan — invest now, collect at college entry.',features:['Waiver of premium on parent death','Corpus guaranteed at maturity','Partial withdrawal allowed']},
+          {badge:'family',label:'Safe & Steady',name:'Endowment Child Plan',cover:'Guaranteed',detail:'Traditional plan with guaranteed maturity benefit and bonus.',features:['Guaranteed sum assured','Annual bonus addition','No market risk']},
+          {badge:'car',label:'Flexible',name:'SIP + Term Combo',cover:'Market Linked',detail:'Invest in SIP for growth + term insurance for protection.',features:['Higher potential returns','Full life cover for parent','Flexible investment amount']}
+        ]
+      }
+    };
+
+    /* ═══════════ STATE ═══════════ */
+    let activeCalc = 'term';
+    let vals = {};
+
+    /* ═══════════ RENDER CONTROLS ═══════════ */
+    function renderControls(key){
+      const c = CALCS[key];
+      let html = '';
+      (c.controls||[]).forEach(ctrl=>{
+        const fmtd = formatVal(ctrl.id, ctrl.value, ctrl.format);
+        html += `<div class="control-group" id="cg_${ctrl.id}">
+          <div class="control-top">
+            <div class="control-name">${ctrl.label}</div>
+            <div class="control-value" id="cv_${ctrl.id}">${fmtd}</div>
+          </div>
+          <input type="range" min="${ctrl.min}" max="${ctrl.max}" step="${ctrl.step}" value="${ctrl.value}"
+            oninput="onSlider('${ctrl.id}','${ctrl.format}',this.value)">
+        </div>`;
+        vals[ctrl.id] = ctrl.value;
+      });
+      document.getElementById('dynamicControls').innerHTML = html;
+    }
+
+    function formatVal(id, v, fmt){
+      v = +v;
+      if(fmt==='currency') return fmtINR(v);
+      if(fmt==='percent')  return v+'%';
+      if(fmt==='years')    return v+' yrs';
+      if(fmt==='count')    return v+' members';
+      if(fmt==='tier')     return 'Tier '+v+(v===1?' (Metro)':v===2?' (Tier 2)':' (Small City)');
+      return v;
+    }
+
+    function onSlider(id, fmt, v){
+      vals[id] = +v;
+      const el = document.getElementById('cv_'+id);
+      if(el) el.textContent = formatVal(id, v, fmt);
+      calculate();
+    }
+
+    /* ═══════════ CALCULATE & UPDATE ═══════════ */
+    function calculate(){
+      const c = CALCS[activeCalc];
+      const r = c.calc(vals);
+
+      document.getElementById('topCover').textContent    = fmtINR(Math.round(r.cover));
+      document.getElementById('topGap').textContent      = fmtINR(Math.round(r.gap));
+      document.getElementById('topPremium').textContent  = fmtINR(Math.round(r.premium));
+      document.getElementById('wealthNumber').textContent= fmtINR(Math.round(r.cover));
+      document.getElementById('wealthNarrative').textContent = r.narrative;
+      document.getElementById('stat1Value').textContent  = r.s1;
+      document.getElementById('stat2Value').textContent  = r.s2;
+      document.getElementById('miniMood').textContent    = r.mood;
+      document.getElementById('miniInsight').textContent = r.risk;
+      document.getElementById('insight1Title').textContent = r.i1t;
+      document.getElementById('insight1Text').textContent  = r.i1x;
+      document.getElementById('insight2Title').textContent = r.i2t;
+      document.getElementById('insight2Text').textContent  = r.i2x;
+      document.getElementById('insight3Title').textContent = r.i3t;
+      document.getElementById('insight3Text').textContent  = r.i3x;
+    }
+
+    /* ═══════════ SWITCH CALC ═══════════ */
+    function switchCalc(key, tabEl){
+      activeCalc = key;
+      vals = {};
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      if(tabEl) tabEl.classList.add('active');
+      const c = CALCS[key];
+      document.getElementById('modeHeadline').textContent = c.mode;
+      document.getElementById('modeSub').textContent      = c.modeSub;
+      document.getElementById('panelTitle').textContent   = c.title;
+      document.getElementById('panelDesc').textContent    = c.desc;
+      document.getElementById('panelBadge').textContent   = c.badge;
+      document.getElementById('wealthTitle').textContent  = c.wealthTitle;
+      document.getElementById('wealthPill').textContent   = c.wealthPill;
+      document.getElementById('stat1Label').textContent   = 'Key Output 1';
+      document.getElementById('stat2Label').textContent   = 'Key Output 2';
+      renderControls(key);
+      renderPlans(key);
+      calculate();
+    }
+
+    /* ═══════════ RENDER RECOMMENDED PLANS ═══════════ */
+    function renderPlans(key){
+      const plans = CALCS[key].plans || [];
+      const grid = document.getElementById('recPlansGrid');
+      let html = '';
+      plans.forEach(p=>{
+        const waMsg = encodeURIComponent('Hi, I am interested in the '+p.name+' you recommended');
+        html += `<div class="plan-rec">
+          <div class="plan-badge ${p.badge}">${p.label}</div>
+          <div class="plan-rec-name">${p.name}</div>
+          <div class="plan-rec-cover">${p.cover}</div>
+          <div class="plan-rec-detail">${p.detail}</div>
+          <ul class="plan-features">
+            ${p.features.map(f=>`<li>${f}</li>`).join('')}
+          </ul>
+          <button class="btn wa" onclick="wa('Hi, I am interested in the ${p.name}')" style="width:100%;justify-content:center">
+            📲 Get This Plan
+          </button>
+        </div>`;
+      });
+      grid.innerHTML = html;
+    }
+
+    /* ═══════════ AI ADVISOR ═══════════ */
+    function runAI(){
+      const age    = +document.querySelector('#aiSection input[type=range]:nth-of-type(1)').value || 30;
+      const income = +document.querySelector('#aiSection input[type=range]:nth-of-type(2)').value || 600000;
+      const family = +document.querySelector('#aiSection input[type=range]:nth-of-type(3)').value || 3;
+
+      const termCover  = income * (age < 35 ? 20 : age < 45 ? 15 : 10);
+      const healthBase = family <= 2 ? 500000 : family <= 4 ? 1000000 : 2000000;
+      const healthCover = age > 45 ? healthBase * 1.5 : healthBase;
+      const carPlan    = income > 800000 ? 'Zero Dep + Comprehensive' : 'Comprehensive';
+      const budget     = Math.round((termCover * 0.004 + healthCover * 0.025) / 1000) * 1000;
+
+      document.getElementById('aiTermCover').textContent   = fmtINR(termCover);
+      document.getElementById('aiHealthCover').textContent = fmtINR(healthCover);
+      document.getElementById('aiCarPlan').textContent     = carPlan;
+      document.getElementById('aiPremBudget').textContent  = fmtINR(budget);
+    }
+
+    /* ═══════════ POPUPS ═══════════ */
+    let autoPopupShown = false;
+    setTimeout(()=>{
+      if(!autoPopupShown){
+        autoPopupShown = true;
+        document.getElementById('autoPopup').classList.add('show');
+      }
+    }, 20000);
+
+    let exitShown = false;
+    document.addEventListener('mouseleave', e=>{
+      if(e.clientY < 10 && !exitShown && !autoPopupShown){
+        exitShown = true;
+        document.getElementById('exitPopup').classList.add('show');
+      }
+    });
+
+    /* ═══════════ INIT ═══════════ */
+    switchCalc('term', document.querySelector('.tab.active'));
+    runAI();
+
+    /* ═══════════ NAVBAR (same as investment.html) ═══════════ */
+    if(typeof loadNavbar === 'function') loadNavbar();
+    else{
+      fetch('navbar.html')
+        .then(r=>r.ok?r.text():null)
+        .then(html=>{if(html){document.getElementById('navbar').innerHTML=html;if(typeof setActiveLink==='function')setActiveLink()}})
+        .catch(()=>{});
+    }
+  </script>
+</body>
+</html>
