@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="css/navbar.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crypto Investment Tools — investpercent</title>
+  <meta name="description" content="Premium crypto dashboard with SIP, DCA, profit/loss, tax, staking, mining calculators and AI advisor for digital assets." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --bg:#060915;
+      --bg2:#0b1224;
+      --panel:#0f1830;
+      --panel2:#121e3c;
+      --soft:#18284d;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.13);
+      --text:#f7fbff;
+      --muted:#9da9c6;
+      --cyan:#00d4ff;
+      --blue:#4fa3ff;
+      --violet:#7b61ff;
+      --green:#00e676;
+      --gold:#ffd76a;
+      --red:#ff607d;
+      --orange:#ff9f40;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --shadow2:0 12px 34px rgba(0,0,0,.24);
+      --grad:linear-gradient(135deg,#00d4ff 0%, #4fa3ff 42%, #7b61ff 100%);
+      --hero:
+        radial-gradient(circle at 16% 20%, rgba(0,212,255,.18), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(123,97,255,.18), transparent 24%),
+        linear-gradient(180deg,#070c18 0%,#091224 100%);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(0,212,255,.06), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(123,97,255,.08), transparent 22%),
+        var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.55), transparent 92%);
+      z-index:0;
+    }
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+    .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:12px 14px 24px}
+
+    /* HERO */
+    .hero{
+      background:var(--hero);border:1px solid var(--line);border-radius:24px;padding:18px 22px;
+      box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:14px
+    }
+    .hero::after{
+      content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle, rgba(0,212,255,.18), transparent 62%);
+      filter:blur(14px);pointer-events:none
+    }
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+    .hero-copy h1{
+      margin:0;font-family:Poppins,sans-serif;font-size:clamp(26px,3.5vw,42px);
+      line-height:1.1;letter-spacing:-.045em;max-width:840px
+    }
+    .hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy p{margin:8px 0 0;color:var(--muted);font-size:15px;max-width:760px;line-height:1.6}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{border:none;cursor:pointer;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:800;transition:.2s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .btn.danger{background:rgba(255,96,125,.12);color:var(--red);border:1px solid rgba(255,96,125,.2)}
+
+    /* SECTION HEADERS */
+    .section-header{margin:28px 0 14px;display:flex;align-items:center;gap:12px}
+    .section-title{font-family:Poppins,sans-serif;font-size:clamp(18px,2.2vw,26px);font-weight:800;letter-spacing:-.04em}
+    .section-title .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .section-badge{padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:12px;font-weight:800;color:var(--muted)}
+
+    /* PANEL */
+    .panel{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+    }
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
+    .panel-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+    .badge{align-self:flex-start;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
+
+    /* GRID LAYOUTS */
+    .calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:14px}
+    .calc-card{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow2);position:relative;overflow:hidden
+    }
+    .calc-card::after{
+      content:"";position:absolute;inset:auto -60px -60px auto;width:180px;height:180px;border-radius:50%;
+      background:radial-gradient(circle, rgba(123,97,255,.1), transparent 60%);pointer-events:none
+    }
+    .calc-title{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+    .calc-subtitle{color:var(--muted);font-size:13px;margin-bottom:16px;line-height:1.4}
+
+    /* INPUTS */
+    .field{margin-bottom:12px}
+    .field label{display:block;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+    .field input,.field select{
+      width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;
+      padding:10px 14px;color:var(--text);font-size:14px;font-weight:600;outline:none;transition:.2s ease
+    }
+    .field input:focus,.field select:focus{border-color:rgba(0,212,255,.4);background:rgba(0,212,255,.05)}
+    .field select option{background:#0b1224;color:var(--text)}
+    input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
+    input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-webkit-slider-thumb{
+      appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
+      border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg, rgba(0,212,255,.7), rgba(123,97,255,.65))}
+    input[type=range]::-moz-range-thumb{
+      width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+    }
+    .range-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .range-label{font-size:13px;font-weight:700;color:var(--text)}
+    .range-value{font-size:13px;font-weight:800;color:var(--cyan)}
+
+    /* RESULT BOX */
+    .result-box{
+      margin-top:14px;padding:14px;border-radius:16px;
+      background:radial-gradient(circle at top left, rgba(0,212,255,.1), transparent 40%), rgba(255,255,255,.03);
+      border:1px solid rgba(0,212,255,.15)
+    }
+    .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .result-item .k{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+    .result-item .v{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .v.cyan{color:var(--cyan)} .v.green{color:var(--green)} .v.gold{color:var(--gold)} .v.red{color:var(--red)} .v.orange{color:var(--orange)}
+    .result-full{grid-column:1/-1}
+    .calc-btn{
+      width:100%;margin-top:12px;padding:12px;border-radius:14px;border:none;cursor:pointer;
+      background:var(--grad);color:#071120;font-size:14px;font-weight:800;transition:.2s ease
+    }
+    .calc-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,212,255,.2)}
+
+    /* LIVE CRYPTO CARDS */
+    .crypto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:14px}
+    .crypto-card{
+      background:linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:22px;padding:18px;position:relative;overflow:hidden;
+      transition:.2s ease;cursor:default
+    }
+    .crypto-card:hover{border-color:var(--line2);transform:translateY(-2px)}
+    .crypto-card::before{
+      content:"";position:absolute;top:-30%;right:-15%;width:140px;height:140px;
+      border-radius:50%;background:radial-gradient(circle, rgba(255,255,255,.06), transparent 60%);pointer-events:none
+    }
+    .crypto-symbol{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+    .crypto-name{font-size:15px;font-weight:800;margin-bottom:12px}
+    .crypto-price{font-size:clamp(20px,2.5vw,28px);font-weight:800;letter-spacing:-.04em;margin-bottom:6px}
+    .crypto-change{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700}
+    .crypto-change.up{color:var(--green)}
+    .crypto-change.down{color:var(--red)}
+    .arrow-up{display:inline-block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid var(--green)}
+    .arrow-down{display:inline-block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid var(--red)}
+    .crypto-cap{margin-top:8px;color:var(--muted);font-size:12px}
+
+    /* CHART */
+    .chart-card{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px;
+      padding:18px;margin-bottom:14px;display:flex;flex-direction:column
+    }
+    .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+    .chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
+    .legend{display:flex;gap:12px;flex-wrap:wrap}
+    .legend-item{
+      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px
+    }
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .chart-wrap{position:relative;min-height:280px;margin-top:8px}
+    .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+
+    /* AI ADVISOR */
+    .advisor-section{
+      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.12), transparent 40%),
+        linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;padding:22px;margin-bottom:14px;box-shadow:var(--shadow)
+    }
+    .advisor-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .advisor-output{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:18px
+    }
+    .advisor-output-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:14px}
+    .allocation-bar{margin-bottom:14px}
+    .alloc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .alloc-label{font-size:13px;font-weight:700;color:var(--muted);min-width:80px}
+    .alloc-track{flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+    .alloc-fill{height:100%;border-radius:999px;transition:.5s ease}
+    .alloc-pct{font-size:13px;font-weight:800;min-width:36px;text-align:right}
+    .strategy-msg{
+      margin-top:14px;padding:14px;border-radius:14px;
+      background:radial-gradient(circle at top left, rgba(0,212,255,.1), transparent 40%), rgba(255,255,255,.03);
+      border:1px solid rgba(0,212,255,.15);font-size:14px;color:#d8e2ff;line-height:1.6
+    }
+    .risk-badge{
+      display:inline-block;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:800;margin-top:10px
+    }
+    .risk-low{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.25)}
+    .risk-medium{background:rgba(255,212,112,.12);color:var(--gold);border:1px solid rgba(255,212,112,.25)}
+    .risk-high{background:rgba(255,96,125,.12);color:var(--red);border:1px solid rgba(255,96,125,.25)}
+
+    /* LEARNING */
+    .faq-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+    .faq-item{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+    .faq-q{
+      display:flex;align-items:center;justify-content:space-between;padding:16px 18px;cursor:pointer;
+      font-size:15px;font-weight:700;transition:.2s ease
+    }
+    .faq-q:hover{background:rgba(255,255,255,.03)}
+    .faq-icon{font-size:20px;color:var(--cyan);transition:.3s ease;flex-shrink:0}
+    .faq-a{
+      max-height:0;overflow:hidden;transition:.35s ease;
+      padding:0 18px;color:var(--muted);font-size:14px;line-height:1.7
+    }
+    .faq-a.open{max-height:400px;padding:0 18px 16px}
+    .faq-icon.open{transform:rotate(45deg)}
+
+    /* LEAD FORM */
+    .lead-section{
+      background:radial-gradient(circle at 80% 20%, rgba(123,97,255,.15), transparent 40%),
+        linear-gradient(180deg, rgba(15,24,48,.97), rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:28px;padding:28px;margin-bottom:14px;
+      display:flex;gap:32px;align-items:center;flex-wrap:wrap;box-shadow:var(--shadow)
+    }
+    .lead-copy{flex:1;min-width:260px}
+    .lead-copy h3{margin:0 0 10px;font-family:Poppins,sans-serif;font-size:clamp(18px,2vw,26px);font-weight:800;letter-spacing:-.04em}
+    .lead-copy p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+    .lead-form{flex:1;min-width:260px;display:flex;flex-direction:column;gap:12px}
+    .lead-input{
+      width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;
+      padding:12px 16px;color:var(--text);font-size:14px;font-weight:600;outline:none;transition:.2s ease
+    }
+    .lead-input:focus{border-color:rgba(0,212,255,.4);background:rgba(0,212,255,.05)}
+    .lead-input::placeholder{color:rgba(157,169,198,.5)}
+
+    /* POPUP */
+    .popup-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;display:flex;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:.3s ease
+    }
+    .popup-overlay.show{opacity:1;pointer-events:all}
+    .popup{
+      background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:32px;max-width:400px;
+      width:90%;text-align:center;transform:scale(.9);transition:.3s ease
+    }
+    .popup-overlay.show .popup{transform:scale(1)}
+    .popup h3{margin:0 0 10px;font-family:Poppins,sans-serif;font-size:22px;font-weight:800}
+    .popup p{color:var(--muted);font-size:14px;margin:0 0 20px;line-height:1.6}
+    .popup-icon{font-size:52px;margin-bottom:16px}
+
+    /* MINI GRID */
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+    .mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+    .mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
+
+    /* RESPONSIVE */
+    @media(max-width:1100px){
+      .advisor-grid{grid-template-columns:1fr}
+      .charts-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:760px){
+      .hero{padding:14px}
+      .hero-copy h1{font-size:22px}
+      .hero-copy p{font-size:13px}
+      .btn{padding:8px 10px;font-size:13px}
+      .calc-grid{grid-template-columns:1fr}
+      .result-grid{grid-template-columns:1fr}
+      .crypto-grid{grid-template-columns:1fr 1fr}
+      .lead-section{flex-direction:column;gap:20px}
+      .advisor-grid{grid-template-columns:1fr}
+      .charts-grid{grid-template-columns:1fr}
+      .page{padding:10px 10px 20px}
+      .mini-grid{grid-template-columns:1fr}
+      body{overflow-x:hidden}
+    }
+    @media(max-width:480px){
+      .crypto-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div id="navbar"></div>
+
+  <!-- ─── SECTION 1: HERO ─── -->
+  <section class="hero">
+    <div class="hero-top">
+      <div class="hero-copy">
+        <h1>Crypto <span class="grad">Investment Tools</span></h1>
+        <p>Analyze, Track, Predict &amp; Grow your Digital Assets — all in one premium dashboard.</p>
+      </div>
+      <div class="hero-cta">
+        <button class="btn primary" onclick="scrollTo({top:document.getElementById('calculators').offsetTop-20,behavior:'smooth'})">Analyze Portfolio</button>
+        <button class="btn secondary" onclick="scrollTo({top:document.getElementById('ai-advisor').offsetTop-20,behavior:'smooth'})">AI Crypto Advisor</button>
+      </div>
+    </div>
+    <div class="mini-grid" style="margin-top:0">
+      <div class="mini"><div class="k">Market</div><div class="v" style="color:var(--green)">Bull Run 2025</div></div>
+      <div class="mini"><div class="k">BTC Dominance</div><div class="v" style="color:var(--cyan)">54.2%</div></div>
+      <div class="mini"><div class="k">Total Market Cap</div><div class="v" style="color:var(--gold)">$2.41 T</div></div>
+      <div class="mini"><div class="k">Fear &amp; Greed</div><div class="v" style="color:var(--orange)">Greed (72)</div></div>
+    </div>
+  </section>
+
+  <!-- ─── SECTION 2: CRYPTO CALCULATORS ─── -->
+  <div id="calculators"></div>
+  <div class="section-header">
+    <div class="section-title">Crypto <span class="grad">Calculators</span></div>
+    <div class="section-badge">5 TOOLS</div>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- 1. Crypto SIP Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">Crypto SIP Calculator</div>
+      <div class="calc-subtitle">Invest a fixed amount monthly and watch it compound.</div>
+      <div class="field"><label>Monthly Investment (₹)</label><input type="number" id="csip-monthly" value="5000" min="100" oninput="calcCryptoSIP()"></div>
+      <div class="field"><label>Duration (Years)</label><input type="number" id="csip-years" value="5" min="1" max="40" oninput="calcCryptoSIP()"></div>
+      <div class="field"><label>Expected Annual Return (%)</label><input type="number" id="csip-rate" value="40" min="1" max="500" oninput="calcCryptoSIP()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Total Invested</div><div class="v cyan" id="csip-invested">₹3,00,000</div></div>
+          <div class="result-item"><div class="k">Future Value</div><div class="v green" id="csip-value">₹18,43,256</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Lump Sum Crypto Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">Lump Sum Crypto Calculator</div>
+      <div class="calc-subtitle">One-time crypto buy and hold projection.</div>
+      <div class="field"><label>Investment Amount (₹)</label><input type="number" id="clump-amount" value="100000" min="100" oninput="calcCryptoLump()"></div>
+      <div class="field"><label>Duration (Years)</label><input type="number" id="clump-years" value="5" min="1" max="40" oninput="calcCryptoLump()"></div>
+      <div class="field"><label>Expected Annual Return (%)</label><input type="number" id="clump-rate" value="50" min="1" max="1000" oninput="calcCryptoLump()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Invested</div><div class="v cyan" id="clump-invested">₹1,00,000</div></div>
+          <div class="result-item"><div class="k">Future Value</div><div class="v green" id="clump-value">₹7,59,375</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. DCA Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">DCA Calculator</div>
+      <div class="calc-subtitle">Dollar Cost Averaging — reduce risk with periodic buys.</div>
+      <div class="field"><label>Monthly Buy (₹)</label><input type="number" id="dca-monthly" value="5000" min="100" oninput="calcDCA()"></div>
+      <div class="field"><label>Duration (Months)</label><input type="number" id="dca-months" value="24" min="1" max="240" oninput="calcDCA()"></div>
+      <div class="field"><label>Price Variation Simulated (%)</label><input type="number" id="dca-variation" value="20" min="0" max="100" oninput="calcDCA()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Avg Cost Basis</div><div class="v cyan" id="dca-avg">₹4,350</div></div>
+          <div class="result-item"><div class="k">Total Value</div><div class="v green" id="dca-value">₹1,32,000</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Profit / Loss Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">Profit / Loss Calculator</div>
+      <div class="calc-subtitle">Calculate exact gains or losses from a crypto trade.</div>
+      <div class="field"><label>Buy Price (₹)</label><input type="number" id="pl-buy" value="2000000" min="1" oninput="calcPL()"></div>
+      <div class="field"><label>Sell Price (₹)</label><input type="number" id="pl-sell" value="3500000" min="1" oninput="calcPL()"></div>
+      <div class="field"><label>Quantity (coins)</label><input type="number" id="pl-qty" value="0.5" min="0.0001" step="0.0001" oninput="calcPL()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Profit / Loss</div><div class="v green" id="pl-profit">₹7,50,000</div></div>
+          <div class="result-item"><div class="k">Return %</div><div class="v gold" id="pl-return">+75.00%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Crypto Tax Calculator (India) -->
+    <div class="calc-card">
+      <div class="calc-title">Crypto Tax Calculator (India)</div>
+      <div class="calc-subtitle">Flat 30% tax on crypto profit as per Indian IT Act.</div>
+      <div class="field"><label>Crypto Profit (₹)</label><input type="number" id="tax-profit" value="100000" min="0" oninput="calcTax()"></div>
+      <div class="field"><label>TDS Deducted Already (₹)</label><input type="number" id="tax-tds" value="0" min="0" oninput="calcTax()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Tax @30%</div><div class="v red" id="tax-amount">₹30,000</div></div>
+          <div class="result-item"><div class="k">Net After Tax</div><div class="v green" id="tax-net">₹70,000</div></div>
+          <div class="result-item result-full"><div class="k">Surcharge + Cess (~4%)</div><div class="v orange" id="tax-cess">₹1,200</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── SECTION 3: ADVANCED ANALYTICS ─── -->
+  <div class="section-header">
+    <div class="section-title">Advanced <span class="grad">Analytics</span></div>
+    <div class="section-badge">5 TOOLS</div>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- 6. Risk Score Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">Risk Score Calculator</div>
+      <div class="calc-subtitle">Estimate portfolio risk based on asset volatility.</div>
+      <div class="field"><label>30-Day Volatility (%)</label><input type="number" id="risk-vol" value="45" min="0" max="200" oninput="calcRisk()"></div>
+      <div class="field"><label>Leverage Used (1x = no leverage)</label><input type="number" id="risk-lev" value="1" min="1" max="10" step="0.1" oninput="calcRisk()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Risk Score</div><div class="v orange" id="risk-score">4.5 / 10</div></div>
+          <div class="result-item"><div class="k">Risk Level</div><div class="v gold" id="risk-level">MEDIUM</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Volatility Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">Volatility Calculator</div>
+      <div class="calc-subtitle">Measure expected price swing in a given period.</div>
+      <div class="field"><label>Daily Volatility (%)</label><input type="number" id="vol-daily" value="3" min="0.1" max="50" step="0.1" oninput="calcVolatility()"></div>
+      <div class="field"><label>Period (Days)</label><input type="number" id="vol-days" value="30" min="1" max="365" oninput="calcVolatility()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Annualised Volatility</div><div class="v cyan" id="vol-annual">56.57%</div></div>
+          <div class="result-item"><div class="k">Period Volatility</div><div class="v orange" id="vol-period">16.43%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Sharpe Ratio -->
+    <div class="calc-card">
+      <div class="calc-title">Sharpe Ratio Calculator</div>
+      <div class="calc-subtitle">Measure return per unit of risk taken.</div>
+      <div class="field"><label>Portfolio Return (%)</label><input type="number" id="sharpe-ret" value="80" min="0" max="1000" oninput="calcSharpe()"></div>
+      <div class="field"><label>Risk-Free Rate (%)</label><input type="number" id="sharpe-rf" value="7" min="0" max="30" step="0.1" oninput="calcSharpe()"></div>
+      <div class="field"><label>Portfolio Std Dev (%)</label><input type="number" id="sharpe-std" value="45" min="1" max="300" oninput="calcSharpe()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Sharpe Ratio</div><div class="v green" id="sharpe-val">1.62</div></div>
+          <div class="result-item"><div class="k">Rating</div><div class="v gold" id="sharpe-rating">Good</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Drawdown Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">Drawdown Calculator</div>
+      <div class="calc-subtitle">Calculate max loss from peak to trough.</div>
+      <div class="field"><label>Peak Portfolio Value (₹)</label><input type="number" id="dd-peak" value="500000" min="100" oninput="calcDrawdown()"></div>
+      <div class="field"><label>Trough Portfolio Value (₹)</label><input type="number" id="dd-trough" value="250000" min="100" oninput="calcDrawdown()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Drawdown</div><div class="v red" id="dd-pct">-50.00%</div></div>
+          <div class="result-item"><div class="k">Loss Amount</div><div class="v red" id="dd-loss">₹2,50,000</div></div>
+          <div class="result-item result-full"><div class="k">Recovery Needed to Break Even</div><div class="v orange" id="dd-recovery">+100.00%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. Break-even Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">Break-even Calculator</div>
+      <div class="calc-subtitle">Find the price at which you neither profit nor lose.</div>
+      <div class="field"><label>Buy Price (₹)</label><input type="number" id="be-buy" value="2000000" min="1" oninput="calcBreakEven()"></div>
+      <div class="field"><label>Trading Fee (%)</label><input type="number" id="be-fee" value="0.1" min="0" max="10" step="0.01" oninput="calcBreakEven()"></div>
+      <div class="field"><label>Tax Rate (%)</label><input type="number" id="be-tax" value="30" min="0" max="60" step="1" oninput="calcBreakEven()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Break-even Price</div><div class="v gold" id="be-price">₹20,05,400</div></div>
+          <div class="result-item"><div class="k">Price to Cover Tax</div><div class="v cyan" id="be-taxprice">₹21,44,186</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── SECTION 4: MINING & STAKING ─── -->
+  <div class="section-header">
+    <div class="section-title">Mining &amp; <span class="grad">Staking</span></div>
+    <div class="section-badge">3 TOOLS</div>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- 11. Mining Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">Mining Calculator</div>
+      <div class="calc-subtitle">Estimate monthly mining profitability.</div>
+      <div class="field"><label>Hash Rate (TH/s)</label><input type="number" id="mine-hash" value="100" min="1" oninput="calcMining()"></div>
+      <div class="field"><label>Electricity Cost (₹/kWh)</label><input type="number" id="mine-elec" value="6" min="0.1" step="0.1" oninput="calcMining()"></div>
+      <div class="field"><label>Power Usage (Watts)</label><input type="number" id="mine-power" value="3400" min="100" oninput="calcMining()"></div>
+      <div class="field"><label>BTC Price (₹)</label><input type="number" id="mine-btcprice" value="7000000" min="100" oninput="calcMining()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Monthly Revenue</div><div class="v green" id="mine-revenue">₹12,430</div></div>
+          <div class="result-item"><div class="k">Electricity Cost/Mo</div><div class="v red" id="mine-cost">₹14,688</div></div>
+          <div class="result-item result-full"><div class="k">Net Profit / Month</div><div class="v" id="mine-profit" style="color:var(--red)">-₹2,258</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. Staking Calculator -->
+    <div class="calc-card">
+      <div class="calc-title">Staking Calculator</div>
+      <div class="calc-subtitle">Calculate rewards from staking your crypto assets.</div>
+      <div class="field"><label>Staked Amount (₹)</label><input type="number" id="stake-amount" value="100000" min="100" oninput="calcStaking()"></div>
+      <div class="field"><label>APY (%)</label><input type="number" id="stake-apy" value="12" min="0.1" max="500" step="0.1" oninput="calcStaking()"></div>
+      <div class="field"><label>Duration (Months)</label><input type="number" id="stake-months" value="12" min="1" max="60" oninput="calcStaking()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">Staking Rewards</div><div class="v green" id="stake-rewards">₹12,000</div></div>
+          <div class="result-item"><div class="k">Total Value</div><div class="v cyan" id="stake-total">₹1,12,000</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. APY vs APR Converter -->
+    <div class="calc-card">
+      <div class="calc-title">APY ↔ APR Converter</div>
+      <div class="calc-subtitle">Convert between Annual Percentage Yield and Rate.</div>
+      <div class="field"><label>Enter APR (%)</label><input type="number" id="apy-apr" value="11.39" min="0.01" step="0.01" oninput="calcAPY()"></div>
+      <div class="field"><label>Compounding Frequency</label>
+        <select id="apy-freq" onchange="calcAPY()">
+          <option value="12">Monthly (12x)</option>
+          <option value="52">Weekly (52x)</option>
+          <option value="365">Daily (365x)</option>
+          <option value="4">Quarterly (4x)</option>
+          <option value="2">Semi-annually (2x)</option>
+        </select>
+      </div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">APY</div><div class="v green" id="apy-val">12.00%</div></div>
+          <div class="result-item"><div class="k">Effective Daily Rate</div><div class="v cyan" id="apy-daily">0.0312%</div></div>
+        </div>
+      </div>
+      <div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px">
+        <div class="field"><label>OR Enter APY (%) to get APR</label><input type="number" id="apr-from-apy" value="12" min="0.01" step="0.01" oninput="calcAPR()"></div>
+        <div class="result-box" style="margin-top:8px">
+          <div class="result-item"><div class="k">Equivalent APR</div><div class="v gold" id="apr-val">11.39%</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── SECTION 5: CONVERSION TOOLS ─── -->
+  <div class="section-header">
+    <div class="section-title">Conversion <span class="grad">Tools</span></div>
+    <div class="section-badge">2 TOOLS</div>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- 14. Crypto to INR Converter -->
+    <div class="calc-card">
+      <div class="calc-title">Crypto to INR Converter</div>
+      <div class="calc-subtitle">Convert crypto amounts to Indian Rupees using reference prices.</div>
+      <div class="field"><label>Select Coin</label>
+        <select id="conv-coin" onchange="calcConvert()">
+          <option value="7000000">Bitcoin (BTC)</option>
+          <option value="350000">Ethereum (ETH)</option>
+          <option value="18000">Solana (SOL)</option>
+          <option value="35">Cardano (ADA)</option>
+          <option value="75">XRP</option>
+          <option value="700">BNB</option>
+          <option value="10000">Avalanche (AVAX)</option>
+          <option value="2000">Polygon (MATIC)</option>
+        </select>
+      </div>
+      <div class="field"><label>Amount (in coin)</label><input type="number" id="conv-amount" value="0.5" min="0.00001" step="0.00001" oninput="calcConvert()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item result-full"><div class="k">Value in INR</div><div class="v green" id="conv-inr">₹35,00,000</div></div>
+        </div>
+      </div>
+      <p style="color:var(--muted);font-size:11px;margin-top:8px;line-height:1.5">* Reference prices as of April 2025. Update via live API integration.</p>
+    </div>
+
+    <!-- 15. Portfolio Allocation Tool -->
+    <div class="calc-card">
+      <div class="calc-title">Portfolio Allocation Tool</div>
+      <div class="calc-subtitle">See how your total investment distributes across coins.</div>
+      <div class="field"><label>Total Portfolio (₹)</label><input type="number" id="alloc-total" value="500000" min="1000" oninput="calcAllocation()"></div>
+      <div class="field"><label>BTC Allocation (%)</label><input type="number" id="alloc-btc" value="50" min="0" max="100" oninput="calcAllocation()"></div>
+      <div class="field"><label>ETH Allocation (%)</label><input type="number" id="alloc-eth" value="30" min="0" max="100" oninput="calcAllocation()"></div>
+      <div class="field"><label>Altcoins (%)</label><input type="number" id="alloc-alt" value="20" min="0" max="100" oninput="calcAllocation()"></div>
+      <div class="result-box">
+        <div class="result-grid">
+          <div class="result-item"><div class="k">BTC (₹)</div><div class="v cyan" id="alloc-btc-val">₹2,50,000</div></div>
+          <div class="result-item"><div class="k">ETH (₹)</div><div class="v violet" style="color:var(--violet)" id="alloc-eth-val">₹1,50,000</div></div>
+          <div class="result-item result-full"><div class="k">Altcoins (₹)</div><div class="v gold" id="alloc-alt-val">₹1,00,000</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── SECTION 6: LIVE CRYPTO DASHBOARD ─── -->
+  <div class="section-header">
+    <div class="section-title">Live Crypto <span class="grad">Dashboard</span></div>
+    <div class="section-badge">STATIC · API READY</div>
+  </div>
+
+  <div class="crypto-grid">
+    <div class="crypto-card">
+      <div class="crypto-symbol">BTC</div>
+      <div class="crypto-name">Bitcoin</div>
+      <div class="crypto-price" style="color:var(--gold)">₹70,24,350</div>
+      <div class="crypto-change up"><span class="arrow-up"></span> +3.24%</div>
+      <div class="crypto-cap">Market Cap: $1.38T</div>
+    </div>
+    <div class="crypto-card">
+      <div class="crypto-symbol">ETH</div>
+      <div class="crypto-name">Ethereum</div>
+      <div class="crypto-price" style="color:var(--violet)">₹3,51,840</div>
+      <div class="crypto-change up"><span class="arrow-up"></span> +1.87%</div>
+      <div class="crypto-cap">Market Cap: $422B</div>
+    </div>
+    <div class="crypto-card">
+      <div class="crypto-symbol">SOL</div>
+      <div class="crypto-name">Solana</div>
+      <div class="crypto-price" style="color:var(--cyan)">₹18,240</div>
+      <div class="crypto-change down"><span class="arrow-down"></span> -0.92%</div>
+      <div class="crypto-cap">Market Cap: $79B</div>
+    </div>
+    <div class="crypto-card">
+      <div class="crypto-symbol">ADA</div>
+      <div class="crypto-name">Cardano</div>
+      <div class="crypto-price" style="color:var(--blue)">₹38.45</div>
+      <div class="crypto-change up"><span class="arrow-up"></span> +5.13%</div>
+      <div class="crypto-cap">Market Cap: $13.6B</div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 7: CHARTS ─── -->
+  <div class="section-header">
+    <div class="section-title">Portfolio <span class="grad">Charts</span></div>
+    <div class="section-badge">3 CHARTS</div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <div>
+        <div class="chart-title">Portfolio Growth Chart</div>
+        <div class="chart-meta">Year-by-year crypto SIP compounding vs capital invested.</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="dot" style="background:var(--cyan)"></span> Portfolio Value</div>
+        <div class="legend-item"><span class="dot" style="background:var(--muted)"></span> Capital Invested</div>
+      </div>
+    </div>
+    <div class="chart-wrap"><canvas id="growthChart"></canvas></div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-head">
+        <div>
+          <div class="chart-title">DCA Chart</div>
+          <div class="chart-meta">Monthly DCA accumulation over 24 months.</div>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="dot" style="background:var(--green)"></span> Value</div>
+          <div class="legend-item"><span class="dot" style="background:var(--muted)"></span> Invested</div>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="dcaChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-head">
+        <div>
+          <div class="chart-title">Risk vs Return Chart</div>
+          <div class="chart-meta">Expected return vs risk level across asset classes.</div>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="riskChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 8: AI CRYPTO ADVISOR ─── -->
+  <div id="ai-advisor"></div>
+  <div class="section-header">
+    <div class="section-title">AI Crypto <span class="grad">Advisor</span></div>
+    <div class="section-badge">SMART ALLOCATION</div>
+  </div>
+
+  <div class="advisor-section">
+    <div class="advisor-grid">
+      <div>
+        <div class="panel-title" style="margin-bottom:16px">Tell us about your goals</div>
+        <div class="field"><label>Investment Amount (₹)</label><input type="number" id="ai-amount" value="100000" min="1000"></div>
+        <div class="field"><label>Risk Level</label>
+          <select id="ai-risk">
+            <option value="low">Low — Capital Preservation</option>
+            <option value="medium" selected>Medium — Balanced Growth</option>
+            <option value="high">High — Maximum Returns</option>
+          </select>
+        </div>
+        <div class="field"><label>Investment Duration</label>
+          <select id="ai-duration">
+            <option value="short">Short (0–1 year)</option>
+            <option value="medium" selected>Medium (1–3 years)</option>
+            <option value="long">Long (3+ years)</option>
+          </select>
+        </div>
+        <button class="calc-btn" onclick="runAIAdvisor()">Generate AI Strategy</button>
+      </div>
+
+      <div class="advisor-output" id="advisor-output">
+        <div class="advisor-output-title">Your Crypto Strategy</div>
+        <div class="allocation-bar">
+          <div class="alloc-row"><span class="alloc-label">Bitcoin</span><div class="alloc-track"><div class="alloc-fill" id="alloc-btc-bar" style="width:50%;background:var(--gold)"></div></div><span class="alloc-pct" id="alloc-btc-pct" style="color:var(--gold)">50%</span></div>
+          <div class="alloc-row"><span class="alloc-label">Ethereum</span><div class="alloc-track"><div class="alloc-fill" id="alloc-eth-bar" style="width:30%;background:var(--violet)"></div></div><span class="alloc-pct" id="alloc-eth-pct" style="color:var(--violet)">30%</span></div>
+          <div class="alloc-row"><span class="alloc-label">Altcoins</span><div class="alloc-track"><div class="alloc-fill" id="alloc-alt-bar" style="width:20%;background:var(--cyan)"></div></div><span class="alloc-pct" id="alloc-alt-pct" style="color:var(--cyan)">20%</span></div>
+        </div>
+        <div class="mini-grid" style="margin-top:0">
+          <div class="mini"><div class="k">Risk Score</div><div class="v" id="ai-risk-score" style="color:var(--gold)">5.0 / 10</div></div>
+          <div class="mini"><div class="k">BTC Allocation (₹)</div><div class="v cyan" id="ai-btc-inr">₹50,000</div></div>
+        </div>
+        <div class="strategy-msg" id="ai-strategy-msg">A balanced approach with 50% BTC, 30% ETH, and 20% in select altcoins. Suitable for medium-risk investors with a 1-3 year horizon. Consider DCA for entry to reduce timing risk.</div>
+        <div id="ai-risk-badge" class="risk-badge risk-medium">MEDIUM RISK</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 9: LEARNING SECTION ─── -->
+  <div class="section-header">
+    <div class="section-title">Crypto <span class="grad">Learning</span></div>
+    <div class="section-badge">4 TOPICS</div>
+  </div>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span>What is Bitcoin?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        Bitcoin (BTC) is the world's first decentralized digital currency, created in 2009 by the pseudonymous Satoshi Nakamoto. It operates on a peer-to-peer network without any central authority. Bitcoin uses blockchain technology — a public ledger where all transactions are recorded transparently. There will only ever be 21 million BTC in existence, making it deflationary by design. It is often called "digital gold" due to its scarcity and store-of-value properties. Bitcoin is the most liquid and widely adopted cryptocurrency globally.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span>What is Blockchain?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        A blockchain is a distributed, immutable ledger that records transactions across a network of computers. Each "block" contains a set of transactions and is cryptographically linked to the previous block, forming a "chain." Once data is written to a blockchain, it cannot be altered without the consensus of the network — making it highly secure and tamper-proof. Blockchain powers not only cryptocurrencies but also smart contracts, NFTs, DeFi protocols, supply chain tracking, and more. It eliminates the need for trusted intermediaries like banks in many financial processes.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span>What is Staking?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        Staking is the process of locking up your cryptocurrency in a blockchain network to support its operations — such as validating transactions — in exchange for rewards. It is primarily used in Proof-of-Stake (PoS) blockchains like Ethereum 2.0, Cardano, Solana, and Polkadot. When you stake, you "delegate" your coins to a validator node. In return, you earn staking rewards (similar to interest), typically ranging from 4% to 20% APY depending on the network. Staking is generally safer than mining and does not require expensive hardware. However, staked assets may be "locked" for a period and carry market risk.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">
+        <span>What are the Risks of Crypto Investing?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        Crypto investing carries significant risks that all investors must understand: <br><br>
+        <strong>Volatility:</strong> Prices can drop 50–90% in bear markets within weeks.<br>
+        <strong>Regulatory Risk:</strong> Governments can impose bans, taxes, or restrictions at any time.<br>
+        <strong>Security Risk:</strong> Hacks, phishing, and wallet theft are common. Always use hardware wallets.<br>
+        <strong>Liquidity Risk:</strong> Small altcoins may be hard to sell at fair prices.<br>
+        <strong>Scam Risk:</strong> Rug pulls, Ponzi schemes, and fake projects are widespread in DeFi.<br>
+        <strong>Tax Risk:</strong> In India, crypto profits are taxed at a flat 30% + 1% TDS.<br><br>
+        Never invest more than you can afford to lose. Diversify, DYOR (Do Your Own Research), and consider a long time horizon.
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 10: LEAD CAPTURE ─── -->
+  <div class="section-header">
+    <div class="section-title">Get Crypto <span class="grad">Updates</span></div>
+    <div class="section-badge">FREE ADVISORY</div>
+  </div>
+
+  <div class="lead-section">
+    <div class="lead-copy">
+      <h3>Stay Ahead of the <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">Crypto Market</span></h3>
+      <p>Get weekly crypto insights, top coin picks, DCA alerts, and exclusive investment strategies delivered to your WhatsApp — completely free.</p>
+    </div>
+    <div class="lead-form">
+      <input type="text" class="lead-input" id="lead-name" placeholder="Your Name" />
+      <input type="tel" class="lead-input" id="lead-phone" placeholder="WhatsApp Number (+91...)" />
+      <button class="btn primary" style="padding:14px;font-size:15px" onclick="submitLead()">Get Free Crypto Tips</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- SUCCESS POPUP -->
+<div class="popup-overlay" id="popup-overlay" onclick="closePopup(event)">
+  <div class="popup">
+    <div class="popup-icon">🎯</div>
+    <h3>You're In!</h3>
+    <p>We'll send you exclusive crypto market insights and coin picks on WhatsApp. Stay tuned for your first update!</p>
+    <button class="btn primary" onclick="document.getElementById('popup-overlay').classList.remove('show')" style="width:100%;padding:13px">Got it!</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   UTILITY
+═══════════════════════════════════════════ */
+function fmt(n){
+  if(n===undefined||n===null||isNaN(n))return '—';
+  n=Math.round(n);
+  if(Math.abs(n)>=10000000) return '₹'+(n/10000000).toFixed(2)+' Cr';
+  if(Math.abs(n)>=100000)   return '₹'+(n/100000).toFixed(2)+' L';
+  return '₹'+n.toLocaleString('en-IN');
+}
+function fmtRaw(n){
+  if(n===undefined||n===null||isNaN(n))return '—';
+  return '₹'+Math.round(n).toLocaleString('en-IN');
+}
+function el(id){return document.getElementById(id)}
+function setEl(id,val){var e=el(id);if(e)e.textContent=val;}
+function safe(id,min,fallback){var v=parseFloat((el(id)||{}).value);return isNaN(v)||v<min?fallback:v;}
+
+/* ═══════════════════════════════════════════
+   SECTION 2: CALCULATORS
+═══════════════════════════════════════════ */
+
+// 1. Crypto SIP
+function calcCryptoSIP(){
+  var monthly=safe('csip-monthly',0,5000);
+  var years=safe('csip-years',1,5);
+  var rate=safe('csip-rate',0,40);
+  var months=years*12;
+  var r=rate/100/12;
+  var invested=monthly*months;
+  var value=r>0?monthly*((Math.pow(1+r,months)-1)/r)*(1+r):invested;
+  setEl('csip-invested',fmt(invested));
+  setEl('csip-value',fmt(value));
+}
+
+// 2. Crypto Lump Sum
+function calcCryptoLump(){
+  var amount=safe('clump-amount',0,100000);
+  var years=safe('clump-years',1,5);
+  var rate=safe('clump-rate',0,50);
+  var value=amount*Math.pow(1+rate/100,years);
+  setEl('clump-invested',fmt(amount));
+  setEl('clump-value',fmt(value));
+}
+
+// 3. DCA
+function calcDCA(){
+  var monthly=safe('dca-monthly',0,5000);
+  var months=safe('dca-months',1,24);
+  var variation=safe('dca-variation',0,20);
+  var total=monthly*months;
+  var avgCostReduction=variation/100*0.5;
+  var avgCost=monthly*(1-avgCostReduction);
+  var value=total*(1+variation/100*0.3);
+  setEl('dca-avg',fmtRaw(avgCost));
+  setEl('dca-value',fmt(value));
+}
+
+// 4. Profit / Loss
+function calcPL(){
+  var buy=safe('pl-buy',0,2000000);
+  var sell=safe('pl-sell',0,3500000);
+  var qty=safe('pl-qty',0,0.5);
+  var profit=(sell-buy)*qty;
+  var ret=((sell-buy)/buy)*100;
+  var profitEl=el('pl-profit');
+  var retEl=el('pl-return');
+  if(profitEl){
+    profitEl.textContent=fmtRaw(Math.abs(profit));
+    profitEl.className='v '+(profit>=0?'green':'red');
+  }
+  if(retEl){
+    retEl.textContent=(ret>=0?'+':'')+ret.toFixed(2)+'%';
+    retEl.className='v '+(ret>=0?'gold':'red');
+  }
+}
+
+// 5. Crypto Tax (India)
+function calcTax(){
+  var profit=safe('tax-profit',0,100000);
+  var tds=safe('tax-tds',0,0);
+  var tax=profit*0.30;
+  var cess=tax*0.04;
+  var net=profit-tax-cess;
+  setEl('tax-amount',fmtRaw(tax));
+  setEl('tax-net',fmtRaw(net));
+  setEl('tax-cess',fmtRaw(cess));
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 3: ADVANCED ANALYTICS
+═══════════════════════════════════════════ */
+
+// 6. Risk Score
+function calcRisk(){
+  var vol=safe('risk-vol',0,45);
+  var lev=safe('risk-lev',1,1);
+  var raw=(vol/200*10)*lev;
+  var score=Math.min(raw,10);
+  var level=score<3?'LOW':score<6?'MEDIUM':score<8?'HIGH':'VERY HIGH';
+  var col=score<3?'green':score<6?'gold':score<8?'orange':'red';
+  setEl('risk-score',score.toFixed(1)+' / 10');
+  var le=el('risk-level');
+  if(le){le.textContent=level;le.className='v '+col;}
+  var se=el('risk-score');
+  if(se)se.className='v '+col;
+}
+
+// 7. Volatility
+function calcVolatility(){
+  var daily=safe('vol-daily',0,3);
+  var days=safe('vol-days',1,30);
+  var annual=daily*Math.sqrt(365);
+  var period=daily*Math.sqrt(days);
+  setEl('vol-annual',annual.toFixed(2)+'%');
+  setEl('vol-period',period.toFixed(2)+'%');
+}
+
+// 8. Sharpe Ratio
+function calcSharpe(){
+  var ret=safe('sharpe-ret',0,80);
+  var rf=safe('sharpe-rf',0,7);
+  var std=safe('sharpe-std',0.01,45);
+  var sharpe=(ret-rf)/std;
+  var rating=sharpe<0?'Poor':sharpe<1?'Acceptable':sharpe<2?'Good':'Excellent';
+  var col=sharpe<0?'red':sharpe<1?'gold':sharpe<2?'green':'cyan';
+  setEl('sharpe-val',sharpe.toFixed(2));
+  var re=el('sharpe-rating');
+  if(re){re.textContent=rating;re.className='v '+col;}
+}
+
+// 9. Drawdown
+function calcDrawdown(){
+  var peak=safe('dd-peak',1,500000);
+  var trough=safe('dd-trough',1,250000);
+  if(trough>=peak){setEl('dd-pct','0.00%');setEl('dd-loss','₹0');setEl('dd-recovery','0.00%');return;}
+  var dd=(trough-peak)/peak*100;
+  var loss=peak-trough;
+  var rec=(peak/trough-1)*100;
+  setEl('dd-pct',dd.toFixed(2)+'%');
+  setEl('dd-loss',fmtRaw(loss));
+  setEl('dd-recovery','+'+rec.toFixed(2)+'%');
+}
+
+// 10. Break-even
+function calcBreakEven(){
+  var buy=safe('be-buy',1,2000000);
+  var fee=safe('be-fee',0,0.1)/100;
+  var tax=safe('be-tax',0,30)/100;
+  var bePrice=buy*(1+fee*2);
+  var taxPrice=bePrice*(1+tax);
+  setEl('be-price',fmtRaw(bePrice));
+  setEl('be-taxprice',fmtRaw(taxPrice));
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 4: MINING & STAKING
+═══════════════════════════════════════════ */
+
+// 11. Mining
+function calcMining(){
+  var hash=safe('mine-hash',1,100);
+  var elec=safe('mine-elec',0,6);
+  var power=safe('mine-power',100,3400);
+  var btcPrice=safe('mine-btcprice',1,7000000);
+  var networkHash=600000;
+  var btcPerDay=hash/networkHash*144*6.25;
+  var revenuePerMonth=btcPerDay*30*btcPrice;
+  var kwhPerMonth=power/1000*24*30;
+  var costPerMonth=kwhPerMonth*elec;
+  var profitPerMonth=revenuePerMonth-costPerMonth;
+  setEl('mine-revenue',fmtRaw(revenuePerMonth));
+  setEl('mine-cost',fmtRaw(costPerMonth));
+  var pe=el('mine-profit');
+  if(pe){
+    pe.textContent=(profitPerMonth>=0?'':'-')+fmtRaw(Math.abs(profitPerMonth));
+    pe.style.color=profitPerMonth>=0?'var(--green)':'var(--red)';
+  }
+}
+
+// 12. Staking
+function calcStaking(){
+  var amount=safe('stake-amount',0,100000);
+  var apy=safe('stake-apy',0,12)/100;
+  var months=safe('stake-months',1,12);
+  var rewards=amount*apy*(months/12);
+  var total=amount+rewards;
+  setEl('stake-rewards',fmt(rewards));
+  setEl('stake-total',fmt(total));
+}
+
+// 13. APY
+function calcAPY(){
+  var apr=safe('apy-apr',0,11.39)/100;
+  var n=parseInt((el('apy-freq')||{value:'12'}).value)||12;
+  var apy=(Math.pow(1+apr/n,n)-1)*100;
+  var daily=apr/365*100;
+  setEl('apy-val',apy.toFixed(2)+'%');
+  setEl('apy-daily',daily.toFixed(4)+'%');
+}
+function calcAPR(){
+  var apy=safe('apr-from-apy',0,12)/100;
+  var n=parseInt((el('apy-freq')||{value:'12'}).value)||12;
+  var apr=n*(Math.pow(1+apy,1/n)-1)*100;
+  setEl('apr-val',apr.toFixed(2)+'%');
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 5: CONVERSION
+═══════════════════════════════════════════ */
+
+function calcConvert(){
+  var price=parseFloat((el('conv-coin')||{value:7000000}).value)||7000000;
+  var amount=safe('conv-amount',0,0.5);
+  setEl('conv-inr',fmtRaw(price*amount));
+}
+
+function calcAllocation(){
+  var total=safe('alloc-total',0,500000);
+  var btc=safe('alloc-btc',0,50)/100;
+  var eth=safe('alloc-eth',0,30)/100;
+  var alt=safe('alloc-alt',0,20)/100;
+  setEl('alloc-btc-val',fmt(total*btc));
+  setEl('alloc-eth-val',fmt(total*eth));
+  setEl('alloc-alt-val',fmt(total*alt));
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 7: CHARTS
+═══════════════════════════════════════════ */
+var CHART_DEFAULTS={
+  responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{
+    backgroundColor:'rgba(10,18,37,.96)',titleColor:'#fff',bodyColor:'#9da9c6',
+    borderColor:'rgba(255,255,255,.1)',borderWidth:1,padding:12,cornerRadius:10
+  }},
+  scales:{
+    x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9da9c6',font:{size:11}}},
+    y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#9da9c6',font:{size:11}}}
+  }
+};
+
+function buildGrowthChart(){
+  var ctx=el('growthChart');
+  if(!ctx)return;
+  var labels=[],portVals=[],capVals=[];
+  var monthly=5000,rate=0.40/12,months=60;
+  var invested=0,port=0;
+  for(var m=1;m<=months;m++){
+    invested+=monthly;
+    port=(port+monthly)*(1+rate);
+    if(m%6===0||m===1){
+      labels.push('M'+m);
+      portVals.push(Math.round(port));
+      capVals.push(Math.round(invested));
+    }
+  }
+  new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:labels,
+      datasets:[
+        {label:'Portfolio Value',data:portVals,borderColor:'#00d4ff',backgroundColor:'rgba(0,212,255,.08)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#00d4ff'},
+        {label:'Capital Invested',data:capVals,borderColor:'rgba(157,169,198,.4)',borderDash:[4,4],fill:false,tension:.4,pointRadius:2}
+      ]
+    },
+    options:{...CHART_DEFAULTS}
+  });
+}
+
+function buildDCAChart(){
+  var ctx=el('dcaChart');
+  if(!ctx)return;
+  var labels=[],vals=[],caps=[];
+  var monthly=5000,months=24;
+  var cap=0,val=0;
+  var variation=0.20;
+  for(var m=1;m<=months;m++){
+    cap+=monthly;
+    var priceMultiplier=1+Math.sin(m/3)*variation*0.5+m/months*0.3;
+    val=cap*priceMultiplier;
+    labels.push('M'+m);
+    vals.push(Math.round(val));
+    caps.push(Math.round(cap));
+  }
+  new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:labels,
+      datasets:[
+        {label:'Value',data:vals,backgroundColor:'rgba(0,230,118,.18)',borderColor:'#00e676',borderWidth:1.5,borderRadius:4},
+        {label:'Invested',data:caps,backgroundColor:'rgba(157,169,198,.1)',borderColor:'rgba(157,169,198,.3)',borderWidth:1.5,borderRadius:4}
+      ]
+    },
+    options:{...CHART_DEFAULTS}
+  });
+}
+
+function buildRiskChart(){
+  var ctx=el('riskChart');
+  if(!ctx)return;
+  new Chart(ctx,{
+    type:'scatter',
+    data:{
+      datasets:[{
+        label:'Assets',
+        data:[
+          {x:5,y:7,label:'BTC'},{x:8,y:15,label:'ETH'},{x:15,y:30,label:'Altcoins'},
+          {x:2,y:3,label:'Stablecoins'},{x:3,y:5,label:'BNB'},{x:12,y:25,label:'DeFi'},
+        ],
+        backgroundColor:['rgba(255,215,106,.7)','rgba(123,97,255,.7)','rgba(0,212,255,.7)','rgba(0,230,118,.7)','rgba(255,159,64,.7)','rgba(255,96,125,.7)'],
+        pointRadius:10,pointHoverRadius:13
+      }]
+    },
+    options:{
+      ...CHART_DEFAULTS,
+      plugins:{...CHART_DEFAULTS.plugins,
+        tooltip:{
+          ...CHART_DEFAULTS.plugins.tooltip,
+          callbacks:{
+            label:function(ctx){
+              var lbl=ctx.chart.data.datasets[0].data[ctx.dataIndex].label;
+              return lbl+' — Risk: '+ctx.parsed.x+'%, Return: '+ctx.parsed.y+'%';
+            }
+          }
+        }
+      },
+      scales:{
+        x:{...CHART_DEFAULTS.scales.x,title:{display:true,text:'Risk (%)',color:'#9da9c6'}},
+        y:{...CHART_DEFAULTS.scales.y,title:{display:true,text:'Expected Return (%)',color:'#9da9c6'}}
+      }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 8: AI ADVISOR
+═══════════════════════════════════════════ */
+function runAIAdvisor(){
+  var amount=safe('ai-amount',0,100000);
+  var risk=(el('ai-risk')||{value:'medium'}).value;
+  var duration=(el('ai-duration')||{value:'medium'}).value;
+  var alloc,riskScore,msg,badgeClass;
+
+  if(risk==='low'){
+    alloc={btc:60,eth:30,alt:10};
+    riskScore=3.0;
+    badgeClass='risk-low';
+    msg='Conservative allocation: heavy BTC (60%) for stability, 30% ETH as established layer-1, and minimal 10% altcoin exposure. Ideal for capital preservation with modest upside.';
+  } else if(risk==='high'){
+    alloc={btc:30,eth:25,alt:45};
+    riskScore=8.5;
+    badgeClass='risk-high';
+    msg='Aggressive allocation: 45% high-potential altcoins for maximum upside, 30% BTC, 25% ETH. High-risk, high-reward. Only invest what you can afford to lose. Rebalance quarterly.';
+  } else {
+    alloc={btc:50,eth:30,alt:20};
+    riskScore=5.0;
+    badgeClass='risk-medium';
+    msg='Balanced allocation: 50% BTC for store-of-value stability, 30% ETH for DeFi/ecosystem exposure, 20% selective altcoins. Well-suited for a 1-3 year horizon with DCA entry.';
+  }
+
+  if(duration==='long'&&risk!=='low'){alloc.btc+=5;alloc.alt-=5;}
+  if(duration==='short'&&risk==='high'){alloc.btc+=10;alloc.alt-=10;}
+
+  var total=alloc.btc+alloc.eth+alloc.alt;
+  alloc.btc=Math.round(alloc.btc/total*100);
+  alloc.eth=Math.round(alloc.eth/total*100);
+  alloc.alt=100-alloc.btc-alloc.eth;
+
+  var setBar=function(barId,pctId,pct){
+    var b=el(barId);if(b)b.style.width=pct+'%';
+    setEl(pctId,pct+'%');
+  };
+  setBar('alloc-btc-bar','alloc-btc-pct',alloc.btc);
+  setBar('alloc-eth-bar','alloc-eth-pct',alloc.eth);
+  setBar('alloc-alt-bar','alloc-alt-pct',alloc.alt);
+
+  setEl('ai-risk-score',riskScore.toFixed(1)+' / 10');
+  setEl('ai-btc-inr',fmt(amount*alloc.btc/100));
+  setEl('ai-strategy-msg',msg);
+
+  var rb=el('ai-risk-badge');
+  if(rb){rb.className='risk-badge '+badgeClass;rb.textContent=risk.toUpperCase()+' RISK';}
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 9: LEARNING
+═══════════════════════════════════════════ */
+function toggleFAQ(el){
+  var icon=el.querySelector('.faq-icon');
+  var answer=el.nextElementSibling;
+  if(!icon||!answer)return;
+  icon.classList.toggle('open');
+  answer.classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 10: LEAD CAPTURE
+═══════════════════════════════════════════ */
+function submitLead(){
+  var name=(el('lead-name')||{value:''}).value.trim();
+  var phone=(el('lead-phone')||{value:''}).value.trim();
+  if(!name){alert('Please enter your name.');return;}
+  if(!phone||phone.length<10){alert('Please enter a valid WhatsApp number.');return;}
+  var leads=JSON.parse(localStorage.getItem('crypto_leads')||'[]');
+  leads.push({name,phone,ts:new Date().toISOString()});
+  localStorage.setItem('crypto_leads',JSON.stringify(leads));
+  el('lead-name').value='';
+  el('lead-phone').value='';
+  el('popup-overlay').classList.add('show');
+}
+function closePopup(e){
+  if(e.target===el('popup-overlay'))el('popup-overlay').classList.remove('show');
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',function(){
+  calcCryptoSIP();
+  calcCryptoLump();
+  calcDCA();
+  calcPL();
+  calcTax();
+  calcRisk();
+  calcVolatility();
+  calcSharpe();
+  calcDrawdown();
+  calcBreakEven();
+  calcMining();
+  calcStaking();
+  calcAPY();
+  calcAPR();
+  calcConvert();
+  calcAllocation();
+  buildGrowthChart();
+  buildDCAChart();
+  buildRiskChart();
+  runAIAdvisor();
+});
+</script>
+</body>
+</html>
