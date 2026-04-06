@@ -10,61 +10,30 @@
   <div class="nav-links">
     <div class="nav-row">
       <a href="index.html" class="nav-link">Home</a>
-      <a href="investment.html" class="nav-link">Investment</a>
-      <a href="loan.html" class="nav-link">Loans</a>
-      <a href="tax.html" class="nav-link">Tax</a>
-      <a href="savings.html" class="nav-link">Savings</a>
-      <a href="retirement.html" class="nav-link">Retirement</a>
-      <a href="global.html" class="nav-link">Global Finance</a>
-      <a href="stocks.html" class="nav-link">Stocks</a>
-     
+      <a href="wealth.html" class="nav-link">Wealth</a>
+      <a href="insurance.html" class="nav-link">Insurance</a>
       <a href="travel.html" class="nav-link">Travel</a>
+      <a href="markets.html" class="nav-link">Markets</a>
     </div>
 
     <div class="nav-row sub">
-      <a href="personal.html" class="nav-link">Personal Finance</a>
-      <a href="business.html" class="nav-link">Business Finance</a>
-      <a href="insurance.html" class="nav-link">Insurance</a>
-      <a href="Real-Estate.html" class="nav-link">Real Estate</a>
-      <a href="digital.html" class="nav-link">Digital Assets</a>
-       <a href="crypto.html" class="nav-link">Crypto</a>
+      <a href="tax.html" class="nav-link">Tax</a>
+      <a href="tools.html" class="nav-link">Tools</a>
       <a href="learn.html" class="nav-link">Learn</a>
-      <a href="play.html" class="nav-link">Play</a>
+      <a href="advisor.html" class="nav-link">Advisor</a>
     </div>
   </div>
 
   <div id="mobileDrawer" class="mobile-drawer">
     <a href="index.html" class="nav-link">Home</a>
-    <a href="investment.html" class="nav-link">Investment</a>
-    <a href="loan.html" class="nav-link">Loan</a>
-    <a href="tax.html" class="nav-link">Tax</a>
-    <a href="savings.html" class="nav-link">Savings</a>
-    <a href="retirement.html" class="nav-link">Retirement</a>
-    <a href="personal.html" class="nav-link">Persona</a>
-    <a href="global.html" class="nav-link">Global Finance</a>
-    <a href="stocks.html" class="nav-link">Stocks</a>
-    <a href="crypto.html" class="nav-link">Crypto</a>
-    <a href="travel.html" class="nav-link">Travel</a>
-    <a href="business.html" class="nav-link">Business Finance</a>
+    <a href="wealth.html" class="nav-link">Wealth</a>
     <a href="insurance.html" class="nav-link">Insurance</a>
-    <a href="Real-Estate.html" class="nav-link">Real Estate</a>
-    <a href="digital.html" class="nav-link">Digital Assets</a>
+    <a href="travel.html" class="nav-link">Travel</a>
+    <a href="markets.html" class="nav-link">Markets</a>
+    <a href="tax.html" class="nav-link">Tax</a>
+    <a href="tools.html" class="nav-link">Tools</a>
     <a href="learn.html" class="nav-link">Learn</a>
-    <a href="play.html" class="nav-link">Play</a>
+    <a href="advisor.html" class="nav-link">Advisor</a>
   </div>
 
 </nav>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const currentPage = window.location.pathname.split("/").pop() || "index.html";
-  document.querySelectorAll(".nav-link").forEach(link => {
-    const href = link.getAttribute("href");
-    if (href === currentPage) {
-      link.classList.add("active");
-    } else {
-      link.classList.remove("active");
-    }
-  });
-});
-</script>
