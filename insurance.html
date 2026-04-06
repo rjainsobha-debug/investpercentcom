@@ -413,10 +413,10 @@
       </div>
 
       <div class="tabbar" id="calcTabs">
-        <div class="tab active" onclick="switchCalc('term',this)">Term Insurance</div>
-        <div class="tab" onclick="switchCalc('health',this)">Health Insurance</div>
-        <div class="tab" onclick="switchCalc('car',this)">Car Insurance</div>
-        <div class="tab" onclick="switchCalc('child',this)">Child Education</div>
+        <div class="tab active" data-key="term">Term Insurance</div>
+        <div class="tab" data-key="health">Health Insurance</div>
+        <div class="tab" data-key="car">Car Insurance</div>
+        <div class="tab" data-key="child">Child Education</div>
       </div>
 
       <div class="top-metrics">
@@ -1059,9 +1059,11 @@
 
     /* ═══════════ AI ADVISOR ═══════════ */
     function runAI(){
-      const age    = +document.querySelector('#aiSection input[type=range]:nth-of-type(1)').value || 30;
-      const income = +document.querySelector('#aiSection input[type=range]:nth-of-type(2)').value || 600000;
-      const family = +document.querySelector('#aiSection input[type=range]:nth-of-type(3)').value || 3;
+      const ranges = document.querySelectorAll('#aiSection input[type=range]');
+      if(ranges.length < 3) return;
+      const age    = +ranges[0].value || 30;
+      const income = +ranges[1].value || 600000;
+      const family = +ranges[2].value || 3;
 
       const termCover  = income * (age < 35 ? 20 : age < 45 ? 15 : 10);
       const healthBase = family <= 2 ? 500000 : family <= 4 ? 1000000 : 2000000;
@@ -1092,9 +1094,21 @@
       }
     });
 
+    /* ═══════════ TAB EVENT LISTENERS ═══════════ */
+    document.querySelectorAll('.tab').forEach(tab=>{
+      tab.addEventListener('click', function(){
+        const key = this.getAttribute('data-key');
+        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+        this.classList.add('active');
+        switchCalc(key, this);
+      });
+    });
+
     /* ═══════════ INIT ═══════════ */
-    switchCalc('term', document.querySelector('.tab.active'));
-    runAI();
+    document.addEventListener('DOMContentLoaded', ()=>{
+      switchCalc('term', document.querySelector('.tab.active'));
+      runAI();
+    });
 
     /* Navbar is fully inline — no external fetch needed */
   </script>
