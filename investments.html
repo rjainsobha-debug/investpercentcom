@@ -8,12 +8,21 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #0b0f1a; --card: #111827; --card2: #1a2234; --border: #1e2d45;
-    --primary: #0ea5e9; --accent: #818cf8; --green: #22c55e;
-    --yellow: #f59e0b; --red: #ef4444; --text: #e2e8f0; --muted: #64748b; --radius: 12px;
+    --bg: #0b0f1a;
+    --card: #111827;
+    --card2: #1a2234;
+    --border: #1e2d45;
+    --primary: #0ea5e9;
+    --accent: #818cf8;
+    --green: #22c55e;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --radius: 12px;
   }
   body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
+  
   /* NAV */
   nav { position: sticky; top: 0; z-index: 100; background: rgba(11,15,26,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
   .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
@@ -37,21 +46,6 @@
   /* LAYOUT */
   .main { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
 
-  /* ── NEW: SNAPSHOT STRIP ── */
-  .snapshot-strip {
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-    background: linear-gradient(135deg, rgba(14,165,233,0.08), rgba(129,140,248,0.06));
-    border: 1px solid rgba(14,165,233,0.2); border-radius: 14px;
-    padding: 16px 22px; margin-bottom: 22px;
-  }
-  .snapshot-left { display: flex; align-items: center; gap: 10px; }
-  .snapshot-icon { font-size: 1.4rem; }
-  .snapshot-title { font-size: 0.7rem; font-weight: 600; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 3px; }
-  .snapshot-val { font-size: 1rem; font-weight: 700; color: var(--text); }
-  .snapshot-val em { font-style: normal; color: var(--primary); }
-  .snapshot-insight { font-size: 0.8rem; color: var(--muted); padding: 6px 14px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); max-width: 380px; }
-  .snapshot-insight b { color: var(--green); }
-
   /* CATEGORY TABS */
   .cat-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 28px; scrollbar-width: none; }
   .cat-tabs::-webkit-scrollbar { display: none; }
@@ -65,77 +59,45 @@
 
   /* TOOL LIST */
   .tool-list { display: flex; flex-direction: column; gap: 8px; }
-  .tool-btn { padding: 14px 16px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); cursor: pointer; text-align: left; transition: all .2s; position: relative; }
+  .tool-btn { padding: 14px 16px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); cursor: pointer; text-align: left; transition: all .2s; }
   .tool-btn:hover { border-color: rgba(14,165,233,0.3); transform: translateY(-1px); }
   .tool-btn.active { background: rgba(14,165,233,0.08); border-color: rgba(14,165,233,0.35); }
-  .tool-btn .tool-name { font-size: 0.875rem; font-weight: 600; color: var(--text); margin-bottom: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .tool-btn .tool-name { font-size: 0.875rem; font-weight: 600; color: var(--text); margin-bottom: 3px; }
   .tool-btn .tool-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
-  /* ── NEW: decision tag & badges ── */
-  .tool-btn .decision-tag { font-size: 0.65rem; color: var(--accent); background: rgba(129,140,248,0.12); padding: 2px 7px; border-radius: 9999px; margin-top: 4px; display: inline-block; }
-  .badge-hot { font-size: 0.6rem; font-weight: 700; padding: 2px 7px; border-radius: 9999px; background: linear-gradient(90deg,#f97316,#ef4444); color: #fff; white-space: nowrap; }
-  .risk-pill { font-size: 0.6rem; font-weight: 700; padding: 2px 7px; border-radius: 9999px; white-space: nowrap; }
-  .risk-low { background: rgba(34,197,94,0.15); color: var(--green); }
-  .risk-med { background: rgba(245,158,11,0.15); color: var(--yellow); }
-  .risk-high { background: rgba(239,68,68,0.15); color: var(--red); }
 
   /* CALCULATOR CARD */
   .calc-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; box-shadow: 0 0 30px rgba(14,165,233,0.06); }
-  .calc-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .calc-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
   .calc-desc { color: var(--muted); font-size: 0.875rem; margin-bottom: 24px; }
 
-  /* ── NEW: calc header row (title + risk) ── */
-  .calc-head-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
-  .calc-risk-tag { font-size: 0.7rem; font-weight: 600; padding: 4px 12px; border-radius: 9999px; flex-shrink: 0; }
-
   /* RESULT CARDS */
-  .result-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .result-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 24px; }
   .result-card { border-radius: 10px; padding: 14px 16px; border: 1px solid; }
   .result-card.primary { border-color: rgba(14,165,233,0.25); background: rgba(14,165,233,0.06); }
-  .result-card.accent  { border-color: rgba(129,140,248,0.25); background: rgba(129,140,248,0.06); }
-  .result-card.green   { border-color: rgba(34,197,94,0.25);   background: rgba(34,197,94,0.06); }
-  .result-card.red     { border-color: rgba(239,68,68,0.25);   background: rgba(239,68,68,0.06); }
-  .result-card.yellow  { border-color: rgba(245,158,11,0.25);  background: rgba(245,158,11,0.06); }
+  .result-card.accent { border-color: rgba(129,140,248,0.25); background: rgba(129,140,248,0.06); }
+  .result-card.green { border-color: rgba(34,197,94,0.25); background: rgba(34,197,94,0.06); }
+  .result-card.red { border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.06); }
+  .result-card.yellow { border-color: rgba(245,158,11,0.25); background: rgba(245,158,11,0.06); }
   .result-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .result-value { font-size: 1.3rem; font-weight: 700; transition: color .3s; }
+  .result-value { font-size: 1.3rem; font-weight: 700; }
   .result-value.primary { color: var(--primary); }
-  .result-value.accent  { color: var(--accent); }
-  .result-value.green   { color: var(--green); }
-  .result-value.red     { color: var(--red); }
-  .result-value.yellow  { color: var(--yellow); }
+  .result-value.accent { color: var(--accent); }
+  .result-value.green { color: var(--green); }
+  .result-value.red { color: var(--red); }
+  .result-value.yellow { color: var(--yellow); }
   .result-sub { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
-
-  /* ── NEW: "What this means" box ── */
-  .interpretation {
-    background: rgba(14,165,233,0.05); border: 1px solid rgba(14,165,233,0.18);
-    border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
-    font-size: 0.8rem; line-height: 1.6; color: var(--muted);
-    animation: fadeUp .3s ease;
-  }
-  .interpretation strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 0.78rem; }
-  .interpretation li { margin-left: 14px; margin-bottom: 2px; }
-  .interpretation li b { color: var(--primary); }
-
-  /* ── NEW: comparison insight ── */
-  .cmp-insight {
-    display: flex; align-items: center; gap: 10px; padding: 10px 14px;
-    border-radius: 10px; margin-bottom: 16px;
-    background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.2);
-    font-size: 0.82rem; font-weight: 600; color: var(--green);
-    animation: fadeUp .3s ease;
-  }
 
   /* SLIDERS */
   .sliders-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
   .slider-group label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; }
   .slider-group label span { font-weight: 600; color: var(--primary); }
-  input[type="range"] { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 3px; background: var(--card2); outline: none; cursor: pointer; transition: background .2s; }
+  input[type="range"] { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 3px; background: var(--card2); outline: none; cursor: pointer; }
   input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 8px rgba(14,165,233,0.5); transition: transform .15s; }
-  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   .slider-minmax { display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--muted); margin-top: 3px; }
 
   /* CHART */
-  .chart-wrap { position: relative; height: 220px; margin-bottom: 20px; animation: fadeUp .4s ease; }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .chart-wrap { position: relative; height: 220px; margin-bottom: 20px; }
 
   /* EXPORT */
   .export-row { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -144,42 +106,33 @@
   .btn.primary { background: var(--primary); border-color: var(--primary); color: #000; }
   .btn.primary:hover { opacity: 0.88; }
 
-  /* MISC */
+  /* CALC PANEL */
+  .calc-panel { display: none; }
+  .calc-panel.active { display: block; }
+
+  /* XIRR */
   .cashflow-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
   .cashflow-pos { color: var(--green); font-weight: 600; }
   .cashflow-neg { color: var(--red); font-weight: 600; }
   .cf-inputs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
   input[type="date"], input[type="number"], input[type="text"] { padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--card2); color: var(--text); font-size: 0.8rem; outline: none; }
   input[type="date"]:focus, input[type="number"]:focus { border-color: var(--primary); }
+
+  /* BAR VISUAL */
   .bar-visual { margin-top: 12px; }
   .bar-item { margin-bottom: 10px; }
   .bar-header { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px; }
   .bar-track { height: 8px; border-radius: 4px; background: var(--card2); overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 4px; transition: width .5s ease; }
+
+  /* Tooltip */
   .chip { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
   .chip.green { background: rgba(34,197,94,0.15); color: var(--green); }
-  .chip.red   { background: rgba(239,68,68,0.15);  color: var(--red); }
-  .chip.blue  { background: rgba(14,165,233,0.15); color: var(--primary); }
+  .chip.red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .chip.blue { background: rgba(14,165,233,0.15); color: var(--primary); }
+
+  /* Responsive */
   @media (max-width: 600px) { .sliders-grid { grid-template-columns: 1fr 1fr; } }
-
-  /* ── NEW: CTA STRIP ── */
-  .cta-strip {
-    margin-top: 48px; border-radius: 18px; padding: 36px 40px;
-    background: linear-gradient(135deg, rgba(14,165,233,0.1), rgba(129,140,248,0.1));
-    border: 1px solid rgba(14,165,233,0.2); text-align: center;
-  }
-  .cta-strip h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
-  .cta-strip p { color: var(--muted); font-size: 0.875rem; margin-bottom: 22px; }
-  .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .cta-btn-main { padding: 12px 28px; border-radius: 10px; background: var(--primary); color: #000; font-weight: 700; font-size: 0.9rem; border: none; cursor: pointer; transition: opacity .15s; }
-  .cta-btn-main:hover { opacity: .85; }
-  .cta-btn-sec { padding: 12px 28px; border-radius: 10px; background: transparent; color: var(--text); font-weight: 600; font-size: 0.9rem; border: 1px solid var(--border); cursor: pointer; transition: background .15s; }
-  .cta-btn-sec:hover { background: var(--card2); }
-
-  /* number animation */
-  .num-anim { transition: all .4s cubic-bezier(.4,0,.2,1); }
-  @keyframes numPop { 0%{transform:scale(.9);opacity:.5} 60%{transform:scale(1.05)} 100%{transform:scale(1);opacity:1} }
-  .num-pop { animation: numPop .35s ease; }
 </style>
 </head>
 <body>
@@ -187,7 +140,9 @@
 <nav>
   <div class="nav-inner">
     <a class="logo" href="/">
-      <div class="logo-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 7L9 10L12 5L14 7" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="7" r="1.5" fill="#0ea5e9"/></svg></div>
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 7L9 10L12 5L14 7" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="7" r="1.5" fill="#0ea5e9"/></svg>
+      </div>
       Wealthwise
     </a>
     <div class="nav-links">
@@ -206,19 +161,6 @@
 </div>
 
 <div class="main">
-
-  <!-- ① QUICK INVESTMENT SNAPSHOT STRIP -->
-  <div class="snapshot-strip">
-    <div class="snapshot-left">
-      <div class="snapshot-icon">⚡</div>
-      <div>
-        <div class="snapshot-title">Quick Investment Snapshot</div>
-        <div class="snapshot-val" id="snapVal">₹10,000/month can become <em>₹1.00Cr</em> in 20 years @ 12%</div>
-      </div>
-    </div>
-    <div class="snapshot-insight" id="snapInsight"><b>💡 Power of compounding:</b> You invest ₹24L, gains are ₹76L — wealth grows 4x your investment.</div>
-  </div>
-
   <!-- CATEGORY TABS -->
   <div class="cat-tabs">
     <button class="cat-btn active" data-cat="sip">📈 SIP & Returns</button>
@@ -235,68 +177,35 @@
     <!-- CALC AREA -->
     <div class="calc-card" id="calcArea">
       <div id="calcHeader">
-        <div class="calc-head-row">
-          <div class="calc-title" id="calcTitle">SIP Calculator</div>
-          <span class="calc-risk-tag risk-low" id="calcRiskTag">🟢 Low Risk</span>
-        </div>
+        <div class="calc-title" id="calcTitle">SIP Calculator</div>
         <div class="calc-desc" id="calcDesc">Calculate future value of your monthly SIP investments</div>
       </div>
       <div id="calcContent"></div>
     </div>
   </div>
-
-  <!-- ⑦ CTA STRIP -->
-  <div class="cta-strip">
-    <h2>Want a Personalized Investment Plan?</h2>
-    <p>Our advisors analyse your income, goals, and risk profile to build a tailored strategy — completely free.</p>
-    <div class="cta-buttons">
-      <button class="cta-btn-main" onclick="alert('Coming soon — personalized plan builder!')">🚀 Build My Plan</button>
-      <button class="cta-btn-sec" onclick="alert('Advisor booking coming soon!')">📞 Talk to Advisor</button>
-    </div>
-  </div>
-
-</div><!-- /main -->
+</div>
 
 <script>
 // ─── UTILS ───────────────────────────────────────────────
 const fmtINR = n => {
   const a = Math.abs(n);
-  if (a >= 1e7) return '₹' + (a/1e7).toFixed(2) + 'Cr';
-  if (a >= 1e5) return '₹' + (a/1e5).toFixed(2) + 'L';
-  if (a >= 1e3) return '₹' + (a/1e3).toFixed(1) + 'K';
+  if (a >= 1e7) return '₹' + (a / 1e7).toFixed(2) + 'Cr';
+  if (a >= 1e5) return '₹' + (a / 1e5).toFixed(2) + 'L';
+  if (a >= 1e3) return '₹' + (a / 1e3).toFixed(1) + 'K';
   return '₹' + Math.round(a).toLocaleString('en-IN');
 };
 const fmtN = n => Math.round(n).toLocaleString('en-IN');
 let chartInst = null;
-
-// ── ⑩ Animate result numbers ──
-function animEl(id, txt) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = txt;
-  el.classList.remove('num-pop');
-  void el.offsetWidth;
-  el.classList.add('num-pop');
-}
-
-// ── ⑧ Session memory ──
-const SESSION_KEY = 'ww_inv_session';
-function saveSession(data) {
-  try { localStorage.setItem(SESSION_KEY, JSON.stringify({...getSession(),...data})); } catch(e){}
-}
-function getSession() {
-  try { return JSON.parse(localStorage.getItem(SESSION_KEY)||'{}'); } catch(e){ return {}; }
-}
 
 function drawChart(canvasId, type, labels, datasets, fmtTick = fmtINR) {
   const ctx = document.getElementById(canvasId);
   if (!ctx) return;
   if (chartInst) chartInst.destroy();
   chartInst = new Chart(ctx, {
-    type, data: { labels, datasets },
+    type,
+    data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
-      animation: { duration: 500, easing: 'easeInOutQuart' },
       plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } }, tooltip: { callbacks: { label: c => ' ' + fmtTick(c.raw) } } },
       scales: {
         x: { grid: { color: '#1e2d45' }, ticks: { color: '#64748b', font: { size: 10 } } },
@@ -309,44 +218,14 @@ function drawChart(canvasId, type, labels, datasets, fmtTick = fmtINR) {
 function slider(id, label, val, min, max, step, pfx, sfx, onChange) {
   return `<div class="slider-group">
     <label>${label} <span id="${id}Lbl">${pfx}${fmtN(val)}${sfx}</span></label>
-    <input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"
-      oninput="document.getElementById('${id}Lbl').textContent='${pfx}'+Number(this.value).toLocaleString('en-IN')+'${sfx}';${onChange}">
+    <input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}" oninput="document.getElementById('${id}Lbl').textContent='${pfx}'+Number(this.value).toLocaleString('en-IN')+'${sfx}';${onChange}">
     <div class="slider-minmax"><span>${pfx}${fmtN(min)}${sfx}</span><span>${pfx}${fmtN(max)}${sfx}</span></div>
   </div>`;
 }
 
-function resultCard(label, valId, cls, subId='') {
-  return `<div class="result-card ${cls}"><div class="result-label">${label}</div><div class="result-value ${cls} num-anim" id="${valId}">—</div>${subId?`<div class="result-sub" id="${subId}"></div>`:''}</div>`;
+function resultCard(label, valId, cls, subId = '') {
+  return `<div class="result-card ${cls}"><div class="result-label">${label}</div><div class="result-value ${cls}" id="${valId}">—</div>${subId ? `<div class="result-sub" id="${subId}"></div>` : ''}</div>`;
 }
-
-// ── ④ "What this means" box ──
-function interpretBox(id) {
-  return `<div class="interpretation" id="interp_${id}"><strong>💡 What this means</strong><ul id="interp_list_${id}" style="list-style:disc"></ul></div>`;
-}
-function setInterp(id, points) {
-  const el = document.getElementById('interp_list_' + id);
-  if (!el) return;
-  el.innerHTML = points.map(p => `<li>${p}</li>`).join('');
-}
-
-// ── ⑤ Comparison insight ──
-function cmpInsightBox(id) {
-  return `<div class="cmp-insight" id="cmpInsight_${id}"></div>`;
-}
-function setCmpInsight(id, txt) {
-  const el = document.getElementById('cmpInsight_' + id);
-  if (el) el.innerHTML = '📊 ' + txt;
-}
-
-// ── ⑨ Structured export ──
-let resultTexts = {};
-function setResult(id, txt) { resultTexts[id] = txt; }
-function copyResult(id) {
-  const el = event.target;
-  navigator.clipboard.writeText(resultTexts[id]||'');
-  el.textContent = '✅ Copied!'; setTimeout(() => el.textContent = '📋 Copy Result', 2000);
-}
-function shareWA(id) { window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(resultTexts[id]||''), '_blank'); }
 
 function exportRow(idSuffix) {
   return `<div class="export-row">
@@ -355,22 +234,21 @@ function exportRow(idSuffix) {
   </div>`;
 }
 
-// ─── CALCS METADATA ──────────────────────────────────────
-// Each entry: name, desc, decisionTag, risk ('low'|'med'|'high'), mostUsed?, html(), init()
+let resultTexts = {};
+function setResult(id, txt) { resultTexts[id] = txt; }
+function copyResult(id) { navigator.clipboard.writeText(resultTexts[id] || ''); const btn = event.target; btn.textContent = '✅ Copied!'; setTimeout(() => btn.textContent = '📋 Copy Result', 2000); }
+function shareWA(id) { window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(resultTexts[id] || ''), '_blank'); }
+
+// ─── CALCULATORS ─────────────────────────────────────────
 
 const CALCS = {
 
+// ── SIP ──
 'sip': {
-  name: 'SIP Calculator', mostUsed: true,
+  name: 'SIP Calculator',
   desc: 'Calculate future value of your monthly SIP investments',
-  decisionTag: 'Long-term wealth building', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Future Value','sipFV','primary')}
-      ${resultCard('Total Invested','sipInv','accent')}
-      ${resultCard('Wealth Gained','sipGain','green')}
-    </div>
-    ${interpretBox('sip')}
+    ${resultCard('Future Value','sipFV','primary')}${resultCard('Total Invested','sipInv','accent')}${resultCard('Wealth Gained','sipGain','green')}
     <div class="sliders-grid">
       ${slider('sipM','Monthly SIP',10000,500,100000,500,'₹','',`calcSIP()`)}
       ${slider('sipR','Expected Return',12,1,30,0.5,'','%',`calcSIP()`)}
@@ -381,17 +259,12 @@ const CALCS = {
   init: () => setTimeout(calcSIP, 50)
 },
 
+// ── LUMPSUM ──
 'lumpsum': {
   name: 'Lumpsum Calculator',
   desc: 'One-time investment growth projections',
-  decisionTag: 'Idle money investment', risk: 'med',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Maturity Value','lsFV','primary')}
-      ${resultCard('Principal','lsPr','accent')}
-      ${resultCard('Total Gains','lsGain','green')}
-    </div>
-    ${interpretBox('ls')}
+    ${resultCard('Maturity Value','lsFV','primary')}${resultCard('Principal','lsPr','accent')}${resultCard('Total Gains','lsGain','green')}
     <div class="sliders-grid">
       ${slider('lsP','Investment Amount',100000,10000,10000000,10000,'₹','',`calcLS()`)}
       ${slider('lsR','Expected Return',12,1,30,0.5,'','%',`calcLS()`)}
@@ -402,17 +275,12 @@ const CALCS = {
   init: () => setTimeout(calcLS, 50)
 },
 
+// ── STEP-UP SIP ──
 'stepup': {
   name: 'Step-up SIP Calculator',
   desc: 'Annual increment on your SIP amount',
-  decisionTag: 'Accelerate corpus growth', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Final Corpus','suFV','primary')}
-      ${resultCard('Total Invested','suInv','accent')}
-      ${resultCard('Wealth Gained','suGain','green')}
-    </div>
-    ${interpretBox('su')}
+    ${resultCard('Final Corpus','suFV','primary')}${resultCard('Total Invested','suInv','accent')}${resultCard('Wealth Gained','suGain','green')}
     <div class="sliders-grid">
       ${slider('suM','Initial Monthly SIP',10000,500,100000,500,'₹','',`calcSU()`)}
       ${slider('suR','Annual Return',12,1,30,0.5,'','%',`calcSU()`)}
@@ -424,17 +292,12 @@ const CALCS = {
   init: () => setTimeout(calcSU, 50)
 },
 
+// ── SWP ──
 'swp': {
   name: 'SWP Calculator',
   desc: 'Systematic Withdrawal Plan sustainability',
-  decisionTag: 'Retirement income stream', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Monthly Withdrawal','swpWD','primary')}
-      ${resultCard('Sustainability','swpSus','green')}
-      ${resultCard('Duration','swpDur','accent')}
-    </div>
-    ${interpretBox('swp')}
+    ${resultCard('Monthly Withdrawal','swpWD','primary')}${resultCard('Sustainability','swpSus','green')}${resultCard('Duration','swpDur','accent')}
     <div class="sliders-grid">
       ${slider('swpC','Corpus Amount',5000000,100000,50000000,100000,'₹','',`calcSWP()`)}
       ${slider('swpW','Monthly Withdrawal',25000,1000,200000,1000,'₹','',`calcSWP()`)}
@@ -445,18 +308,12 @@ const CALCS = {
   init: () => setTimeout(calcSWP, 50)
 },
 
+// ── SIP vs FD vs RD ──
 'sipfd': {
   name: 'SIP vs FD vs RD',
   desc: 'Compare growth across three investment types',
-  decisionTag: 'Find the best option for you', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('SIP Value','cmpSIP','primary','cmpSIPsub')}
-      ${resultCard('FD Value','cmpFD','accent','cmpFDsub')}
-      ${resultCard('RD Value','cmpRD','green','cmpRDsub')}
-    </div>
-    ${cmpInsightBox('cmp')}
-    ${interpretBox('cmp')}
+    ${resultCard('SIP Value','cmpSIP','primary','cmpSIPsub')}${resultCard('FD Value','cmpFD','accent','cmpFDsub')}${resultCard('RD Value','cmpRD','green','cmpRDsub')}
     <div class="sliders-grid">
       ${slider('cmpM','Monthly Amount',10000,500,100000,500,'₹','',`calcCMP()`)}
       ${slider('cmpSR','SIP Return',12,1,30,0.5,'','%',`calcCMP()`)}
@@ -467,18 +324,12 @@ const CALCS = {
   init: () => setTimeout(calcCMP, 50)
 },
 
+// ── EQUITY vs DEBT ──
 'eqdebt': {
   name: 'Equity vs Debt',
   desc: 'Blended portfolio allocation impact',
-  decisionTag: 'Balance risk & returns', risk: 'med',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Blended Return','edBlend','primary','edBlendSub')}
-      ${resultCard('Final Corpus','edFV','accent')}
-      ${resultCard('Wealth Gained','edGain','green')}
-    </div>
-    ${cmpInsightBox('ed')}
-    ${interpretBox('ed')}
+    ${resultCard('Blended Return','edBlend','primary','edBlendSub')}${resultCard('Final Corpus','edFV','accent')}${resultCard('Wealth Gained','edGain','green')}
     <div class="sliders-grid">
       ${slider('edEq','Equity Allocation',70,0,100,5,'','%',`calcED()`)}
       ${slider('edM','Monthly SIP',10000,500,100000,500,'₹','',`calcED()`)}
@@ -489,18 +340,12 @@ const CALCS = {
   init: () => setTimeout(calcED, 50)
 },
 
+// ── LUMPSUM vs SIP ──
 'lsvssip': {
   name: 'Lumpsum vs SIP',
   desc: 'Which works better for your situation?',
-  decisionTag: 'One-time vs monthly — decide', risk: 'med',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Lumpsum Value','lvsFV','primary','lvsLSsub')}
-      ${resultCard('SIP Value','lvsSIP','accent','lvsSIPsub')}
-      ${resultCard('Difference','lvsDiff','green','lvsDiffSub')}
-    </div>
-    ${cmpInsightBox('lvs')}
-    ${interpretBox('lvs')}
+    ${resultCard('Lumpsum Value','lvsFV','primary','lvsLSsub')}${resultCard('SIP Value','lvsSIP','accent','lvsSIPsub')}${resultCard('Difference','lvsDiff','green','lvsDiffSub')}
     <div class="sliders-grid">
       ${slider('lvsAmt','Total Investment',1200000,100000,10000000,100000,'₹','',`calcLVS()`)}
       ${slider('lvsR','Expected Return',12,1,30,0.5,'','%',`calcLVS()`)}
@@ -510,17 +355,12 @@ const CALCS = {
   init: () => setTimeout(calcLVS, 50)
 },
 
+// ── CAGR ──
 'cagr': {
   name: 'CAGR Calculator',
   desc: 'Compounded Annual Growth Rate from any two values',
-  decisionTag: 'Measure investment performance', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('CAGR','cagrVal','primary')}
-      ${resultCard('Total Return','cagrTR','accent')}
-      ${resultCard('Multiplier','cagrMul','green')}
-    </div>
-    ${interpretBox('cagr')}
+    ${resultCard('CAGR','cagrVal','primary')}${resultCard('Total Return','cagrTR','accent')}${resultCard('Multiplier','cagrMul','green')}
     <div class="sliders-grid">
       ${slider('cagrI','Initial Value',100000,10000,10000000,10000,'₹','',`calcCAGR()`)}
       ${slider('cagrF','Final Value',350000,10000,50000000,10000,'₹','',`calcCAGR()`)}
@@ -531,17 +371,12 @@ const CALCS = {
   init: () => setTimeout(calcCAGR, 50)
 },
 
+// ── XIRR ──
 'xirr': {
   name: 'XIRR Calculator',
   desc: 'True returns on irregular cash flows',
-  decisionTag: 'Real returns on any investment', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('XIRR','xirrVal','primary')}
-      ${resultCard('Total Invested','xirrInv','accent')}
-      ${resultCard('Total Returns','xirrRet','green')}
-    </div>
-    ${interpretBox('xirr')}
+    ${resultCard('XIRR','xirrVal','primary')}${resultCard('Total Invested','xirrInv','accent')}${resultCard('Total Returns','xirrRet','green')}
     <div style="border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:20px">
       <div style="font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:10px">Cash Flows (- = outflow, + = inflow)</div>
       <div id="xirrFlows"></div>
@@ -562,17 +397,12 @@ const CALCS = {
   }
 },
 
+// ── INFLATION ADJUSTED ──
 'inflation': {
   name: 'Inflation-Adjusted Returns',
   desc: 'Real returns after inflation erosion',
-  decisionTag: 'Know your true purchasing power', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Nominal Value','infNom','primary')}
-      ${resultCard('Real Value','infReal','accent','infRealSub')}
-      ${resultCard('Inflation Erosion','infEros','red')}
-    </div>
-    ${interpretBox('inf')}
+    ${resultCard('Nominal Value','infNom','primary')}${resultCard('Real Value','infReal','accent','infRealSub')}${resultCard('Inflation Erosion','infEros','red')}
     <div class="sliders-grid">
       ${slider('infM','Monthly Investment',10000,500,100000,500,'₹','',`calcINF()`)}
       ${slider('infR','Expected Return',12,1,30,0.5,'','%',`calcINF()`)}
@@ -584,17 +414,12 @@ const CALCS = {
   init: () => setTimeout(calcINF, 50)
 },
 
+// ── ASSET ALLOCATION ──
 'asset': {
   name: 'Asset Allocation Checker',
   desc: 'Visualize and optimize your portfolio mix',
-  decisionTag: 'Optimize portfolio balance', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Risk Profile','asRisk','primary')}
-      ${resultCard('Expected Return','asRet','green')}
-      ${resultCard('Total Allocated','asTotal','accent')}
-    </div>
-    ${interpretBox('as')}
+    ${resultCard('Risk Profile','asRisk','primary')}${resultCard('Expected Return','asRet','green')}${resultCard('Total Allocated','asTotal','accent')}
     <div class="sliders-grid">
       ${slider('asEq','Equity',60,0,100,5,'','%',`calcAS()`)}
       ${slider('asDt','Debt',25,0,100,5,'','%',`calcAS()`)}
@@ -605,17 +430,12 @@ const CALCS = {
   init: () => setTimeout(calcAS, 50)
 },
 
+// ── DIVERSIFICATION ──
 'divers': {
   name: 'Diversification Score',
   desc: 'Measure concentration risk in your portfolio',
-  decisionTag: 'Check if you are over-concentrated', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Diversification Score','dvScore','primary')}
-      ${resultCard('Active Classes','dvClasses','accent')}
-      ${resultCard('Concentration Risk','dvRisk','green')}
-    </div>
-    ${interpretBox('dv')}
+    ${resultCard('Diversification Score','dvScore','primary')}${resultCard('Active Classes','dvClasses','accent')}${resultCard('Concentration Risk','dvRisk','green')}
     <div id="dvSliders" style="margin:20px 0"></div>`,
   init: () => {
     window.dvWeights = [40, 20, 10, 10, 15, 5];
@@ -623,10 +443,10 @@ const CALCS = {
   }
 },
 
+// ── RISK ANALYZER ──
 'risk': {
   name: 'Risk Analyzer',
   desc: 'Personalized risk profile and allocation suggestion',
-  decisionTag: 'Know your investor type', risk: 'low',
   html: () => `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
       <div style="border:1px solid var(--border);border-radius:12px;background:var(--card2);padding:20px;text-align:center">
@@ -640,7 +460,6 @@ const CALCS = {
         <div id="riskAlloc"></div>
       </div>
     </div>
-    ${interpretBox('risk')}
     <div class="sliders-grid">
       ${slider('rkAge','Age',30,18,70,1,'','yrs',`calcRisk()`)}
       ${slider('rkHor','Investment Horizon',20,1,40,1,'','yrs',`calcRisk()`)}
@@ -650,17 +469,12 @@ const CALCS = {
   init: () => setTimeout(calcRisk, 50)
 },
 
+// ── RETIREMENT ──
 'retire': {
   name: 'Retirement Calculator',
   desc: 'Plan the corpus you need to retire comfortably',
-  decisionTag: 'Am I saving enough to retire?', risk: 'low',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Projected Corpus','retFV','primary')}
-      ${resultCard('Required Corpus','retReq','accent')}
-      ${resultCard('Status','retStatus','green','retStatusSub')}
-    </div>
-    ${interpretBox('ret')}
+    ${resultCard('Projected Corpus','retFV','primary')}${resultCard('Required Corpus','retReq','accent')}${resultCard('Status','retStatus','green','retStatusSub')}
     <div class="sliders-grid">
       ${slider('retAge','Current Age',30,18,55,1,'','yrs',`calcRet()`)}
       ${slider('retRA','Retire at Age',60,45,70,1,'','yrs',`calcRet()`)}
@@ -674,17 +488,12 @@ const CALCS = {
   init: () => setTimeout(calcRet, 50)
 },
 
+// ── EDUCATION ──
 'edu': {
   name: 'Child Education Planner',
-  desc: "Save for your child's future education costs",
-  decisionTag: "Plan your child's education fund", risk: 'low',
+  desc: 'Save for your child\'s future education costs',
   html: () => `
-    <div class="result-row">
-      ${resultCard('Future Cost','eduFC','primary','eduFCsub')}
-      ${resultCard('Required Monthly SIP','eduSIP','accent')}
-      ${resultCard('Years to Goal','eduY','green')}
-    </div>
-    ${interpretBox('edu')}
+    ${resultCard('Future Cost','eduFC','primary','eduFCsub')}${resultCard('Required Monthly SIP','eduSIP','accent')}${resultCard('Years to Goal','eduY','green')}
     <div class="sliders-grid">
       ${slider('eduC','Current Education Cost',1500000,100000,10000000,100000,'₹','',`calcEdu()`)}
       ${slider('eduCA','Child Age Now',5,0,17,1,'','yrs',`calcEdu()`)}
@@ -697,17 +506,12 @@ const CALCS = {
   init: () => setTimeout(calcEdu, 50)
 },
 
+// ── FIRE ──
 'fire': {
   name: 'FIRE Calculator',
   desc: 'Financial Independence, Retire Early — how close are you?',
-  decisionTag: 'When can I stop working?', risk: 'high',
   html: () => `
-    <div class="result-row">
-      ${resultCard('FIRE Target','fireTgt','primary','fireTgtSub')}
-      ${resultCard('Years to FIRE','fireYrs','accent')}
-      ${resultCard('Gap / Surplus','fireGap','green','fireGapSub')}
-    </div>
-    ${interpretBox('fire')}
+    ${resultCard('FIRE Target','fireTgt','primary','fireTgtSub')}${resultCard('Years to FIRE','fireYrs','accent')}${resultCard('Gap / Surplus','fireGap','green','fireGapSub')}
     <div class="sliders-grid">
       ${slider('fireExp','Monthly Expenses',60000,10000,500000,5000,'₹','',`calcFIRE()`)}
       ${slider('fireCorp','Current Corpus',2000000,0,50000000,100000,'₹','',`calcFIRE()`)}
@@ -730,29 +534,22 @@ function calcSIP() {
   const fv = m * ((Math.pow(1+r, n)-1)/r) * (1+r);
   const inv = m * n;
   const gain = fv - inv;
+  document.getElementById('sipFV').textContent = fmtINR(fv);
+  document.getElementById('sipInv').textContent = fmtINR(inv);
+  document.getElementById('sipGain').textContent = fmtINR(gain);
   const yrs = n / 12;
-  animEl('sipFV', fmtINR(fv));
-  animEl('sipInv', fmtINR(inv));
-  animEl('sipGain', fmtINR(gain));
-  const mult = (fv/inv).toFixed(1);
-  setInterp('sip', [
-    `You are investing <b>${fmtINR(inv)}</b> and gaining <b>${fmtINR(gain)}</b> in returns`,
-    `Your money is growing <b>${mult}x</b> your investment`,
-    `Compounding adds <b>${fmtINR(gain)}</b> without any extra effort`
-  ]);
-  updateSnapshot(m, +document.getElementById('sipR').value, yrs, fv, inv);
   const labs = [], v1 = [], v2 = [];
   for (let i = 1; i <= yrs; i++) {
-    const mo = i*12; labs.push('Y'+i);
-    v1.push(Math.round(m * ((Math.pow(1+r,mo)-1)/r) * (1+r)));
-    v2.push(m * mo);
+    const months = i * 12;
+    labs.push('Y'+i);
+    v1.push(Math.round(m * ((Math.pow(1+r, months)-1)/r) * (1+r)));
+    v2.push(m * months);
   }
-  drawChart('sipChart','line',labs,[
-    {label:'Future Value',data:v1,borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,0.1)',fill:true,tension:.4,pointRadius:0},
-    {label:'Amount Invested',data:v2,borderColor:'#818cf8',backgroundColor:'rgba(129,140,248,0.1)',fill:true,tension:.4,pointRadius:0}
+  drawChart('sipChart', 'line', labs, [
+    { label:'Future Value', data: v1, borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.1)', fill:true, tension:.4, pointRadius:0 },
+    { label:'Amount Invested', data: v2, borderColor:'#818cf8', backgroundColor:'rgba(129,140,248,0.1)', fill:true, tension:.4, pointRadius:0 }
   ]);
-  setResult('sip', `Wealthwise SIP Plan\n━━━━━━━━━━━━━━━━━━\nMonthly SIP: ₹${m.toLocaleString('en-IN')}/month\nExpected Return: ${document.getElementById('sipR').value}% p.a.\nTime Period: ${yrs} years\n\nFuture Value: ${fmtINR(fv)}\nTotal Invested: ${fmtINR(inv)}\nWealth Gained: ${fmtINR(gain)} (${mult}x your investment)\n\nGenerated on wealthwise.app`);
-  saveSession({ tool:'sip', sipM:m, sipR:document.getElementById('sipR').value, sipY:yrs });
+  setResult('sip', `SIP: ₹${m.toLocaleString()}/mo @ ${document.getElementById('sipR').value}% for ${yrs}Y → ${fmtINR(fv)} (Invested: ${fmtINR(inv)}, Gains: ${fmtINR(gain)})`);
 }
 
 function calcLS() {
@@ -761,18 +558,15 @@ function calcLS() {
   const y = +document.getElementById('lsY').value;
   const fv = p * Math.pow(1+r, y);
   const gain = fv - p;
-  animEl('lsFV', fmtINR(fv)); animEl('lsPr', fmtINR(p)); animEl('lsGain', fmtINR(gain));
-  const mult = (fv/p).toFixed(1);
-  setInterp('ls', [
-    `You invest <b>${fmtINR(p)}</b> once and it becomes <b>${fmtINR(fv)}</b>`,
-    `Your money <b>${mult}x</b>s itself without monthly contributions`,
-    `Net gain of <b>${fmtINR(gain)}</b> purely from compounding`
-  ]);
+  document.getElementById('lsFV').textContent = fmtINR(fv);
+  document.getElementById('lsPr').textContent = fmtINR(p);
+  document.getElementById('lsGain').textContent = fmtINR(gain);
   const labs = [], v1 = [];
-  for (let i = 1; i <= y; i++) { labs.push('Y'+i); v1.push(Math.round(p*Math.pow(1+r,i))); }
-  drawChart('lsChart','line',labs,[{label:'Growth Value',data:v1,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,0.1)',fill:true,tension:.4,pointRadius:0}]);
-  setResult('ls', `Wealthwise Lumpsum Plan\n━━━━━━━━━━━━━━━━━━\nInvestment: ${fmtINR(p)} (one-time)\nReturn: ${document.getElementById('lsR').value}% p.a. | Period: ${y} years\n\nMaturity Value: ${fmtINR(fv)}\nTotal Gains: ${fmtINR(gain)} | Growth: ${mult}x\n\nGenerated on wealthwise.app`);
-  saveSession({ tool:'lumpsum' });
+  for (let i = 1; i <= y; i++) { labs.push('Y'+i); v1.push(Math.round(p * Math.pow(1+r, i))); }
+  drawChart('lsChart', 'line', labs, [
+    { label:'Growth Value', data: v1, borderColor:'#22c55e', backgroundColor:'rgba(34,197,94,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('ls', `Lumpsum: ₹${p.toLocaleString()} @ ${document.getElementById('lsR').value}% for ${y}Y → ${fmtINR(fv)}`);
 }
 
 function calcSU() {
@@ -784,23 +578,18 @@ function calcSU() {
   const labs = [], v1 = [], v2 = [];
   for (let y = 0; y < years; y++) {
     const ms = sip * Math.pow(1+stepUp, y);
-    for (let m = 0; m < 12; m++) { corpus = (corpus+ms)*(1+rate); invested += ms; }
+    for (let m = 0; m < 12; m++) { corpus = (corpus + ms) * (1+rate); invested += ms; }
     labs.push('Y'+(y+1)); v1.push(Math.round(corpus)); v2.push(Math.round(invested));
   }
   const gain = corpus - invested;
-  const flatCorpus = sip * ((Math.pow(1+rate, years*12)-1)/rate) * (1+rate);
-  animEl('suFV', fmtINR(corpus)); animEl('suInv', fmtINR(invested)); animEl('suGain', fmtINR(gain));
-  setInterp('su', [
-    `With step-up, you build <b>${fmtINR(corpus)}</b> vs <b>${fmtINR(flatCorpus)}</b> without step-up`,
-    `Step-up adds <b>${fmtINR(corpus-flatCorpus)}</b> extra to your corpus`,
-    `You invest <b>${fmtINR(invested)}</b> and grow it to ${(corpus/invested).toFixed(1)}x`
+  document.getElementById('suFV').textContent = fmtINR(corpus);
+  document.getElementById('suInv').textContent = fmtINR(invested);
+  document.getElementById('suGain').textContent = fmtINR(gain);
+  drawChart('suChart', 'line', labs, [
+    { label:'Step-up Corpus', data: v1, borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.1)', fill:true, tension:.4, pointRadius:0 },
+    { label:'Invested', data: v2, borderColor:'#818cf8', fill:false, tension:.4, pointRadius:0, borderDash:[5,5] }
   ]);
-  drawChart('suChart','line',labs,[
-    {label:'Step-up Corpus',data:v1,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.1)',fill:true,tension:.4,pointRadius:0},
-    {label:'Invested',data:v2,borderColor:'#818cf8',fill:false,tension:.4,pointRadius:0,borderDash:[5,5]}
-  ]);
-  setResult('su', `Wealthwise Step-up SIP\n━━━━━━━━━━━━━━━━━━\nInitial SIP: ₹${sip.toLocaleString('en-IN')}/month\nAnnual Step-up: ${document.getElementById('suS').value}% | Return: ${document.getElementById('suR').value}% | Years: ${years}\n\nFinal Corpus: ${fmtINR(corpus)}\nTotal Invested: ${fmtINR(invested)} | Gains: ${fmtINR(gain)}\nBonus vs flat SIP: ${fmtINR(corpus-flatCorpus)}\n\nGenerated on wealthwise.app`);
-  saveSession({ tool:'stepup' });
+  setResult('su', `Step-up SIP: ₹${sip.toLocaleString()}/mo, ${document.getElementById('suS').value}% step-up @ ${document.getElementById('suR').value}% for ${years}Y → ${fmtINR(corpus)}`);
 }
 
 function calcSWP() {
@@ -811,26 +600,21 @@ function calcSWP() {
   const labs = [], v1 = [];
   let totalMonths = 0;
   for (let m = 1; m <= 360; m++) {
-    bal = bal*(1+rate) - wd;
+    bal = bal * (1+rate) - wd;
     if (bal <= 0) { totalMonths = m; break; }
     if (m % 12 === 0) { labs.push('Y'+(m/12)); v1.push(Math.round(bal)); totalMonths = m; }
   }
   const isOk = wd <= corpus * rate;
-  animEl('swpWD', fmtINR(wd));
+  document.getElementById('swpWD').textContent = fmtINR(wd);
   const sus = document.getElementById('swpSus');
   sus.textContent = isOk ? 'Sustainable' : 'Will Deplete';
-  sus.className = 'result-value ' + (isOk?'green':'red');
-  sus.closest('.result-card').className = 'result-card ' + (isOk?'green':'red');
-  animEl('swpDur', Math.round(labs.length) + ' Yrs');
-  const safe = Math.round(corpus * rate);
-  setInterp('swp', [
-    isOk ? `✅ Your withdrawal is <b>sustainable</b> — corpus keeps growing` : `⚠️ Your withdrawal exceeds safe limit — corpus will deplete`,
-    `Safe max monthly withdrawal from this corpus: <b>${fmtINR(safe)}</b>`,
-    `Total withdrawals over ${labs.length} years: <b>${fmtINR(wd * labs.length * 12)}</b>`
+  sus.className = 'result-value ' + (isOk ? 'green' : 'red');
+  sus.closest('.result-card').className = 'result-card ' + (isOk ? 'green' : 'red');
+  document.getElementById('swpDur').textContent = Math.round(labs.length) + ' Yrs';
+  drawChart('swpChart', 'line', labs, [
+    { label:'Remaining Balance', data: v1, borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.1)', fill:true, tension:.4, pointRadius:0 }
   ]);
-  drawChart('swpChart','line',labs,[{label:'Remaining Balance',data:v1,borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,0.1)',fill:true,tension:.4,pointRadius:0}]);
-  setResult('swp', `Wealthwise SWP Plan\n━━━━━━━━━━━━━━━━━━\nCorpus: ${fmtINR(corpus)} | Withdrawal: ₹${wd.toLocaleString('en-IN')}/month\nReturn: ${document.getElementById('swpR').value}% p.a.\n\nSustainability: ${isOk?'Sustainable ✓':'Will Deplete ✗'}\nDuration: ${labs.length} years | Safe limit: ${fmtINR(safe)}/mo\n\nGenerated on wealthwise.app`);
-  saveSession({ tool:'swp' });
+  setResult('swp', `SWP: Corpus ${fmtINR(corpus)}, Withdrawal ₹${wd.toLocaleString()}/mo @ ${document.getElementById('swpR').value}% → ${isOk?'Sustainable':'Will Deplete'} for ${labs.length} years`);
 }
 
 function calcCMP() {
@@ -839,36 +623,29 @@ function calcCMP() {
   const fr = +document.getElementById('cmpFR').value;
   const y = +document.getElementById('cmpY').value;
   const n = y * 12;
-  const sipFV = m * ((Math.pow(1+sr,n)-1)/sr) * (1+sr);
+  const sipFV = m * ((Math.pow(1+sr, n)-1)/sr) * (1+sr);
   const inv = m * n;
   const fdFV = inv * Math.pow(1 + fr/400, y*4);
   const rdR = fr/12/100;
-  const rdFV = m * ((Math.pow(1+rdR,n)-1)/rdR) * (1+rdR);
-  animEl('cmpSIP', fmtINR(sipFV)); animEl('cmpFD', fmtINR(fdFV)); animEl('cmpRD', fmtINR(rdFV));
+  const rdFV = m * ((Math.pow(1+rdR, n)-1)/rdR) * (1+rdR);
+  document.getElementById('cmpSIP').textContent = fmtINR(sipFV);
+  document.getElementById('cmpFD').textContent = fmtINR(fdFV);
+  document.getElementById('cmpRD').textContent = fmtINR(rdFV);
   document.getElementById('cmpSIPsub').textContent = `@ ${document.getElementById('cmpSR').value}% p.a.`;
   document.getElementById('cmpFDsub').textContent = `@ ${fr}% p.a.`;
   document.getElementById('cmpRDsub').textContent = `@ ${fr}% p.a.`;
-  const sipBeatsFD = sipFV - fdFV;
-  const sipBeatsRD = sipFV - rdFV;
-  setCmpInsight('cmp', `SIP beats FD by <b>${fmtINR(sipBeatsFD)}</b> and RD by <b>${fmtINR(sipBeatsRD)}</b> over ${y} years`);
-  setInterp('cmp', [
-    `SIP wins with <b>${fmtINR(sipFV)}</b> vs FD at ${fmtINR(fdFV)}`,
-    `SIP generates <b>${fmtINR(sipBeatsFD)}</b> more than FD over ${y} years`,
-    `For the same monthly amount, equity SIP creates significantly more wealth`
-  ]);
   const labs = [], ds1 = [], ds2 = [], ds3 = [];
   for (let i = 1; i <= y; i++) {
     const mo = i*12; labs.push('Y'+i);
-    ds1.push(Math.round(m * ((Math.pow(1+sr,mo)-1)/sr) * (1+sr)));
+    ds1.push(Math.round(m * ((Math.pow(1+sr, mo)-1)/sr) * (1+sr)));
     ds2.push(Math.round(m*mo * Math.pow(1+fr/400, i*4)));
-    ds3.push(Math.round(m * ((Math.pow(1+rdR,mo)-1)/rdR) * (1+rdR)));
+    ds3.push(Math.round(m * ((Math.pow(1+rdR, mo)-1)/rdR) * (1+rdR)));
   }
-  drawChart('cmpChart','line',labs,[
-    {label:'SIP',data:ds1,borderColor:'#0ea5e9',fill:false,tension:.4,pointRadius:0},
-    {label:'FD',data:ds2,borderColor:'#f59e0b',fill:false,tension:.4,pointRadius:0},
-    {label:'RD',data:ds3,borderColor:'#22c55e',fill:false,tension:.4,pointRadius:0}
+  drawChart('cmpChart', 'line', labs, [
+    { label:'SIP', data:ds1, borderColor:'#0ea5e9', fill:false, tension:.4, pointRadius:0 },
+    { label:'FD', data:ds2, borderColor:'#f59e0b', fill:false, tension:.4, pointRadius:0 },
+    { label:'RD', data:ds3, borderColor:'#22c55e', fill:false, tension:.4, pointRadius:0 }
   ]);
-  saveSession({ tool:'sipfd' });
 }
 
 function calcED() {
@@ -879,32 +656,24 @@ function calcED() {
   const y = +document.getElementById('edY').value;
   const n = y * 12;
   const r = blended / 12;
-  const fv = m * ((Math.pow(1+r,n)-1)/r) * (1+r);
+  const fv = m * ((Math.pow(1+r, n)-1)/r) * (1+r);
   const inv = m * n;
-  const purEqFV = m * ((Math.pow(1+0.14/12,n)-1)/(0.14/12)) * (1+0.14/12);
-  const purDtFV = m * ((Math.pow(1+0.07/12,n)-1)/(0.07/12)) * (1+0.07/12);
-  animEl('edBlend', (blended*100).toFixed(1)+'%');
+  document.getElementById('edBlend').textContent = (blended*100).toFixed(1) + '%';
   document.getElementById('edBlendSub').textContent = `${(eq*100).toFixed(0)}% Eq + ${(debt*100).toFixed(0)}% Debt`;
-  animEl('edFV', fmtINR(fv)); animEl('edGain', fmtINR(fv-inv));
-  setCmpInsight('ed', `Equity allocation gives <b>${((purEqFV/purDtFV-1)*100).toFixed(0)}%</b> higher returns than pure Debt (${fmtINR(purEqFV)} vs ${fmtINR(purDtFV)})`);
-  setInterp('ed', [
-    `Your blended ${(blended*100).toFixed(1)}% return creates <b>${fmtINR(fv)}</b> in ${y} years`,
-    `Pure equity (14%) would give <b>${fmtINR(purEqFV)}</b> — higher but more volatile`,
-    `Pure debt (7%) gives <b>${fmtINR(purDtFV)}</b> — safer, but significantly less`
-  ]);
+  document.getElementById('edFV').textContent = fmtINR(fv);
+  document.getElementById('edGain').textContent = fmtINR(fv - inv);
   const labs = [], ds1 = [], ds2 = [], ds3 = [];
   for (let i = 1; i <= y; i++) {
     const mo = i*12; labs.push('Y'+i);
-    ds1.push(Math.round(m * ((Math.pow(1+r,mo)-1)/r) * (1+r)));
-    ds2.push(Math.round(m * ((Math.pow(1+0.14/12,mo)-1)/(0.14/12)) * (1+0.14/12)));
-    ds3.push(Math.round(m * ((Math.pow(1+0.07/12,mo)-1)/(0.07/12)) * (1+0.07/12)));
+    ds1.push(Math.round(m * ((Math.pow(1+r, mo)-1)/r) * (1+r)));
+    ds2.push(Math.round(m * ((Math.pow(1+0.14/12, mo)-1)/(0.14/12)) * (1+0.14/12)));
+    ds3.push(Math.round(m * ((Math.pow(1+0.07/12, mo)-1)/(0.07/12)) * (1+0.07/12)));
   }
-  drawChart('edChart','line',labs,[
-    {label:'Blended',data:ds1,borderColor:'#0ea5e9',fill:false,tension:.4,borderWidth:2.5,pointRadius:0},
-    {label:'100% Equity',data:ds2,borderColor:'#22c55e',fill:false,tension:.4,pointRadius:0,borderDash:[5,5]},
-    {label:'100% Debt',data:ds3,borderColor:'#f59e0b',fill:false,tension:.4,pointRadius:0,borderDash:[5,5]}
+  drawChart('edChart', 'line', labs, [
+    { label:'Blended', data:ds1, borderColor:'#0ea5e9', fill:false, tension:.4, borderWidth:2.5, pointRadius:0 },
+    { label:'100% Equity', data:ds2, borderColor:'#22c55e', fill:false, tension:.4, pointRadius:0, borderDash:[5,5] },
+    { label:'100% Debt', data:ds3, borderColor:'#f59e0b', fill:false, tension:.4, pointRadius:0, borderDash:[5,5] }
   ]);
-  saveSession({ tool:'eqdebt' });
 }
 
 function calcLVS() {
@@ -915,33 +684,25 @@ function calcLVS() {
   const lsFV = amt * Math.pow(1+r/100, y);
   const sr = r/12/100;
   const n = y * 12;
-  const sipFV = monthly * ((Math.pow(1+sr,n)-1)/sr) * (1+sr);
+  const sipFV = monthly * ((Math.pow(1+sr, n)-1)/sr) * (1+sr);
   const diff = Math.abs(lsFV - sipFV);
-  const lsWins = lsFV > sipFV;
-  const winner = lsWins ? 'Lumpsum wins' : 'SIP wins';
-  animEl('lvsFV', fmtINR(lsFV)); animEl('lvsSIP', fmtINR(sipFV)); animEl('lvsDiff', fmtINR(diff));
+  const winner = lsFV > sipFV ? 'Lumpsum wins' : 'SIP wins';
+  document.getElementById('lvsFV').textContent = fmtINR(lsFV);
+  document.getElementById('lvsSIP').textContent = fmtINR(sipFV);
+  document.getElementById('lvsDiff').textContent = fmtINR(diff);
   document.getElementById('lvsLSsub').textContent = 'Invest all at once';
-  document.getElementById('lvsSIPsub').textContent = `₹${Math.round(monthly).toLocaleString('en-IN')}/mo`;
+  document.getElementById('lvsSIPsub').textContent = `₹${Math.round(monthly).toLocaleString()}/mo`;
   document.getElementById('lvsDiffSub').textContent = winner;
-  setCmpInsight('lvs', lsWins
-    ? `Lumpsum beats SIP by <b>${fmtINR(diff)}</b> — use lumpsum if you have idle cash`
-    : `SIP beats Lumpsum by <b>${fmtINR(diff)}</b> — SIP works better here`);
-  setInterp('lvs', [
-    `${lsWins?'Lumpsum':'SIP'} wins by <b>${fmtINR(diff)}</b> in this scenario`,
-    lsWins ? `Lumpsum benefits from early full deployment of capital` : `SIP benefits from rupee cost averaging over time`,
-    `For market timing risk, SIP is safer; for idle capital, lumpsum is better`
-  ]);
   const labs = [], ds1 = [], ds2 = [];
   for (let i = 1; i <= y; i++) {
     const mo = i*12; labs.push('Y'+i);
     ds1.push(Math.round(amt * Math.pow(1+r/100, i)));
-    ds2.push(Math.round(monthly * ((Math.pow(1+sr,mo)-1)/sr) * (1+sr)));
+    ds2.push(Math.round(monthly * ((Math.pow(1+sr, mo)-1)/sr) * (1+sr)));
   }
-  drawChart('lvsChart','line',labs,[
-    {label:'Lumpsum',data:ds1,borderColor:'#0ea5e9',fill:false,tension:.4,pointRadius:0},
-    {label:'SIP',data:ds2,borderColor:'#818cf8',fill:false,tension:.4,pointRadius:0}
+  drawChart('lvsChart', 'line', labs, [
+    { label:'Lumpsum', data:ds1, borderColor:'#0ea5e9', fill:false, tension:.4, pointRadius:0 },
+    { label:'SIP', data:ds2, borderColor:'#818cf8', fill:false, tension:.4, pointRadius:0 }
   ]);
-  saveSession({ tool:'lsvssip' });
 }
 
 function calcCAGR() {
@@ -950,19 +711,15 @@ function calcCAGR() {
   const y = +document.getElementById('cagrY').value;
   const cagr = (Math.pow(fin/init, 1/y) - 1) * 100;
   const tr = ((fin - init) / init * 100);
-  const mult = (fin/init).toFixed(2);
-  animEl('cagrVal', cagr.toFixed(2)+'%'); animEl('cagrTR', tr.toFixed(1)+'%'); animEl('cagrMul', mult+'x');
-  const perf = cagr >= 15 ? 'outstanding' : cagr >= 12 ? 'excellent' : cagr >= 8 ? 'good' : 'moderate';
-  setInterp('cagr', [
-    `Your investment grew at <b>${cagr.toFixed(2)}% CAGR</b> — that is ${perf} performance`,
-    `A ${fmtINR(init)} investment became <b>${fmtINR(fin)}</b> — a <b>${mult}x</b> multiple`,
-    `Total return over ${y} years: <b>${tr.toFixed(1)}%</b>`
-  ]);
+  document.getElementById('cagrVal').textContent = cagr.toFixed(2) + '%';
+  document.getElementById('cagrTR').textContent = tr.toFixed(1) + '%';
+  document.getElementById('cagrMul').textContent = (fin/init).toFixed(2) + 'x';
   const labs = [], v1 = [];
-  for (let i = 1; i <= y; i++) { labs.push('Y'+i); v1.push(Math.round(init*Math.pow(1+cagr/100,i))); }
-  drawChart('cagrChart','line',labs,[{label:'Projected Value',data:v1,borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,0.1)',fill:true,tension:.4,pointRadius:0}]);
-  setResult('cagr', `Wealthwise CAGR Analysis\n━━━━━━━━━━━━━━━━━━\n${fmtINR(init)} → ${fmtINR(fin)} in ${y} years\n\nCAGR: ${cagr.toFixed(2)}% | Growth: ${mult}x | Total Return: ${tr.toFixed(1)}%\n\nGenerated on wealthwise.app`);
-  saveSession({ tool:'cagr' });
+  for (let i = 1; i <= y; i++) { labs.push('Y'+i); v1.push(Math.round(init * Math.pow(1+cagr/100, i))); }
+  drawChart('cagrChart', 'line', labs, [
+    { label:'Projected Value', data:v1, borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('cagr', `CAGR: ₹${init.toLocaleString()} → ₹${fin.toLocaleString()} in ${y}Y = ${cagr.toFixed(2)}% CAGR`);
 }
 
 function xirr(cfs) {
@@ -973,7 +730,7 @@ function xirr(cfs) {
   for (let i = 0; i < 100; i++) {
     let npv = 0, dnpv = 0;
     for (let j = 0; j < amounts.length; j++) {
-      const t = (dates[j]-t0) / (365.25*86400000);
+      const t = (dates[j] - t0) / (365.25 * 86400000);
       npv += amounts[j] / Math.pow(1+rate, t);
       dnpv -= t * amounts[j] / Math.pow(1+rate, t+1);
     }
@@ -988,14 +745,17 @@ function addCF() {
   const d = document.getElementById('xirrDate').value;
   const a = +document.getElementById('xirrAmt').value;
   if (!d || !a) return;
-  window.cfData.push({ date:d, amount:a });
+  window.cfData.push({ date: d, amount: a });
   window.cfData.sort((a,b) => a.date.localeCompare(b.date));
   document.getElementById('xirrDate').value = '';
   document.getElementById('xirrAmt').value = '';
   renderXIRR();
 }
 
-function removeCF(i) { window.cfData.splice(i,1); renderXIRR(); }
+function removeCF(i) {
+  window.cfData.splice(i, 1);
+  renderXIRR();
+}
 
 function renderXIRR() {
   const cfs = window.cfData;
@@ -1004,23 +764,17 @@ function renderXIRR() {
   container.innerHTML = cfs.map((f,i) => `
     <div class="cashflow-row">
       <span style="color:var(--muted)">${f.date}</span>
-      <span class="${f.amount<0?'cashflow-neg':'cashflow-pos'}">${f.amount<0?'-':'+'} ₹${Math.abs(f.amount).toLocaleString()}</span>
+      <span class="${f.amount < 0 ? 'cashflow-neg' : 'cashflow-pos'}">${f.amount < 0 ? '-' : '+'} ₹${Math.abs(f.amount).toLocaleString()}</span>
       <button class="btn" style="padding:3px 10px;font-size:0.7rem" onclick="removeCF(${i})">Remove</button>
     </div>`).join('');
   try {
     const rate = xirr(cfs);
     const inv = cfs.filter(f=>f.amount<0).reduce((s,f)=>s+Math.abs(f.amount),0);
     const ret = cfs.filter(f=>f.amount>0).reduce((s,f)=>s+f.amount,0);
-    animEl('xirrVal', rate.toFixed(2)+'%');
-    animEl('xirrInv', fmtINR(inv));
-    animEl('xirrRet', fmtINR(ret));
-    const perf = rate >= 15 ? 'excellent' : rate >= 10 ? 'good' : rate >= 6 ? 'decent' : 'below average';
-    setInterp('xirr', [
-      `Your true annualised return is <b>${rate.toFixed(2)}%</b> — ${perf} performance`,
-      `You invested <b>${fmtINR(inv)}</b> across ${cfs.filter(f=>f.amount<0).length} transactions`,
-      `Total received back: <b>${fmtINR(ret)}</b> — profit: <b>${fmtINR(ret-inv)}</b>`
-    ]);
-    setResult('xirr', `Wealthwise XIRR Analysis\n━━━━━━━━━━━━━━━━━━\nXIRR: ${rate.toFixed(2)}% p.a.\nTotal Invested: ${fmtINR(inv)} | Total Returns: ${fmtINR(ret)}\nNet Profit: ${fmtINR(ret-inv)}\n\nGenerated on wealthwise.app`);
+    document.getElementById('xirrVal').textContent = rate.toFixed(2) + '%';
+    document.getElementById('xirrInv').textContent = fmtINR(inv);
+    document.getElementById('xirrRet').textContent = fmtINR(ret);
+    setResult('xirr', `XIRR: ${rate.toFixed(2)}% for ${cfs.length} cash flows`);
   } catch(e) {}
 }
 
@@ -1030,29 +784,24 @@ function calcINF() {
   const inf = +document.getElementById('infI').value / 100;
   const y = +document.getElementById('infY').value;
   const n = y * 12;
-  const nomFV = m * ((Math.pow(1+r,n)-1)/r) * (1+r);
+  const nomFV = m * ((Math.pow(1+r, n)-1)/r) * (1+r);
   const realFV = nomFV / Math.pow(1+inf, y);
-  const erosion = nomFV - realFV;
-  animEl('infNom', fmtINR(nomFV)); animEl('infReal', fmtINR(realFV)); animEl('infEros', fmtINR(erosion));
+  document.getElementById('infNom').textContent = fmtINR(nomFV);
+  document.getElementById('infReal').textContent = fmtINR(realFV);
   document.getElementById('infRealSub').textContent = 'Inflation adjusted';
-  const erPct = (erosion/nomFV*100).toFixed(1);
-  setInterp('inf', [
-    `Inflation erodes <b>${erPct}%</b> of your corpus — you lose <b>${fmtINR(erosion)}</b> in real terms`,
-    `Your money is worth only <b>${fmtINR(realFV)}</b> in today's purchasing power`,
-    `To beat inflation, ensure returns exceed ${document.getElementById('infI').value}% consistently`
-  ]);
+  document.getElementById('infEros').textContent = fmtINR(nomFV - realFV);
   const labs = [], ds1 = [], ds2 = [];
   for (let i = 1; i <= y; i++) {
-    const mo = i*12; labs.push('Y'+i);
-    ds1.push(Math.round(m*((Math.pow(1+r,mo)-1)/r)*(1+r)));
-    ds2.push(Math.round(m*((Math.pow(1+r,mo)-1)/r)*(1+r)/Math.pow(1+inf,i)));
+    const mo = i*12;
+    labs.push('Y'+i);
+    ds1.push(Math.round(m * ((Math.pow(1+r, mo)-1)/r) * (1+r)));
+    ds2.push(Math.round(m * ((Math.pow(1+r, mo)-1)/r) * (1+r) / Math.pow(1+inf, i)));
   }
-  drawChart('infChart','line',labs,[
-    {label:'Nominal Value',data:ds1,borderColor:'#0ea5e9',fill:false,tension:.4,pointRadius:0},
-    {label:'Real Value',data:ds2,borderColor:'#f59e0b',fill:false,tension:.4,pointRadius:0}
+  drawChart('infChart', 'line', labs, [
+    { label:'Nominal Value', data:ds1, borderColor:'#0ea5e9', fill:false, tension:.4, pointRadius:0 },
+    { label:'Real Value', data:ds2, borderColor:'#f59e0b', fill:false, tension:.4, pointRadius:0 }
   ]);
-  setResult('inf', `Wealthwise Inflation Analysis\n━━━━━━━━━━━━━━━━━━\nMonthly SIP: ₹${m.toLocaleString('en-IN')} | Return: ${document.getElementById('infR').value}% | Inflation: ${document.getElementById('infI').value}%\nPeriod: ${y} years\n\nNominal Value: ${fmtINR(nomFV)}\nReal Value (today's money): ${fmtINR(realFV)}\nInflation Erosion: ${fmtINR(erosion)} (${erPct}%)\n\nGenerated on wealthwise.app`);
-  saveSession({ tool:'inflation' });
+  setResult('inf', `Inflation-adj: ₹${m.toLocaleString()}/mo @ ${document.getElementById('infR').value}% for ${y}Y → Nominal ${fmtINR(nomFV)}, Real ${fmtINR(realFV)}`);
 }
 
 function calcAS() {
@@ -1061,46 +810,38 @@ function calcAS() {
   const gd = +document.getElementById('asGd').value;
   const ch = +document.getElementById('asCh').value;
   const total = eq + dt + gd + ch;
-  const n = { eq:eq/total*100, dt:dt/total*100, gd:gd/total*100, ch:ch/total*100 };
+  const n = { eq: eq/total*100, dt: dt/total*100, gd: gd/total*100, ch: ch/total*100 };
   const ret = (n.eq/100*14 + n.dt/100*7 + n.gd/100*9 + n.ch/100*4);
-  const profile = n.eq>=70 ? 'Aggressive' : n.eq>=50 ? 'Balanced' : n.eq>=30 ? 'Moderate' : 'Conservative';
-  animEl('asRisk', profile); animEl('asRet', ret.toFixed(1)+'% p.a.'); animEl('asTotal', total+'%');
-  setInterp('as', [
-    `Your portfolio has a <b>${profile}</b> risk profile with <b>${ret.toFixed(1)}%</b> blended return`,
-    `Higher equity = higher growth potential but more short-term volatility`,
-    `Ideal allocation: 60–70% equity for long-term (10+ year) goals`
-  ]);
+  const profile = n.eq >= 70 ? 'Aggressive' : n.eq >= 50 ? 'Balanced' : n.eq >= 30 ? 'Moderate' : 'Conservative';
+  document.getElementById('asRisk').textContent = profile;
+  document.getElementById('asRet').textContent = ret.toFixed(1) + '% p.a.';
+  document.getElementById('asTotal').textContent = total + '%';
   const bars = [
-    {label:'Equity',val:n.eq,color:'#0ea5e9'},
-    {label:'Debt',val:n.dt,color:'#818cf8'},
-    {label:'Gold',val:n.gd,color:'#f59e0b'},
-    {label:'Cash',val:n.ch,color:'#22c55e'}
+    { label:'Equity', val:n.eq, color:'#0ea5e9' },
+    { label:'Debt', val:n.dt, color:'#818cf8' },
+    { label:'Gold', val:n.gd, color:'#f59e0b' },
+    { label:'Cash', val:n.ch, color:'#22c55e' }
   ];
   document.getElementById('asBar').innerHTML = bars.map(b => `
     <div class="bar-item">
       <div class="bar-header"><span>${b.label}</span><span style="font-weight:600">${b.val.toFixed(1)}%</span></div>
       <div class="bar-track"><div class="bar-fill" style="width:${b.val}%;background:${b.color}"></div></div>
     </div>`).join('');
-  saveSession({ tool:'asset' });
 }
 
 const dvAssets = ['Large Cap Funds','Mid Cap Funds','Small Cap Funds','Intl Funds','Debt Funds','Gold ETF'];
 function renderDV() {
   const w = window.dvWeights;
-  const total = w.reduce((s,v)=>s+v,0)||1;
-  const hhi = w.map(v=>(v/total)**2).reduce((s,v)=>s+v,0);
+  const total = w.reduce((s,v)=>s+v, 0) || 1;
+  const hhi = w.map(v => (v/total)**2).reduce((s,v)=>s+v, 0);
   const active = w.filter(v=>v>0).length;
   const score = Math.round((1-hhi)*100*(active/dvAssets.length));
-  animEl('dvScore', score+'/100'); animEl('dvClasses', active);
-  const risk = hhi<0.2?'Low':hhi<0.4?'Medium':'High';
+  document.getElementById('dvScore').textContent = score + '/100';
+  document.getElementById('dvClasses').textContent = active;
+  const risk = hhi < 0.2 ? 'Low' : hhi < 0.4 ? 'Medium' : 'High';
   const el = document.getElementById('dvRisk');
   el.textContent = risk;
-  el.className = 'result-value '+(hhi<0.2?'green':hhi<0.4?'primary':'red');
-  setInterp('dv', [
-    `Diversification score: <b>${score}/100</b> — ${score>=70?'well diversified':'needs more spread'}`,
-    `${active} active asset classes detected — spread across more for lower risk`,
-    `Concentration risk: <b>${risk}</b> — ${hhi<0.2?'you are well spread':'consider reducing top holdings'}`
-  ]);
+  el.className = 'result-value ' + (hhi<0.2?'green':hhi<0.4?'primary':'red');
   document.getElementById('dvSliders').innerHTML = dvAssets.map((a,i) => `
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
       <span style="font-size:0.78rem;color:var(--muted);width:150px;flex-shrink:0">${a}</span>
@@ -1121,19 +862,13 @@ function calcRisk() {
     : {label:'Conservative',eq:20,dt:60,gd:20};
   document.getElementById('riskScore').textContent = score;
   document.getElementById('riskLabel').textContent = profile.label;
-  document.getElementById('riskBar').style.width = score+'%';
+  document.getElementById('riskBar').style.width = score + '%';
   document.getElementById('riskAlloc').innerHTML = [
     {l:'Equity',v:profile.eq,c:'#0ea5e9'},{l:'Debt',v:profile.dt,c:'#818cf8'},{l:'Gold',v:profile.gd,c:'#f59e0b'}
   ].map(a => `<div style="margin-bottom:8px">
     <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:3px"><span style="color:var(--muted)">${a.l}</span><span style="font-weight:600">${a.v}%</span></div>
     <div class="bar-track"><div class="bar-fill" style="width:${a.v}%;background:${a.c}"></div></div>
   </div>`).join('');
-  setInterp('risk', [
-    `Your risk score is <b>${score}/100</b> — you are a <b>${profile.label}</b> investor`,
-    `Suggested allocation: ${profile.eq}% equity, ${profile.dt}% debt, ${profile.gd}% gold`,
-    `${hor} year horizon and ${ef} months emergency fund shape your risk capacity`
-  ]);
-  saveSession({ tool:'risk' });
 }
 
 function calcRet() {
@@ -1142,35 +877,32 @@ function calcRet() {
   const exp = +document.getElementById('retExp').value;
   const sav = +document.getElementById('retSav').value;
   const sip = +document.getElementById('retSIP').value;
-  const rateVal = +document.getElementById('retR').value;
-  const rate = rateVal / 12 / 100;
+  const rate = +document.getElementById('retR').value / 12 / 100;
   const years = ra - age;
   const n = years * 12;
-  const sipC = sip * ((Math.pow(1+rate,n)-1)/rate) * (1+rate);
-  const savC = sav * Math.pow(1 + rateVal/100, years);
+  const sipC = sip * ((Math.pow(1+rate, n)-1)/rate) * (1+rate);
+  const savC = sav * Math.pow(1 + +document.getElementById('retR').value/100, years);
   const total = sipC + savC;
   const futureExp = exp * Math.pow(1.06, years);
   const needed = futureExp * 12 / 0.04;
   const onTrack = total >= needed;
-  animEl('retFV', fmtINR(total)); animEl('retReq', fmtINR(needed));
+  document.getElementById('retFV').textContent = fmtINR(total);
+  document.getElementById('retReq').textContent = fmtINR(needed);
   const st = document.getElementById('retStatus');
   st.textContent = onTrack ? 'On Track ✓' : 'Deficit ✗';
-  st.className = 'result-value '+(onTrack?'green':'red');
-  st.closest('.result-card').className = 'result-card '+(onTrack?'green':'red');
-  document.getElementById('retStatusSub').textContent = fmtINR(Math.abs(total-needed))+(onTrack?' surplus':' gap');
-  setInterp('ret', [
-    onTrack ? `✅ You are on track — projected <b>${fmtINR(total)}</b> exceeds the <b>${fmtINR(needed)}</b> requirement` : `⚠️ Corpus gap of <b>${fmtINR(needed-total)}</b> — increase SIP or extend timeline`,
-    `Retirement at ${ra} needs <b>${fmtINR(needed)}</b> based on future expenses`,
-    `You need <b>${fmtINR(futureExp)}/month</b> at retirement (inflation adjusted)`
-  ]);
+  st.className = 'result-value ' + (onTrack?'green':'red');
+  st.closest('.result-card').className = 'result-card ' + (onTrack?'green':'red');
+  document.getElementById('retStatusSub').textContent = fmtINR(Math.abs(total-needed)) + (onTrack?' surplus':' gap');
   const labs = [], v1 = [];
   for (let i = 1; i <= years; i++) {
-    const mo = i*12; labs.push('Age '+(age+i));
-    v1.push(Math.round(sip*((Math.pow(1+rate,mo)-1)/rate)*(1+rate) + sav*Math.pow(1+rateVal/100,i)));
+    const mo = i*12;
+    labs.push('Age '+(age+i));
+    v1.push(Math.round(sip*((Math.pow(1+rate,mo)-1)/rate)*(1+rate) + sav*Math.pow(1++document.getElementById('retR').value/100,i)));
   }
-  drawChart('retChart','line',labs,[{label:'Corpus',data:v1,borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,0.1)',fill:true,tension:.4,pointRadius:0}]);
-  setResult('ret', `Wealthwise Retirement Plan\n━━━━━━━━━━━━━━━━━━\nRetirement at age ${ra} (in ${years} years)\nMonthly SIP: ₹${sip.toLocaleString('en-IN')} | Return: ${rateVal}%\n\nProjected Corpus: ${fmtINR(total)}\nRequired Corpus: ${fmtINR(needed)}\nStatus: ${onTrack?'On Track ✓':'Deficit: '+fmtINR(needed-total)}\n\nGenerated on wealthwise.app`);
-  saveSession({ tool:'retire' });
+  drawChart('retChart', 'line', labs, [
+    { label:'Corpus', data:v1, borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('ret', `Retirement by age ${ra}: Corpus ${fmtINR(total)} (need ${fmtINR(needed)}) — ${onTrack?'On Track':'Deficit: '+fmtINR(needed-total)}`);
 }
 
 function calcEdu() {
@@ -1182,21 +914,17 @@ function calcEdu() {
   const years = Math.max(1, ea - ca);
   const n = years * 12;
   const fc = cost * Math.pow(1+inf, years);
-  const reqSIP = fc / (((Math.pow(1+ret,n)-1)/ret) * (1+ret));
-  animEl('eduFC', fmtINR(fc));
+  const reqSIP = fc / (((Math.pow(1+ret, n)-1)/ret) * (1+ret));
+  document.getElementById('eduFC').textContent = fmtINR(fc);
   document.getElementById('eduFCsub').textContent = 'Inflation adjusted';
-  animEl('eduSIP', fmtINR(reqSIP));
-  animEl('eduY', years+' yrs');
-  setInterp('edu', [
-    `Education costing <b>${fmtINR(cost)}</b> today will cost <b>${fmtINR(fc)}</b> in ${years} years`,
-    `Start a SIP of <b>${fmtINR(reqSIP)}/month</b> today to fully fund this goal`,
-    `Education inflation at ${document.getElementById('eduInf').value}% is higher than regular inflation — start early`
-  ]);
+  document.getElementById('eduSIP').textContent = fmtINR(reqSIP);
+  document.getElementById('eduY').textContent = years + ' yrs';
   const labs = [], v1 = [];
   for (let i = 1; i <= years; i++) { const mo = i*12; labs.push('Y'+i); v1.push(Math.round(reqSIP*((Math.pow(1+ret,mo)-1)/ret)*(1+ret))); }
-  drawChart('eduChart','line',labs,[{label:'Corpus Built',data:v1,borderColor:'#818cf8',backgroundColor:'rgba(129,140,248,0.1)',fill:true,tension:.4,pointRadius:0}]);
-  setResult('edu', `Wealthwise Education Plan\n━━━━━━━━━━━━━━━━━━\nCurrent cost: ${fmtINR(cost)} → Future cost: ${fmtINR(fc)}\nYears to goal: ${years} | Education inflation: ${document.getElementById('eduInf').value}%\n\nRequired Monthly SIP: ${fmtINR(reqSIP)}/month\n\nGenerated on wealthwise.app`);
-  saveSession({ tool:'edu' });
+  drawChart('eduChart', 'line', labs, [
+    { label:'Corpus Built', data:v1, borderColor:'#818cf8', backgroundColor:'rgba(129,140,248,0.1)', fill:true, tension:.4, pointRadius:0 }
+  ]);
+  setResult('edu', `Education: ${fmtINR(cost)} today → ${fmtINR(fc)} in ${years}Y. Required SIP: ${fmtINR(reqSIP)}/mo`);
 }
 
 function calcFIRE() {
@@ -1210,55 +938,32 @@ function calcFIRE() {
   while (bal < target && months < 600) { bal = bal*(1+ret)+sip; months++; }
   const yrs = months / 12;
   const gap = target - corp;
-  animEl('fireTgt', fmtINR(target));
+  document.getElementById('fireTgt').textContent = fmtINR(target);
   document.getElementById('fireTgtSub').textContent = `@ ${document.getElementById('fireWR').value}% withdrawal`;
-  animEl('fireYrs', yrs.toFixed(1)+' yrs');
-  animEl('fireGap', fmtINR(Math.abs(gap)));
-  document.getElementById('fireGapSub').textContent = gap<=0 ? 'You have surplus!' : 'Gap to fill';
-  setInterp('fire', [
-    `FIRE target: <b>${fmtINR(target)}</b> — this corpus sustains ${fmtINR(exp*12)}/year forever`,
-    `With your current investments, you reach FIRE in <b>${yrs.toFixed(1)} years</b>`,
-    `The ${document.getElementById('fireWR').value}% withdrawal rate is the classic FIRE safe withdrawal rule`
-  ]);
+  document.getElementById('fireYrs').textContent = yrs.toFixed(1) + ' yrs';
+  const surplus = bal >= target;
+  document.getElementById('fireGap').textContent = fmtINR(Math.abs(gap));
+  document.getElementById('fireGapSub').textContent = gap <= 0 ? 'You have surplus!' : 'Gap to fill';
   const labs = [], v1 = [], v2 = [];
   bal = corp;
   for (let m = 0; m <= months; m+=12) {
     labs.push('Y'+(m/12)); v1.push(Math.round(bal)); v2.push(target);
     for (let i = 0; i < 12 && bal<target; i++) bal = bal*(1+ret)+sip;
   }
-  drawChart('fireChart','line',labs,[
-    {label:'Your Corpus',data:v1,borderColor:'#0ea5e9',fill:false,tension:.4,pointRadius:0},
-    {label:'FIRE Target',data:v2,borderColor:'#22c55e',fill:false,tension:.4,pointRadius:0,borderDash:[5,5]}
+  drawChart('fireChart', 'line', labs, [
+    { label:'Your Corpus', data:v1, borderColor:'#0ea5e9', fill:false, tension:.4, pointRadius:0 },
+    { label:'FIRE Target', data:v2, borderColor:'#22c55e', fill:false, tension:.4, pointRadius:0, borderDash:[5,5] }
   ]);
-  setResult('fire', `Wealthwise FIRE Plan\n━━━━━━━━━━━━━━━━━━\nFIRE Target: ${fmtINR(target)} (@ ${document.getElementById('fireWR').value}% rule)\nCurrent Corpus: ${fmtINR(corp)} | Monthly SIP: ${fmtINR(sip)}\n\nYears to FIRE: ${yrs.toFixed(1)} years\nGap: ${fmtINR(Math.abs(gap))}\n\nGenerated on wealthwise.app`);
-  saveSession({ tool:'fire' });
-}
-
-// ─── SNAPSHOT STRIP UPDATER ──────────────────────────────
-function updateSnapshot(m, r, y, fv, inv) {
-  const gain = fv - inv;
-  const mult = (fv/inv).toFixed(1);
-  document.getElementById('snapVal').innerHTML = `₹${m.toLocaleString('en-IN')}/month → <em>${fmtINR(fv)}</em> in ${y} years @ ${r}%`;
-  document.getElementById('snapInsight').innerHTML = `<b>💡 Power of compounding:</b> You invest ${fmtINR(inv)}, gains are ${fmtINR(gain)} — wealth grows <b style="color:var(--green)">${mult}x</b> your investment.`;
-}
-
-// ─── RISK TAG HELPER ─────────────────────────────────────
-function riskTag(risk) {
-  const map = {
-    low:  { cls:'risk-low',  label:'🟢 Low Risk' },
-    med:  { cls:'risk-med',  label:'🟡 Medium Risk' },
-    high: { cls:'risk-high', label:'🔴 High Risk' }
-  };
-  return map[risk] || map['low'];
+  setResult('fire', `FIRE Target: ${fmtINR(target)} | ${fmtINR(corp)} current + ₹${sip.toLocaleString()}/mo → FIRE in ${yrs.toFixed(1)} years`);
 }
 
 // ─── CATEGORIES & ROUTING ────────────────────────────────
 const CATEGORIES = {
-  sip:     ['sip','lumpsum','stepup','swp'],
+  sip: ['sip','lumpsum','stepup','swp'],
   compare: ['sipfd','eqdebt','lsvssip'],
-  advanced:['cagr','xirr','inflation'],
-  portfolio:['asset','divers','risk'],
-  goal:    ['retire','edu','fire']
+  advanced: ['cagr','xirr','inflation'],
+  portfolio: ['asset','divers','risk'],
+  goal: ['retire','edu','fire']
 };
 
 let currentCat = 'sip';
@@ -1266,36 +971,23 @@ let currentTool = 'sip';
 
 function renderToolList() {
   const ids = CATEGORIES[currentCat];
-  document.getElementById('toolList').innerHTML = ids.map(id => {
-    const c = CALCS[id];
-    const rt = riskTag(c.risk);
-    const hotBadge = c.mostUsed ? `<span class="badge-hot">🔥 Most Used</span>` : '';
-    return `<button class="tool-btn ${id===currentTool?'active':''}" onclick="loadTool('${id}')">
-      <div class="tool-name">${c.name} ${hotBadge}</div>
-      <div class="tool-desc">${c.desc}</div>
-      <div style="display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap">
-        <span class="decision-tag">${c.decisionTag}</span>
-        <span class="risk-pill ${rt.cls}">${rt.label}</span>
-      </div>
-    </button>`;
-  }).join('');
+  document.getElementById('toolList').innerHTML = ids.map(id => `
+    <button class="tool-btn ${id === currentTool ? 'active' : ''}" onclick="loadTool('${id}')">
+      <div class="tool-name">${CALCS[id].name}</div>
+      <div class="tool-desc">${CALCS[id].desc}</div>
+    </button>`).join('');
 }
 
 function loadTool(id) {
   currentTool = id;
   const calc = CALCS[id];
-  const rt = riskTag(calc.risk);
-  document.getElementById('calcTitle').innerHTML = calc.name + (calc.mostUsed ? ' <span class="badge-hot">🔥 Most Used</span>' : '');
+  document.getElementById('calcTitle').textContent = calc.name;
   document.getElementById('calcDesc').textContent = calc.desc;
-  document.getElementById('calcRiskTag').textContent = rt.label;
-  document.getElementById('calcRiskTag').className = 'calc-risk-tag ' + rt.cls;
-  document.getElementById('calcContent').innerHTML = calc.html();
+  document.getElementById('calcContent').innerHTML = `<div class="result-row">${''}</div>` + calc.html();
   if (calc.init) calc.init();
   renderToolList();
-  saveSession({ lastTool: id, lastCat: currentCat });
 }
 
-// ─── BOOT ────────────────────────────────────────────────
 document.querySelectorAll('.cat-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -1307,19 +999,9 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   });
 });
 
-// ─── ⑧ Restore session ──────────────────────────────────
-(function() {
-  const s = getSession();
-  if (s.lastCat && CATEGORIES[s.lastCat]) {
-    currentCat = s.lastCat;
-    document.querySelectorAll('.cat-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.cat === currentCat);
-    });
-  }
-  if (s.lastTool && CALCS[s.lastTool]) currentTool = s.lastTool;
-  renderToolList();
-  loadTool(currentTool);
-})();
+// Boot
+renderToolList();
+loadTool('sip');
 </script>
 </body>
 </html>
