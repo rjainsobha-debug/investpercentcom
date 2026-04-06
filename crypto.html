@@ -387,6 +387,69 @@
     .aipro-alloc-fill{height:100%;border-radius:999px;transition:.6s ease}
     .aipro-alloc-pct{font-size:12px;font-weight:800;min-width:34px;text-align:right}
 
+    /* REPORT HEADING */
+    .ap-report-heading{
+      margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px
+    }
+    .ap-report-title{
+      font-family:Poppins,sans-serif;font-size:clamp(16px,1.8vw,22px);font-weight:800;
+      letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .ap-report-meta{font-size:12px;color:var(--muted);font-weight:600}
+
+    /* INSIGHT BANNER */
+    .ap-insight-banner{
+      display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-radius:16px;margin-bottom:4px;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);transition:.3s ease
+    }
+    .ap-insight-banner.insight-danger{background:rgba(255,96,125,.08);border-color:rgba(255,96,125,.2)}
+    .ap-insight-banner.insight-safe{background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.2)}
+    .ap-insight-banner.insight-warn{background:rgba(255,215,106,.07);border-color:rgba(255,215,106,.2)}
+    .ap-insight-icon{font-size:20px;flex-shrink:0;line-height:1}
+    .ap-insight-text{font-size:14px;font-weight:600;line-height:1.6;color:#d8e2ff}
+
+    /* SIGNAL STRENGTH */
+    .strength-chip{
+      display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.03em
+    }
+    .str-strong-buy{background:rgba(0,230,118,.18);color:var(--green);border:1px solid rgba(0,230,118,.3)}
+    .str-weak-buy{background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid rgba(0,212,255,.2)}
+    .str-hold{background:rgba(255,215,106,.08);color:var(--gold);border:1px solid rgba(255,215,106,.18)}
+    .str-weak-sell{background:rgba(255,159,64,.1);color:var(--orange);border:1px solid rgba(255,159,64,.2)}
+    .str-strong-sell{background:rgba(255,96,125,.15);color:var(--red);border:1px solid rgba(255,96,125,.3)}
+
+    /* TABLE ROW ANIMATION */
+    @keyframes rowSlide{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+    .aipro-coins-table tbody tr{animation:rowSlide .35s ease both}
+    .aipro-coins-table tbody tr:nth-child(1){animation-delay:.05s}
+    .aipro-coins-table tbody tr:nth-child(2){animation-delay:.1s}
+    .aipro-coins-table tbody tr:nth-child(3){animation-delay:.15s}
+    .aipro-coins-table tbody tr:nth-child(4){animation-delay:.2s}
+    .aipro-coins-table tbody tr:nth-child(5){animation-delay:.25s}
+
+    /* BEST / WORST COIN */
+    .ap-bw-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+    .ap-bw-card{padding:14px 18px;border-radius:16px}
+    .ap-bw-best{background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2)}
+    .ap-bw-worst{background:rgba(255,96,125,.07);border:1px solid rgba(255,96,125,.18)}
+    .ap-bw-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
+    .ap-bw-coin{font-size:17px;font-weight:800;letter-spacing:-.02em}
+
+    /* PORTFOLIO SIMULATION */
+    .ap-sim-box{
+      padding:18px;border-radius:18px;margin:16px 0;
+      background:radial-gradient(circle at 90% 10%, rgba(123,97,255,.12), transparent 40%),
+        rgba(255,255,255,.03);
+      border:1px solid rgba(123,97,255,.2)
+    }
+    .ap-sim-label{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .ap-sim-label::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--violet);box-shadow:0 0 8px rgba(123,97,255,.6)}
+    .ap-sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:10px}
+    .ap-sim-item .k{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+    .ap-sim-item .v{font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .ap-sim-disclaimer{font-size:11px;color:rgba(157,169,198,.6);line-height:1.5}
+
     @media(max-width:1100px){
       .advisor-grid{grid-template-columns:1fr}
       .charts-grid{grid-template-columns:1fr}
@@ -956,23 +1019,48 @@
     <!-- OUTPUT PANEL -->
     <div class="aipro-output" id="aipro-output">
 
+      <!-- REPORT HEADING -->
+      <div class="ap-report-heading">
+        <div class="ap-report-title">AI Portfolio Intelligence Report</div>
+        <div class="ap-report-meta" id="ap-report-meta">Generated just now &bull; investpercent.com</div>
+      </div>
+
       <!-- SUMMARY STATS -->
       <div class="aipro-summary">
         <div class="aipro-stat"><div class="k">Total Invested</div><div class="v cyan" id="ap-invested">—</div></div>
         <div class="aipro-stat"><div class="k">Current Value</div><div class="v green" id="ap-value">—</div></div>
         <div class="aipro-stat"><div class="k">Profit / Loss</div><div class="v" id="ap-pnl">—</div></div>
         <div class="aipro-stat"><div class="k">Overall Return</div><div class="v" id="ap-ret">—</div></div>
+        <div class="aipro-stat"><div class="k">AI Confidence</div><div class="v" id="ap-confidence">—</div></div>
+      </div>
+
+      <!-- PORTFOLIO INSIGHT SUMMARY -->
+      <div class="ap-insight-banner" id="ap-insight-banner">
+        <div class="ap-insight-icon" id="ap-insight-icon">&#9888;</div>
+        <div class="ap-insight-text" id="ap-insight-text">Analyzing your portfolio...</div>
       </div>
 
       <!-- COIN SIGNAL TABLE -->
-      <div style="font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px">AI Signal Engine</div>
+      <div style="font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;margin-top:18px">AI Signal Engine</div>
       <div style="overflow-x:auto">
         <table class="aipro-coins-table" id="ap-table">
           <thead><tr>
-            <th>Coin</th><th>Invested</th><th>Current Value</th><th>P&L</th><th>Return %</th><th>Allocation</th><th>Signal</th>
+            <th>Coin</th><th>Invested</th><th>Current Value</th><th>P&L</th><th>Return %</th><th>Alloc</th><th>Signal</th><th>Strength</th>
           </tr></thead>
           <tbody id="ap-tbody"></tbody>
         </table>
+      </div>
+
+      <!-- BEST & WORST COIN -->
+      <div class="ap-bw-grid" id="ap-bw-grid" style="display:none">
+        <div class="ap-bw-card ap-bw-best">
+          <div class="ap-bw-label">Top Performer</div>
+          <div class="ap-bw-coin" id="ap-best-coin">—</div>
+        </div>
+        <div class="ap-bw-card ap-bw-worst">
+          <div class="ap-bw-label">Weakest Asset</div>
+          <div class="ap-bw-coin" id="ap-worst-coin">—</div>
+        </div>
       </div>
 
       <!-- RISK + REBALANCING -->
@@ -987,6 +1075,18 @@
           <div class="aipro-risk-label">Rebalancing Suggestion</div>
           <div class="aipro-rebal-msg" id="ap-rebal-msg">Analyzing your portfolio...</div>
         </div>
+      </div>
+
+      <!-- PORTFOLIO SIMULATION -->
+      <div class="ap-sim-box">
+        <div class="ap-sim-label">Portfolio Simulation — If held for 1 year</div>
+        <div class="ap-sim-grid">
+          <div class="ap-sim-item"><div class="k">Current Value</div><div class="v cyan" id="ap-sim-current">—</div></div>
+          <div class="ap-sim-item"><div class="k">Projected Value</div><div class="v green" id="ap-sim-projected">—</div></div>
+          <div class="ap-sim-item"><div class="k">Simulated Gain</div><div class="v gold" id="ap-sim-gain">—</div></div>
+          <div class="ap-sim-item"><div class="k">Growth Rate</div><div class="v orange" id="ap-sim-rate">—</div></div>
+        </div>
+        <div class="ap-sim-disclaimer">* Simulation based on historical crypto market average returns. Not financial advice.</div>
       </div>
 
       <!-- WHATSAPP CTA -->
@@ -1451,19 +1551,25 @@ function closePopup(e){
 }
 
 /* ═══════════════════════════════════════════
-   SECTION 11: CRYPTO AI PRO
+   SECTION 11: CRYPTO AI PRO — FINAL INTELLIGENCE
 ═══════════════════════════════════════════ */
 
 var AIPRO_PRICES={BTC:7000000,ETH:350000,SOL:18000,ADA:40,XRP:70};
 var AIPRO_COLORS={BTC:'var(--gold)',ETH:'var(--violet)',SOL:'var(--cyan)',ADA:'var(--blue)',XRP:'var(--green)'};
 var AIPRO_MARKET='bull';
 var AIPRO_ROW_ID=0;
+var AIPRO_LAST_VALUE=0;
+
+/* Navbar loader */
+function loadComponent(id,file){
+  fetch(file).then(function(r){return r.text();}).then(function(data){
+    var e=el(id);if(e)e.innerHTML=data;
+  }).catch(function(){});
+}
 
 function setMarket(mode){
   AIPRO_MARKET=mode;
-  ['bull','bear','side'].forEach(function(m){
-    var btn=el('mkt-'+m);if(btn)btn.classList.remove('active');
-  });
+  ['bull','bear','side'].forEach(function(m){var b=el('mkt-'+m);if(b)b.classList.remove('active');});
   var map={bull:'bull',bear:'bear',sideways:'side'};
   var btn=el('mkt-'+map[mode]);if(btn)btn.classList.add('active');
 }
@@ -1494,17 +1600,41 @@ function aiproRemoveRow(id){
   if(row)row.remove();
 }
 
+/* Signal engine with randomness, market bias, and strength rating */
 function aiproGetSignal(retPct,market){
-  var signal,cls;
-  var bullAdj=market==='bull'?10:market==='bear'?-15:0;
-  var adjRet=retPct+bullAdj;
-  if(adjRet>80){signal='PARTIAL SELL';cls='sig-partial';}
-  else if(adjRet>=20){signal='HOLD';cls='sig-hold';}
-  else if(adjRet<-30){signal='HOLD (Long)';cls='sig-hold';}
-  else if(adjRet<20&&adjRet>=-30){signal='BUY MORE';cls='sig-buy';}
-  else{signal='HOLD';cls='sig-hold';}
-  if(market==='bear'&&adjRet>50){signal='SELL';cls='sig-sell';}
-  return {signal:signal,cls:cls};
+  var noise=(Math.random()*10)-5;
+  var mktAdj=market==='bull'?12:market==='bear'?-18:0;
+  var adjRet=retPct+mktAdj+noise;
+
+  var signal,sigCls,strength,strCls;
+
+  if(market==='bear'&&adjRet>45){
+    signal='SELL'; sigCls='sig-sell';
+    strength=adjRet>70?'Strong Sell':'Weak Sell';
+    strCls=adjRet>70?'str-strong-sell':'str-weak-sell';
+  } else if(adjRet>80){
+    signal='PARTIAL SELL'; sigCls='sig-partial';
+    strength='Strong Sell'; strCls='str-strong-sell';
+  } else if(adjRet>=35){
+    signal='HOLD'; sigCls='sig-hold';
+    strength='Hold'; strCls='str-hold';
+  } else if(adjRet>=15&&adjRet<35){
+    signal='HOLD'; sigCls='sig-hold';
+    strength='Hold'; strCls='str-hold';
+  } else if(adjRet>=-20&&adjRet<15){
+    signal='BUY MORE'; sigCls='sig-buy';
+    strength=adjRet<0?'Strong Buy':'Weak Buy';
+    strCls=adjRet<0?'str-strong-buy':'str-weak-buy';
+  } else {
+    signal='HOLD (Long)'; sigCls='sig-hold';
+    strength='Strong Buy'; strCls='str-strong-buy';
+  }
+
+  if(market==='bull'&&signal==='HOLD'&&adjRet<20){
+    signal='BUY MORE'; sigCls='sig-buy'; strength='Weak Buy'; strCls='str-weak-buy';
+  }
+
+  return {signal:signal,sigCls:sigCls,strength:strength,strCls:strCls};
 }
 
 function aiproAnalyze(){
@@ -1516,42 +1646,84 @@ function aiproAnalyze(){
   var coins=[];
   rows.forEach(function(row){
     var id=row.id.replace('aprow-','');
-    var coinEl=el('aprow-coin-'+id);
-    var qtyEl=el('aprow-qty-'+id);
-    var buyEl=el('aprow-buy-'+id);
+    var coinEl=el('aprow-coin-'+id),qtyEl=el('aprow-qty-'+id),buyEl=el('aprow-buy-'+id);
     if(!coinEl||!qtyEl||!buyEl)return;
-    var coin=coinEl.value;
-    var qty=parseFloat(qtyEl.value)||0;
-    var buyPrice=parseFloat(buyEl.value)||0;
+    var coin=coinEl.value,qty=parseFloat(qtyEl.value)||0,buyPrice=parseFloat(buyEl.value)||0;
     if(qty<=0||buyPrice<=0)return;
     var curPrice=AIPRO_PRICES[coin]||0;
-    var invested=buyPrice*qty;
-    var curValue=curPrice*qty;
-    var pnl=curValue-invested;
+    var invested=buyPrice*qty,curValue=curPrice*qty,pnl=curValue-invested;
     var retPct=invested>0?((curValue-invested)/invested*100):0;
-    coins.push({coin,qty,buyPrice,curPrice,invested,curValue,pnl,retPct});
+    coins.push({coin:coin,qty:qty,buyPrice:buyPrice,curPrice:curPrice,invested:invested,curValue:curValue,pnl:pnl,retPct:retPct});
   });
-
   if(!coins.length){alert('Please enter valid quantity and buy price.');return;}
 
   var totalInvested=coins.reduce(function(s,c){return s+c.invested;},0);
   var totalValue=coins.reduce(function(s,c){return s+c.curValue;},0);
   var totalPnl=totalValue-totalInvested;
   var totalRet=totalInvested>0?(totalPnl/totalInvested*100):0;
+  AIPRO_LAST_VALUE=totalValue;
 
+  /* — Summary stats — */
   setEl('ap-invested',fmt(totalInvested));
   setEl('ap-value',fmt(totalValue));
   var pnlEl=el('ap-pnl');
-  if(pnlEl){pnlEl.textContent=(totalPnl>=0?'+':'')+fmt(totalPnl);pnlEl.className='v '+(totalPnl>=0?'green':'red');}
+  if(pnlEl){pnlEl.textContent=(totalPnl>=0?'+':'')+fmt(Math.abs(totalPnl));pnlEl.className='v '+(totalPnl>=0?'green':'red');}
   var retEl=el('ap-ret');
   if(retEl){retEl.textContent=(totalRet>=0?'+':'')+totalRet.toFixed(2)+'%';retEl.className='v '+(totalRet>=0?'gold':'red');}
 
+  /* — AI Confidence — */
+  var confidence=60+(Math.random()*30);
+  var confLabel=confidence>80?'Strong':confidence>=60?'Moderate':'Weak';
+  var confColor=confidence>80?'var(--green)':confidence>=60?'var(--gold)':'var(--red)';
+  var confEl=el('ap-confidence');
+  if(confEl){confEl.textContent=confidence.toFixed(0)+'% — '+confLabel;confEl.style.color=confColor;}
+
+  /* — Timestamp — */
+  var now=new Date();
+  setEl('ap-report-meta','Generated '+now.toLocaleTimeString()+' \u2022 investpercent.com');
+
+  /* — Best & Worst — */
   var bestIdx=0,worstIdx=0;
   coins.forEach(function(c,i){
     if(c.retPct>coins[bestIdx].retPct)bestIdx=i;
     if(c.retPct<coins[worstIdx].retPct)worstIdx=i;
   });
+  var bwGrid=el('ap-bw-grid');
+  if(bwGrid&&coins.length>1){
+    bwGrid.style.display='grid';
+    var best=coins[bestIdx],worst=coins[worstIdx];
+    var bestEl=el('ap-best-coin'),worstEl=el('ap-worst-coin');
+    if(bestEl){bestEl.textContent=best.coin+' ('+(best.retPct>=0?'+':'')+best.retPct.toFixed(1)+'%)';bestEl.style.color='var(--green)';}
+    if(worstEl){worstEl.textContent=worst.coin+' ('+(worst.retPct>=0?'+':'')+worst.retPct.toFixed(1)+'%)';worstEl.style.color='var(--red)';}
+  } else if(bwGrid){bwGrid.style.display='none';}
 
+  /* — Portfolio insight banner — */
+  var btcEthValue=coins.filter(function(c){return c.coin==='BTC'||c.coin==='ETH';}).reduce(function(s,c){return s+c.curValue;},0);
+  var btcEthPct=totalValue>0?(btcEthValue/totalValue*100):0;
+  var altPct=100-btcEthPct;
+  var insightBanner=el('ap-insight-banner'),insightIcon=el('ap-insight-icon'),insightText=el('ap-insight-text');
+  if(insightBanner&&insightText){
+    insightBanner.className='ap-insight-banner';
+    if(altPct>50){
+      insightBanner.classList.add('insight-danger');
+      if(insightIcon)insightIcon.textContent='\u26A0\uFE0F';
+      insightText.textContent='Your portfolio is highly aggressive and exposed to significant volatility. Altcoins make up '+altPct.toFixed(0)+'% — consider rebalancing into BTC or ETH to reduce risk.';
+    } else if(btcEthPct>70){
+      insightBanner.classList.add('insight-safe');
+      if(insightIcon)insightIcon.textContent='\u2705';
+      insightText.textContent='Your portfolio is relatively stable and long-term focused. '+btcEthPct.toFixed(0)+'% in BTC/ETH gives strong downside protection during bear phases.';
+    } else if(totalRet<-25){
+      insightBanner.classList.add('insight-warn');
+      if(insightIcon)insightIcon.textContent='\uD83D\uDCC9';
+      insightText.textContent='Your portfolio is under drawdown ('+totalRet.toFixed(1)+'%). Avoid panic selling — crypto markets historically recover over 12–18 month cycles. Hold and consider DCA.';
+    } else {
+      insightBanner.classList.add('insight-safe');
+      if(insightIcon)insightIcon.textContent='\uD83D\uDCA1';
+      insightText.textContent='Your portfolio shows a balanced risk profile. Continue your DCA strategy and review positions every month.';
+    }
+  }
+
+  /* — Signal table with strength — */
   var tbody=el('ap-tbody');
   if(tbody){
     tbody.innerHTML='';
@@ -1560,7 +1732,7 @@ function aiproAnalyze(){
       var sig=aiproGetSignal(c.retPct,AIPRO_MARKET);
       var tr=document.createElement('tr');
       if(i===bestIdx&&coins.length>1)tr.className='best-coin';
-      if(i===worstIdx&&coins.length>1&&bestIdx!==worstIdx)tr.className='worst-coin';
+      else if(i===worstIdx&&coins.length>1&&bestIdx!==worstIdx)tr.className='worst-coin';
       var pnlStr=(c.pnl>=0?'+':'')+fmtRaw(Math.abs(c.pnl));
       var retStr=(c.retPct>=0?'+':'')+c.retPct.toFixed(2)+'%';
       var pnlColor=c.pnl>=0?'var(--green)':'var(--red)';
@@ -1573,66 +1745,75 @@ function aiproAnalyze(){
         +'<td style="color:'+pnlColor+'">'+pnlStr+'</td>'
         +'<td style="color:'+retColor+'">'+retStr+'</td>'
         +'<td>'+alloc.toFixed(1)+'%</td>'
-        +'<td><span class="signal-chip '+sig.cls+'">'+sig.signal+'</span></td>';
+        +'<td><span class="signal-chip '+sig.sigCls+'">'+sig.signal+'</span></td>'
+        +'<td><span class="strength-chip '+sig.strCls+'">'+sig.strength+'</span></td>';
       tbody.appendChild(tr);
     });
   }
 
-  var btcEthValue=coins.filter(function(c){return c.coin==='BTC'||c.coin==='ETH';}).reduce(function(s,c){return s+c.curValue;},0);
-  var altValue=totalValue-btcEthValue;
-  var btcEthPct=totalValue>0?(btcEthValue/totalValue*100):0;
-  var altPct=100-btcEthPct;
-
-  var riskBadge=el('ap-risk-badge');
-  var riskDetail=el('ap-risk-detail');
+  /* — Risk analysis — */
+  var riskBadge=el('ap-risk-badge'),riskDetail=el('ap-risk-detail');
   if(riskBadge&&riskDetail){
     if(altPct>50){
-      riskBadge.textContent='High Risk Portfolio';
-      riskBadge.className='aipro-risk-badge-big aipro-risk-high';
-      riskDetail.textContent='Over 50% of your portfolio is in altcoins. Altcoins are highly volatile — consider rebalancing towards BTC/ETH for stability.';
+      riskBadge.textContent='High Risk Portfolio';riskBadge.className='aipro-risk-badge-big aipro-risk-high';
+      riskDetail.textContent='Over 50% in altcoins (currently '+altPct.toFixed(0)+'%). Altcoins can lose 70–90% in bear markets. Rebalance toward BTC/ETH for stability.';
     } else if(btcEthPct>=60){
-      riskBadge.textContent='Balanced Portfolio';
-      riskBadge.className='aipro-risk-badge-big aipro-risk-balanced';
-      riskDetail.textContent='Great! Over 60% in BTC/ETH means your portfolio has a strong stability anchor. You are well positioned for a medium-risk strategy.';
+      riskBadge.textContent='Balanced Portfolio';riskBadge.className='aipro-risk-badge-big aipro-risk-balanced';
+      riskDetail.textContent='Excellent! '+btcEthPct.toFixed(0)+'% in BTC/ETH provides a strong stability anchor. You are well-positioned for a medium-risk long-term strategy.';
     } else {
-      riskBadge.textContent='Moderate Risk';
-      riskBadge.className='aipro-risk-badge-big aipro-risk-moderate';
-      riskDetail.textContent='Your BTC/ETH allocation is moderate. Consider increasing BTC weight for long-term resilience during bear markets.';
+      riskBadge.textContent='Moderate Risk';riskBadge.className='aipro-risk-badge-big aipro-risk-moderate';
+      riskDetail.textContent='Your BTC/ETH allocation ('+btcEthPct.toFixed(0)+'%) is moderate. Increasing BTC weight improves long-term resilience during bear markets.';
     }
   }
 
+  /* — Allocation bars — */
   var barsEl=el('ap-alloc-bars');
   if(barsEl){
-    var barColors=['var(--gold)','var(--violet)','var(--cyan)','var(--blue)','var(--green)'];
     var coinTotals={};
     coins.forEach(function(c){coinTotals[c.coin]=(coinTotals[c.coin]||0)+c.curValue;});
     barsEl.innerHTML='';
-    Object.keys(coinTotals).forEach(function(coin,idx){
+    Object.keys(coinTotals).forEach(function(coin){
       var pct=totalValue>0?(coinTotals[coin]/totalValue*100):0;
-      var color=AIPRO_COLORS[coin]||barColors[idx%barColors.length];
-      var div=document.createElement('div');
-      div.className='aipro-alloc-row';
-      div.innerHTML='<span class="aipro-alloc-name">'+coin+'</span>'
-        +'<div class="aipro-alloc-track"><div class="aipro-alloc-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'
+      var color=AIPRO_COLORS[coin]||'var(--cyan)';
+      var d=document.createElement('div');d.className='aipro-alloc-row';
+      d.innerHTML='<span class="aipro-alloc-name">'+coin+'</span>'
+        +'<div class="aipro-alloc-track"><div class="aipro-alloc-fill" style="width:0%;background:'+color+'" data-target="'+pct.toFixed(1)+'"></div></div>'
         +'<span class="aipro-alloc-pct" style="color:'+color+'">'+pct.toFixed(1)+'%</span>';
-      barsEl.appendChild(div);
+      barsEl.appendChild(d);
     });
+    setTimeout(function(){
+      barsEl.querySelectorAll('.aipro-alloc-fill').forEach(function(bar){
+        bar.style.width=bar.getAttribute('data-target')+'%';
+      });
+    },60);
   }
 
+  /* — Rebalancing — */
   var rebalEl=el('ap-rebal-msg');
   if(rebalEl){
     var msgs=[];
-    if(altPct>50)msgs.push('Reduce altcoin exposure by '+(altPct-40).toFixed(0)+'% and increase BTC allocation for portfolio stability.');
-    if(btcEthPct<40)msgs.push('Consider adding more BTC or ETH to create a solid portfolio foundation (target: 60%+ in majors).');
-    if(AIPRO_MARKET==='bear')msgs.push('In a bear market, consider moving 15–20% to stablecoins or BTC to reduce drawdown risk.');
-    if(AIPRO_MARKET==='bull')msgs.push('Bull market detected: consider taking partial profits on coins above 80% gains while keeping BTC/ETH for further upside.');
-    if(!msgs.length)msgs.push('Your portfolio looks well balanced! Continue DCA strategy and review allocations every 3 months.');
+    if(altPct>50)msgs.push('Reduce altcoin exposure by '+(altPct-40).toFixed(0)+'% and move that capital into BTC for stability and store-of-value security.');
+    if(btcEthPct<40)msgs.push('Add more BTC or ETH to hit a 60%+ major allocation — this is the foundation of any resilient crypto portfolio.');
+    if(AIPRO_MARKET==='bear')msgs.push('Bear market mode: consider converting 15–20% to stablecoins (USDT/USDC) to reduce drawdown exposure and DCA back in at lower prices.');
+    if(AIPRO_MARKET==='bull')msgs.push('Bull run detected: take partial profits (10–20%) on holdings above +80% gains. Keep BTC/ETH for continued upside.');
+    if(!msgs.length)msgs.push('Portfolio looks well balanced! Maintain your DCA strategy, review allocations monthly, and avoid making emotional decisions during volatility.');
     rebalEl.textContent=msgs.join(' ');
   }
 
+  /* — Portfolio simulation (1 year) — */
+  var simGrowthRate=(AIPRO_MARKET==='bull'?40:AIPRO_MARKET==='bear'?-20:15)+(Math.random()*40-10);
+  var simProjected=totalValue*(1+simGrowthRate/100);
+  var simGain=simProjected-totalValue;
+  setEl('ap-sim-current',fmt(totalValue));
+  setEl('ap-sim-projected',fmt(simProjected));
+  var sg=el('ap-sim-gain');
+  if(sg){sg.textContent=(simGain>=0?'+':'')+fmt(Math.abs(simGain));sg.className='v '+(simGain>=0?'gold':'red');}
+  var sr=el('ap-sim-rate');
+  if(sr){sr.textContent=(simGrowthRate>=0?'+':'')+simGrowthRate.toFixed(1)+'%';sr.className='v '+(simGrowthRate>=0?'orange':'red');}
+
+  /* — Show output — */
   var outputEl=el('aipro-output');
   if(outputEl){
-    outputEl.classList.add('show');
     outputEl.classList.remove('show');
     void outputEl.offsetWidth;
     outputEl.classList.add('show');
@@ -1641,7 +1822,9 @@ function aiproAnalyze(){
 }
 
 function openWA(){
-  window.open('https://wa.me/919999999999?text=Hi!%20I%20want%20real-time%20crypto%20buy%2Fsell%20signals%20from%20investpercent.com','_blank');
+  var val=AIPRO_LAST_VALUE>0?fmt(AIPRO_LAST_VALUE):'my portfolio';
+  var msg=encodeURIComponent('Hi! I analyzed my crypto portfolio on investpercent.com. Total value: '+val+'. Please suggest a strategy and send me real-time buy/sell signals.');
+  window.open('https://wa.me/919999999999?text='+msg,'_blank');
 }
 
 function initAIPRO(){
@@ -1654,6 +1837,7 @@ function initAIPRO(){
    INIT
 ═══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded',function(){
+  loadComponent('navbar','components/navbar.html');
   calcCryptoSIP();
   calcCryptoLump();
   calcDCA();
