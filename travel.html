@@ -260,7 +260,7 @@ select option{background:#0f1830;color:var(--text)}
   <div id="navbar"></div>
 
   <!-- ══════════════════════════════════════════
-       SECTION 1 — HERO + FLIGHTS/HOTELS
+       SECTION 1 — HERO + FLIGHTS
   ══════════════════════════════════════════ -->
   <section class="hero">
     <div class="hero-top">
@@ -270,7 +270,7 @@ select option{background:#0f1830;color:var(--text)}
       </div>
       <div class="hero-cta">
         <button class="btn primary" onclick="scrollToCalc()">Calculate Trip Cost</button>
-        <button class="btn secondary" onclick="openTelegram()">Talk to Travel Expert</button>
+        <button class="btn secondary" onclick="openWA()">Talk to Travel Expert</button>
       </div>
     </div>
 
@@ -306,25 +306,28 @@ select option{background:#0f1830;color:var(--text)}
       </div>
     </div>
 
-    <!-- Travelpayouts Search Embed -->
+    <!-- Flight Booking Engine (PART 1 — replaces iframe) -->
     <div class="tp-embed">
       <div style="font-size:24px">✈️</div>
-      <div style="font-weight:800;font-size:18px">Flight &amp; Hotel Search</div>
-      <div style="color:var(--muted);font-size:14px">Powered by Travelpayouts</div>
-      <iframe
-        src="https://flights.investpercent.com"
-        width="100%" height="220" frameborder="0"
-        style="border-radius:12px;margin-top:8px;max-width:900px"
-        title="Flight Search"
-        onerror="this.style.display='none'"
-      ></iframe>
-      <div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
-        <a href="https://flights.investpercent.com" target="_blank" rel="noopener">
-          <button class="btn secondary">🔍 Search Flights</button>
+      <div style="font-weight:800;font-size:18px">Flight Booking Engine</div>
+      <div style="color:var(--muted);font-size:14px;max-width:720px">
+        Search live fares on our secure booking engine powered by Travelpayouts.
+      </div>
+      <div style="font-size:12px;color:var(--muted)">
+        ✔ Real-time fares | ✔ Secure booking | ✔ Best price tracking
+      </div>
+      <div style="font-size:12px;color:#ff607d">
+        ⚠ Prices change every few hours. Book early to save up to 30%.
+      </div>
+      <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <a href="https://flights.investpercent.com"
+           target="_blank"
+           rel="noopener noreferrer"
+           onclick="smartFlightRedirect(); return false;">
+          <button class="btn primary">✈️ Search Flights</button>
         </a>
-        <a href="https://hotels.investpercent.com" target="_blank" rel="noopener">
-          <button class="btn secondary">🏨 Search Hotels</button>
-        </a>
+        <button class="btn secondary" onclick="scrollToCalc()">🧮 Estimate Trip Cost</button>
+        <button class="btn secondary" onclick="switchTravel('ld')">📋 Get Expert Plan</button>
       </div>
     </div>
   </section>
@@ -356,7 +359,6 @@ select option{background:#0f1830;color:var(--text)}
             <option value="au">Australia 🦘</option>
             <option value="jp">Japan 🗾</option>
             <option value="gb">UK / London 🎡</option>
-            <option value="custom">Custom Destination ✈️</option>
           </select>
         </div>
 
@@ -381,9 +383,9 @@ select option{background:#0f1830;color:var(--text)}
             <div class="control-name">Flight Class</div>
           </div>
           <select id="tv_flightClass" onchange="tvCalc()">
-            <option value="50000">Economy (₹50,000/person)</option>
-            <option value="80000">Premium Economy (₹80,000/person)</option>
-            <option value="150000">Business Class (₹1,50,000/person)</option>
+            <option value="economy">Economy</option>
+            <option value="premiumeconomy">Premium Economy</option>
+            <option value="business">Business Class</option>
           </select>
         </div>
 
@@ -392,19 +394,11 @@ select option{background:#0f1830;color:var(--text)}
             <div class="control-name">Stay Type</div>
           </div>
           <select id="tv_stayType" onchange="tvCalc()">
-            <option value="3000">Budget Hotel (₹3,000/night)</option>
-            <option value="6000">3-Star Hotel (₹6,000/night)</option>
-            <option value="10000" selected>4-Star Hotel (₹10,000/night)</option>
-            <option value="18000">5-Star Hotel (₹18,000/night)</option>
+            <option value="budget">Budget Hotel</option>
+            <option value="3star">3-Star Hotel</option>
+            <option value="4star" selected>4-Star Hotel</option>
+            <option value="5star">5-Star Hotel</option>
           </select>
-        </div>
-
-        <div class="control-group">
-          <div class="control-top">
-            <div class="control-name">Daily Expense (USD/person)</div>
-            <div class="control-value" id="tv_dailyExpVal">$50</div>
-          </div>
-          <input type="range" id="tv_dailyExp" min="20" max="500" step="10" value="50" oninput="tvSync('dailyExp');tvCalc()">
         </div>
 
         <div class="control-group">
@@ -413,13 +407,6 @@ select option{background:#0f1830;color:var(--text)}
             <div class="control-value" id="tv_fxRateVal">₹83</div>
           </div>
           <input type="range" id="tv_fxRate" min="75" max="95" step="0.5" value="83" oninput="tvSync('fxRate');tvCalc()">
-        </div>
-
-        <div class="control-group">
-          <div class="control-top">
-            <div class="control-name">Visa Cost (₹)</div>
-          </div>
-          <input type="number" id="tv_visa" value="8000" min="0" oninput="tvCalc()" placeholder="Enter visa cost in ₹">
         </div>
 
         <div class="control-group">
@@ -438,8 +425,8 @@ select option{background:#0f1830;color:var(--text)}
             <div class="v" id="tv_miniMood">Comfort</div>
           </div>
           <div class="mini">
-            <div class="k">Best Value</div>
-            <div class="v" id="tv_miniInsight">4★ Stays</div>
+            <div class="k">Confidence</div>
+            <div class="v" id="tv_miniInsight">High</div>
           </div>
         </div>
 
@@ -447,7 +434,7 @@ select option{background:#0f1830;color:var(--text)}
           <h4>Want the best travel deal?</h4>
           <p>Our travel experts compare flight prices, hotel rates and forex to save you thousands on every trip.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="openTelegram()">Plan My Trip</button>
+            <button class="btn primary" onclick="openWA()">Plan My Trip</button>
             <button class="btn secondary" onclick="tvCopy()">Copy Summary</button>
           </div>
         </div>
@@ -605,7 +592,7 @@ select option{background:#0f1830;color:var(--text)}
           <h4>Get best forex rate</h4>
           <p>We offer competitive forex rates with doorstep delivery. Lock your rate today before it moves.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="openTelegram()">Get Best Rate</button>
+            <button class="btn primary" onclick="openWA()">Get Best Rate</button>
             <button class="btn secondary" onclick="fxCopy()">Copy Summary</button>
           </div>
         </div>
@@ -695,7 +682,7 @@ select option{background:#0f1830;color:var(--text)}
           <h4>Looking for a custom itinerary?</h4>
           <p>Tell us your budget, dates and dream destination. We'll design a complete financial travel plan with best forex rates included.</p>
           <div class="advisor-actions" style="justify-content:center">
-            <button class="btn primary" onclick="openTelegram()">Plan My Custom Trip</button>
+            <button class="btn primary" onclick="openWA()">Plan My Custom Trip</button>
           </div>
         </div>
       </div>
@@ -726,7 +713,7 @@ select option{background:#0f1830;color:var(--text)}
             ✖ Flight delay cover<br>
             ✖ Adventure sports
           </div>
-          <button class="btn secondary" style="margin-top:8px" onclick="openTelegram()">Get Basic Cover</button>
+          <button class="btn secondary" style="margin-top:8px" onclick="openWA()">Get Basic Cover</button>
         </div>
         <div class="ins-card standard">
           <div class="ins-name">Standard Cover</div>
@@ -739,7 +726,7 @@ select option{background:#0f1830;color:var(--text)}
             ✔ Passport loss cover<br>
             ✖ Adventure sports
           </div>
-          <button class="btn primary" style="margin-top:8px" onclick="openTelegram()">Get Standard Cover</button>
+          <button class="btn primary" style="margin-top:8px" onclick="openWA()">Get Standard Cover</button>
         </div>
         <div class="ins-card premium">
           <div class="ins-name">Premium Cover</div>
@@ -752,7 +739,7 @@ select option{background:#0f1830;color:var(--text)}
             ✔ Adventure sports covered<br>
             ✔ Pre-existing conditions (optional)
           </div>
-          <button class="btn primary" style="margin-top:8px;background:linear-gradient(135deg,var(--violet),#a855f7)" onclick="openTelegram()">Get Premium Cover</button>
+          <button class="btn primary" style="margin-top:8px;background:linear-gradient(135deg,var(--violet),#a855f7)" onclick="openWA()">Get Premium Cover</button>
         </div>
       </div>
     </div>
@@ -813,7 +800,7 @@ select option{background:#0f1830;color:var(--text)}
           <h4>Book your recommended trip</h4>
           <p>Our experts will arrange everything — flights, hotels, forex and visa — based on your AI recommendation.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="openTelegram()">Book This Trip</button>
+            <button class="btn primary" onclick="openWA()">Book This Trip</button>
           </div>
         </div>
       </aside>
@@ -968,17 +955,53 @@ select option{background:#0f1830;color:var(--text)}
 </div><!-- /page -->
 
 <!-- WHATSAPP FAB -->
-<button class="whatsapp-fab" onclick="openTelegram()" title="Chat on WhatsApp">💬</button>
+<button class="whatsapp-fab" onclick="openWA()" title="Chat on WhatsApp">💬</button>
 
 <!-- STICKY CTA -->
 <div id="stickyCTA" style="position:fixed;bottom:0;left:0;width:100%;background:#0b1224;border-top:1px solid rgba(255,255,255,.1);padding:10px 18px;display:none;justify-content:space-between;align-items:center;z-index:9998">
   <div style="font-size:13px">Get your free travel plan</div>
-  <button class="btn primary" onclick="openTelegram()">Start Planning</button>
+  <button class="btn primary" onclick="openWA()">Start Planning</button>
 </div>
 
 <script>
-function openTelegram(){ window.open("https://t.me/Mfddelhibot","_blank"); }
-function openWA(){ window.open("https://wa.me/919999999999?text=Hi%2C%20I%20need%20a%20travel%20plan","_blank"); }
+/* ── PART 2: SMART REDIRECT + TRACKING ── */
+let flightClicks = 0;
+
+function smartFlightRedirect(){
+  flightClicks++;
+  trackFlightClick();
+
+  if(flightClicks === 1){
+    setTimeout(()=>{
+      alert("Tip: Book forex now to avoid rate increase.");
+    }, 3000);
+  }
+  if(flightClicks === 2){
+    if(confirm("Want cheaper flights + forex deals?")){
+      switchTravel('ld');
+      return;
+    }
+  }
+  window.open("https://flights.investpercent.com", "_blank");
+}
+
+function trackFlightClick(){
+  try{
+    console.log("Flight clicked");
+    if(window.gtag){
+      gtag('event', 'flight_search_click', {
+        event_category: 'travel',
+        event_label: 'flights'
+      });
+    }
+  }catch(e){}
+}
+
+/* ── PART 3: WHATSAPP ── */
+function openWA(){
+  const msg = encodeURIComponent("Hi, I want help with my travel planning.");
+  window.open("https://wa.me/919999999999?text=" + msg, "_blank");
+}
 
 /* ── TAB SWITCHER ── */
 const TV_TABS = {
@@ -1029,7 +1052,6 @@ function tvSync(id){
   if(!out) return;
   if(id==='travelers') out.textContent=v;
   else if(id==='duration') out.textContent=v+' nights';
-  else if(id==='dailyExp') out.textContent='$'+v;
   else if(id==='fxRate') out.textContent='₹'+v;
 }
 function aiSync(){
@@ -1041,81 +1063,123 @@ function aiSync(){
   if(t) document.getElementById('ai_travelersVal').textContent=t.value;
 }
 
+/* ── PART 5: REALISTIC DESTINATION DATA ── */
+const DEST_DATA = {
+  th:{flight:30000, stay:4000,  expense:40,  visa:0,     label:"Thailand"},
+  sg:{flight:40000, stay:6000,  expense:60,  visa:0,     label:"Singapore"},
+  ae:{flight:35000, stay:7000,  expense:70,  visa:7000,  label:"Dubai"},
+  eu:{flight:70000, stay:12000, expense:120, visa:8000,  label:"Europe"},
+  us:{flight:90000, stay:15000, expense:150, visa:12000, label:"USA"},
+  au:{flight:85000, stay:14000, expense:140, visa:10000, label:"Australia"},
+  jp:{flight:75000, stay:13000, expense:110, visa:5000,  label:"Japan"},
+  gb:{flight:80000, stay:14000, expense:130, visa:10000, label:"UK"}
+};
+
+/* Stay type multipliers */
+const STAY_MULT = {budget:0.5, '3star':0.75, '4star':1, '5star':1.8};
+/* Flight class multipliers */
+const FLIGHT_MULT = {economy:1, premiumeconomy:1.6, business:3};
+
 /* ── TRAVEL COST CALCULATOR ── */
-let tvChart=null;
+let tvChart = null;
 function tvCalc(){
-  let travelers=parseFloat(document.getElementById('tv_travelers').value)||1;
-  let duration=parseFloat(document.getElementById('tv_duration').value)||1;
-  travelers=Math.max(1,travelers);
-  duration=Math.max(1,duration);
-  const flightPP=+document.getElementById('tv_flightClass').value||50000;
-  const stayPN=+document.getElementById('tv_stayType').value||10000;
-  const dailyUSD=parseFloat(document.getElementById('tv_dailyExp').value)||0;
-  const fxRate=parseFloat(document.getElementById('tv_fxRate').value)||83;
-  const visaInput=document.getElementById('tv_visa').value;
-  const visa=visaInput===''?0:+visaInput;
-  const insurance=document.getElementById('tv_insurance').checked;
+  let travelers = parseFloat(document.getElementById('tv_travelers').value)||1;
+  let duration  = parseFloat(document.getElementById('tv_duration').value)||1;
+  travelers = Math.max(1,travelers);
+  duration  = Math.max(1,duration);
 
-  const flightCost=travelers*flightPP;
-  const stayCost=duration*stayPN*travelers;
-  const expCost=dailyUSD*duration*travelers*fxRate;
-  const visCost=visa*travelers;
-  const insCost=insurance?1500*travelers:0;
-  const total=flightCost+stayCost+expCost+visCost+insCost;
-  const perPerson=travelers>0?total/travelers:0;
-  const forexUSD=dailyUSD*duration*travelers;
+  const destKey  = document.getElementById('tv_destination').value;
+  const base     = DEST_DATA[destKey] || DEST_DATA.th;
+  const classMul = FLIGHT_MULT[document.getElementById('tv_flightClass').value] || 1;
+  const stayMul  = STAY_MULT[document.getElementById('tv_stayType').value] || 1;
+  const fxRate   = parseFloat(document.getElementById('tv_fxRate').value)||83;
+  const insurance= document.getElementById('tv_insurance').checked;
 
-  const stayLabel=document.getElementById('tv_stayType').options[document.getElementById('tv_stayType').selectedIndex].text.split('(')[0].trim();
-  setText('tv_totalCost',fmtINRFull(total));
-  setText('tv_pill',travelers>1?travelers+' Travellers':'1 Traveller');
-  setText('tv_narrative',`A ${duration}-night trip for ${travelers} traveller${travelers>1?'s':''} including flights, ${stayLabel} and daily expenses.`);
-  setText('tv_flightCostOut',fmtINR(flightCost));
-  setText('tv_stayCostOut',fmtINR(stayCost));
-  setText('tv_expCostOut',fmtINR(expCost));
-  setText('tv_perPerson',fmtINRFull(perPerson)+' per traveller for your selected itinerary.');
-  setText('tv_forexNeeded',`Approximately $${Math.round(forexUSD).toLocaleString('en-IN')} total forex needed for all ${travelers} traveller${travelers>1?'s':''}.`);
+  const flightPP = base.flight * classMul;
+  const stayPN   = base.stay * stayMul;
+  const dailyUSD = base.expense;
+  const visa     = base.visa;
 
-  // Top metrics — always update, never NaN (forexUSD is already total across all travelers)
-  const safeTotal=isFinite(total)&&!isNaN(total)?total:0;
-  const safeForex=isFinite(forexUSD)&&!isNaN(forexUSD)?forexUSD:0;
-  const safePerPerson=travelers>0&&isFinite(perPerson)?perPerson:0;
-  setText('tv_topTotal',fmtINR(safeTotal));
-  setText('tv_topForex','$'+Math.round(safeForex).toLocaleString('en-IN'));
-  setText('tv_topPerPerson',fmtINR(safePerPerson));
+  const stayVal    = document.getElementById('tv_stayType').value;
+  const flightCost = travelers * flightPP;
+  const stayCost   = duration * stayPN * travelers;
+  const EXP_MULT   = { budget: 0.7, comfort: 1, luxury: 1.8 };
+  const moodType   =
+    stayVal === 'budget' ? 'budget' :
+    stayVal === '3star'  ? 'budget' :
+    stayVal === '4star'  ? 'comfort' : 'luxury';
+  const expCost    = dailyUSD * EXP_MULT[moodType] * duration * travelers * fxRate;
+  const visCost    = visa * travelers;
+  const insCost    = insurance ? 1500 * travelers : 0;
+  const total      = flightCost + stayCost + expCost + visCost + insCost;
+  const perPerson  = travelers > 0 ? total / travelers : 0;
+  const forexUSD   = dailyUSD * duration * travelers;
 
-  // Mood
-  const stayN=+document.getElementById('tv_stayType').value;
-  const mood=stayN<=3000?'Budget':stayN<=6000?'Economy':stayN<=10000?'Comfort':'Luxury';
-  setText('tv_miniMood',mood);
+  /* PART 6 — Trust narrative */
+  setText('tv_narrative',
+    `Estimated ${base.label} trip cost based on current market prices. Actual may vary by season & booking time.`
+  );
 
-  // Scenarios
-  const scenarioCalc=(fp,sp)=>{
-    const f=travelers*fp;
-    const s=duration*sp*travelers;
-    const t=f+s+expCost+visCost+(insurance?1500*travelers:0);
-    return{total:t,pp:travelers>0?t/travelers:0};
+  /* PART 5 — Saving tip */
+  setText('tv_savingTip',
+    base.label === "Thailand"
+    ? "Book 30 days early. Avoid peak season (Dec–Jan)."
+    : base.label === "Europe"
+    ? "Apply visa 60–90 days early. Travel April–May for best rates."
+    : "Book flights early for best fares."
+  );
+
+  /* PART 7 — Confidence indicator */
+  const confidence = duration < 10 ? "High" : "Medium";
+  setText('tv_miniInsight', confidence + " Confidence");
+
+  setText('tv_totalCost', fmtINRFull(total));
+  setText('tv_pill', travelers>1 ? travelers+' Travellers' : '1 Traveller');
+  setText('tv_flightCostOut', fmtINR(flightCost));
+  setText('tv_stayCostOut',   fmtINR(stayCost));
+  setText('tv_expCostOut',    fmtINR(expCost));
+  setText('tv_perPerson',     fmtINRFull(perPerson)+' per traveller for your selected itinerary.');
+  setText('tv_forexNeeded',   `Approximately $${Math.round(forexUSD).toLocaleString('en-IN')} total forex needed for all ${travelers} traveller${travelers>1?'s':''}.`);
+
+  const safeTotal     = isFinite(total)&&!isNaN(total)?total:0;
+  const safeForex     = isFinite(forexUSD)&&!isNaN(forexUSD)?forexUSD:0;
+  const safePerPerson = travelers>0&&isFinite(perPerson)?perPerson:0;
+  setText('tv_topTotal',     fmtINR(safeTotal));
+  setText('tv_topForex',     '$'+Math.round(safeForex).toLocaleString('en-IN'));
+  setText('tv_topPerPerson', fmtINR(safePerPerson));
+
+  /* Mood */
+  const mood = stayVal==='budget'?'Budget':stayVal==='3star'?'Economy':stayVal==='4star'?'Comfort':'Luxury';
+  setText('tv_miniMood', mood);
+
+  /* Scenarios */
+  const scenarioCalc = (fMul, sMul) => {
+    const f = travelers * base.flight * fMul;
+    const s = duration * base.stay * sMul * travelers;
+    const t = f + s + expCost + visCost + (insurance?1500*travelers:0);
+    return {total:t, pp:travelers>0?t/travelers:0};
   };
-  const budget=scenarioCalc(50000,3000);
-  const comfort=scenarioCalc(50000,10000);
-  const luxury=scenarioCalc(150000,18000);
-  setText('tv_budgetTotal',fmtINRFull(budget.total));
-  setText('tv_budgetPer',fmtINRFull(budget.pp)+' / person');
-  setText('tv_comfortTotal',fmtINRFull(comfort.total));
-  setText('tv_comfortPer',fmtINRFull(comfort.pp)+' / person');
-  setText('tv_luxuryTotal',fmtINRFull(luxury.total));
-  setText('tv_luxuryPer',fmtINRFull(luxury.pp)+' / person');
+  const budget  = scenarioCalc(1,   0.5);
+  const comfort = scenarioCalc(1,   1);
+  const luxury  = scenarioCalc(3,   1.8);
+  setText('tv_budgetTotal',  fmtINRFull(budget.total));
+  setText('tv_budgetPer',    fmtINRFull(budget.pp)+' / person');
+  setText('tv_comfortTotal', fmtINRFull(comfort.total));
+  setText('tv_comfortPer',   fmtINRFull(comfort.pp)+' / person');
+  setText('tv_luxuryTotal',  fmtINRFull(luxury.total));
+  setText('tv_luxuryPer',    fmtINRFull(luxury.pp)+' / person');
 
-  // Chart — safe guard before creation
+  /* Chart */
   (function(){
-    const ctx=document.getElementById('tv_chart');
+    const ctx = document.getElementById('tv_chart');
     if(!ctx) return;
     if(tvChart instanceof Chart){ tvChart.destroy(); tvChart=null; }
-    tvChart=new Chart(ctx,{
+    tvChart = new Chart(ctx,{
       type:'doughnut',
       data:{
         labels:['Flights','Stay','Daily Expenses','Visa & Insurance'],
         datasets:[{
-          data:[flightCost,stayCost,expCost,visCost+insCost],
+          data:[flightCost, stayCost, expCost, visCost+insCost],
           backgroundColor:['rgba(0,212,255,.8)','rgba(123,97,255,.8)','rgba(255,215,106,.8)','rgba(255,96,125,.8)'],
           borderColor:'rgba(255,255,255,.07)',borderWidth:2
         }]
@@ -1124,18 +1188,19 @@ function tvCalc(){
     });
   })();
 
-  // Milestones
-  const ms=document.getElementById('tv_milestones');
-  if(ms) ms.innerHTML=[
-    {y:'Flight',a:fmtINR(flightCost),n:`${travelers} × ₹${(flightPP/1000).toFixed(0)}K`},
-    {y:'Hotel',a:fmtINR(stayCost),n:`${duration} nights × ₹${(stayPN/1000).toFixed(0)}K`},
-    {y:'Expenses',a:fmtINR(expCost),n:`$${dailyUSD}/day × ${duration}d × @₹${fxRate}`},
-    {y:'Visa+Other',a:fmtINR(visCost+insCost),n:insurance?'Visa + Insurance included':'Visa cost'}
+  /* Milestones */
+  const ms = document.getElementById('tv_milestones');
+  if(ms) ms.innerHTML = [
+    {y:'Flight',    a:fmtINR(flightCost), n:`${travelers} × ₹${(flightPP/1000).toFixed(0)}K`},
+    {y:'Hotel',     a:fmtINR(stayCost),   n:`${duration} nights × ₹${(stayPN/1000).toFixed(0)}K`},
+    {y:'Expenses',  a:fmtINR(expCost),    n:`$${dailyUSD}/day × ${duration}d × @₹${fxRate}`},
+    {y:'Visa+Other',a:fmtINR(visCost+insCost), n:insurance?'Visa + Insurance included':'Visa cost'}
   ].map(m=>`<div class="milestone"><div class="m-year">${m.y}</div><div class="m-amount">${m.a}</div><div class="m-note">${m.n}</div></div>`).join('');
 }
+
 function tvCopy(){
-  const t=document.getElementById('tv_totalCost').textContent;
-  const p=document.getElementById('tv_perPerson').textContent;
+  const t = document.getElementById('tv_totalCost').textContent;
+  const p = document.getElementById('tv_perPerson').textContent;
   if(navigator.clipboard){
     navigator.clipboard.writeText(`Travel Cost Estimate\nTotal: ${t}\n${p}\nPowered by investpercent.com`)
       .then(()=>alert('Copied to clipboard ✅'))
@@ -1146,38 +1211,37 @@ function tvCopy(){
 }
 
 /* ── FOREX ENGINE ── */
-const FX_NAMES={USD:'US Dollar',EUR:'Euro',GBP:'British Pound',AED:'UAE Dirham',SGD:'Singapore Dollar',THB:'Thai Baht'};
-const FX_RATES={
-  USD:{interbank:83.20,our:84.10,symbol:'$',flag:'🇺🇸'},
-  EUR:{interbank:90.50,our:91.60,symbol:'€',flag:'🇪🇺'},
+const FX_NAMES = {USD:'US Dollar',EUR:'Euro',GBP:'British Pound',AED:'UAE Dirham',SGD:'Singapore Dollar',THB:'Thai Baht'};
+const FX_RATES = {
+  USD:{interbank:83.20,our:84.10,symbol:'$', flag:'🇺🇸'},
+  EUR:{interbank:90.50,our:91.60,symbol:'€', flag:'🇪🇺'},
   GBP:{interbank:105.80,our:107.20,symbol:'£',flag:'🇬🇧'},
   AED:{interbank:22.65,our:23.05,symbol:'د.إ',flag:'🇦🇪'},
   SGD:{interbank:61.40,our:62.30,symbol:'S$',flag:'🇸🇬'},
-  THB:{interbank:2.35,our:2.40,symbol:'฿',flag:'🇹🇭'}
+  THB:{interbank:2.35, our:2.40, symbol:'฿', flag:'🇹🇭'}
 };
 function fxCalc(){
-  const cur=document.getElementById('fx_currency').value||'USD';
-  const amtInput=document.getElementById('fx_amount').value;
-  const amt=amtInput===''?0:+amtInput;
-  const rate=FX_RATES[cur]||FX_RATES.USD;
-  const ibTotal=amt*rate.interbank;
-  const ourTotal=amt*rate.our;
-  const margin=ourTotal-ibTotal;
-  setText('fx_youPay',fmtINRFull(ourTotal));
-  setText('fx_payDesc',`For ${rate.symbol}${amt.toLocaleString('en-IN')} at our current rate of ₹${rate.our}`);
-  setText('fx_ibTotal',fmtINRFull(ibTotal));
-  setText('fx_ourTotal',fmtINRFull(ourTotal));
-  setText('fx_margin',fmtINRFull(margin));
+  const cur      = document.getElementById('fx_currency').value||'USD';
+  const amtInput = document.getElementById('fx_amount').value;
+  const amt      = amtInput===''?0:+amtInput;
+  const rate     = FX_RATES[cur]||FX_RATES.USD;
+  const ibTotal  = amt*rate.interbank;
+  const ourTotal = amt*rate.our;
+  const margin   = ourTotal-ibTotal;
+  setText('fx_youPay',      fmtINRFull(ourTotal));
+  setText('fx_payDesc',     `For ${rate.symbol}${amt.toLocaleString('en-IN')} at our current rate of ₹${rate.our}`);
+  setText('fx_ibTotal',     fmtINRFull(ibTotal));
+  setText('fx_ourTotal',    fmtINRFull(ourTotal));
+  setText('fx_margin',      fmtINRFull(margin));
   setText('fx_miniInterbank','₹'+rate.interbank);
-  setText('fx_miniOurRate','₹'+rate.our);
+  setText('fx_miniOurRate', '₹'+rate.our);
 
-  // Build rate table
-  const tbl=document.getElementById('fx_table');
+  const tbl = document.getElementById('fx_table');
   if(tbl){
     tbl.innerHTML=`<thead><tr><th>Currency</th><th>Interbank</th><th>Our Rate</th><th>Margin</th></tr></thead><tbody>`+
       Object.entries(FX_RATES).map(([c,r])=>{
-        const mgn=(r.our-r.interbank).toFixed(2);
-        const pct=((r.our-r.interbank)/r.interbank*100).toFixed(2);
+        const mgn = (r.our-r.interbank).toFixed(2);
+        const pct = ((r.our-r.interbank)/r.interbank*100).toFixed(2);
         return `<tr>
           <td>${r.flag} <strong>${c}</strong> — ${FX_NAMES[c]||c}</td>
           <td class="forex-rate-good">₹${r.interbank}</td>
@@ -1187,17 +1251,16 @@ function fxCalc(){
       }).join('')+'</tbody>';
   }
 
-  // Milestones
-  const ms=document.getElementById('fx_milestones');
+  const ms = document.getElementById('fx_milestones');
   if(ms){
-    const amts=[100,500,1000,5000];
-    ms.innerHTML=amts.map(a=>`<div class="milestone"><div class="m-year">${rate.symbol}${a}</div><div class="m-amount">${fmtINR(a*rate.our)}</div><div class="m-note">At ₹${rate.our}/${cur}</div></div>`).join('');
+    const amts = [100,500,1000,5000];
+    ms.innerHTML = amts.map(a=>`<div class="milestone"><div class="m-year">${rate.symbol}${a}</div><div class="m-amount">${fmtINR(a*rate.our)}</div><div class="m-note">At ₹${rate.our}/${cur}</div></div>`).join('');
   }
 }
 function fxCopy(){
-  const cur=document.getElementById('fx_currency').value;
-  const amt=document.getElementById('fx_amount').value;
-  const pay=document.getElementById('fx_youPay').textContent;
+  const cur = document.getElementById('fx_currency').value;
+  const amt = document.getElementById('fx_amount').value;
+  const pay = document.getElementById('fx_youPay').textContent;
   if(navigator.clipboard){
     navigator.clipboard.writeText(`Forex: ${amt} ${cur} = ${pay}\nRate: ₹${FX_RATES[cur].our}/${cur}\ninvestpercent.com`)
       .then(()=>alert('Copied to clipboard ✅'))
@@ -1208,25 +1271,25 @@ function fxCopy(){
 }
 
 /* ── TOUR PACKAGES ── */
-const PACKAGES=[
-  {icon:'🏰',name:'Europe Package',price:'₹1,20,000 – ₹2,50,000',duration:'10–14 nights',includes:['Flights','Hotel','Visa','Insurance','Forex Support'],dest:'Europe'},
-  {icon:'🏙️',name:'Dubai Package',price:'₹55,000 – ₹95,000',duration:'5–7 nights',includes:['Flights','Hotel','Activities','Forex Support'],dest:'Dubai'},
-  {icon:'🌴',name:'Thailand / Bali',price:'₹35,000 – ₹70,000',duration:'5–8 nights',includes:['Flights','Resort Stay','Tours','Forex'],dest:'Thailand'},
-  {icon:'🏯',name:'Singapore / Malaysia',price:'₹45,000 – ₹85,000',duration:'5–7 nights',includes:['Flights','Hotel','Activities','Forex'],dest:'Singapore'},
-  {icon:'🗽',name:'USA / Canada',price:'₹1,80,000 – ₹3,50,000',duration:'10–15 nights',includes:['Flights','Hotel','Visa','Insurance','Forex'],dest:'USA'},
-  {icon:'💎',name:'Custom Luxury',price:'On Request',duration:'Flexible',includes:['Private Flights','5★ Resort','Butler Service','All Inclusive'],dest:'Custom'}
+const PACKAGES = [
+  {icon:'🏰',name:'Europe Package',       price:'₹1,20,000 – ₹2,50,000',duration:'10–14 nights',includes:['Flights','Hotel','Visa','Insurance','Forex Support'],dest:'Europe'},
+  {icon:'🏙️',name:'Dubai Package',        price:'₹55,000 – ₹95,000',   duration:'5–7 nights', includes:['Flights','Hotel','Activities','Forex Support'],dest:'Dubai'},
+  {icon:'🌴',name:'Thailand / Bali',      price:'₹35,000 – ₹70,000',   duration:'5–8 nights', includes:['Flights','Resort Stay','Tours','Forex'],dest:'Thailand'},
+  {icon:'🏯',name:'Singapore / Malaysia', price:'₹45,000 – ₹85,000',   duration:'5–7 nights', includes:['Flights','Hotel','Activities','Forex'],dest:'Singapore'},
+  {icon:'🗽',name:'USA / Canada',         price:'₹1,80,000 – ₹3,50,000',duration:'10–15 nights',includes:['Flights','Hotel','Visa','Insurance','Forex'],dest:'USA'},
+  {icon:'💎',name:'Custom Luxury',        price:'On Request',            duration:'Flexible',   includes:['Private Flights','5★ Resort','Butler Service','All Inclusive'],dest:'Custom'}
 ];
 function renderPackages(){
-  const grid=document.getElementById('pk_grid');
+  const grid = document.getElementById('pk_grid');
   if(!grid) return;
-  grid.innerHTML=PACKAGES.map(p=>`
+  grid.innerHTML = PACKAGES.map(p=>`
     <div class="pkg-card">
       <div class="pkg-icon">${p.icon}</div>
       <div class="pkg-name">${p.name}</div>
       <div class="pkg-price">${p.price}</div>
       <div class="pkg-duration">📅 ${p.duration}</div>
       <div class="pkg-includes">${p.includes.map(i=>`<span class="pkg-tag">✔ ${i}</span>`).join('')}</div>
-      <button class="btn primary" style="margin-top:10px" onclick="window.open('https://goglobal.forex/travel-plan?destination=${encodeURIComponent(p.dest)}','_blank')">Plan My Trip</button>
+      <button class="btn primary" style="margin-top:10px" onclick="switchTravel('ld')">Plan My Trip</button>
     </div>
   `).join('');
 }
@@ -1234,68 +1297,68 @@ function renderPackages(){
 /* ── AI TRAVEL ADVISOR ── */
 const AI_DB={
   budget:{
-    low:{dest:'Thailand / Bali',reason:'Best value destination — beaches, food and culture under ₹60K/person.',forex:'$400–$600',stay:'3★ Hotel',tip:'Fly Indigo/AirAsia. Avoid December–January peak season.'},
-    mid:{dest:'Singapore / Malaysia',reason:'Great urban + nature experience. Well connected with excellent budget hotels.',forex:'$600–$900',stay:'3★ Hotel',tip:'KL is cheaper than Singapore. Split the trip for max value.'},
-    high:{dest:'Europe',reason:'Western Europe is accessible with careful planning and early bookings.',forex:'€800–€1500',stay:'3★ Hotel',tip:'Book Schengen visa 3 months early. Travel in April–May or Sept–Oct.'}
+    low: {dest:'Thailand / Bali',      reason:'Best value destination — beaches, food and culture under ₹60K/person.',  forex:'$400–$600', stay:'3★ Hotel',    tip:'Fly Indigo/AirAsia. Avoid December–January peak season.'},
+    mid: {dest:'Singapore / Malaysia', reason:'Great urban + nature experience. Well connected with excellent budget hotels.',forex:'$600–$900', stay:'3★ Hotel',    tip:'KL is cheaper than Singapore. Split the trip for max value.'},
+    high:{dest:'Europe',               reason:'Western Europe is accessible with careful planning and early bookings.',   forex:'€800–€1500',stay:'3★ Hotel',    tip:'Book Schengen visa 3 months early. Travel in April–May or Sept–Oct.'}
   },
   comfort:{
-    low:{dest:'Bali / Thailand',reason:'4★ resorts at 3★ prices. Incredible value for comfort travellers.',forex:'$600–$900',stay:'4★ Hotel',tip:'Choose private pool villas in Bali — often cheaper than city hotels.'},
-    mid:{dest:'Dubai / UAE',reason:'World-class hotels, shopping and experiences within a generous budget.',forex:'AED 2000–4000',stay:'4★ Hotel',tip:'Avoid weekend travel (Fri–Sat). Book hotels in JBR or Business Bay.'},
-    high:{dest:'Europe / Japan',reason:'Your budget unlocks premium comfort in top destinations worldwide.',forex:'€1500–€3000',stay:'4★ Hotel',tip:'Japan is expensive but worth every rupee. Book JR Pass early.'}
+    low: {dest:'Bali / Thailand',      reason:'4★ resorts at 3★ prices. Incredible value for comfort travellers.',        forex:'$600–$900',  stay:'4★ Hotel',    tip:'Choose private pool villas in Bali — often cheaper than city hotels.'},
+    mid: {dest:'Dubai / UAE',          reason:'World-class hotels, shopping and experiences within a generous budget.',    forex:'AED 2000–4000',stay:'4★ Hotel', tip:'Avoid weekend travel (Fri–Sat). Book hotels in JBR or Business Bay.'},
+    high:{dest:'Europe / Japan',       reason:'Your budget unlocks premium comfort in top destinations worldwide.',         forex:'€1500–€3000',stay:'4★ Hotel',    tip:'Japan is expensive but worth every rupee. Book JR Pass early.'}
   },
   luxury:{
-    low:{dest:'Maldives / Bali',reason:'Overwater bungalows and private villas — best luxury per rupee.',forex:'$1000–$1500',stay:'5★ Resort',tip:'Book through resorts directly for best package deals.'},
-    mid:{dest:'Europe River Cruise',reason:'Luxury river cruise covers multiple countries with full board.',forex:'€2000–€4000',stay:'5★ Cruise',tip:'Book 6 months early for best cabins. Travel in June–August.'},
-    high:{dest:'Maldives + Dubai',reason:'A dual-destination luxury trip is possible at your budget.',forex:'$2000–$4000',stay:'5★ Overwater',tip:'Use business class redemptions via HDFC Infinia or Amex Platinum.'}
+    low: {dest:'Maldives / Bali',      reason:'Overwater bungalows and private villas — best luxury per rupee.',           forex:'$1000–$1500',stay:'5★ Resort',   tip:'Book through resorts directly for best package deals.'},
+    mid: {dest:'Europe River Cruise',  reason:'Luxury river cruise covers multiple countries with full board.',             forex:'€2000–€4000',stay:'5★ Cruise',   tip:'Book 6 months early for best cabins. Travel in June–August.'},
+    high:{dest:'Maldives + Dubai',     reason:'A dual-destination luxury trip is possible at your budget.',                 forex:'$2000–$4000',stay:'5★ Overwater',tip:'Use business class redemptions via HDFC Infinia or Amex Platinum.'}
   },
   adventure:{
-    low:{dest:'Nepal / Bhutan',reason:'Best adventure destinations near India — trekking, culture, mountains.',forex:'NPR 3000–6000',stay:'Trekking Lodge',tip:'October–November is peak trekking season. Book permits early.'},
-    mid:{dest:'New Zealand',reason:'Ultimate adventure destination — bungee, skydiving, fjords.',forex:'NZD 1000–2000',stay:'3★ Hotel',tip:'Rent a campervan for the most flexible adventure experience.'},
-    high:{dest:'Patagonia / Iceland',reason:'World\'s top adventure destinations — bucket-list worthy at your budget.',forex:'$2000–$4000',stay:'4★ Lodge',tip:'Iceland in August for midnight sun; Patagonia in November–March.'}
+    low: {dest:'Nepal / Bhutan',       reason:'Best adventure destinations near India — trekking, culture, mountains.',    forex:'NPR 3000–6000',stay:'Trekking Lodge',tip:'October–November is peak trekking season. Book permits early.'},
+    mid: {dest:'New Zealand',          reason:'Ultimate adventure destination — bungee, skydiving, fjords.',               forex:'NZD 1000–2000',stay:'3★ Hotel',  tip:'Rent a campervan for the most flexible adventure experience.'},
+    high:{dest:'Patagonia / Iceland',  reason:"World's top adventure destinations — bucket-list worthy at your budget.",   forex:'$2000–$4000',stay:'4★ Lodge',    tip:'Iceland in August for midnight sun; Patagonia in November–March.'}
   },
   family:{
-    low:{dest:'Thailand / Malaysia',reason:'Family-friendly, safe, great food and affordable resorts for all ages.',forex:'$500–$800',stay:'3★ Family Hotel',tip:'Book family rooms to save vs two separate rooms.'},
-    mid:{dest:'Singapore + Bali',reason:'Singapore for education + Bali for relaxation — perfect family combo.',forex:'$800–$1500',stay:'4★ Family Resort',tip:'Universal Studios and Gardens by the Bay for kids in Singapore.'},
+    low: {dest:'Thailand / Malaysia',  reason:'Family-friendly, safe, great food and affordable resorts for all ages.',    forex:'$500–$800',  stay:'3★ Family Hotel',tip:'Book family rooms to save vs two separate rooms.'},
+    mid: {dest:'Singapore + Bali',     reason:'Singapore for education + Bali for relaxation — perfect family combo.',     forex:'$800–$1500', stay:'4★ Family Resort',tip:'Universal Studios and Gardens by the Bay for kids in Singapore.'},
     high:{dest:'Europe (UK + France + Switzerland)',reason:'Dream family trip covering iconic sights across multiple countries.',forex:'€2000–€4000',stay:'4★ Hotel',tip:'Eurail Pass for comfortable family train travel between cities.'}
   }
 };
 function aiAdvise(){
-  const budget=+document.getElementById('ai_budget').value||150000;
-  const travelers=+document.getElementById('ai_travelers').value||2;
-  const days=+document.getElementById('ai_days').value||7;
-  const style=document.getElementById('ai_style').value||'comfort';
-  const ppBudget=budget/travelers;
-  const tier=ppBudget<80000?'low':ppBudget<200000?'mid':'high';
-  const db=(AI_DB[style]||AI_DB.comfort)[tier]||AI_DB.comfort.mid;
-  document.getElementById('ai_dest').textContent=db.dest;
-  document.getElementById('ai_reason').textContent=db.reason;
-  document.getElementById('ai_tripType').textContent=style.charAt(0).toUpperCase()+style.slice(1);
-  document.getElementById('ai_forex').textContent=db.forex;
-  document.getElementById('ai_stay').textContent=db.stay;
-  document.getElementById('ai_ins1Text').textContent=db.reason;
-  document.getElementById('ai_ins2Text').textContent='Carry '+db.forex+' in foreign currency. '+db.forex.split(' ')[0]+' is the primary currency.';
-  document.getElementById('ai_ins3Text').textContent=db.tip;
-  const flightBudget=Math.round(budget*0.35);
-  const hotelBudget=Math.round(budget*0.30);
-  const expBudget=Math.round(budget*0.20);
-  const miscBudget=Math.round(budget*0.15);
-  const bk=document.getElementById('ai_breakdown');
-  if(bk) bk.innerHTML=[
-    {y:'Flights (35%)',a:fmtINR(flightBudget),n:'Includes return fare for all travellers'},
-    {y:'Hotel (30%)',a:fmtINR(hotelBudget),n:`${days} nights accommodation`},
-    {y:'Expenses (20%)',a:fmtINR(expBudget),n:'Food, transport & activities'},
+  const budget    = +document.getElementById('ai_budget').value||150000;
+  const travelers = +document.getElementById('ai_travelers').value||2;
+  const days      = +document.getElementById('ai_days').value||7;
+  const style     = document.getElementById('ai_style').value||'comfort';
+  const ppBudget  = budget/travelers;
+  const tier      = ppBudget<80000?'low':ppBudget<200000?'mid':'high';
+  const db        = (AI_DB[style]||AI_DB.comfort)[tier]||AI_DB.comfort.mid;
+  document.getElementById('ai_dest').textContent    = db.dest;
+  document.getElementById('ai_reason').textContent  = db.reason;
+  document.getElementById('ai_tripType').textContent = style.charAt(0).toUpperCase()+style.slice(1);
+  document.getElementById('ai_forex').textContent   = db.forex;
+  document.getElementById('ai_stay').textContent    = db.stay;
+  document.getElementById('ai_ins1Text').textContent = db.reason;
+  document.getElementById('ai_ins2Text').textContent = 'Carry '+db.forex+' in foreign currency. '+db.forex.split(' ')[0]+' is the primary currency.';
+  document.getElementById('ai_ins3Text').textContent = db.tip;
+  const flightBudget = Math.round(budget*0.35);
+  const hotelBudget  = Math.round(budget*0.30);
+  const expBudget    = Math.round(budget*0.20);
+  const miscBudget   = Math.round(budget*0.15);
+  const bk = document.getElementById('ai_breakdown');
+  if(bk) bk.innerHTML = [
+    {y:'Flights (35%)', a:fmtINR(flightBudget), n:'Includes return fare for all travellers'},
+    {y:'Hotel (30%)',   a:fmtINR(hotelBudget),  n:`${days} nights accommodation`},
+    {y:'Expenses (20%)',a:fmtINR(expBudget),    n:'Food, transport & activities'},
     {y:'Visa + Misc (15%)',a:fmtINR(miscBudget),n:'Visa, insurance & forex margin'}
   ].map(m=>`<div class="milestone"><div class="m-year">${m.y}</div><div class="m-amount">${m.a}</div><div class="m-note">${m.n}</div></div>`).join('');
 }
 
 /* ── LEAD FORM ── */
 function ldSubmit(){
-  const name=document.getElementById('ld_name').value.trim();
-  const phone=document.getElementById('ld_phone').value.trim();
-  const dest=document.getElementById('ld_dest').value.trim();
-  const budget=document.getElementById('ld_budget').value;
-  const date=document.getElementById('ld_date').value.trim();
-  const travelers=document.getElementById('ld_travelers').value;
+  const name      = document.getElementById('ld_name').value.trim();
+  const phone     = document.getElementById('ld_phone').value.trim();
+  const dest      = document.getElementById('ld_dest').value.trim();
+  const budget    = document.getElementById('ld_budget').value;
+  const date      = document.getElementById('ld_date').value.trim();
+  const travelers = document.getElementById('ld_travelers').value;
   if(!name||!phone||phone.length<8){
     alert('Please enter valid details.');
     return;
@@ -1304,42 +1367,53 @@ function ldSubmit(){
     alert('Please enter destination');
     return;
   }
-  // Log to console (backend integration ready)
   console.log('Travel Lead Captured:',{name,phone,dest,budget,date,travelers,timestamp:new Date().toISOString()});
-  // Show success
   document.getElementById('ld_success').classList.remove('hidden');
-  // Open WhatsApp with pre-filled message
-  const msg=encodeURIComponent(`Hi! I'm ${name}. I want a travel plan for ${dest||'international trip'}, ${travelers} travellers, budget ₹${budget||'flexible'}, travelling in ${date||'soon'}. Please help.`);
+  const msg = encodeURIComponent(`Hi! I'm ${name}. I want a travel plan for ${dest||'international trip'}, ${travelers} travellers, budget ₹${budget||'flexible'}, travelling in ${date||'soon'}. Please help.`);
   setTimeout(()=>window.open('https://wa.me/919999999999?text='+msg,'_blank'),500);
 }
 
-/* ── SCROLL TRIGGER ── */
-window.addEventListener('scroll',function(){
-  if(window.scrollY>800){
-    const bar=document.getElementById('stickyCTA');
-    if(bar) bar.style.display='flex';
+/* ── TASK 4: EXIT INTENT LEAD CAPTURE ── */
+let exitShown = false;
+
+document.addEventListener("mouseleave", function(e){
+  if(e.clientY < 10 && !exitShown){
+    exitShown = true;
+    setTimeout(()=>{
+      if(confirm("Wait! Want best flight + forex deal?")){
+        switchTravel('ld');
+      }
+    }, 300);
   }
 });
 
+/* ── PART 8: PERFORMANCE FIX — passive scroll ── */
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 800){
+    const bar = document.getElementById('stickyCTA');
+    if(bar) bar.style.display = 'flex';
+  }
+}, { passive: true });
+
 /* ── SCROLL TO CALC ── */
 function scrollToCalc(){
-  const el=document.getElementById('tv_controlsAnchor');
+  const el = document.getElementById('tv_controlsAnchor');
   if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 /* ── MOBILE RESIZE OPTIMIZATION ── */
 let resizeTimer;
-window.addEventListener('resize',()=>{
+window.addEventListener('resize', ()=>{
   clearTimeout(resizeTimer);
-  resizeTimer=setTimeout(()=>{
+  resizeTimer = setTimeout(()=>{
     if(typeof tvCalc==='function') tvCalc();
-  },300);
+  }, 300);
 });
 
 /* ── INIT ── */
-document.addEventListener('DOMContentLoaded',function(){
+document.addEventListener('DOMContentLoaded', function(){
   try{
-    tvSync('travelers'); tvSync('duration'); tvSync('dailyExp'); tvSync('fxRate');
+    tvSync('travelers'); tvSync('duration'); tvSync('fxRate');
     tvCalc();
     fxCalc();
     renderPackages();
