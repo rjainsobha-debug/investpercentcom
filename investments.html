@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Investment Tools & Calculators — Wealthwise</title>
+<title>Investment Tools & Calculators — investpercent</title>
+<link rel="stylesheet" href="components/navbar.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,17 +23,6 @@
     --radius: 12px;
   }
   body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-  
-  /* NAV */
-  nav { position: sticky; top: 0; z-index: 100; background: rgba(11,15,26,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
-  .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; color: var(--text); }
-  .logo-icon { width: 32px; height: 32px; background: rgba(14,165,233,0.15); border: 1px solid rgba(14,165,233,0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-  .nav-links { display: flex; gap: 4px; }
-  .nav-links a { padding: 6px 14px; border-radius: 8px; text-decoration: none; color: var(--muted); font-size: 0.875rem; font-weight: 500; transition: all .15s; }
-  .nav-links a:hover { color: var(--text); background: var(--card2); }
-  .nav-links a.active { color: var(--primary); background: rgba(14,165,233,0.12); }
-  .nav-badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 9999px; border: 1px solid var(--border); color: var(--muted); }
 
   /* HERO */
   .hero { text-align: center; padding: 60px 20px 40px; background: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(14,165,233,0.12), transparent); }
@@ -137,22 +127,7 @@
 </head>
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <a class="logo" href="/">
-      <div class="logo-icon">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 7L9 10L12 5L14 7" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="7" r="1.5" fill="#0ea5e9"/></svg>
-      </div>
-      Wealthwise
-    </a>
-    <div class="nav-links">
-      <a href="/">Home</a>
-      <a href="investments.html" class="active">Investments</a>
-      <a href="personal-finance.html">Personal Finance</a>
-    </div>
-    <span class="nav-badge">100% Free Tools</span>
-  </div>
-</nav>
+<div id="navbar"></div>
 
 <div class="hero">
   <div class="hero-badge"><span></span>Financial Tools Lab — Free & Instant</div>
@@ -1002,6 +977,23 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
 // Boot
 renderToolList();
 loadTool('sip');
+</script>
+
+<script>
+function loadNavbar() {
+  fetch('components/navbar.html')
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById('navbar').innerHTML = data;
+      setTimeout(() => {
+        if (typeof highlightActiveNav === 'function') {
+          highlightActiveNav();
+        }
+      }, 50);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', loadNavbar);
 </script>
 </body>
 </html>
