@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Investments Dashboard — Wealth Builder | investpercent</title>
-  <meta name="description" content="Plan your investments with SIP, lumpsum, retirement, CAGR and portfolio calculators."/>
+  <title>Investment Calculator India | SIP, Retirement &amp; Portfolio Planner</title>
+  <meta name="description" content="Free investment calculator for SIP, lumpsum, retirement planning. Get your personalized investment plan on WhatsApp instantly."/>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1V4L60RZZP');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -183,12 +190,12 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
     </div>
     <div style="margin-top:15px;padding:14px;border-radius:14px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
       <div style="font-weight:700">💡 Get your personalized investment plan in 30 seconds</div>
-      <button class="btn primary" onclick="openTelegram()">💡 Get My Investment Plan</button>
+      <button class="btn primary" onclick="submitLead('hero_cta')">💡 Get My Investment Plan</button>
     </div>
   </div>
   <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between">
     <div style="font-size:13px">✔ Free Planning | ✔ No Spam | ✔ Expert Guidance</div>
-    <button class="btn secondary" onclick="openTelegram()">Talk to Advisor</button>
+    <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
   </div>
 
   <!-- ═══════════════════════════════════════
@@ -203,7 +210,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
         <div class="hero-cta">
           <button class="btn primary" onclick="document.getElementById('sip_controlsAnchor').scrollIntoView({behavior:'smooth'})">Start Planning</button>
-          <button class="btn secondary" onclick="openTelegram()">Talk to Advisor</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
         </div>
       </div>
       <div class="tabbar" id="sip_tabs"></div>
@@ -229,7 +236,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <h4>Ready to start your SIP journey?</h4>
           <p>Start SIP early to benefit from compounding. Increase SIP yearly by 10% to accelerate wealth creation.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="openTelegram()">Start Investing Now</button>
+            <button class="btn primary" onclick="submitLead('sip_cta')">Start Investing Now</button>
             <button class="btn secondary" onclick="sipCopySummary()">Copy Summary</button>
           </div>
         </div>
@@ -269,7 +276,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       </section>
     </section>
     <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Investment Tip: Start SIP early to benefit from compounding. Increase SIP yearly by 10% to build significantly more wealth.</div>
-    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get My Investment Plan</button></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('sip_cta')">Get My Investment Plan</button></div>
   </div><!-- /section-sip -->
 
   <!-- ═══════════════════════════════════════
@@ -284,7 +291,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
         <div class="hero-cta">
           <button class="btn primary" onclick="document.getElementById('lmp_controlsAnchor').scrollIntoView({behavior:'smooth'})">Calculate Now</button>
-          <button class="btn secondary" onclick="openTelegram()">Talk to Advisor</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
         </div>
       </div>
       <div class="tabbar" id="lmp_tabs"></div>
@@ -310,7 +317,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <h4>Maximize your lumpsum returns</h4>
           <p>Diversify portfolio across asset classes. Invest lumpsum when markets are down for better entry points.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="openTelegram()">Get Expert Advice</button>
+            <button class="btn primary" onclick="submitLead('lumpsum_cta')">Get Expert Advice</button>
             <button class="btn secondary" onclick="lmpCopySummary()">Copy Summary</button>
           </div>
         </div>
@@ -350,7 +357,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       </section>
     </section>
     <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Investment Tip: Diversify portfolio across asset classes. Avoid timing the market — time in market beats timing the market.</div>
-    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get My Investment Plan</button></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('lumpsum_cta')">Get My Investment Plan</button></div>
   </div><!-- /section-lumpsum -->
 
   <!-- ═══════════════════════════════════════
@@ -365,7 +372,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
         <div class="hero-cta">
           <button class="btn primary" onclick="document.getElementById('cagr_controlsAnchor').scrollIntoView({behavior:'smooth'})">Calculate CAGR</button>
-          <button class="btn secondary" onclick="openTelegram()">Talk to Advisor</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
         </div>
       </div>
       <div class="tabbar" id="cagr_tabs"></div>
@@ -391,7 +398,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <h4>Is your portfolio performing well?</h4>
           <p>Compare your CAGR against Nifty 50 (12–15%), FD (6–7%) and inflation (6%). Know if you are beating the market.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="openTelegram()">Get Portfolio Review</button>
+            <button class="btn primary" onclick="submitLead('cagr_cta')">Get Portfolio Review</button>
             <button class="btn secondary" onclick="cagrCopySummary()">Copy Summary</button>
           </div>
         </div>
@@ -431,7 +438,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       </section>
     </section>
     <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Benchmark: Nifty 50 historical CAGR ~12–15% | FD ~6–7% | Inflation ~6% | Beat inflation to create real wealth.</div>
-    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get Portfolio Review</button></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('cagr_cta')">Get Portfolio Review</button></div>
   </div><!-- /section-cagr -->
 
   <!-- ═══════════════════════════════════════
@@ -446,7 +453,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
         <div class="hero-cta">
           <button class="btn primary" onclick="document.getElementById('ret_controlsAnchor').scrollIntoView({behavior:'smooth'})">Plan Retirement</button>
-          <button class="btn secondary" onclick="openTelegram()">Talk to Advisor</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
         </div>
       </div>
       <div class="tabbar" id="ret_tabs"></div>
@@ -472,7 +479,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <h4>Build your retirement corpus early</h4>
           <p>Every year of delay increases the required SIP significantly. Starting at 25 vs 35 can halve your monthly requirement.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="openTelegram()">Get Retirement Plan</button>
+            <button class="btn primary" onclick="submitLead('retirement_cta')">Get Retirement Plan</button>
             <button class="btn secondary" onclick="retCopySummary()">Copy Summary</button>
           </div>
         </div>
@@ -512,7 +519,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       </section>
     </section>
     <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Retirement Tip: Start building your corpus now. Inflation erodes purchasing power — your corpus must be inflation-adjusted to sustain your lifestyle.</div>
-    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get My Retirement Plan</button></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('retirement_cta')">Get My Retirement Plan</button></div>
   </div><!-- /section-retire -->
 
   <!-- ═══════════════════════════════════════
@@ -527,7 +534,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
         </div>
         <div class="hero-cta">
           <button class="btn primary" onclick="document.getElementById('pf2_controlsAnchor').scrollIntoView({behavior:'smooth'})">Build Portfolio</button>
-          <button class="btn secondary" onclick="openTelegram()">Talk to Advisor</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
         </div>
       </div>
       <div class="tabbar" id="pf2_tabs"></div>
@@ -553,7 +560,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <h4>Get a tailored portfolio plan</h4>
           <p>The right asset mix depends on your age, risk appetite and goal timeline. Our advisors build it for free.</p>
           <div class="advisor-actions">
-            <button class="btn primary" onclick="openTelegram()">Get Portfolio Plan</button>
+            <button class="btn primary" onclick="submitLead('portfolio_cta')">Get Portfolio Plan</button>
             <button class="btn secondary" onclick="pf2CopySummary()">Copy Summary</button>
           </div>
         </div>
@@ -593,7 +600,10 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       </section>
     </section>
     <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Portfolio Tip: Diversify across asset classes. Rebalance once a year to maintain your target allocation.</div>
-    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="openTelegram()">Get My Portfolio Plan</button></div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('portfolio_cta')">Get My Portfolio Plan</button></div>
+    <div style="margin-top:16px;text-align:center">
+      <button class="btn secondary" onclick="openTelegramChannel()">Join Free Investment Tips Channel</button>
+    </div>
   </div><!-- /section-portfolio -->
 
 </div><!-- /.page -->
@@ -601,14 +611,13 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 <!-- STICKY CTA -->
 <div id="stickyCTA" style="position:fixed;bottom:0;left:0;width:100%;background:#071120;border-top:1px solid rgba(255,255,255,.1);padding:10px 16px;display:none;justify-content:space-between;align-items:center;z-index:999;">
   <div style="font-size:13px;color:#9da9c6">Get your personalized investment plan</div>
-  <button class="btn primary" onclick="openTelegram()">Get Plan</button>
+  <button class="btn primary" onclick="submitLead('sticky_cta')">Get Plan</button>
 </div>
 
 <!-- ═══════════════════════════════════════════
      GLOBAL JS
 ═══════════════════════════════════════════ -->
 <script>
-function openTelegram(){ window.open("https://t.me/Mfddelhibot","_blank"); }
 function toggleMenu(){ document.getElementById("mobileDrawer")?.classList.toggle("open"); }
 
 function switchSuper(tab){
@@ -1269,14 +1278,113 @@ pf2InitState();pf2RenderTabs();pf2RenderControls();pf2Update();
 })();
 </script>
 
-<!-- EXIT INTENT -->
-<script>
-let exitShown=false;
-document.addEventListener("mouseleave",function(e){
-  if(e.clientY<10&&!exitShown){exitShown=true;setTimeout(()=>{if(confirm("Get your personalized investment plan now?")){openTelegram();}},300);}
-});
-</script>
   <script src="/js/contact.js"></script>
   <script src="/js/main.js"></script>
+
+<script>
+function trackEvent(name, params) {
+  params = params || {};
+  if (typeof gtag === "function") {
+    gtag("event", name, params);
+  }
+}
+</script>
+
+<script>
+function submitLead(source) {
+  source = source || "investment_page";
+
+  var phone = prompt("Enter your WhatsApp number");
+
+  if (!phone || phone.length < 10) {
+    alert("Please enter valid number");
+    return;
+  }
+
+  var data = {
+    name: "Investment User",
+    phone: phone,
+    time: new Date().toLocaleString(),
+    source: source
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbzlg4cka5aIqI8km913ciIxGAX_LsX3-blC0Dr399bCD63RVH_pgDFmhSi5GH6uR06ZQg/exec", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(function() {
+    trackEvent("lead_submitted", { source: source });
+    var message = encodeURIComponent("Hi, I want my investment plan");
+    window.open("https://wa.me/919311354795?text=" + message, "_blank");
+  })
+  .catch(function() {
+    window.open("https://wa.me/919311354795", "_blank");
+  });
+}
+</script>
+
+<script>
+function openTelegramChannel(){
+  trackEvent("telegram_channel_click");
+  window.open("https://t.me/investpercent", "_blank");
+}
+</script>
+
+<a href="https://wa.me/919311354795"
+  target="_blank"
+  onclick="trackEvent('whatsapp_float_click')"
+  style="
+    position:fixed;
+    bottom:80px;
+    right:20px;
+    background:#25D366;
+    color:white;
+    padding:14px 16px;
+    border-radius:50px;
+    font-weight:700;
+    z-index:999;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  ">
+  WhatsApp
+</a>
+
+<div id="leadPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#0f1830;padding:20px;border-radius:16px;text-align:center;max-width:360px;width:90%;border:1px solid rgba(255,255,255,.12);">
+    <h3 style="margin:0 0 8px;color:#f7fbff;">Get Your Investment Plan</h3>
+    <p style="margin:0 0 16px;color:#9da9c6;">Free | No Spam | Expert Advice</p>
+    <button onclick="submitLead('popup')" class="btn primary" style="width:100%;margin-bottom:10px;">
+      WhatsApp Now
+    </button>
+    <br>
+    <button onclick="openTelegramChannel()" class="btn secondary" style="width:100%;">
+      Join Free Tips Channel
+    </button>
+    <br><br>
+    <button onclick="document.getElementById('leadPopup').style.display='none'" style="background:none;border:none;color:#9da9c6;cursor:pointer;font-size:13px;">Close</button>
+  </div>
+</div>
+
+<script>
+var leadOpened = false;
+
+function openLead(){
+  if(leadOpened) return;
+  leadOpened = true;
+  document.getElementById("leadPopup").style.display = "flex";
+  trackEvent("lead_popup_open");
+}
+
+setTimeout(openLead, 25000);
+
+window.addEventListener("scroll", function(){
+  if(window.scrollY > 800) openLead();
+});
+
+document.addEventListener("mouseleave", function(e){
+  if(e.clientY < 10) openLead();
+});
+</script>
+
 </body>
 </html>
