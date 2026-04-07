@@ -803,6 +803,11 @@ gtag('config', 'G-1V4L60RZZP');
      SCRIPTS
 ══════════════════════════════════════════════════ -->
 <script>
+/* ── GLOBAL CONTROL FLAGS ───────────────── */
+var leadOpened = false;
+var scrollTriggered = false;
+var scrollTracked800 = false;
+
 /* ── ANALYTICS TRACKING ─────────────────── */
 function trackEvent(name, params) {
   params = params || {};
@@ -869,29 +874,29 @@ function calcInsights() {
   var sipRate = 0.12 / 12;
   var sipFV2  = monthly * ((Math.pow(1 + sipRate, n) - 1) / sipRate) * (1 + sipRate);
 
-  var fdValEl = document.getElementById("fdVal");
+  var fdValEl    = document.getElementById("fdVal");
   var sipFdValEl = document.getElementById("sipFdVal");
-  var fdDiffEl = document.getElementById("fdDiff");
-  if (fdValEl) fdValEl.textContent    = fmt(fdFV);
+  var fdDiffEl   = document.getElementById("fdDiff");
+  if (fdValEl)    fdValEl.textContent    = fmt(fdFV);
   if (sipFdValEl) sipFdValEl.textContent = fmt(sipFV2);
-  if (fdDiffEl) fdDiffEl.textContent   = "+" + fmt(sipFV2 - fdFV);
+  if (fdDiffEl)   fdDiffEl.textContent   = "+" + fmt(sipFV2 - fdFV);
 
-  var P   = 8000000;
-  var r   = 0.085 / 12;
+  var P    = 8000000;
+  var r    = 0.085 / 12;
   var nEmi = 240;
-  var emi = P * r * Math.pow(1 + r, nEmi) / (Math.pow(1 + r, nEmi) - 1);
-  var emiValEl = document.getElementById("emiVal");
+  var emi  = P * r * Math.pow(1 + r, nEmi) / (Math.pow(1 + r, nEmi) - 1);
+  var emiValEl  = document.getElementById("emiVal");
   var emiDiffEl = document.getElementById("emiDiff");
-  if (emiValEl) emiValEl.textContent  = "₹" + Math.round(emi).toLocaleString("en-IN");
+  if (emiValEl)  emiValEl.textContent  = "₹" + Math.round(emi).toLocaleString("en-IN");
   if (emiDiffEl) emiDiffEl.textContent = "+" + Math.round(emi - 25000).toLocaleString("en-IN") + " more/mo";
 
   var sm  = 5000;
   var s25 = sipFV(sm, 25, 12);
   var s20 = sipFV(sm, 20, 12);
-  var startNowEl = document.getElementById("startNow");
+  var startNowEl   = document.getElementById("startNow");
   var startLaterEl = document.getElementById("startLater");
   var wealthLostEl = document.getElementById("wealthLost");
-  if (startNowEl) startNowEl.textContent   = fmt(s25);
+  if (startNowEl)   startNowEl.textContent   = fmt(s25);
   if (startLaterEl) startLaterEl.textContent = fmt(s20);
   if (wealthLostEl) wealthLostEl.textContent = "-" + fmt(s25 - s20);
 }
@@ -914,6 +919,12 @@ function openWhatsApp() {
 
 /* ── LEAD POPUP ─────────────────────────── */
 function openLead() {
+  if (leadOpened) return;
+  if (localStorage.getItem("leadShown")) return;
+
+  leadOpened = true;
+  localStorage.setItem("leadShown", "yes");
+
   var el = document.getElementById("leadPopup");
   if (el) {
     el.style.display = "flex";
@@ -927,62 +938,64 @@ function closeLead() {
 }
 
 function submitLead() {
-  var name  = document.getElementById("leadName") ? document.getElementById("leadName").value : "";
-  var phone = document.getElementById("leadPhone") ? document.getElementById("leadPhone").value : "";
+  var nameEl  = document.getElementById("leadName");
+  var phoneEl = document.getElementById("leadPhone");
+  var name    = nameEl  ? nameEl.value.trim()  : "";
+  var phone   = phoneEl ? phoneEl.value.trim() : "";
 
-  if (!name || !phone) {
-    alert("Please fill details");
+  if (!name || !phone || !/^[6-9]\d{9}$/.test(phone)) {
+    alert("Enter valid name and 10-digit mobile number");
     return;
   }
 
   trackEvent("lead_submitted", {name: name, phone: phone});
-  alert("We will contact you shortly!");
+
+  var leads = [];
+  try { leads = JSON.parse(localStorage.getItem("leads") || "[]"); } catch(e) {}
+  leads.push({name: name, phone: phone, time: new Date().toISOString()});
+  localStorage.setItem("leads", JSON.stringify(leads));
+
+  fetch("https://script.google.com/macros/s/AKfycbzlg4cka5aIqI8km913ciIxGAX_LsX3-blC0Dr399bCD63RVH_pgDFmhSi5GH6uR06ZQg/exec", {
+    method: "POST",
+    body: JSON.stringify({name: name, phone: phone}),
+    headers: {"Content-Type": "application/json"}
+  }).catch(function() {});
+
+  var msg = "Hi, I am " + name + ", my number is " + phone + ". I want financial planning.";
+  window.open("https://wa.me/919311354795?text=" + encodeURIComponent(msg), "_blank");
+
   closeLead();
 }
 
-/* ── STICKY CTA ─────────────────────────── */
-function initStickyCta() {
+/* ── SINGLE SCROLL LISTENER ─────────────── */
+window.addEventListener("scroll", function() {
   var bar = document.getElementById("stickyCta");
-  if (!bar) return;
-  window.addEventListener("scroll", function () {
+  if (bar) {
     if (window.scrollY > 800) {
       bar.classList.add("visible");
     } else {
       bar.classList.remove("visible");
     }
-  }, { passive: true });
-}
+  }
 
-/* ── AUTO TRIGGERS ──────────────────────── */
-// TIME TRIGGER
-setTimeout(function() {
-  openLead();
-}, 15000);
-
-// SCROLL TRIGGER
-var scrollTriggered = false;
-window.addEventListener("scroll", function() {
   if (window.scrollY > 1200 && !scrollTriggered) {
     scrollTriggered = true;
     openLead();
   }
-});
 
-// EXIT INTENT
-var exitShown = false;
-document.addEventListener("mouseleave", function(e) {
-  if (e.clientY < 10 && !exitShown) {
-    exitShown = true;
-    openLead();
-  }
-});
-
-/* ── SCROLL TRACKING ────────────────────── */
-var scrollTracked800 = false;
-window.addEventListener("scroll", function() {
   if (window.scrollY > 800 && !scrollTracked800) {
     scrollTracked800 = true;
     trackEvent("scroll_depth_800");
+  }
+}, { passive: true });
+
+/* ── TIME TRIGGER ───────────────────────── */
+setTimeout(function() { openLead(); }, 15000);
+
+/* ── EXIT INTENT ────────────────────────── */
+document.addEventListener("mouseleave", function(e) {
+  if (e.clientY < 10) {
+    openLead();
   }
 });
 
@@ -990,7 +1003,6 @@ window.addEventListener("scroll", function() {
 document.addEventListener("DOMContentLoaded", function () {
   highlightActiveNav();
   calcInsights();
-  initStickyCta();
 
   var drawer = document.getElementById("mobileDrawer");
   if (drawer) {
