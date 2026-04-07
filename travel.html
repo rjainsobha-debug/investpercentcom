@@ -274,6 +274,9 @@ select option{background:#0f1830;color:var(--text)}
       <div class="hero-copy">
         <h1>Plan Your Trip <span class="grad">Financially</span> — Not Just Book It</h1>
         <p>Flight costs, hotel budgets, forex rates, visa, insurance and AI trip advisor — all in one premium dashboard built for smart travellers.</p>
+        <div style="color:#ff607d;font-size:12px;margin-top:6px">
+          🔥 Prices increase every 24–48 hrs. Lock early to save up to ₹15,000.
+        </div>
       </div>
       <div class="hero-cta">
         <button class="btn primary" onclick="scrollToCalc()">Calculate Trip Cost</button>
@@ -1056,17 +1059,22 @@ select option{background:#0f1830;color:var(--text)}
 function trackEvent(name, data = {}){
   try{
     if(window.gtag){
-      gtag('event', name, data);
+      gtag('event', name, {
+        ...data,
+        page: 'travel',
+        timestamp: Date.now()
+      });
     }
   }catch(e){}
 }
 
 /* ── LEAD CONTROL ── */
 let leadShown = false;
+let leadOpened = false;
 
 function openLead(){
-  if(leadShown) return;
-  leadShown = true;
+  if(leadOpened) return;
+  leadOpened = true;
   switchTravel('ld');
   trackEvent("lead_open");
 }
@@ -1076,7 +1084,9 @@ let flightClicks = 0;
 
 function smartFlightRedirect(){
   flightClicks++;
-  trackFlightClick();
+  trackEvent("flight_search_clicked", {
+    destination: document.getElementById('tv_destination') ? document.getElementById('tv_destination').value : ''
+  });
 
   if(flightClicks === 1){
     setTimeout(()=>{
@@ -1092,16 +1102,20 @@ function smartFlightRedirect(){
   window.open("https://flights.investpercent.com", "_blank", "noopener,noreferrer");
 }
 
-function trackFlightClick(){
-  try{
-    trackEvent("flight_click");
-  }catch(e){}
-}
-
 /* ── PART 3: WHATSAPP ── */
 function openWA(){
-  const msg = encodeURIComponent("Hi, I want help with my travel planning.");
+  const msg = encodeURIComponent(
+    "Hi, I want best travel deal (Flights + Forex + Insurance)."
+  );
   trackEvent("whatsapp_click", {source:"travel_page"});
+  try{
+    if(window.gtag){
+      gtag('event', 'conversion', {
+        value: 1,
+        currency: 'INR'
+      });
+    }
+  }catch(e){}
   window.open("https://wa.me/919311354795?text=" + msg, "_blank", "noopener,noreferrer");
 }
 
@@ -1116,19 +1130,29 @@ const TV_TABS = {
 };
 function switchTravel(tab){
   ['tv','fx','pk','in','ai','ld'].forEach(t=>{
-    const el=document.getElementById('section-'+t);
-    if(el) el.classList.toggle('hidden',t!==tab);
+    const el = document.getElementById('section-'+t);
+    if(el){
+      if(t === tab){
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    }
   });
-  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
-  const info=TV_TABS[tab]||{};
-  document.getElementById('tv_modeHeadline').textContent=info.headline||tab;
-  document.getElementById('tv_modeSub').textContent=info.sub||'';
+  document.querySelectorAll('.tab').forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  const info = TV_TABS[tab] || {};
+  setText('tv_modeHeadline', info.headline || tab);
+  setText('tv_modeSub', info.sub || '');
 }
 
 /* ── SAFE DOM SETTER ── */
 function setText(id,value){
   const el=document.getElementById(id);
-  if(el) el.textContent=value;
+  if(el && value !== undefined){
+    el.textContent=value;
+  }
 }
 
 /* ── FORMAT HELPERS ── */
@@ -1185,7 +1209,7 @@ const FLIGHT_MULT = {economy:1, premiumeconomy:1.6, business:3};
 /* ── TRAVEL COST CALCULATOR ── */
 let tvChart = null;
 function tvCalc(){
-  trackEvent("calculator_used");
+  trackEvent("travel_calculator_used");
   let travelers = parseFloat(document.getElementById('tv_travelers').value)||1;
   let duration  = parseFloat(document.getElementById('tv_duration').value)||1;
   travelers = Math.max(1,travelers);
@@ -1272,11 +1296,20 @@ function tvCalc(){
   setText('tv_luxuryTotal',  fmtINRFull(luxury.total));
   setText('tv_luxuryPer',    fmtINRFull(luxury.pp)+' / person');
 
+  /* Session save */
+  try{
+    localStorage.setItem("travel_data", JSON.stringify({
+      destination: document.getElementById('tv_destination').value,
+      travelers: document.getElementById('tv_travelers').value,
+      duration: document.getElementById('tv_duration').value
+    }));
+  }catch(e){}
+
   /* Chart */
   (function(){
     const ctx = document.getElementById('tv_chart');
     if(!ctx) return;
-    if(tvChart instanceof Chart){ tvChart.destroy(); tvChart=null; }
+    if(tvChart && typeof tvChart.destroy === 'function'){ tvChart.destroy(); tvChart=null; }
     tvChart = new Chart(ctx,{
       type:'doughnut',
       data:{
@@ -1324,7 +1357,7 @@ const FX_RATES = {
   THB:{interbank:2.35, our:2.40, symbol:'฿', flag:'🇹🇭'}
 };
 function fxCalc(){
-  trackEvent("forex_used");
+  trackEvent("forex_calculator_used");
   const cur      = document.getElementById('fx_currency').value||'USD';
   const amtInput = document.getElementById('fx_amount').value;
   const amt      = amtInput===''?0:+amtInput;
@@ -1427,7 +1460,7 @@ const AI_DB={
   }
 };
 function aiAdvise(){
-  trackEvent("ai_used");
+  trackEvent("ai_advisor_used");
   const budget    = +document.getElementById('ai_budget').value||150000;
   const travelers = +document.getElementById('ai_travelers').value||2;
   const days      = +document.getElementById('ai_days').value||7;
@@ -1464,15 +1497,34 @@ function ldSubmit(){
   const budget    = document.getElementById('ld_budget').value;
   const date      = document.getElementById('ld_date').value.trim();
   const travelers = document.getElementById('ld_travelers').value;
-  if(!name || !phone || phone.length < 10){
-    alert("Please enter valid name and phone number");
+
+  if(name.length < 3){
+    alert("Enter valid name");
+    return;
+  }
+  if(!/^[6-9]\d{9}$/.test(phone)){
+    alert("Enter valid Indian mobile number");
     return;
   }
   if(!dest){
-    alert('Please enter destination');
+    alert("Enter destination");
     return;
   }
-  fetch("https://script.google.com/macros/s/AKfycbzlg4cka5aIqI8km913ciIxGAX_LsX3-blC0Dr399bCD63RVH_pgDFmhSi5GH6uR06ZQg/exec", {, {
+  if(!budget || budget < 20000){
+    alert("Enter realistic budget");
+    return;
+  }
+
+  try{
+    if(window.gtag){
+      gtag('event', 'generate_lead', {
+        value: 1,
+        currency: 'INR'
+      });
+    }
+  }catch(e){}
+
+  fetch("https://script.google.com/macros/s/AKfycbzlg4cka5aIqI8km913ciIxGAX_LsX3-blC0Dr399bCD63RVH_pgDFmhSi5GH6uR06ZQg/exec", {
     method: "POST",
     body: JSON.stringify({
       name,
@@ -1485,7 +1537,10 @@ function ldSubmit(){
       timestamp: new Date().toISOString()
     })
   }).catch(()=>{});
-  trackEvent("lead_submit", {page:"travel"})trackEvent("lead_to_whatsapp");;
+
+  trackEvent("lead_submit", {page:"travel"});
+  trackEvent("lead_to_whatsapp");
+
   document.getElementById('ld_success').classList.remove('hidden');
   trackEvent("lead_success");
   const msg = encodeURIComponent(`Hi! I'm ${name}. I want a travel plan for ${dest||'international trip'}, ${travelers} travellers, budget ₹${budget||'flexible'}, travelling in ${date||'soon'}. Please help.`);
@@ -1499,7 +1554,7 @@ document.addEventListener("mouseleave", function(e){
   if(e.clientY < 10 && !exitShown){
     exitShown = true;
     setTimeout(()=>{
-      if(confirm("Wait! Want best flight + forex deal?")){
+      if(confirm("Wait! Want a ₹10,000 cheaper trip plan?")){
         switchTravel('ld');
       }
     }, 300);
@@ -1532,14 +1587,20 @@ window.addEventListener('resize', ()=>{
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', function(){
   try{
-    tvSync('travelers'); tvSync('duration'); tvSync('fxRate');
-    tvCalc();
-    fxCalc();
-    renderPackages();
-    aiSync();
-    aiAdvise();
+    if(typeof tvSync === 'function'){
+      tvSync('travelers');
+      tvSync('duration');
+      tvSync('fxRate');
+    }
+
+    if(typeof tvCalc === 'function') tvCalc();
+    if(typeof fxCalc === 'function') fxCalc();
+    if(typeof renderPackages === 'function') renderPackages();
+    if(typeof aiSync === 'function') aiSync();
+    if(typeof aiAdvise === 'function') aiAdvise();
+
   } catch(e){
-    console.log('Init error:',e);
+    console.log('Init error:', e);
   }
 
   setTimeout(()=>openLead(), 25000);
