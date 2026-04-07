@@ -920,10 +920,12 @@ function openWhatsApp() {
 /* ── LEAD POPUP ─────────────────────────── */
 function openLead() {
   if (leadOpened) return;
-  if (localStorage.getItem("leadShown")) return;
+
+  var lastShown = localStorage.getItem("leadShownTime");
+  if (lastShown && (Date.now() - lastShown < 86400000)) return;
 
   leadOpened = true;
-  localStorage.setItem("leadShown", "yes");
+  localStorage.setItem("leadShownTime", Date.now());
 
   var el = document.getElementById("leadPopup");
   if (el) {
@@ -955,16 +957,26 @@ function submitLead() {
   leads.push({name: name, phone: phone, time: new Date().toISOString()});
   localStorage.setItem("leads", JSON.stringify(leads));
 
+  alert("Submitting your request...");
+
+  var msg = "Hi, I am " + name + ", my number is " + phone + ". I want financial planning.";
+
   fetch("https://script.google.com/macros/s/AKfycbzlg4cka5aIqI8km913ciIxGAX_LsX3-blC0Dr399bCD63RVH_pgDFmhSi5GH6uR06ZQg/exec", {
     method: "POST",
     body: JSON.stringify({name: name, phone: phone}),
     headers: {"Content-Type": "application/json"}
-  }).catch(function() {});
-
-  var msg = "Hi, I am " + name + ", my number is " + phone + ". I want financial planning.";
-  window.open("https://wa.me/919311354795?text=" + encodeURIComponent(msg), "_blank");
-
-  closeLead();
+  })
+  .then(function(res) { return res.json(); })
+  .then(function() {
+    alert("We will contact you shortly!");
+    window.open("https://wa.me/919311354795?text=" + encodeURIComponent(msg), "_blank");
+    closeLead();
+  })
+  .catch(function() {
+    alert("Saved locally. Opening WhatsApp...");
+    window.open("https://wa.me/919311354795?text=" + encodeURIComponent(msg), "_blank");
+    closeLead();
+  });
 }
 
 /* ── SINGLE SCROLL LISTENER ─────────────── */
@@ -994,7 +1006,7 @@ setTimeout(function() { openLead(); }, 15000);
 
 /* ── EXIT INTENT ────────────────────────── */
 document.addEventListener("mouseleave", function(e) {
-  if (e.clientY < 10) {
+  if (e.clientY < 0) {
     openLead();
   }
 });
