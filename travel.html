@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="css/navbar.css">
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Travel Planner — Plan Your Trip Financially | investpercent</title>
@@ -255,6 +254,13 @@ select option{background:#0f1830;color:var(--text)}
 }
 </style>
   <link rel="stylesheet" href="/css/navbar.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1V4L60RZZP');
+  </script>
 </head>
 <body>
 <div class="page">
@@ -324,7 +330,7 @@ select option{background:#0f1830;color:var(--text)}
         <a href="https://flights.investpercent.com"
            target="_blank"
            rel="noopener noreferrer"
-           onclick="smartFlightRedirect(); return false;">
+           onclick="smartFlightRedirect()">
           <button class="btn primary">✈️ Search Flights</button>
         </a>
         <button class="btn secondary" onclick="scrollToCalc()">🧮 Estimate Trip Cost</button>
@@ -1046,6 +1052,25 @@ select option{background:#0f1830;color:var(--text)}
 </div>
 
 <script>
+/* ── GLOBAL TRACKING ── */
+function trackEvent(name, data = {}){
+  try{
+    if(window.gtag){
+      gtag('event', name, data);
+    }
+  }catch(e){}
+}
+
+/* ── LEAD CONTROL ── */
+let leadShown = false;
+
+function openLead(){
+  if(leadShown) return;
+  leadShown = true;
+  switchTravel('ld');
+  trackEvent("lead_open");
+}
+
 /* ── PART 2: SMART REDIRECT + TRACKING ── */
 let flightClicks = 0;
 
@@ -1064,25 +1089,20 @@ function smartFlightRedirect(){
       return;
     }
   }
-  window.open("https://flights.investpercent.com", "_blank");
+  window.open("https://flights.investpercent.com", "_blank", "noopener,noreferrer");
 }
 
 function trackFlightClick(){
   try{
-    console.log("Flight clicked");
-    if(window.gtag){
-      gtag('event', 'flight_search_click', {
-        event_category: 'travel',
-        event_label: 'flights'
-      });
-    }
+    trackEvent("flight_click");
   }catch(e){}
 }
 
 /* ── PART 3: WHATSAPP ── */
 function openWA(){
   const msg = encodeURIComponent("Hi, I want help with my travel planning.");
-  window.open("https://wa.me/919999999999?text=" + msg, "_blank");
+  trackEvent("whatsapp_click", {source:"travel_page"});
+  window.open("https://wa.me/919311354795?text=" + msg, "_blank", "noopener,noreferrer");
 }
 
 /* ── TAB SWITCHER ── */
@@ -1165,6 +1185,7 @@ const FLIGHT_MULT = {economy:1, premiumeconomy:1.6, business:3};
 /* ── TRAVEL COST CALCULATOR ── */
 let tvChart = null;
 function tvCalc(){
+  trackEvent("calculator_used");
   let travelers = parseFloat(document.getElementById('tv_travelers').value)||1;
   let duration  = parseFloat(document.getElementById('tv_duration').value)||1;
   travelers = Math.max(1,travelers);
@@ -1303,6 +1324,7 @@ const FX_RATES = {
   THB:{interbank:2.35, our:2.40, symbol:'฿', flag:'🇹🇭'}
 };
 function fxCalc(){
+  trackEvent("forex_used");
   const cur      = document.getElementById('fx_currency').value||'USD';
   const amtInput = document.getElementById('fx_amount').value;
   const amt      = amtInput===''?0:+amtInput;
@@ -1405,6 +1427,7 @@ const AI_DB={
   }
 };
 function aiAdvise(){
+  trackEvent("ai_used");
   const budget    = +document.getElementById('ai_budget').value||150000;
   const travelers = +document.getElementById('ai_travelers').value||2;
   const days      = +document.getElementById('ai_days').value||7;
@@ -1441,18 +1464,32 @@ function ldSubmit(){
   const budget    = document.getElementById('ld_budget').value;
   const date      = document.getElementById('ld_date').value.trim();
   const travelers = document.getElementById('ld_travelers').value;
-  if(!name||!phone||phone.length<8){
-    alert('Please enter valid details.');
+  if(!name || !phone || phone.length < 10){
+    alert("Please enter valid name and phone number");
     return;
   }
   if(!dest){
     alert('Please enter destination');
     return;
   }
-  console.log('Travel Lead Captured:',{name,phone,dest,budget,date,travelers,timestamp:new Date().toISOString()});
+  fetch("https://script.google.com/macros/s/AKfycbzlg4cka5aIqI8km913ciIxGAX_LsX3-blC0Dr399bCD63RVH_pgDFmhSi5GH6uR06ZQg/exec", {, {
+    method: "POST",
+    body: JSON.stringify({
+      name,
+      phone,
+      dest,
+      budget,
+      date,
+      travelers,
+      source: "travel_page",
+      timestamp: new Date().toISOString()
+    })
+  }).catch(()=>{});
+  trackEvent("lead_submit", {page:"travel"});
   document.getElementById('ld_success').classList.remove('hidden');
+  trackEvent("lead_success");
   const msg = encodeURIComponent(`Hi! I'm ${name}. I want a travel plan for ${dest||'international trip'}, ${travelers} travellers, budget ₹${budget||'flexible'}, travelling in ${date||'soon'}. Please help.`);
-  setTimeout(()=>window.open('https://wa.me/919999999999?text='+msg,'_blank'),500);
+  setTimeout(()=>window.open('https://wa.me/919311354795?text='+msg,'_blank','noopener,noreferrer'),500);
 }
 
 /* ── TASK 4: EXIT INTENT LEAD CAPTURE ── */
@@ -1504,18 +1541,21 @@ document.addEventListener('DOMContentLoaded', function(){
   } catch(e){
     console.log('Init error:',e);
   }
+
+  setTimeout(()=>openLead(), 25000);
+
+  let interactionCount = 0;
+  document.addEventListener("click", function(){
+    interactionCount++;
+    if(interactionCount === 6){
+      openLead();
+    }
+  });
 });
 
 function trackThings(id){
   try{
-    console.log("Affiliate Click:", id);
-
-    if(window.gtag){
-      gtag('event', 'things_click', {
-        event_category: 'travel_affiliate',
-        event_label: id
-      });
-    }
+    trackEvent("things_click", {id:id});
   }catch(e){}
 }
 </script>
