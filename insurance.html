@@ -748,7 +748,7 @@
   </div><!-- .page -->
 
   <!-- ═══════════════════════════ STICKY WHATSAPP FAB ═══════════════════════════ -->
-  <button class="wa-fab" style="bottom:90px; right:24px; background:#0088cc; z-index:9998;" onclick="openTelegram()">📢 Telegram</button>
+  <button class="wa-fab" style="bottom:80px;background:#0088cc" onclick="openTelegram()">📢 Telegram</button>
   <button class="wa-fab" onclick="waLead()">
     <span>📲</span> WhatsApp Advisor
   </button>
@@ -790,6 +790,7 @@
       const type = (activeCalc||'term').toUpperCase();
       const cover   = document.getElementById('topCover')?.textContent || '';
       const premium = document.getElementById('topPremium')?.textContent || '';
+      const timestamp = new Date().toLocaleString();
 
       const msg = `Hi, I need insurance advice.
 
@@ -802,7 +803,8 @@ Please suggest:
 - Cheapest premium
 - Claim settlement ratio
 
-Source: insurance_page`;
+Source: investpercent_insurance_v1
+Time: ${timestamp}`;
 
       if (typeof gtag === 'function') {
         gtag('event', 'whatsapp_click', {
@@ -812,7 +814,21 @@ Source: insurance_page`;
         });
       }
 
-      window.open('https://wa.me/919718773000?text=' + encodeURIComponent(msg), '_blank');
+      if (typeof gtag === 'function') {
+        gtag('event', 'lead_generated', {
+          event_category: 'conversion',
+          event_label: type,
+          value: premium
+        });
+      }
+
+      const waUrl = 'https://wa.me/919718773000?text=' + encodeURIComponent(msg);
+
+      try {
+        window.open(waUrl, '_blank');
+      } catch(e){
+        alert('Unable to open WhatsApp. Please try again.');
+      }
     }
 
     function openTelegram(){
@@ -1180,6 +1196,12 @@ Source: insurance_page`;
     document.addEventListener('DOMContentLoaded', function(){
       insTab('term');
       runAI();
+      if (typeof gtag === 'function') {
+        gtag('event', 'page_loaded', {
+          event_category: 'engagement',
+          event_label: 'insurance_page'
+        });
+      }
     });
 
   </script>
