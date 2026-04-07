@@ -1485,7 +1485,7 @@ function ldSubmit(){
       timestamp: new Date().toISOString()
     })
   }).catch(()=>{});
-  trackEvent("lead_submit", {page:"travel"});
+  trackEvent("lead_submit", {page:"travel"})trackEvent("lead_to_whatsapp");;
   document.getElementById('ld_success').classList.remove('hidden');
   trackEvent("lead_success");
   const msg = encodeURIComponent(`Hi! I'm ${name}. I want a travel plan for ${dest||'international trip'}, ${travelers} travellers, budget ₹${budget||'flexible'}, travelling in ${date||'soon'}. Please help.`);
