@@ -9,6 +9,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/components/navbar.css">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V4L60RZZP');
+  </script>
   <style>
     :root{
       --bg:#060915;
@@ -363,7 +371,6 @@
       .wa-fab{bottom:16px;right:16px;padding:11px 16px;font-size:14px}
     }
   </style>
-  <link rel="stylesheet" href="/css/navbar.css">
 </head>
 <body>
 
@@ -702,21 +709,21 @@
               <div class="control-name">Your Age</div>
               <div class="control-value" id="aiAgeVal">30 yrs</div>
             </div>
-            <input type="range" min="18" max="65" step="1" value="30" oninput="aiAgeVal.textContent=this.value+' yrs';runAI()">
+            <input type="range" id="aiAge" min="18" max="65" step="1" value="30" oninput="aiAgeVal.textContent=this.value+' yrs';runAI()">
           </div>
           <div class="control-group">
             <div class="control-top">
               <div class="control-name">Annual Income</div>
               <div class="control-value" id="aiIncomeVal">₹6 L</div>
             </div>
-            <input type="range" min="200000" max="5000000" step="100000" value="600000" oninput="aiIncomeVal.textContent='₹'+fmtL(+this.value);runAI()">
+            <input type="range" id="aiIncome" min="200000" max="5000000" step="100000" value="600000" oninput="aiIncomeVal.textContent='₹'+fmtL(+this.value);runAI()">
           </div>
           <div class="control-group">
             <div class="control-top">
               <div class="control-name">Family Members</div>
               <div class="control-value" id="aiFamilyVal">3</div>
             </div>
-            <input type="range" min="1" max="8" step="1" value="3" oninput="aiFamilyVal.textContent=this.value;runAI()">
+            <input type="range" id="aiFamily" min="1" max="8" step="1" value="3" oninput="aiFamilyVal.textContent=this.value;runAI()">
           </div>
           <button class="btn wa" style="width:100%;justify-content:center;margin-top:6px" onclick="waLead()">
             <span>📲</span> Get My Plan on WhatsApp
@@ -741,6 +748,7 @@
   </div><!-- .page -->
 
   <!-- ═══════════════════════════ STICKY WHATSAPP FAB ═══════════════════════════ -->
+  <button class="wa-fab" style="bottom:90px; right:24px; background:#0088cc; z-index:9998;" onclick="openTelegram()">📢 Telegram</button>
   <button class="wa-fab" onclick="waLead()">
     <span>📲</span> WhatsApp Advisor
   </button>
@@ -780,10 +788,41 @@
     /* ═══════════ UTILITIES ═══════════ */
     function waLead(){
       const type = (activeCalc||'term').toUpperCase();
-      const cover   = document.getElementById('topCover')?.textContent   || '';
+      const cover   = document.getElementById('topCover')?.textContent || '';
       const premium = document.getElementById('topPremium')?.textContent || '';
-      const msg = 'Hi, I checked your insurance page.\n\nType: '+type+'\nCover Needed: '+cover+'\nEstimated Premium: '+premium+'\n\nPlease suggest best plan.';
-      window.open('https://wa.me/919718773000?text='+encodeURIComponent(msg),'_blank');
+
+      const msg = `Hi, I need insurance advice.
+
+Type: ${type}
+Required Cover: ${cover}
+Estimated Premium: ${premium}
+
+Please suggest:
+- Best company
+- Cheapest premium
+- Claim settlement ratio
+
+Source: insurance_page`;
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'whatsapp_click', {
+          event_category: 'lead',
+          event_label: type,
+          value: premium
+        });
+      }
+
+      window.open('https://wa.me/919718773000?text=' + encodeURIComponent(msg), '_blank');
+    }
+
+    function openTelegram(){
+      if (typeof gtag === 'function') {
+        gtag('event', 'telegram_click', {
+          event_category: 'lead',
+          event_label: activeCalc || 'insurance'
+        });
+      }
+      window.open('https://t.me/investpercent','_blank');
     }
     function fmtINR(n){
       if(n>=10000000) return '₹'+(n/10000000).toFixed(2)+' Cr';
@@ -1046,11 +1085,9 @@
 
     /* ═══════════ AI ADVISOR ═══════════ */
     function runAI(){
-      const ranges = document.querySelectorAll('#aiSection input[type=range]');
-      if(ranges.length < 3) return;
-      const age    = +ranges[0].value || 30;
-      const income = +ranges[1].value || 600000;
-      const family = +ranges[2].value || 3;
+      const age = +document.getElementById('aiAge').value;
+      const income = +document.getElementById('aiIncome').value;
+      const family = +document.getElementById('aiFamily').value;
 
       const termCover  = income * (age < 35 ? 20 : age < 45 ? 15 : 10);
       const healthBase = family <= 2 ? 500000 : family <= 4 ? 1000000 : 2000000;
@@ -1064,6 +1101,39 @@
       document.getElementById('aiPremBudget').textContent  = fmtINR(budget);
     }
 
+    /* ═══════════ SCROLL TRACKING ═══════════ */
+    let scrollTracked = false;
+    window.addEventListener('scroll', function(){
+      if(window.scrollY > 800 && !scrollTracked){
+        scrollTracked = true;
+        if (typeof gtag === 'function') {
+          gtag('event', 'scroll_depth', {
+            event_category: 'engagement',
+            event_label: 'insurance_page'
+          });
+        }
+      }
+    });
+
+    /* ═══════════ TIME ON PAGE TRACKING ═══════════ */
+    setTimeout(function(){
+      if (typeof gtag === 'function') {
+        gtag('event', 'engaged_15s', {
+          event_category: 'engagement',
+          event_label: 'insurance_page'
+        });
+      }
+    },15000);
+
+    /* ═══════════ INTERACTION-BASED POPUP TRIGGER ═══════════ */
+    let interactionCount = 0;
+    document.addEventListener("click", function(){
+      interactionCount++;
+      if(interactionCount === 6){
+        document.getElementById('autoPopup').classList.add('show');
+      }
+    });
+
     /* ═══════════ POPUPS ═══════════ */
     let autoPopupShown = false;
     setTimeout(()=>{
@@ -1071,7 +1141,7 @@
         autoPopupShown = true;
         document.getElementById('autoPopup').classList.add('show');
       }
-    }, 8000);
+    }, 20000);
 
     let exitShown = false;
     document.addEventListener('mouseleave', e=>{
@@ -1083,11 +1153,17 @@
 
     /* ═══════════ TAB SWITCHER (called by inline onclick) ═══════════ */
     function insTab(key){
-      /* 1. Hide all category sections */
+      /* 1. Hide all category sections using class only */
       var sections = ['term','health','car','child'];
       sections.forEach(function(k){
         var s = document.getElementById('section-'+k);
-        if(s) s.style.display = (k === key) ? 'block' : 'none';
+        if(s){
+          if(k === key){
+            s.classList.remove('hidden');
+          } else {
+            s.classList.add('hidden');
+          }
+        }
       });
 
       /* 2. Update active tab style */
