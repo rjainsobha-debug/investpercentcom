@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="css/navbar.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Travel Planner — Plan Your Trip Financially | investpercent</title>
+  <meta name="description" content="Plan your trip financially — flights, hotels, forex, travel cost calculator and expert travel plans on investpercent."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+  --bg:#060915;--bg2:#0b1224;--panel:#0f1830;--panel2:#121e3c;--soft:#18284d;
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);
+  --text:#f7fbff;--muted:#9da9c6;
+  --cyan:#00d4ff;--blue:#4fa3ff;--violet:#7b61ff;
+  --green:#00e676;--gold:#ffd76a;--red:#ff607d;
+  --shadow:0 22px 70px rgba(0,0,0,.38);--shadow2:0 12px 34px rgba(0,0,0,.24);
+  --grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%);
+  --hero:radial-gradient(circle at 16% 20%,rgba(0,212,255,.18),transparent 28%),
+         radial-gradient(circle at 88% 12%,rgba(123,97,255,.18),transparent 24%),
+         linear-gradient(180deg,#070c18 0%,#091224 100%);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:Inter,system-ui,sans-serif;color:var(--text);
+  background:radial-gradient(circle at top left,rgba(0,212,255,.06),transparent 18%),
+    radial-gradient(circle at bottom right,rgba(123,97,255,.08),transparent 22%),var(--bg);
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:34px 34px;
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 92%);z-index:0;
+}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:12px 14px 60px}
+.hero{
+  background:var(--hero);border:1px solid var(--line);border-radius:24px;
+  padding:18px 22px;box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:14px
+}
+.hero::after{
+  content:"";position:absolute;inset:auto -120px -120px auto;width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,212,255,.18),transparent 62%);filter:blur(14px);pointer-events:none
+}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+.hero-copy h1{margin:0;font-family:Poppins,sans-serif;font-size:clamp(26px,3.5vw,42px);line-height:1.1;letter-spacing:-.045em;max-width:840px}
+.hero-copy h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-copy p{margin:8px 0 0;color:var(--muted);font-size:15px;max-width:760px;line-height:1.6}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:none;cursor:pointer;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:800;transition:.2s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+.btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tab{
+  background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;
+  padding:13px 16px;font-weight:800;cursor:pointer;transition:.2s ease
+}
+.tab:hover{color:var(--text);border-color:var(--line2)}
+.tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
+.top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}
+.metric-card{
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+  border:1px solid var(--line);border-radius:22px;padding:14px;min-height:90px;position:relative;overflow:hidden
+}
+.metric-card::before{
+  content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;
+  background:radial-gradient(circle,rgba(255,255,255,.06),transparent 60%);pointer-events:none
+}
+.metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+.metric-value{font-size:clamp(22px,2.5vw,32px);font-weight:800;letter-spacing:-.04em;line-height:1}
+.metric-value.cyan{color:var(--cyan)}.metric-value.green{color:var(--green)}.metric-value.gold{color:var(--gold)}.metric-value.red{color:var(--red)}
+.metric-sub{margin-top:8px;color:#8390b1;font-size:14px}
+.layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:14px;margin-top:12px}
+.panel{
+  background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));
+  border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)
+}
+.controls{padding:16px;position:relative;overflow:hidden}
+.controls::after{
+  content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(123,97,255,.12),transparent 60%);pointer-events:none
+}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
+.panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+.panel-desc{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.55}
+.badge{align-self:flex-start;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:12px;font-weight:800;white-space:nowrap}
+.control-group{margin-bottom:16px;padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.control-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.control-name{font-size:14px;font-weight:700;color:var(--text)}
+.control-value{min-width:110px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
+input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
+input[type=range]::-webkit-slider-thumb{
+  appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;
+  border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)
+}
+input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)}
+input[type=number],input[type=text],input[type=tel],select{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;
+  padding:10px 14px;color:var(--text);font-size:14px;outline:none;margin-top:6px
+}
+input[type=number]:focus,input[type=text]:focus,input[type=tel]:focus,select:focus{border-color:var(--cyan)}
+select option{background:#0f1830;color:var(--text)}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.mini{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.mini .k{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.mini .v{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.advisor-card{
+  margin-top:18px;padding:18px;border-radius:20px;
+  background:radial-gradient(circle at top left,rgba(0,212,255,.18),transparent 36%),linear-gradient(135deg,rgba(79,163,255,.12),rgba(123,97,255,.14));
+  border:1px solid rgba(255,255,255,.1)
+}
+.advisor-card h4{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.03em}
+.advisor-card p{margin:0 0 14px;color:#d8e2ff;font-size:14px;line-height:1.6}
+.advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
+.advisor-actions .btn{flex:1;min-width:150px}
+.dashboard{padding:14px;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;min-height:auto}
+.dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:14px}
+.wealth-card,.insight-card,.chart-card,.timeline-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:22px}
+.wealth-card{
+  padding:18px;display:flex;flex-direction:column;justify-content:space-between;min-height:auto;
+  background:radial-gradient(circle at 20% 20%,rgba(0,212,255,.14),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02))
+}
+.wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.wealth-title{font-size:15px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:800}
+.wealth-number{font-size:clamp(40px,4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:8px 0 10px;color:#fff}
+.wealth-number .grad{background:linear-gradient(135deg,#ffffff 0%,#9feeff 38%,#00e676 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wealth-sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:660px}
+.wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.wealth-stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.wealth-stat .s-label{color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.wealth-stat .s-value{font-size:24px;font-weight:800;letter-spacing:-.03em}
+.insight-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-height:188px}
+.insight-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.insight-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.insight-box strong{display:block;font-size:15px;margin-bottom:6px;letter-spacing:-.02em}
+.insight-box span{color:var(--muted);font-size:13px;line-height:1.55}
+.chart-card{padding:18px;min-height:260px;display:flex;flex-direction:column}
+.chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+.chart-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+.chart-meta{color:var(--muted);font-size:14px;margin-top:6px}
+.legend{display:flex;gap:12px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:700;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:9px 12px;border-radius:999px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.chart-wrap{position:relative;flex:1;min-height:260px;margin-top:8px}
+.timeline-card{padding:18px}
+.timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.timeline-title{font-size:20px;font-weight:800;letter-spacing:-.03em}
+.timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.milestone{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.m-year{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+.m-amount{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
+.m-note{color:#8390b1;font-size:13px;line-height:1.45}
+.hidden{display:none!important}
+/* Travel-specific extras */
+.section-label{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
+.pkg-card{
+  padding:22px;border-radius:22px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+  display:flex;flex-direction:column;gap:10px;transition:.2s ease
+}
+.pkg-card:hover{border-color:var(--cyan);background:rgba(0,212,255,.05)}
+.pkg-icon{font-size:32px;margin-bottom:4px}
+.pkg-name{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.pkg-price{font-size:22px;font-weight:800;color:var(--cyan)}
+.pkg-duration{color:var(--muted);font-size:13px}
+.pkg-includes{margin-top:6px}
+.pkg-tag{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:12px;font-weight:700;margin:3px 2px}
+.insurance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
+.ins-card{
+  padding:22px;border-radius:22px;display:flex;flex-direction:column;gap:10px;
+  border:1px solid rgba(255,255,255,.07)
+}
+.ins-card.basic{background:rgba(255,255,255,.03)}
+.ins-card.standard{background:radial-gradient(circle at top left,rgba(0,212,255,.1),transparent 50%),rgba(255,255,255,.04)}
+.ins-card.premium{background:radial-gradient(circle at top left,rgba(123,97,255,.16),transparent 50%),rgba(255,255,255,.04)}
+.ins-name{font-size:20px;font-weight:800;letter-spacing:-.03em}
+.ins-price{font-size:26px;font-weight:800;color:var(--gold)}
+.ins-coverage{color:var(--muted);font-size:13px;line-height:1.6}
+.forex-table{width:100%;border-collapse:collapse;margin-top:10px}
+.forex-table th{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+.forex-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px;font-weight:700}
+.forex-table tr:last-child td{border-bottom:none}
+.forex-rate-good{color:var(--green)}
+.forex-rate-margin{color:var(--gold)}
+.whatsapp-fab{
+  position:fixed;bottom:24px;right:24px;width:58px;height:58px;border-radius:50%;
+  background:linear-gradient(135deg,#25d366,#128c7e);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+  box-shadow:0 8px 28px rgba(37,211,102,.4);z-index:9999;transition:.2s ease
+}
+.whatsapp-fab:hover{transform:scale(1.1)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.form-group{margin-top:12px}
+.form-label{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;display:block}
+.tp-embed{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:18px;
+  padding:22px;margin-top:14px;min-height:120px;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;text-align:center
+}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+.toggle-wrap{position:relative;width:48px;height:26px;cursor:pointer}
+.toggle-wrap input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{
+  position:absolute;inset:0;border-radius:999px;background:rgba(255,255,255,.1);transition:.2s;
+  border:1px solid var(--line)
+}
+.toggle-slider::before{
+  content:"";position:absolute;left:3px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s
+}
+.toggle-wrap input:checked + .toggle-slider{background:var(--grad)}
+.toggle-wrap input:checked + .toggle-slider::before{transform:translate(22px,-50%)}
+.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.scenario-card{padding:16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);text-align:center}
+.sc-label{color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+.sc-total{font-size:26px;font-weight:800;letter-spacing:-.04em;margin-bottom:4px}
+.sc-total.budget-col{color:var(--green)}.sc-total.comfort-col{color:var(--cyan)}.sc-total.luxury-col{color:var(--gold)}
+.sc-per{color:var(--muted);font-size:13px}
+@media(max-width:1180px){
+  .top-metrics{grid-template-columns:1fr 1fr}
+  .layout{grid-template-columns:1fr}
+  .dash-top{grid-template-columns:1fr}
+  .timeline-grid{grid-template-columns:1fr 1fr}
+  .pkg-grid{grid-template-columns:1fr 1fr}
+  .insurance-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .hero{padding:14px}
+  .hero-copy h1{font-size:22px}
+  .hero-copy p{font-size:13px}
+  .btn{padding:8px 10px;font-size:13px}
+  .top-metrics{grid-template-columns:1fr}
+  .metric-card{padding:12px}
+  .dashboard{gap:10px}
+  .chart-card{min-height:220px}
+  .wealth-number{font-size:32px}
+  .wealth-split,.timeline-grid,.mini-grid{grid-template-columns:1fr}
+  .page{padding:10px 10px 60px}
+  .controls,.dashboard{padding:12px}
+  .pkg-grid{grid-template-columns:1fr}
+  .scenario-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  body{overflow-x:hidden}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div id="navbar"></div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 1 — HERO + FLIGHTS
+  ══════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-top">
+      <div class="hero-copy">
+        <h1>Plan Your Trip <span class="grad">Financially</span> — Not Just Book It</h1>
+        <p>Flight costs, hotel budgets, forex rates, visa, insurance and AI trip advisor — all in one premium dashboard built for smart travellers.</p>
+      </div>
+      <div class="hero-cta">
+        <button class="btn primary" onclick="scrollToCalc()">Calculate Trip Cost</button>
+        <button class="btn secondary" onclick="openWA()">Talk to Travel Expert</button>
+      </div>
+    </div>
+
+    <div class="tabbar" id="tv_tabs">
+      <button class="tab active" data-tab="tv" onclick="switchTravel('tv')">🧮 Cost Calculator</button>
+      <button class="tab" data-tab="fx" onclick="switchTravel('fx')">💱 Forex Engine</button>
+      <button class="tab" data-tab="pk" onclick="switchTravel('pk')">🌍 Tour Packages</button>
+      <button class="tab" data-tab="in" onclick="switchTravel('in')">🛡️ Insurance</button>
+      <button class="tab" data-tab="ai" onclick="switchTravel('ai')">🤖 AI Advisor</button>
+      <button class="tab" data-tab="ld" onclick="switchTravel('ld')">📋 Get Plan</button>
+    </div>
+
+    <div class="top-metrics">
+      <div class="metric-card">
+        <div class="metric-label">Trip Summary</div>
+        <div class="metric-value cyan" id="tv_modeHeadline">Cost Calculator</div>
+        <div class="metric-sub" id="tv_modeSub">Estimate total trip cost including flights, hotels, forex and visa.</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Total Trip Cost</div>
+        <div class="metric-value green" id="tv_topTotal">₹2,50,000</div>
+        <div class="metric-sub">At current settings</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Forex Required</div>
+        <div class="metric-value cyan" id="tv_topForex">$1,500</div>
+        <div class="metric-sub">Estimated foreign currency</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Cost Per Person</div>
+        <div class="metric-value gold" id="tv_topPerPerson">₹1,25,000</div>
+        <div class="metric-sub">Average per traveller</div>
+      </div>
+    </div>
+
+    <!-- Flight Booking Engine (PART 1 — replaces iframe) -->
+    <div class="tp-embed">
+      <div style="font-size:24px">✈️</div>
+      <div style="font-weight:800;font-size:18px">Flight Booking Engine</div>
+      <div style="color:var(--muted);font-size:14px;max-width:720px">
+        Search live fares on our secure booking engine powered by Travelpayouts.
+      </div>
+      <div style="font-size:12px;color:var(--muted)">
+        ✔ Real-time fares | ✔ Secure booking | ✔ Best price tracking
+      </div>
+      <div style="font-size:12px;color:#ff607d">
+        ⚠ Prices change every few hours. Book early to save up to 30%.
+      </div>
+      <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <a href="https://flights.investpercent.com"
+           target="_blank"
+           rel="noopener noreferrer"
+           onclick="smartFlightRedirect(); return false;">
+          <button class="btn primary">✈️ Search Flights</button>
+        </a>
+        <button class="btn secondary" onclick="scrollToCalc()">🧮 Estimate Trip Cost</button>
+        <button class="btn secondary" onclick="switchTravel('ld')">📋 Get Expert Plan</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 2 — TRAVEL COST CALCULATOR
+  ══════════════════════════════════════════ -->
+  <div id="section-tv">
+    <section class="layout" id="tv_controlsAnchor">
+      <aside class="panel controls">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Trip Controls</div>
+            <div class="panel-desc">Adjust destination, class and duration — total cost updates instantly.</div>
+          </div>
+          <div class="badge">COST MODE</div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Destination</div>
+          </div>
+          <select id="tv_destination" onchange="tvCalc()">
+            <option value="th">Thailand / Bali 🌴</option>
+            <option value="sg">Singapore / Malaysia 🏙️</option>
+            <option value="ae">Dubai / UAE 🏙️</option>
+            <option value="eu">Europe 🏰</option>
+            <option value="us">USA / Canada 🗽</option>
+            <option value="au">Australia 🦘</option>
+            <option value="jp">Japan 🗾</option>
+            <option value="gb">UK / London 🎡</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Number of Travellers</div>
+            <div class="control-value" id="tv_travelersVal">2</div>
+          </div>
+          <input type="range" id="tv_travelers" min="1" max="10" step="1" value="2" oninput="tvSync('travelers');tvCalc()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Duration (nights)</div>
+            <div class="control-value" id="tv_durationVal">7 nights</div>
+          </div>
+          <input type="range" id="tv_duration" min="2" max="30" step="1" value="7" oninput="tvSync('duration');tvCalc()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Flight Class</div>
+          </div>
+          <select id="tv_flightClass" onchange="tvCalc()">
+            <option value="economy">Economy</option>
+            <option value="premiumeconomy">Premium Economy</option>
+            <option value="business">Business Class</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Stay Type</div>
+          </div>
+          <select id="tv_stayType" onchange="tvCalc()">
+            <option value="budget">Budget Hotel</option>
+            <option value="3star">3-Star Hotel</option>
+            <option value="4star" selected>4-Star Hotel</option>
+            <option value="5star">5-Star Hotel</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">USD → INR Rate</div>
+            <div class="control-value" id="tv_fxRateVal">₹83</div>
+          </div>
+          <input type="range" id="tv_fxRate" min="75" max="95" step="0.5" value="83" oninput="tvSync('fxRate');tvCalc()">
+        </div>
+
+        <div class="control-group">
+          <div class="toggle-row">
+            <div class="control-name">Travel Insurance</div>
+            <label class="toggle-wrap">
+              <input type="checkbox" id="tv_insurance" onchange="tvCalc()">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="k">Trip Mood</div>
+            <div class="v" id="tv_miniMood">Comfort</div>
+          </div>
+          <div class="mini">
+            <div class="k">Confidence</div>
+            <div class="v" id="tv_miniInsight">High</div>
+          </div>
+        </div>
+
+        <div class="advisor-card">
+          <h4>Want the best travel deal?</h4>
+          <p>Our travel experts compare flight prices, hotel rates and forex to save you thousands on every trip.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="openWA()">Plan My Trip</button>
+            <button class="btn secondary" onclick="tvCopy()">Copy Summary</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title">Total Trip Budget</div>
+                <div class="pill" id="tv_pill">Live</div>
+              </div>
+              <div class="wealth-number"><span class="grad" id="tv_totalCost">₹2,50,000</span></div>
+              <div class="wealth-sub" id="tv_narrative">Adjust your destination, class and duration to see the full financial picture of your trip.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label">Flights</div>
+                <div class="s-value" id="tv_flightCostOut">₹1,00,000</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Stay</div>
+                <div class="s-value" id="tv_stayCostOut">₹70,000</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Expenses</div>
+                <div class="s-value" id="tv_expCostOut">₹58,250</div>
+              </div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title">Trip Insights</div>
+            <div class="insight-box">
+              <strong>Per Person Cost</strong>
+              <span id="tv_perPerson">₹1,25,000 per traveller for your selected itinerary.</span>
+            </div>
+            <div class="insight-box">
+              <strong>Forex Needed</strong>
+              <span id="tv_forexNeeded">Approximately $700 in foreign currency required.</span>
+            </div>
+            <div class="insight-box">
+              <strong>Best Saving Tip</strong>
+              <span id="tv_savingTip">Book flights 60+ days early and buy forex from authorised dealers.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scenario Cards -->
+        <div>
+          <div class="chart-head" style="margin-bottom:8px">
+            <div>
+              <div class="chart-title">Trip Scenarios</div>
+              <div class="chart-meta">Budget · Comfort · Luxury comparisons at your selected destination.</div>
+            </div>
+          </div>
+          <div class="scenario-grid">
+            <div class="scenario-card">
+              <div class="sc-label">Budget Trip</div>
+              <div class="sc-total budget-col" id="tv_budgetTotal">₹0</div>
+              <div class="sc-per" id="tv_budgetPer">₹0 / person</div>
+              <div style="color:var(--muted);font-size:12px;margin-top:6px">Economy + Budget Hotel</div>
+            </div>
+            <div class="scenario-card">
+              <div class="sc-label">Comfort Trip</div>
+              <div class="sc-total comfort-col" id="tv_comfortTotal">₹0</div>
+              <div class="sc-per" id="tv_comfortPer">₹0 / person</div>
+              <div style="color:var(--muted);font-size:12px;margin-top:6px">Economy + 4★ Hotel</div>
+            </div>
+            <div class="scenario-card">
+              <div class="sc-label">Luxury Trip</div>
+              <div class="sc-total luxury-col" id="tv_luxuryTotal">₹0</div>
+              <div class="sc-per" id="tv_luxuryPer">₹0 / person</div>
+              <div style="color:var(--muted);font-size:12px;margin-top:6px">Business + 5★ Hotel</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title">Cost Breakdown</div>
+              <div class="chart-meta">How your total trip budget is distributed across categories.</div>
+            </div>
+            <div class="legend">
+              <div class="legend-item"><span class="dot" style="background:var(--cyan)"></span>Flight</div>
+              <div class="legend-item"><span class="dot" style="background:var(--violet)"></span>Stay</div>
+              <div class="legend-item"><span class="dot" style="background:var(--gold)"></span>Expenses</div>
+              <div class="legend-item"><span class="dot" style="background:var(--red)"></span>Other</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="tv_chart"></canvas></div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title">Trip Milestones</div>
+              <div class="chart-meta">Key cost figures and booking recommendations.</div>
+            </div>
+          </div>
+          <div class="timeline-grid" id="tv_milestones"></div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 3 — FOREX ENGINE
+  ══════════════════════════════════════════ -->
+  <div id="section-fx" class="hidden">
+    <section class="layout">
+      <aside class="panel controls">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Forex Calculator</div>
+            <div class="panel-desc">Enter the amount you need and see exactly what you pay.</div>
+          </div>
+          <div class="badge">FOREX MODE</div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Currency</div>
+          </div>
+          <select id="fx_currency" onchange="fxCalc()">
+            <option value="USD">USD — US Dollar</option>
+            <option value="EUR">EUR — Euro</option>
+            <option value="GBP">GBP — British Pound</option>
+            <option value="AED">AED — UAE Dirham</option>
+            <option value="SGD">SGD — Singapore Dollar</option>
+            <option value="THB">THB — Thai Baht</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Amount Needed (Foreign Currency)</div>
+          </div>
+          <input type="number" id="fx_amount" value="1000" min="1" oninput="fxCalc()" placeholder="e.g. 1000">
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini">
+            <div class="k">Interbank Rate</div>
+            <div class="v" id="fx_miniInterbank">₹83.20</div>
+          </div>
+          <div class="mini">
+            <div class="k">Our Rate</div>
+            <div class="v" id="fx_miniOurRate">₹84.10</div>
+          </div>
+        </div>
+
+        <div class="advisor-card">
+          <h4>Get best forex rate</h4>
+          <p>We offer competitive forex rates with doorstep delivery. Lock your rate today before it moves.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="openWA()">Get Best Rate</button>
+            <button class="btn secondary" onclick="fxCopy()">Copy Summary</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title">You Pay</div>
+                <div class="pill">Live Rate</div>
+              </div>
+              <div class="wealth-number"><span class="grad" id="fx_youPay">₹84,100</span></div>
+              <div class="wealth-sub" id="fx_payDesc">For $1,000 at our current rate of ₹84.10</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label">Interbank</div>
+                <div class="s-value" id="fx_ibTotal" style="color:var(--green)">₹83,200</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Our Rate</div>
+                <div class="s-value" id="fx_ourTotal" style="color:var(--cyan)">₹84,100</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Margin</div>
+                <div class="s-value" id="fx_margin" style="color:var(--gold)">₹900</div>
+              </div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title">Forex Tips</div>
+            <div class="insight-box">
+              <strong>Best Time to Buy</strong>
+              <span>Buy forex 7–14 days before travel when rates are often most stable.</span>
+            </div>
+            <div class="insight-box">
+              <strong>Avoid Airport Exchange</strong>
+              <span>Airport counters charge up to 8–10% margin. Use authorised dealers.</span>
+            </div>
+            <div class="insight-box">
+              <strong>Card vs Cash</strong>
+              <span>Use a zero-forex debit card for small purchases; carry cash for markets.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-title">Live Forex Rate Table</div>
+              <div class="chart-meta">Indicative rates. Our rates vs interbank benchmark.</div>
+            </div>
+          </div>
+          <table class="forex-table" id="fx_table"></table>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title">Currency Milestones</div>
+              <div class="chart-meta">What different amounts cost at current rates.</div>
+            </div>
+          </div>
+          <div class="timeline-grid" id="fx_milestones"></div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 4 — TOUR PACKAGES
+  ══════════════════════════════════════════ -->
+  <div id="section-pk" class="hidden">
+    <div class="panel" style="padding:28px">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Tour Packages</div>
+          <div class="panel-desc">Handcrafted international packages with flights, hotel, visa, insurance and forex support.</div>
+        </div>
+        <div class="badge">6 PACKAGES</div>
+      </div>
+      <div class="pkg-grid" id="pk_grid"></div>
+
+      <!-- THINGS TO DO (AFFILIATE SECTION) -->
+      <div style="margin-top:10px;color:#ff607d;font-size:12px">
+        🔥 These activities sell out fast. Book early to avoid price surge.
+      </div>
+
+      <div style="margin-top:30px">
+
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Top Things To Do</div>
+            <div class="panel-desc">Book experiences, activities and tours for your destination.</div>
+          </div>
+          <div class="badge">AFFILIATE</div>
+        </div>
+
+        <div class="pkg-grid">
+
+          <!-- Bangkok -->
+          <a href="https://tp.media/r?marker=715756.things_bangkok&trs=514397&p=4110&u=https%3A%2F%2Fwww.klook.com%2Fdestination%2Fc4-bangkok%2F1-things-to-do%2F&campaign_id=137"
+             target="_blank"
+             onclick="trackThings('things_bangkok')">
+            <div class="pkg-card">
+              <div class="pkg-icon">🏙️</div>
+              <div class="pkg-name">Bangkok Activities</div>
+              <div class="pkg-price">Explore Tours & Experiences</div>
+              <div class="pkg-duration">Temples · Food Tours · Cruises</div>
+            </div>
+          </a>
+
+          <!-- Phuket -->
+          <a href="https://tp.media/r?marker=715756.things_Phuket&trs=514397&p=4110&u=https%3A%2F%2Fwww.klook.com%2Fdestination%2Fc7-phuket%2F1-things-to-do%2F&campaign_id=137"
+             target="_blank"
+             onclick="trackThings('things_Phuket')">
+            <div class="pkg-card">
+              <div class="pkg-icon">🌴</div>
+              <div class="pkg-name">Phuket Activities</div>
+              <div class="pkg-price">Island Tours & Adventures</div>
+              <div class="pkg-duration">Beaches · Water Sports · Islands</div>
+            </div>
+          </a>
+
+          <!-- Krabi -->
+          <a href="https://tp.media/r?marker=715756.things_Krabi&trs=514397&p=4110&u=https%3A%2F%2Fwww.klook.com%2Fdestination%2Fc63-krabi%2F1-things-to-do%2F&campaign_id=137"
+             target="_blank"
+             onclick="trackThings('things_krabi')">
+            <div class="pkg-card">
+              <div class="pkg-icon">🏝️</div>
+              <div class="pkg-name">Krabi Activities</div>
+              <div class="pkg-price">Nature & Island Trips</div>
+              <div class="pkg-duration">Phi Phi · Kayaking · Beaches</div>
+            </div>
+          </a>
+
+          <!-- Pattaya -->
+          <a href="https://tp.media/r?marker=715756.things_pattaya&trs=514397&p=4110&u=https%3A%2F%2Fwww.klook.com%2Fdestination%2Fc17-pattaya%2F1-things-to-do%2F&campaign_id=137"
+             target="_blank"
+             onclick="trackThings('things_Pattaya')">
+            <div class="pkg-card">
+              <div class="pkg-icon">🎉</div>
+              <div class="pkg-name">Pattaya Activities</div>
+              <div class="pkg-price">Entertainment & Tours</div>
+              <div class="pkg-duration">Shows · Islands · Nightlife</div>
+            </div>
+          </a>
+
+          <!-- Chiang Mai -->
+          <a href="https://tp.media/r?marker=715756.things_chingmai&trs=514397&p=4110&u=https%3A%2F%2Fwww.klook.com%2Fdestination%2Fc5-chiang-mai%2F1-things-to-do%2F&campaign_id=137"
+             target="_blank"
+             onclick="trackThings('things_chingmai')">
+            <div class="pkg-card">
+              <div class="pkg-icon">⛰️</div>
+              <div class="pkg-name">Chiang Mai Activities</div>
+              <div class="pkg-price">Culture & Nature</div>
+              <div class="pkg-duration">Temples · Elephants · Trekking</div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <div style="margin-top:22px;text-align:center">
+        <div class="advisor-card" style="max-width:680px;margin:0 auto">
+          <h4>Looking for a custom itinerary?</h4>
+          <p>Tell us your budget, dates and dream destination. We'll design a complete financial travel plan with best forex rates included.</p>
+          <div class="advisor-actions" style="justify-content:center">
+            <button class="btn primary" onclick="openWA()">Plan My Custom Trip</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 5 — TRAVEL INSURANCE
+  ══════════════════════════════════════════ -->
+  <div id="section-in" class="hidden">
+    <div class="panel" style="padding:28px">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Travel Insurance</div>
+          <div class="panel-desc">Choose the cover that fits your trip. All plans include medical emergency support.</div>
+        </div>
+        <div class="badge">3 PLANS</div>
+      </div>
+      <div class="insurance-grid">
+        <div class="ins-card basic">
+          <div class="ins-name">Basic Cover</div>
+          <div class="ins-price">₹499 – ₹999</div>
+          <div class="ins-coverage">
+            ✔ Medical emergencies up to $25,000<br>
+            ✔ Trip cancellation (limited)<br>
+            ✔ Lost baggage up to ₹15,000<br>
+            ✔ 24/7 assistance hotline<br>
+            ✖ Flight delay cover<br>
+            ✖ Adventure sports
+          </div>
+          <button class="btn secondary" style="margin-top:8px" onclick="openWA()">Get Basic Cover</button>
+        </div>
+        <div class="ins-card standard">
+          <div class="ins-name">Standard Cover</div>
+          <div class="ins-price">₹1,499 – ₹2,499</div>
+          <div class="ins-coverage">
+            ✔ Medical emergencies up to $50,000<br>
+            ✔ Full trip cancellation<br>
+            ✔ Lost baggage up to ₹40,000<br>
+            ✔ Flight delay compensation<br>
+            ✔ Passport loss cover<br>
+            ✖ Adventure sports
+          </div>
+          <button class="btn primary" style="margin-top:8px" onclick="openWA()">Get Standard Cover</button>
+        </div>
+        <div class="ins-card premium">
+          <div class="ins-name">Premium Cover</div>
+          <div class="ins-price">₹3,499 – ₹5,999</div>
+          <div class="ins-coverage">
+            ✔ Medical emergencies up to $2,00,000<br>
+            ✔ Full trip cancellation + curtailment<br>
+            ✔ Lost baggage up to ₹1,00,000<br>
+            ✔ Flight delay + missed connection<br>
+            ✔ Adventure sports covered<br>
+            ✔ Pre-existing conditions (optional)
+          </div>
+          <button class="btn primary" style="margin-top:8px;background:linear-gradient(135deg,var(--violet),#a855f7)" onclick="openWA()">Get Premium Cover</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 6 — AI TRAVEL ADVISOR
+  ══════════════════════════════════════════ -->
+  <div id="section-ai" class="hidden">
+    <section class="layout">
+      <aside class="panel controls">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">AI Trip Advisor</div>
+            <div class="panel-desc">Enter your preferences — get instant AI-powered travel recommendations.</div>
+          </div>
+          <div class="badge">AI MODE</div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Total Budget (₹)</div>
+            <div class="control-value" id="ai_budgetVal">₹1,50,000</div>
+          </div>
+          <input type="range" id="ai_budget" min="30000" max="1000000" step="10000" value="150000" oninput="aiSync();aiAdvise()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Duration (nights)</div>
+            <div class="control-value" id="ai_daysVal">7 nights</div>
+          </div>
+          <input type="range" id="ai_days" min="2" max="30" step="1" value="7" oninput="aiSync();aiAdvise()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Number of Travellers</div>
+            <div class="control-value" id="ai_travelersVal">2</div>
+          </div>
+          <input type="range" id="ai_travelers" min="1" max="10" step="1" value="2" oninput="aiSync();aiAdvise()">
+        </div>
+
+        <div class="control-group">
+          <div class="control-top">
+            <div class="control-name">Trip Style</div>
+          </div>
+          <select id="ai_style" onchange="aiAdvise()">
+            <option value="budget">Budget Traveller</option>
+            <option value="comfort" selected>Comfort Seeker</option>
+            <option value="luxury">Luxury Traveller</option>
+            <option value="adventure">Adventure Lover</option>
+            <option value="family">Family Trip</option>
+          </select>
+        </div>
+
+        <div class="advisor-card">
+          <h4>Book your recommended trip</h4>
+          <p>Our experts will arrange everything — flights, hotels, forex and visa — based on your AI recommendation.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="openWA()">Book This Trip</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title">AI Recommendation</div>
+                <div class="pill">Smart Advisor</div>
+              </div>
+              <div class="wealth-number" style="font-size:clamp(24px,2.5vw,38px)"><span class="grad" id="ai_dest">Thailand</span></div>
+              <div class="wealth-sub" id="ai_reason">Based on your budget and preferences, Thailand offers the best value-for-money international experience.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label">Trip Type</div>
+                <div class="s-value" id="ai_tripType">Comfort</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Suggested Forex</div>
+                <div class="s-value" id="ai_forex">$700</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Stay Category</div>
+                <div class="s-value" id="ai_stay">4★ Hotel</div>
+              </div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title">AI Insights</div>
+            <div class="insight-box">
+              <strong id="ai_ins1Title">Destination Match</strong>
+              <span id="ai_ins1Text">Thailand is within your budget and offers great food, beaches and culture.</span>
+            </div>
+            <div class="insight-box">
+              <strong id="ai_ins2Title">Forex Advice</strong>
+              <span id="ai_ins2Text">Carry THB. Avoid airport exchange — use authorised dealers for best rate.</span>
+            </div>
+            <div class="insight-box">
+              <strong id="ai_ins3Title">Money-Saving Tip</strong>
+              <span id="ai_ins3Text">Travel mid-week. Book at least 45 days early to save up to 30% on flights.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title">Budget Breakdown</div>
+              <div class="chart-meta">How your budget should be allocated per category.</div>
+            </div>
+          </div>
+          <div class="timeline-grid" id="ai_breakdown"></div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 7 — LEAD ENGINE / GET PLAN
+  ══════════════════════════════════════════ -->
+  <div id="section-ld" class="hidden">
+    <section class="layout">
+      <aside class="panel controls">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Get Your Travel Plan</div>
+            <div class="panel-desc">Fill in your details — our expert will send you a customized financial travel plan within 2 hours.</div>
+          </div>
+          <div class="badge">FREE</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="ld_name">Full Name</label>
+          <input type="text" id="ld_name" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ld_phone">WhatsApp Number</label>
+          <input type="tel" id="ld_phone" placeholder="+91 98765 43210">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ld_dest">Dream Destination</label>
+          <input type="text" id="ld_dest" placeholder="e.g. Thailand, Dubai, Europe">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ld_budget">Approximate Budget (₹)</label>
+          <input type="number" id="ld_budget" placeholder="e.g. 150000">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ld_date">Planned Travel Month</label>
+          <input type="text" id="ld_date" placeholder="e.g. October 2025">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ld_travelers">Number of Travellers</label>
+          <input type="number" id="ld_travelers" value="2" min="1">
+        </div>
+        <div style="margin-top:18px">
+          <button class="btn primary" style="width:100%;padding:14px" onclick="ldSubmit()">Send My Details →</button>
+        </div>
+        <div id="ld_success" class="hidden" style="margin-top:14px;padding:14px;border-radius:14px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);font-size:14px;color:var(--green);font-weight:700">
+          ✅ Received! Our expert will contact you on WhatsApp within 2 hours.
+        </div>
+      </aside>
+
+      <section class="panel dashboard">
+        <div class="dash-top" style="grid-template-columns:1fr">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head">
+                <div class="wealth-title">What You Get</div>
+                <div class="pill">Free Service</div>
+              </div>
+              <div class="wealth-number" style="font-size:clamp(26px,3vw,44px)"><span class="grad">Complete Travel Plan</span></div>
+              <div class="wealth-sub">A personalised financial travel plan with flight costs, forex rates, visa guide, hotel recommendations and insurance advice — all tailored to your budget.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat">
+                <div class="s-label">Response Time</div>
+                <div class="s-value" style="color:var(--green)">2 Hours</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Cost</div>
+                <div class="s-value" style="color:var(--cyan)">₹0 Free</div>
+              </div>
+              <div class="wealth-stat">
+                <div class="s-label">Via</div>
+                <div class="s-value" style="color:var(--gold)">WhatsApp</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <div class="timeline-title">Plan Includes</div>
+            </div>
+          </div>
+          <div class="timeline-grid" style="grid-template-columns:repeat(2,1fr)">
+            <div class="milestone"><div class="m-year">FLIGHTS</div><div class="m-amount" style="font-size:18px">Best Price Routes</div><div class="m-note">Direct & connecting options with cheapest booking windows.</div></div>
+            <div class="milestone"><div class="m-year">HOTELS</div><div class="m-amount" style="font-size:18px">Curated Stays</div><div class="m-note">Best value hotels matching your stay category and area preference.</div></div>
+            <div class="milestone"><div class="m-year">FOREX</div><div class="m-amount" style="font-size:18px">Lock Best Rate</div><div class="m-note">We help you buy forex at near-interbank rates with home delivery.</div></div>
+            <div class="milestone"><div class="m-year">VISA</div><div class="m-amount" style="font-size:18px">Full Guidance</div><div class="m-note">Document checklist, processing time and cost breakdown per destination.</div></div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+</div><!-- /page -->
+
+<!-- WHATSAPP FAB -->
+<button class="whatsapp-fab" onclick="openWA()" title="Chat on WhatsApp">💬</button>
+
+<!-- STICKY CTA -->
+<div id="stickyCTA" style="position:fixed;bottom:0;left:0;width:100%;background:#0b1224;border-top:1px solid rgba(255,255,255,.1);padding:10px 18px;display:none;justify-content:space-between;align-items:center;z-index:9998">
+  <div style="font-size:13px">Get your free travel plan</div>
+  <button class="btn primary" onclick="openWA()">Start Planning</button>
+</div>
+
+<script>
+/* ── PART 2: SMART REDIRECT + TRACKING ── */
+let flightClicks = 0;
+
+function smartFlightRedirect(){
+  flightClicks++;
+  trackFlightClick();
+
+  if(flightClicks === 1){
+    setTimeout(()=>{
+      alert("Tip: Book forex now to avoid rate increase.");
+    }, 3000);
+  }
+  if(flightClicks === 2){
+    if(confirm("Want cheaper flights + forex deals?")){
+      switchTravel('ld');
+      return;
+    }
+  }
+  window.open("https://flights.investpercent.com", "_blank");
+}
+
+function trackFlightClick(){
+  try{
+    console.log("Flight clicked");
+    if(window.gtag){
+      gtag('event', 'flight_search_click', {
+        event_category: 'travel',
+        event_label: 'flights'
+      });
+    }
+  }catch(e){}
+}
+
+/* ── PART 3: WHATSAPP ── */
+function openWA(){
+  const msg = encodeURIComponent("Hi, I want help with my travel planning.");
+  window.open("https://wa.me/919999999999?text=" + msg, "_blank");
+}
+
+/* ── TAB SWITCHER ── */
+const TV_TABS = {
+  tv:{headline:"Cost Calculator",sub:"Estimate total trip cost including flights, hotels, forex and visa."},
+  fx:{headline:"Forex Engine",sub:"Live forex rates and currency calculator for your trip."},
+  pk:{headline:"Tour Packages",sub:"Complete international packages with flights, hotel and visa included."},
+  in:{headline:"Travel Insurance",sub:"Compare Basic, Standard and Premium travel insurance plans."},
+  ai:{headline:"AI Travel Advisor",sub:"Smart destination and budget recommendations based on your preferences."},
+  ld:{headline:"Get Free Plan",sub:"Fill your details and receive a customized financial travel plan in 2 hours."}
+};
+function switchTravel(tab){
+  ['tv','fx','pk','in','ai','ld'].forEach(t=>{
+    const el=document.getElementById('section-'+t);
+    if(el) el.classList.toggle('hidden',t!==tab);
+  });
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  const info=TV_TABS[tab]||{};
+  document.getElementById('tv_modeHeadline').textContent=info.headline||tab;
+  document.getElementById('tv_modeSub').textContent=info.sub||'';
+}
+
+/* ── SAFE DOM SETTER ── */
+function setText(id,value){
+  const el=document.getElementById(id);
+  if(el) el.textContent=value;
+}
+
+/* ── FORMAT HELPERS ── */
+function fmtINR(n){
+  n=(!isFinite(n)||isNaN(n))?0:n;
+  if(n>=10000000) return '₹'+(n/10000000).toFixed(2)+' Cr';
+  if(n>=100000)   return '₹'+(n/100000).toFixed(1)+' L';
+  if(n>=1000)     return '₹'+(n/1000).toFixed(1)+'K';
+  return '₹'+Math.round(n).toLocaleString('en-IN');
+}
+function fmtINRFull(n){
+  n=(!isFinite(n)||isNaN(n))?0:n;
+  return '₹'+Math.round(n).toLocaleString('en-IN');
+}
+function fmtFX(n,cur){ return cur+(n>=1000?n.toLocaleString('en-IN'):n); }
+
+/* ── SYNC SLIDERS ── */
+function tvSync(id){
+  const el=document.getElementById('tv_'+id);
+  if(!el) return;
+  const v=parseFloat(el.value);
+  const out=document.getElementById('tv_'+id+'Val');
+  if(!out) return;
+  if(id==='travelers') out.textContent=v;
+  else if(id==='duration') out.textContent=v+' nights';
+  else if(id==='fxRate') out.textContent='₹'+v;
+}
+function aiSync(){
+  const b=document.getElementById('ai_budget');
+  const d=document.getElementById('ai_days');
+  const t=document.getElementById('ai_travelers');
+  if(b) document.getElementById('ai_budgetVal').textContent=fmtINRFull(+b.value);
+  if(d) document.getElementById('ai_daysVal').textContent=d.value+' nights';
+  if(t) document.getElementById('ai_travelersVal').textContent=t.value;
+}
+
+/* ── PART 5: REALISTIC DESTINATION DATA ── */
+const DEST_DATA = {
+  th:{flight:30000, stay:4000,  expense:40,  visa:0,     label:"Thailand"},
+  sg:{flight:40000, stay:6000,  expense:60,  visa:0,     label:"Singapore"},
+  ae:{flight:35000, stay:7000,  expense:70,  visa:7000,  label:"Dubai"},
+  eu:{flight:70000, stay:12000, expense:120, visa:8000,  label:"Europe"},
+  us:{flight:90000, stay:15000, expense:150, visa:12000, label:"USA"},
+  au:{flight:85000, stay:14000, expense:140, visa:10000, label:"Australia"},
+  jp:{flight:75000, stay:13000, expense:110, visa:5000,  label:"Japan"},
+  gb:{flight:80000, stay:14000, expense:130, visa:10000, label:"UK"}
+};
+
+/* Stay type multipliers */
+const STAY_MULT = {budget:0.5, '3star':0.75, '4star':1, '5star':1.8};
+/* Flight class multipliers */
+const FLIGHT_MULT = {economy:1, premiumeconomy:1.6, business:3};
+
+/* ── TRAVEL COST CALCULATOR ── */
+let tvChart = null;
+function tvCalc(){
+  let travelers = parseFloat(document.getElementById('tv_travelers').value)||1;
+  let duration  = parseFloat(document.getElementById('tv_duration').value)||1;
+  travelers = Math.max(1,travelers);
+  duration  = Math.max(1,duration);
+
+  const destKey  = document.getElementById('tv_destination').value;
+  const base     = DEST_DATA[destKey] || DEST_DATA.th;
+  const classMul = FLIGHT_MULT[document.getElementById('tv_flightClass').value] || 1;
+  const stayMul  = STAY_MULT[document.getElementById('tv_stayType').value] || 1;
+  const fxRate   = parseFloat(document.getElementById('tv_fxRate').value)||83;
+  const insurance= document.getElementById('tv_insurance').checked;
+
+  const flightPP = base.flight * classMul;
+  const stayPN   = base.stay * stayMul;
+  const dailyUSD = base.expense;
+  const visa     = base.visa;
+
+  const stayVal    = document.getElementById('tv_stayType').value;
+  const flightCost = travelers * flightPP;
+  const stayCost   = duration * stayPN * travelers;
+  const EXP_MULT   = { budget: 0.7, comfort: 1, luxury: 1.8 };
+  const moodType   =
+    stayVal === 'budget' ? 'budget' :
+    stayVal === '3star'  ? 'budget' :
+    stayVal === '4star'  ? 'comfort' : 'luxury';
+  const expCost    = dailyUSD * EXP_MULT[moodType] * duration * travelers * fxRate;
+  const visCost    = visa * travelers;
+  const insCost    = insurance ? 1500 * travelers : 0;
+  const total      = flightCost + stayCost + expCost + visCost + insCost;
+  const perPerson  = travelers > 0 ? total / travelers : 0;
+  const forexUSD   = dailyUSD * duration * travelers;
+
+  /* PART 6 — Trust narrative */
+  setText('tv_narrative',
+    `Estimated ${base.label} trip cost based on current market prices. Actual may vary by season & booking time.`
+  );
+
+  /* PART 5 — Saving tip */
+  setText('tv_savingTip',
+    base.label === "Thailand"
+    ? "Book 30 days early. Avoid peak season (Dec–Jan)."
+    : base.label === "Europe"
+    ? "Apply visa 60–90 days early. Travel April–May for best rates."
+    : "Book flights early for best fares."
+  );
+
+  /* PART 7 — Confidence indicator */
+  const confidence = duration < 10 ? "High" : "Medium";
+  setText('tv_miniInsight', confidence + " Confidence");
+
+  setText('tv_totalCost', fmtINRFull(total));
+  setText('tv_pill', travelers>1 ? travelers+' Travellers' : '1 Traveller');
+  setText('tv_flightCostOut', fmtINR(flightCost));
+  setText('tv_stayCostOut',   fmtINR(stayCost));
+  setText('tv_expCostOut',    fmtINR(expCost));
+  setText('tv_perPerson',     fmtINRFull(perPerson)+' per traveller for your selected itinerary.');
+  setText('tv_forexNeeded',   `Approximately $${Math.round(forexUSD).toLocaleString('en-IN')} total forex needed for all ${travelers} traveller${travelers>1?'s':''}.`);
+
+  const safeTotal     = isFinite(total)&&!isNaN(total)?total:0;
+  const safeForex     = isFinite(forexUSD)&&!isNaN(forexUSD)?forexUSD:0;
+  const safePerPerson = travelers>0&&isFinite(perPerson)?perPerson:0;
+  setText('tv_topTotal',     fmtINR(safeTotal));
+  setText('tv_topForex',     '$'+Math.round(safeForex).toLocaleString('en-IN'));
+  setText('tv_topPerPerson', fmtINR(safePerPerson));
+
+  /* Mood */
+  const mood = stayVal==='budget'?'Budget':stayVal==='3star'?'Economy':stayVal==='4star'?'Comfort':'Luxury';
+  setText('tv_miniMood', mood);
+
+  /* Scenarios */
+  const scenarioCalc = (fMul, sMul) => {
+    const f = travelers * base.flight * fMul;
+    const s = duration * base.stay * sMul * travelers;
+    const t = f + s + expCost + visCost + (insurance?1500*travelers:0);
+    return {total:t, pp:travelers>0?t/travelers:0};
+  };
+  const budget  = scenarioCalc(1,   0.5);
+  const comfort = scenarioCalc(1,   1);
+  const luxury  = scenarioCalc(3,   1.8);
+  setText('tv_budgetTotal',  fmtINRFull(budget.total));
+  setText('tv_budgetPer',    fmtINRFull(budget.pp)+' / person');
+  setText('tv_comfortTotal', fmtINRFull(comfort.total));
+  setText('tv_comfortPer',   fmtINRFull(comfort.pp)+' / person');
+  setText('tv_luxuryTotal',  fmtINRFull(luxury.total));
+  setText('tv_luxuryPer',    fmtINRFull(luxury.pp)+' / person');
+
+  /* Chart */
+  (function(){
+    const ctx = document.getElementById('tv_chart');
+    if(!ctx) return;
+    if(tvChart instanceof Chart){ tvChart.destroy(); tvChart=null; }
+    tvChart = new Chart(ctx,{
+      type:'doughnut',
+      data:{
+        labels:['Flights','Stay','Daily Expenses','Visa & Insurance'],
+        datasets:[{
+          data:[flightCost, stayCost, expCost, visCost+insCost],
+          backgroundColor:['rgba(0,212,255,.8)','rgba(123,97,255,.8)','rgba(255,215,106,.8)','rgba(255,96,125,.8)'],
+          borderColor:'rgba(255,255,255,.07)',borderWidth:2
+        }]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtINRFull(c.raw)}}}}
+    });
+  })();
+
+  /* Milestones */
+  const ms = document.getElementById('tv_milestones');
+  if(ms) ms.innerHTML = [
+    {y:'Flight',    a:fmtINR(flightCost), n:`${travelers} × ₹${(flightPP/1000).toFixed(0)}K`},
+    {y:'Hotel',     a:fmtINR(stayCost),   n:`${duration} nights × ₹${(stayPN/1000).toFixed(0)}K`},
+    {y:'Expenses',  a:fmtINR(expCost),    n:`$${dailyUSD}/day × ${duration}d × @₹${fxRate}`},
+    {y:'Visa+Other',a:fmtINR(visCost+insCost), n:insurance?'Visa + Insurance included':'Visa cost'}
+  ].map(m=>`<div class="milestone"><div class="m-year">${m.y}</div><div class="m-amount">${m.a}</div><div class="m-note">${m.n}</div></div>`).join('');
+}
+
+function tvCopy(){
+  const t = document.getElementById('tv_totalCost').textContent;
+  const p = document.getElementById('tv_perPerson').textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(`Travel Cost Estimate\nTotal: ${t}\n${p}\nPowered by investpercent.com`)
+      .then(()=>alert('Copied to clipboard ✅'))
+      .catch(()=>alert('Copy not supported on this browser'));
+  } else {
+    alert('Copy not supported on this browser');
+  }
+}
+
+/* ── FOREX ENGINE ── */
+const FX_NAMES = {USD:'US Dollar',EUR:'Euro',GBP:'British Pound',AED:'UAE Dirham',SGD:'Singapore Dollar',THB:'Thai Baht'};
+const FX_RATES = {
+  USD:{interbank:83.20,our:84.10,symbol:'$', flag:'🇺🇸'},
+  EUR:{interbank:90.50,our:91.60,symbol:'€', flag:'🇪🇺'},
+  GBP:{interbank:105.80,our:107.20,symbol:'£',flag:'🇬🇧'},
+  AED:{interbank:22.65,our:23.05,symbol:'د.إ',flag:'🇦🇪'},
+  SGD:{interbank:61.40,our:62.30,symbol:'S$',flag:'🇸🇬'},
+  THB:{interbank:2.35, our:2.40, symbol:'฿', flag:'🇹🇭'}
+};
+function fxCalc(){
+  const cur      = document.getElementById('fx_currency').value||'USD';
+  const amtInput = document.getElementById('fx_amount').value;
+  const amt      = amtInput===''?0:+amtInput;
+  const rate     = FX_RATES[cur]||FX_RATES.USD;
+  const ibTotal  = amt*rate.interbank;
+  const ourTotal = amt*rate.our;
+  const margin   = ourTotal-ibTotal;
+  setText('fx_youPay',      fmtINRFull(ourTotal));
+  setText('fx_payDesc',     `For ${rate.symbol}${amt.toLocaleString('en-IN')} at our current rate of ₹${rate.our}`);
+  setText('fx_ibTotal',     fmtINRFull(ibTotal));
+  setText('fx_ourTotal',    fmtINRFull(ourTotal));
+  setText('fx_margin',      fmtINRFull(margin));
+  setText('fx_miniInterbank','₹'+rate.interbank);
+  setText('fx_miniOurRate', '₹'+rate.our);
+
+  const tbl = document.getElementById('fx_table');
+  if(tbl){
+    tbl.innerHTML=`<thead><tr><th>Currency</th><th>Interbank</th><th>Our Rate</th><th>Margin</th></tr></thead><tbody>`+
+      Object.entries(FX_RATES).map(([c,r])=>{
+        const mgn = (r.our-r.interbank).toFixed(2);
+        const pct = ((r.our-r.interbank)/r.interbank*100).toFixed(2);
+        return `<tr>
+          <td>${r.flag} <strong>${c}</strong> — ${FX_NAMES[c]||c}</td>
+          <td class="forex-rate-good">₹${r.interbank}</td>
+          <td style="color:var(--cyan)">₹${r.our}</td>
+          <td class="forex-rate-margin">+₹${mgn} (${pct}%)</td>
+        </tr>`;
+      }).join('')+'</tbody>';
+  }
+
+  const ms = document.getElementById('fx_milestones');
+  if(ms){
+    const amts = [100,500,1000,5000];
+    ms.innerHTML = amts.map(a=>`<div class="milestone"><div class="m-year">${rate.symbol}${a}</div><div class="m-amount">${fmtINR(a*rate.our)}</div><div class="m-note">At ₹${rate.our}/${cur}</div></div>`).join('');
+  }
+}
+function fxCopy(){
+  const cur = document.getElementById('fx_currency').value;
+  const amt = document.getElementById('fx_amount').value;
+  const pay = document.getElementById('fx_youPay').textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(`Forex: ${amt} ${cur} = ${pay}\nRate: ₹${FX_RATES[cur].our}/${cur}\ninvestpercent.com`)
+      .then(()=>alert('Copied to clipboard ✅'))
+      .catch(()=>alert('Copy not supported on this browser'));
+  } else {
+    alert('Copy not supported on this browser');
+  }
+}
+
+/* ── TOUR PACKAGES ── */
+const PACKAGES = [
+  {icon:'🏰',name:'Europe Package',       price:'₹1,20,000 – ₹2,50,000',duration:'10–14 nights',includes:['Flights','Hotel','Visa','Insurance','Forex Support'],dest:'Europe'},
+  {icon:'🏙️',name:'Dubai Package',        price:'₹55,000 – ₹95,000',   duration:'5–7 nights', includes:['Flights','Hotel','Activities','Forex Support'],dest:'Dubai'},
+  {icon:'🌴',name:'Thailand / Bali',      price:'₹35,000 – ₹70,000',   duration:'5–8 nights', includes:['Flights','Resort Stay','Tours','Forex'],dest:'Thailand'},
+  {icon:'🏯',name:'Singapore / Malaysia', price:'₹45,000 – ₹85,000',   duration:'5–7 nights', includes:['Flights','Hotel','Activities','Forex'],dest:'Singapore'},
+  {icon:'🗽',name:'USA / Canada',         price:'₹1,80,000 – ₹3,50,000',duration:'10–15 nights',includes:['Flights','Hotel','Visa','Insurance','Forex'],dest:'USA'},
+  {icon:'💎',name:'Custom Luxury',        price:'On Request',            duration:'Flexible',   includes:['Private Flights','5★ Resort','Butler Service','All Inclusive'],dest:'Custom'}
+];
+function renderPackages(){
+  const grid = document.getElementById('pk_grid');
+  if(!grid) return;
+  grid.innerHTML = PACKAGES.map(p=>`
+    <div class="pkg-card">
+      <div class="pkg-icon">${p.icon}</div>
+      <div class="pkg-name">${p.name}</div>
+      <div class="pkg-price">${p.price}</div>
+      <div class="pkg-duration">📅 ${p.duration}</div>
+      <div class="pkg-includes">${p.includes.map(i=>`<span class="pkg-tag">✔ ${i}</span>`).join('')}</div>
+      <button class="btn primary" style="margin-top:10px" onclick="switchTravel('ld')">Plan My Trip</button>
+    </div>
+  `).join('');
+}
+
+/* ── AI TRAVEL ADVISOR ── */
+const AI_DB={
+  budget:{
+    low: {dest:'Thailand / Bali',      reason:'Best value destination — beaches, food and culture under ₹60K/person.',  forex:'$400–$600', stay:'3★ Hotel',    tip:'Fly Indigo/AirAsia. Avoid December–January peak season.'},
+    mid: {dest:'Singapore / Malaysia', reason:'Great urban + nature experience. Well connected with excellent budget hotels.',forex:'$600–$900', stay:'3★ Hotel',    tip:'KL is cheaper than Singapore. Split the trip for max value.'},
+    high:{dest:'Europe',               reason:'Western Europe is accessible with careful planning and early bookings.',   forex:'€800–€1500',stay:'3★ Hotel',    tip:'Book Schengen visa 3 months early. Travel in April–May or Sept–Oct.'}
+  },
+  comfort:{
+    low: {dest:'Bali / Thailand',      reason:'4★ resorts at 3★ prices. Incredible value for comfort travellers.',        forex:'$600–$900',  stay:'4★ Hotel',    tip:'Choose private pool villas in Bali — often cheaper than city hotels.'},
+    mid: {dest:'Dubai / UAE',          reason:'World-class hotels, shopping and experiences within a generous budget.',    forex:'AED 2000–4000',stay:'4★ Hotel', tip:'Avoid weekend travel (Fri–Sat). Book hotels in JBR or Business Bay.'},
+    high:{dest:'Europe / Japan',       reason:'Your budget unlocks premium comfort in top destinations worldwide.',         forex:'€1500–€3000',stay:'4★ Hotel',    tip:'Japan is expensive but worth every rupee. Book JR Pass early.'}
+  },
+  luxury:{
+    low: {dest:'Maldives / Bali',      reason:'Overwater bungalows and private villas — best luxury per rupee.',           forex:'$1000–$1500',stay:'5★ Resort',   tip:'Book through resorts directly for best package deals.'},
+    mid: {dest:'Europe River Cruise',  reason:'Luxury river cruise covers multiple countries with full board.',             forex:'€2000–€4000',stay:'5★ Cruise',   tip:'Book 6 months early for best cabins. Travel in June–August.'},
+    high:{dest:'Maldives + Dubai',     reason:'A dual-destination luxury trip is possible at your budget.',                 forex:'$2000–$4000',stay:'5★ Overwater',tip:'Use business class redemptions via HDFC Infinia or Amex Platinum.'}
+  },
+  adventure:{
+    low: {dest:'Nepal / Bhutan',       reason:'Best adventure destinations near India — trekking, culture, mountains.',    forex:'NPR 3000–6000',stay:'Trekking Lodge',tip:'October–November is peak trekking season. Book permits early.'},
+    mid: {dest:'New Zealand',          reason:'Ultimate adventure destination — bungee, skydiving, fjords.',               forex:'NZD 1000–2000',stay:'3★ Hotel',  tip:'Rent a campervan for the most flexible adventure experience.'},
+    high:{dest:'Patagonia / Iceland',  reason:"World's top adventure destinations — bucket-list worthy at your budget.",   forex:'$2000–$4000',stay:'4★ Lodge',    tip:'Iceland in August for midnight sun; Patagonia in November–March.'}
+  },
+  family:{
+    low: {dest:'Thailand / Malaysia',  reason:'Family-friendly, safe, great food and affordable resorts for all ages.',    forex:'$500–$800',  stay:'3★ Family Hotel',tip:'Book family rooms to save vs two separate rooms.'},
+    mid: {dest:'Singapore + Bali',     reason:'Singapore for education + Bali for relaxation — perfect family combo.',     forex:'$800–$1500', stay:'4★ Family Resort',tip:'Universal Studios and Gardens by the Bay for kids in Singapore.'},
+    high:{dest:'Europe (UK + France + Switzerland)',reason:'Dream family trip covering iconic sights across multiple countries.',forex:'€2000–€4000',stay:'4★ Hotel',tip:'Eurail Pass for comfortable family train travel between cities.'}
+  }
+};
+function aiAdvise(){
+  const budget    = +document.getElementById('ai_budget').value||150000;
+  const travelers = +document.getElementById('ai_travelers').value||2;
+  const days      = +document.getElementById('ai_days').value||7;
+  const style     = document.getElementById('ai_style').value||'comfort';
+  const ppBudget  = budget/travelers;
+  const tier      = ppBudget<80000?'low':ppBudget<200000?'mid':'high';
+  const db        = (AI_DB[style]||AI_DB.comfort)[tier]||AI_DB.comfort.mid;
+  document.getElementById('ai_dest').textContent    = db.dest;
+  document.getElementById('ai_reason').textContent  = db.reason;
+  document.getElementById('ai_tripType').textContent = style.charAt(0).toUpperCase()+style.slice(1);
+  document.getElementById('ai_forex').textContent   = db.forex;
+  document.getElementById('ai_stay').textContent    = db.stay;
+  document.getElementById('ai_ins1Text').textContent = db.reason;
+  document.getElementById('ai_ins2Text').textContent = 'Carry '+db.forex+' in foreign currency. '+db.forex.split(' ')[0]+' is the primary currency.';
+  document.getElementById('ai_ins3Text').textContent = db.tip;
+  const flightBudget = Math.round(budget*0.35);
+  const hotelBudget  = Math.round(budget*0.30);
+  const expBudget    = Math.round(budget*0.20);
+  const miscBudget   = Math.round(budget*0.15);
+  const bk = document.getElementById('ai_breakdown');
+  if(bk) bk.innerHTML = [
+    {y:'Flights (35%)', a:fmtINR(flightBudget), n:'Includes return fare for all travellers'},
+    {y:'Hotel (30%)',   a:fmtINR(hotelBudget),  n:`${days} nights accommodation`},
+    {y:'Expenses (20%)',a:fmtINR(expBudget),    n:'Food, transport & activities'},
+    {y:'Visa + Misc (15%)',a:fmtINR(miscBudget),n:'Visa, insurance & forex margin'}
+  ].map(m=>`<div class="milestone"><div class="m-year">${m.y}</div><div class="m-amount">${m.a}</div><div class="m-note">${m.n}</div></div>`).join('');
+}
+
+/* ── LEAD FORM ── */
+function ldSubmit(){
+  const name      = document.getElementById('ld_name').value.trim();
+  const phone     = document.getElementById('ld_phone').value.trim();
+  const dest      = document.getElementById('ld_dest').value.trim();
+  const budget    = document.getElementById('ld_budget').value;
+  const date      = document.getElementById('ld_date').value.trim();
+  const travelers = document.getElementById('ld_travelers').value;
+  if(!name||!phone||phone.length<8){
+    alert('Please enter valid details.');
+    return;
+  }
+  if(!dest){
+    alert('Please enter destination');
+    return;
+  }
+  console.log('Travel Lead Captured:',{name,phone,dest,budget,date,travelers,timestamp:new Date().toISOString()});
+  document.getElementById('ld_success').classList.remove('hidden');
+  const msg = encodeURIComponent(`Hi! I'm ${name}. I want a travel plan for ${dest||'international trip'}, ${travelers} travellers, budget ₹${budget||'flexible'}, travelling in ${date||'soon'}. Please help.`);
+  setTimeout(()=>window.open('https://wa.me/919999999999?text='+msg,'_blank'),500);
+}
+
+/* ── TASK 4: EXIT INTENT LEAD CAPTURE ── */
+let exitShown = false;
+
+document.addEventListener("mouseleave", function(e){
+  if(e.clientY < 10 && !exitShown){
+    exitShown = true;
+    setTimeout(()=>{
+      if(confirm("Wait! Want best flight + forex deal?")){
+        switchTravel('ld');
+      }
+    }, 300);
+  }
+});
+
+/* ── PART 8: PERFORMANCE FIX — passive scroll ── */
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 800){
+    const bar = document.getElementById('stickyCTA');
+    if(bar) bar.style.display = 'flex';
+  }
+}, { passive: true });
+
+/* ── SCROLL TO CALC ── */
+function scrollToCalc(){
+  const el = document.getElementById('tv_controlsAnchor');
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ── MOBILE RESIZE OPTIMIZATION ── */
+let resizeTimer;
+window.addEventListener('resize', ()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(()=>{
+    if(typeof tvCalc==='function') tvCalc();
+  }, 300);
+});
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', function(){
+  try{
+    tvSync('travelers'); tvSync('duration'); tvSync('fxRate');
+    tvCalc();
+    fxCalc();
+    renderPackages();
+    aiSync();
+    aiAdvise();
+  } catch(e){
+    console.log('Init error:',e);
+  }
+});
+
+function trackThings(id){
+  try{
+    console.log("Affiliate Click:", id);
+
+    if(window.gtag){
+      gtag('event', 'things_click', {
+        event_category: 'travel_affiliate',
+        event_label: id
+      });
+    }
+  }catch(e){}
+}
+</script>
+
+<script>
+fetch("components/navbar.html")
+  .then(res=>res.text())
+  .then(data=>{
+    document.getElementById("navbar").innerHTML=data;
+    setTimeout(()=>{
+      const currentPage=window.location.pathname.split('/').pop()||'index.html';
+      document.querySelectorAll('.nav-link').forEach(link=>{
+        if(link.getAttribute('href')===currentPage) link.classList.add('active');
+      });
+    },100);
+  }).catch(()=>{});
+</script>
+</body>
+</html>
