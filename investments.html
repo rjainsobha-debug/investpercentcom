@@ -21,6 +21,9 @@
     --text: #e2e8f0;
     --muted: #64748b;
     --radius: 12px;
+    /* navbar.css variables */
+    --grad: linear-gradient(135deg, #4fa3ff 0%, #a78bfa 100%);
+    --line: rgba(79, 163, 255, 0.15);
   }
   body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
@@ -958,7 +961,7 @@ function loadTool(id) {
   const calc = CALCS[id];
   document.getElementById('calcTitle').textContent = calc.name;
   document.getElementById('calcDesc').textContent = calc.desc;
-  document.getElementById('calcContent').innerHTML = `<div class="result-row">${''}</div>` + calc.html();
+  document.getElementById('calcContent').innerHTML = calc.html();
   if (calc.init) calc.init();
   renderToolList();
 }
