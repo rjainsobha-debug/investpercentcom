@@ -164,44 +164,11 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 @media(max-width:760px){.page{padding:10px 10px 24px}.super-hero{padding:16px}.hero{padding:14px}.controls,.dashboard{padding:12px}.wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}.wealth-number{font-size:36px}.super-tabbar{gap:7px}.super-tab{padding:10px 14px;font-size:13px}}
 @media(max-width:768px){.btn{width:100%}#stickyCTA{flex-direction:column;gap:6px}}
 </style>
+  <link rel="stylesheet" href="/css/navbar.css">
 </head>
 <body>
 <div class="page">
-  <div id="navbar">
-<nav class="nav">
-  <div class="brand" onclick="window.location.href='index.html'">
-    <div class="brand-mark">%</div>
-    <div class="brand-name">invest<span>percent</span></div>
-  </div>
-  <button class="mobile-toggle" type="button" aria-label="Open menu" onclick="toggleMenu()">☰</button>
-  <div class="nav-links">
-    <div class="nav-row">
-      <a href="index.html" class="nav-link" data-page="index">Home</a>
-      <a href="personal-finance.html" class="nav-link" data-page="personal-finance">Personal Finance</a>
-      <a href="investments.html" class="nav-link active" data-page="investments">Investments</a>
-      <a href="insurance.html" class="nav-link" data-page="insurance">Insurance</a>
-      <a href="travel.html" class="nav-link" data-page="travel">Travel</a>
-    </div>
-    <div class="nav-row sub">
-      <a href="real-estate.html" class="nav-link" data-page="real-estate">Real Estate</a>
-      <a href="digital-assets.html" class="nav-link" data-page="digital-assets">Digital Assets</a>
-      <a href="global-finance.html" class="nav-link" data-page="global-finance">Global Finance</a>
-      <a href="learn.html" class="nav-link" data-page="learn">Learn</a>
-    </div>
-  </div>
-  <div id="mobileDrawer" class="mobile-drawer">
-    <a href="index.html" class="nav-link" data-page="index">Home</a>
-    <a href="personal-finance.html" class="nav-link" data-page="personal-finance">Personal Finance</a>
-    <a href="investments.html" class="nav-link active" data-page="investments">Investments</a>
-    <a href="insurance.html" class="nav-link" data-page="insurance">Insurance</a>
-    <a href="travel.html" class="nav-link" data-page="travel">Travel</a>
-    <a href="real-estate.html" class="nav-link" data-page="real-estate">Real Estate</a>
-    <a href="digital-assets.html" class="nav-link" data-page="digital-assets">Digital Assets</a>
-    <a href="global-finance.html" class="nav-link" data-page="global-finance">Global Finance</a>
-    <a href="learn.html" class="nav-link" data-page="learn">Learn</a>
-  </div>
-</nav>
-  </div>
+  <div id="navbar"></div>
 
   <!-- SUPER HERO & TAB NAV -->
   <div class="super-hero">
@@ -1309,5 +1276,7 @@ document.addEventListener("mouseleave",function(e){
   if(e.clientY<10&&!exitShown){exitShown=true;setTimeout(()=>{if(confirm("Get your personalized investment plan now?")){openTelegram();}},300);}
 });
 </script>
+  <script src="/js/contact.js"></script>
+  <script src="/js/main.js"></script>
 </body>
 </html>
