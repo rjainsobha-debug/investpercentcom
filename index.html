@@ -415,8 +415,6 @@ body{
 .sticky-cta .btn{padding:10px 22px;font-size:14px}
 
 </style>
-  <link rel="stylesheet" href="/css/navbar.css">
-
 <!-- ─── GOOGLE ANALYTICS ───────────────────────────── -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
 <script>
@@ -475,7 +473,7 @@ gtag('config', 'G-1V4L60RZZP');
   <p class="hero-sub">Plan. Calculate. Grow your money with powerful financial tools built for every Indian.</p>
 
   <div class="hero-actions">
-    <button class="btn primary" onclick="openTelegramBot()">Start My Plan</button>
+    <button class="btn primary" onclick="openWhatsApp()">Start My Plan</button>
     <button class="btn secondary" onclick="document.getElementById('start-here').scrollIntoView({behavior:'smooth'})">Explore Tools</button>
   </div>
 
@@ -720,7 +718,7 @@ gtag('config', 'G-1V4L60RZZP');
 <div class="lead-cta">
   <h2>Get your <span>personalised financial plan</span> in 60 seconds</h2>
   <p>Answer 3 quick questions and get a custom roadmap for wealth, insurance, and taxes — completely free.</p>
-  <button class="btn primary" onclick="openTelegramBot()">Get My Free Plan →</button>
+  <button class="btn primary" onclick="openWhatsApp()">Get My Free Plan →</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════
@@ -761,7 +759,7 @@ gtag('config', 'G-1V4L60RZZP');
   <p>Join thousands of Indians using InvestPercent to take control of their finances — no sign-up, no fees, no excuses.</p>
   <div class="final-cta-btns">
     <button class="btn primary" onclick="document.getElementById('start-here').scrollIntoView({behavior:'smooth'})">Explore All Tools</button>
-    <button class="btn secondary" onclick="openTelegramBot()">Talk to an Expert</button>
+    <button class="btn secondary" onclick="openWhatsApp()">Talk to an Expert</button>
   </div>
 </div>
 
@@ -770,7 +768,7 @@ gtag('config', 'G-1V4L60RZZP');
 <!-- ─── STICKY CTA BAR ─────────────────────────── -->
 <div class="sticky-cta" id="stickyCta">
   <span>Free tools. No login. Built for India.</span>
-  <button class="btn primary" onclick="openTelegramBot()">Get your financial plan →</button>
+  <button class="btn primary" onclick="openWhatsApp()">Get your financial plan →</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════
@@ -780,19 +778,15 @@ gtag('config', 'G-1V4L60RZZP');
   <div style="background:#0b1325;padding:28px;border-radius:16px;max-width:400px;width:90%;text-align:center;border:1px solid rgba(255,255,255,.1)">
     
     <h3 style="margin:0 0 10px;">Get Your Free Financial Plan</h3>
-    <p style="color:#9da9c6;font-size:14px;margin-bottom:20px;">Instant help via WhatsApp or Telegram</p>
+    <p style="color:#9da9c6;font-size:14px;margin-bottom:20px;">Get instant help on WhatsApp</p>
 
     <input id="leadName" placeholder="Your Name" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:none;">
-    <input id="leadPhone" placeholder="Mobile Number" style="width:100%;padding:10px;margin-bottom:14px;border-radius:8px;border:none;">
+    <input id="leadPhone" type="tel" inputmode="numeric" placeholder="Mobile Number" style="width:100%;padding:10px;margin-bottom:14px;border-radius:8px;border:none;">
 
     <button onclick="submitLead()" class="btn primary" style="width:100%;">Get My Plan</button>
 
     <div style="margin-top:10px;">
-      <button onclick="openWhatsApp()" class="btn secondary" style="width:100%;">Chat on WhatsApp</button>
-    </div>
-
-    <div style="margin-top:10px;">
-      <button onclick="openTelegramBot()" class="btn secondary" style="width:100%;">Chat on Telegram</button>
+      <button onclick="openTelegram()" class="btn secondary" style="width:100%;">Join Telegram Channel</button>
     </div>
 
     <div style="margin-top:12px;font-size:12px;color:#9da9c6;cursor:pointer;" onclick="closeLead()">No thanks</div>
@@ -907,14 +901,9 @@ function openTelegram() {
   window.open("https://t.me/investpercent", "_blank");
 }
 
-function openTelegramBot() {
-  trackEvent("cta_click", {type: "telegram_bot"});
-  window.open("https://t.me/mfddelhibot", "_blank");
-}
-
 function openWhatsApp() {
   trackEvent("cta_click", {type: "whatsapp"});
-  window.open("https://wa.me/919311354795?text=Hi%20I%20want%20financial%20planning", "_blank");
+  window.open("https://wa.me/919311354795?text=Hi%20I%20came%20from%20InvestPercent%20homepage%20and%20want%20financial%20planning", "_blank");
 }
 
 /* ── LEAD POPUP ─────────────────────────── */
@@ -957,9 +946,12 @@ function submitLead() {
   leads.push({name: name, phone: phone, time: new Date().toISOString()});
   localStorage.setItem("leads", JSON.stringify(leads));
 
-  alert("Submitting your request...");
+  console.log("Lead submitted");
 
-  var msg = "Hi, I am " + name + ", my number is " + phone + ". I want financial planning.";
+  if (nameEl) nameEl.disabled = true;
+  if (phoneEl) phoneEl.disabled = true;
+
+  var msg = "Hi, I am " + name + ". I came from InvestPercent homepage. My number is " + phone + ". I want financial planning.";
 
   fetch("https://script.google.com/macros/s/AKfycbzlg4cka5aIqI8km913ciIxGAX_LsX3-blC0Dr399bCD63RVH_pgDFmhSi5GH6uR06ZQg/exec", {
     method: "POST",
@@ -968,12 +960,14 @@ function submitLead() {
   })
   .then(function(res) { return res.json(); })
   .then(function() {
-    alert("We will contact you shortly!");
+    if (nameEl) nameEl.disabled = false;
+    if (phoneEl) phoneEl.disabled = false;
     window.open("https://wa.me/919311354795?text=" + encodeURIComponent(msg), "_blank");
     closeLead();
   })
   .catch(function() {
-    alert("Saved locally. Opening WhatsApp...");
+    if (nameEl) nameEl.disabled = false;
+    if (phoneEl) phoneEl.disabled = false;
     window.open("https://wa.me/919311354795?text=" + encodeURIComponent(msg), "_blank");
     closeLead();
   });
@@ -1025,7 +1019,5 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-  <script src="/js/contact.js"></script>
-  <script src="/js/main.js"></script>
 </body>
 </html>
