@@ -876,7 +876,7 @@ async function loadChart() {
 
     // Fetch live daily time series for AAPL
     try {
-      var res = await fetch('https://api.twelvedata.com/time_series?symbol=AAPL&interval=1day&outputsize=90&apikey=' + API_KEY);
+     var res = await fetch(`${API_BASE}?symbol=AAPL&type=stock`);
       var data = await res.json();
       if (data.values && data.values.length > 0) {
         var chartData = data.values
