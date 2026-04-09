@@ -3083,5 +3083,24 @@ function startDailyChallenge() {
   });
 })();
 </script>
+<script>
+function saveLead(data){
+  try{
+    if(!_firebaseReady) return;
+
+    firebase.firestore().collection("leads").add({
+      name: data.name || "",
+      email: data.email || "",
+      phone: data.phone || "",
+      source: data.source || "learn_page",
+      time: new Date()
+    });
+
+    console.log("Lead saved");
+  }catch(e){
+    console.log("Lead error", e);
+  }
+}
+</script>
 </body>
 </html>
