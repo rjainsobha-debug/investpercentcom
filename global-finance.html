@@ -681,12 +681,14 @@ function showBox(id, html) {
   b.classList.add('show');
 }
 
-/* ─── LIVE MARKET DATA (SECURE VIA WORKER) ──────────────────── */
-
+/* ─── GLOBAL API ───────────────── */
 const API_BASE = "https://flat-sky-5536.rjain-sobha.workers.dev";
+let USD_RATE = 83;
 
-async function loadForex() {
+/* ─── LIVE MARKET DATA ───────────────── */
+async function loadAllData() {
   try {
+    // Forex
     const [usdRes, eurRes] = await Promise.all([
       fetch(`${API_BASE}?symbol=USD/INR&type=forex`),
       fetch(`${API_BASE}?symbol=EUR/INR&type=forex`)
@@ -695,36 +697,17 @@ async function loadForex() {
     const usdData = await usdRes.json();
     const eurData = await eurRes.json();
 
-    if (usdData.values && usdData.values.length) {
+    if (usdData.values?.length) {
       USD_RATE = parseFloat(usdData.values[0].close);
       document.getElementById('usd-inr').innerText = '₹' + USD_RATE.toFixed(2);
-
-      var rsRate = document.getElementById('rs-rate');
-      var hrRate = document.getElementById('hr-rate');
-
-      if (rsRate && !rsRate.dataset.userEdited) rsRate.value = USD_RATE.toFixed(2);
-      if (hrRate && !hrRate.dataset.userEdited) hrRate.value = USD_RATE.toFixed(2);
-
-      convertCurrency('inr');
-    } else {
-      document.getElementById('usd-inr').innerText = 'Data unavailable';
     }
 
-    if (eurData.values && eurData.values.length) {
+    if (eurData.values?.length) {
       document.getElementById('eur-inr').innerText =
         '₹' + parseFloat(eurData.values[0].close).toFixed(2);
-    } else {
-      document.getElementById('eur-inr').innerText = 'Data unavailable';
     }
 
-  } catch(e) {
-    document.getElementById('usd-inr').innerText = 'Data unavailable';
-    document.getElementById('eur-inr').innerText = 'Data unavailable';
-  }
-}
-
-async function loadIndices() {
-  try {
+    // Indices
     const [spRes, nasRes] = await Promise.all([
       fetch(`${API_BASE}?symbol=SPX&type=stock`),
       fetch(`${API_BASE}?symbol=IXIC&type=stock`)
@@ -733,32 +716,13 @@ async function loadIndices() {
     const spData = await spRes.json();
     const nasData = await nasRes.json();
 
-    var spEl = document.querySelector('[data-sp500]');
-    var nasEl = document.querySelector('[data-nasdaq]');
+    document.querySelector('[data-sp500]').innerText =
+      spData.values?.length ? parseFloat(spData.values[0].close).toFixed(0) : '--';
 
-    if (spEl) {
-      spEl.innerText = spData.values
-        ? parseFloat(spData.values[0].close).toLocaleString('en-US',{maximumFractionDigits:0})
-        : 'Data unavailable';
-    }
+    document.querySelector('[data-nasdaq]').innerText =
+      nasData.values?.length ? parseFloat(nasData.values[0].close).toFixed(0) : '--';
 
-    if (nasEl) {
-      nasEl.innerText = nasData.values
-        ? parseFloat(nasData.values[0].close).toLocaleString('en-US',{maximumFractionDigits:0})
-        : 'Data unavailable';
-    }
-
-  } catch(e) {
-    var spEl = document.querySelector('[data-sp500]');
-    var nasEl = document.querySelector('[data-nasdaq]');
-
-    if (spEl) spEl.innerText = 'Data unavailable';
-    if (nasEl) nasEl.innerText = 'Data unavailable';
-  }
-}
-
-async function loadCommodities() {
-  try {
+    // Commodities
     const [goldRes, crudeRes] = await Promise.all([
       fetch(`${API_BASE}?symbol=XAU/USD&type=forex`),
       fetch(`${API_BASE}?symbol=WTI&type=stock`)
@@ -767,158 +731,103 @@ async function loadCommodities() {
     const gData = await goldRes.json();
     const cData = await crudeRes.json();
 
-    var goldEl = document.querySelector('[data-gold]');
-    var crudeEl = document.querySelector('[data-crude]');
+    document.querySelector('[data-gold]').innerText =
+      gData.values?.length ? '₹' + Math.round(gData.values[0].close * USD_RATE) : '--';
 
-    if (goldEl) {
-      goldEl.innerText = gData.values
-        ? '₹' + Math.round(parseFloat(gData.values[0].close) * USD_RATE).toLocaleString('en-IN')
-        : 'Data unavailable';
-    }
+    document.querySelector('[data-crude]').innerText =
+      cData.values?.length ? '$' + parseFloat(cData.values[0].close).toFixed(2) : '--';
 
-    if (crudeEl) {
-      crudeEl.innerText = cData.values
-        ? '$' + parseFloat(cData.values[0].close).toFixed(2)
-        : 'Data unavailable';
-    }
+    // Top Movers
+    loadTopMovers();
 
-  } catch(e) {
-    var goldEl = document.querySelector('[data-gold]');
-    var crudeEl = document.querySelector('[data-crude]');
+    // AI Insight
+    generateInsight();
 
-    if (goldEl) goldEl.innerText = 'Data unavailable';
-    if (crudeEl) crudeEl.innerText = 'Data unavailable';
+    document.getElementById('last-updated').innerText =
+      'Last updated: ' + new Date().toLocaleTimeString();
+
+  } catch (e) {
+    console.log("DATA ERROR", e);
   }
 }
 
-/* ─── TOP MOVERS (with % change) ─────────────────────── */
+/* ─── TOP MOVERS ───────────────── */
 async function loadTopMovers() {
-  try {
-    var stocks = ['AAPL','TSLA','NVDA','MSFT'];
-    var results = await Promise.all(stocks.map(async function(s) {
-      try {
-        var res = await fetch('https://api.twelvedata.com/quote?symbol=' + s + '&apikey=' + API_KEY);
-        var data = await res.json();
-        var price = data.close ? '$' + parseFloat(data.close).toFixed(2) : '--';
-        var pct = data.percent_change ? parseFloat(data.percent_change) : null;
-        var pctColor = pct === null ? 'var(--muted)' : pct >= 0 ? 'var(--green)' : 'var(--red)';
-        var pctStr = pct === null ? '' : (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
-        var valueClass = pct === null ? 'neutral' : pct >= 0 ? 'up' : 'down';
-        return '<div class="snap-card">' +
-          '<div class="snap-label">' + s + '</div>' +
-          '<div class="snap-value ' + valueClass + '">' + price + '</div>' +
-          '<div class="snap-change"><span style="color:' + pctColor + ';font-weight:700">' + pctStr + '</span></div>' +
-          '</div>';
-      } catch(e) {
-        return '<div class="snap-card"><div class="snap-label">' + s + '</div><div class="snap-value neutral">Data unavailable</div></div>';
+  const stocks = ['AAPL','TSLA','NVDA','MSFT'];
+
+  const results = await Promise.all(stocks.map(async s => {
+    try {
+      const res = await fetch(`${API_BASE}?symbol=${s}&type=stock`);
+      const data = await res.json();
+
+      if (data.values?.length) {
+        const price = parseFloat(data.values[0].close);
+        return `
+          <div class="snap-card">
+            <div class="snap-label">${s}</div>
+            <div class="snap-value neutral">$${price.toFixed(2)}</div>
+          </div>`;
       }
-    }));
-    document.getElementById('top-movers').innerHTML = results.join('');
-  } catch(e) {}
+    } catch(e){}
+
+    return `<div class="snap-card"><div class="snap-label">${s}</div><div class="snap-value">--</div></div>`;
+  }));
+
+  document.getElementById('top-movers').innerHTML = results.join('');
 }
 
-/* ─── AI DAILY INSIGHT ────────────────────────────────── */
+/* ─── AI INSIGHT ───────────────── */
 function generateInsight() {
-  var hour = new Date().getHours();
-  var text = '';
+  const hour = new Date().getHours();
+  let text = '';
+
   if (hour < 12) {
-    text = 'Markets may remain volatile in morning sessions. Focus on global cues and USD strength before making allocation decisions.';
+    text = "Morning volatility expected. Watch USD strength.";
   } else if (hour < 18) {
-    text = 'Mid-day trend suggests sector rotation. Watch tech and energy for short-term momentum signals.';
+    text = "Mid-session trend forming. Tech & energy active.";
   } else {
-    text = 'Global markets closing trend indicates next-day directional bias. Review your international allocations before tomorrow\'s open.';
+    text = "Closing signals indicate next-day direction.";
   }
+
   document.getElementById('ai-text').innerText = text;
 }
 
-/* ─── MASTER LOAD FUNCTION ────────────────────────────── */
-async function loadAllData() {
-  await loadForex();
-  await Promise.all([loadIndices(), loadCommodities()]);
-  loadTopMovers();
-  generateInsight();
-  document.getElementById('last-updated').innerText =
-    'Last updated: ' + new Date().toLocaleTimeString();
-}
-
-// Mark rate fields as user-edited if touched
-['rs-rate','hr-rate'].forEach(function(id) {
-  var el = document.getElementById(id);
-  if (el) el.addEventListener('input', function(){ this.dataset.userEdited = '1'; });
-});
-
-loadAllData();
-setInterval(loadAllData, 120000);
-
-/* ─── STOCK CHART (LIVE DATA) ─────────────────────────── */
+/* ─── STOCK CHART ───────────────── */
 async function loadChart() {
   try {
-    var container = document.getElementById('chart-container');
+    const container = document.getElementById('chart-container');
 
-    var chart = LightweightCharts.createChart(container, {
+    const chart = LightweightCharts.createChart(container, {
       width: container.clientWidth,
-      height: 300,
-      layout: {
-        background: { color: 'transparent' },
-        textColor: '#9da9c6'
-      },
-      grid: {
-        vertLines: { color: 'rgba(255,255,255,0.05)' },
-        horzLines: { color: 'rgba(255,255,255,0.05)' }
-      },
-      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-      rightPriceScale: { borderColor: 'rgba(255,255,255,0.1)' },
-      timeScale: { borderColor: 'rgba(255,255,255,0.1)' }
+      height: 300
     });
 
-    var lineSeries = chart.addLineSeries({
-      color: '#00d4ff',
-      lineWidth: 2
-    });
+    const lineSeries = chart.addLineSeries();
 
-    // ✅ Fetch from Worker
-    var res = await fetch(`${API_BASE}?symbol=AAPL&type=stock`);
-    var data = await res.json();
+    const res = await fetch(`${API_BASE}?symbol=AAPL&type=stock`);
+    const data = await res.json();
 
-    if (data.values && data.values.length > 0) {
-      var chartData = data.values
-        .map(function(v) {
-          return {
-            time: v.datetime.split(" ")[0], // ✅ IMPORTANT FIX
-            value: parseFloat(v.close)
-          };
-        })
-        .reverse();
+    if (data.values?.length) {
+      const chartData = data.values.map(v => ({
+        time: v.datetime.split(" ")[0],
+        value: parseFloat(v.close)
+      })).reverse();
 
       lineSeries.setData(chartData);
-    } else {
-      console.log("No data from API");
     }
 
-    window.addEventListener('resize', function() {
-      chart.applyOptions({ width: container.clientWidth });
-    });
-
   } catch(e) {
-    console.log("Chart error:", e);
+    console.log("Chart error", e);
   }
 }
-  } catch(e) {
-      lineSeries.setData([
-        { time: '2024-01-01', value: 150 },
-        { time: '2024-02-01', value: 170 },
-        { time: '2024-03-01', value: 160 },
-        { time: '2024-04-01', value: 180 }
-      ]);
-    }
 
-    window.addEventListener('resize', function() {
-      chart.applyOptions({ width: container.clientWidth });
-    });
-  } catch(e) {}
-}
+/* ─── INIT ───────────────── */
+document.addEventListener("DOMContentLoaded", function () {
+  loadAllData();
+  loadChart();
 
-/* ─── CURRENCY IMPACT ─────────────────────────────────── */
+  setInterval(loadAllData, 120000);
+});/* ─── CURRENCY IMPACT ─────────────────────────────────── */
 function calcCurrency() {
   var inv = +document.getElementById('ci-inv').value || 0;
   var g = +document.getElementById('ci-growth').value || 0;
