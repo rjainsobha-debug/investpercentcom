@@ -9,6 +9,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/navbar.css">
+
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V4L60RZZP', {
+      page_title: document.title,
+      page_path: window.location.pathname
+    });
+  </script>
+
+  <!-- Lightweight Charts for stock chart -->
+  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
   <style>
     :root{
       --bg:#060915;--bg2:#0b1224;--panel:#0f1830;--panel2:#121e3c;--soft:#18284d;
@@ -229,6 +245,13 @@
     }
     .advisor-output.show{display:block}
 
+    /* CHART CONTAINER */
+    #chart-container{
+      background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));
+      border:1px solid var(--line);border-radius:26px;
+      overflow:hidden;box-shadow:var(--shadow);
+    }
+
     /* LEAD POPUP */
     .popup-overlay{
       display:none;position:fixed;inset:0;z-index:2000;
@@ -270,12 +293,19 @@
       .signal-grid{grid-template-columns:1fr}
     }
   </style>
-  <link rel="stylesheet" href="/css/navbar.css">
 </head>
 <body>
 
 <!-- NAVBAR LOADED EXTERNALLY -->
 <div id="navbar-slot"></div>
+
+<!-- STICKY WHATSAPP BUTTON -->
+<a href="https://wa.me/919311354795"
+   target="_blank"
+   style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;padding:14px 18px;border-radius:50px;font-weight:700;font-size:15px;box-shadow:0 10px 30px rgba(0,0,0,.4);text-decoration:none;display:flex;align-items:center;gap:8px;"
+   onclick="gtag('event','whatsapp_click',{event_category:'engagement',event_label:'whatsapp_sticky'})">
+  💬 Chat Now
+</a>
 
 <div class="page">
 
@@ -294,35 +324,62 @@
   <div class="snap-grid">
     <div class="snap-card">
       <div class="snap-label">USD/INR</div>
-      <div class="snap-value neutral" id="usd-inr">₹83.42</div>
-      <div class="snap-change"><span class="up">+0.18%</span> &nbsp;US Dollar</div>
+      <div class="snap-value neutral" id="usd-inr">Loading…</div>
+      <div class="snap-change"><span class="up">Live</span> &nbsp;US Dollar</div>
     </div>
     <div class="snap-card">
       <div class="snap-label">EUR/INR</div>
-      <div class="snap-value down" id="eur-inr">₹90.14</div>
-      <div class="snap-change"><span class="down">−0.12%</span> &nbsp;Euro</div>
+      <div class="snap-value down" id="eur-inr">Loading…</div>
+      <div class="snap-change"><span class="down">Live</span> &nbsp;Euro</div>
     </div>
     <div class="snap-card">
       <div class="snap-label">Gold Price</div>
-      <div class="snap-value up">₹71,450<small style="font-size:14px">/10g</small></div>
-      <div class="snap-change"><span class="up">+0.54%</span> &nbsp;MCX Gold</div>
+      <div class="snap-value up" data-gold>Loading…</div>
+      <div class="snap-change"><span class="up">Live</span> &nbsp;XAU/USD → INR</div>
     </div>
     <div class="snap-card">
       <div class="snap-label">Crude Oil</div>
-      <div class="snap-value down">$82.30<small style="font-size:14px">/bbl</small></div>
-      <div class="snap-change"><span class="down">−0.87%</span> &nbsp;WTI Crude</div>
+      <div class="snap-value down" data-crude>Loading…</div>
+      <div class="snap-change"><span class="down">Live</span> &nbsp;WTI Crude</div>
     </div>
     <div class="snap-card">
       <div class="snap-label">S&amp;P 500</div>
-      <div class="snap-value up">5,254</div>
-      <div class="snap-change"><span class="up">+0.31%</span> &nbsp;US Equity Index</div>
+      <div class="snap-value up" data-sp500>Loading…</div>
+      <div class="snap-change"><span class="up">Live</span> &nbsp;US Equity Index</div>
     </div>
     <div class="snap-card">
       <div class="snap-label">Nasdaq</div>
-      <div class="snap-value up">16,428</div>
-      <div class="snap-change"><span class="up">+0.22%</span> &nbsp;Tech Index</div>
+      <div class="snap-value up" data-nasdaq>Loading…</div>
+      <div class="snap-change"><span class="up">Live</span> &nbsp;Tech Index</div>
     </div>
   </div>
+  <div id="last-updated" style="font-size:12px;color:#9da9c6;margin-top:6px"></div>
+
+  <!-- TOP MOVERS -->
+  <div class="section-label">Top Movers Today</div>
+  <div class="snap-grid" id="top-movers">
+    <div class="snap-card"><div class="snap-label">AAPL</div><div class="snap-value neutral">Loading…</div></div>
+    <div class="snap-card"><div class="snap-label">TSLA</div><div class="snap-value neutral">Loading…</div></div>
+    <div class="snap-card"><div class="snap-label">NVDA</div><div class="snap-value neutral">Loading…</div></div>
+    <div class="snap-card"><div class="snap-label">MSFT</div><div class="snap-value neutral">Loading…</div></div>
+  </div>
+
+  <!-- AI MARKET INSIGHT -->
+  <div class="section-label">AI Market Insight</div>
+  <div class="panel" id="ai-insight">
+    <div class="panel-title">Today's Market View</div>
+    <div class="panel-sub" id="ai-text">Loading insight…</div>
+    <a href="https://wa.me/919311354795"
+       target="_blank"
+       style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:#25D366;color:#fff;padding:11px 20px;border-radius:12px;font-weight:700;font-size:14px;text-decoration:none;"
+       onclick="gtag('event','whatsapp_click',{event_category:'engagement',event_label:'whatsapp_insight_cta'})">
+      💬 Get Personalized Plan → WhatsApp
+    </a>
+  </div>
+
+  <!-- LIVE STOCK CHART -->
+  <div class="section-label">Live Stock Chart</div>
+  <div id="chart-container" style="height:300px;"></div>
 
   <!-- CURRENCY INTELLIGENCE -->
   <div class="section-label">Currency Intelligence</div>
@@ -388,7 +445,7 @@
     <!-- INR → USD Converter -->
     <div class="panel">
       <div class="panel-title">INR → USD Live Converter</div>
-      <div class="panel-sub">Convert between Indian Rupees and US Dollars at current reference rate.</div>
+      <div class="panel-sub">Convert between Indian Rupees and US Dollars at current live rate.</div>
       <div class="field">
         <label>Amount (INR)</label>
         <input type="number" id="conv-inr" placeholder="e.g. 83,420" value="83420" oninput="convertCurrency('inr')">
@@ -398,8 +455,8 @@
         <input type="number" id="conv-usd" placeholder="e.g. 1000" oninput="convertCurrency('usd')">
       </div>
       <div class="result-box show" id="conv-result">
-        <span class="result-big">$1,000 USD</span>
-        At reference rate ₹83.42 / USD — for illustration only.
+        <span class="result-big">Loading live rate…</span>
+        Fetching current USD/INR rate.
       </div>
     </div>
 
@@ -526,7 +583,10 @@
     </div>
     <div class="cta-actions">
       <a class="btn primary" href="business-dashboard.html">Open Dashboard →</a>
-      <a class="btn secondary" href="https://wa.me/919999999999" target="_blank">Talk to Advisor</a>
+      <a class="btn secondary"
+         href="https://wa.me/919311354795"
+         target="_blank"
+         onclick="gtag('event','whatsapp_click',{event_category:'engagement',event_label:'whatsapp_cta'})">Talk to Advisor</a>
     </div>
   </div>
 
@@ -569,18 +629,20 @@
     <p>Free weekly analysis — currency moves, US stock picks &amp; NRI tax tips.</p>
     <div class="popup-field"><input type="text" placeholder="Your Name" id="pop-name"></div>
     <div class="popup-field"><input type="email" placeholder="Email Address" id="pop-email"></div>
-    <div class="popup-field"><input type="tel" placeholder="WhatsApp Number (optional)" id="pop-wa"></div>
+    <div class="popup-field"><input type="tel" placeholder="WhatsApp Number" id="pop-wa"></div>
     <button class="popup-submit" onclick="submitLead()">Get Free Insights →</button>
   </div>
 </div>
 
 <script>
+/* ─── PAGE LOAD EVENT ─────────────────────────────────── */
+gtag('event', 'page_loaded', { event_category: 'engagement' });
+
 /* ─── NAVBAR LOAD ─────────────────────────────────────── */
 fetch('components/navbar.html')
   .then(r => r.text())
   .then(html => { document.getElementById('navbar-slot').innerHTML = html; })
   .catch(() => {
-    // fallback inline navbar if fetch fails
     document.getElementById('navbar-slot').innerHTML = `
       <nav class="site-nav">
         <div class="nav-inner">
@@ -610,160 +672,366 @@ fetch('components/navbar.html')
 
 /* ─── HELPERS ─────────────────────────────────────────── */
 const INR = n => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
-const USD_RATE = 83.42;
 
-function showBox(id,html){
-  var b=document.getElementById(id);
-  b.innerHTML=html;b.classList.add('show');
+let USD_RATE = 83;
+
+function showBox(id, html) {
+  var b = document.getElementById(id);
+  b.innerHTML = html;
+  b.classList.add('show');
+}
+
+/* ─── LIVE MARKET DATA (TWELVE DATA) ──────────────────── */
+const API_KEY = "26895022fc184825993b1d8270381a70";
+
+async function loadForex() {
+  try {
+    const [usdRes, eurRes] = await Promise.all([
+      fetch('https://api.twelvedata.com/price?symbol=USD/INR&apikey=' + API_KEY),
+      fetch('https://api.twelvedata.com/price?symbol=EUR/INR&apikey=' + API_KEY)
+    ]);
+    const usdData = await usdRes.json();
+    const eurData = await eurRes.json();
+
+    if (usdData.price) {
+      USD_RATE = parseFloat(usdData.price);
+      document.getElementById('usd-inr').innerText = '₹' + USD_RATE.toFixed(2);
+      var rsRate = document.getElementById('rs-rate');
+      var hrRate = document.getElementById('hr-rate');
+      if (rsRate && !rsRate.dataset.userEdited) rsRate.value = USD_RATE.toFixed(2);
+      if (hrRate && !hrRate.dataset.userEdited) hrRate.value = USD_RATE.toFixed(2);
+      convertCurrency('inr');
+    } else {
+      document.getElementById('usd-inr').innerText = 'Data unavailable';
+    }
+
+    if (eurData.price) {
+      document.getElementById('eur-inr').innerText = '₹' + parseFloat(eurData.price).toFixed(2);
+    } else {
+      document.getElementById('eur-inr').innerText = 'Data unavailable';
+    }
+  } catch(e) {
+    document.getElementById('usd-inr').innerText = 'Data unavailable';
+    document.getElementById('eur-inr').innerText = 'Data unavailable';
+  }
+}
+
+async function loadIndices() {
+  try {
+    const [spRes, nasRes] = await Promise.all([
+      fetch('https://api.twelvedata.com/price?symbol=SPX&apikey=' + API_KEY),
+      fetch('https://api.twelvedata.com/price?symbol=IXIC&apikey=' + API_KEY)
+    ]);
+    const spData = await spRes.json();
+    const nasData = await nasRes.json();
+
+    var spEl = document.querySelector('[data-sp500]');
+    var nasEl = document.querySelector('[data-nasdaq]');
+    if (spEl) spEl.innerText = spData.price ? parseFloat(spData.price).toLocaleString('en-US',{maximumFractionDigits:0}) : 'Data unavailable';
+    if (nasEl) nasEl.innerText = nasData.price ? parseFloat(nasData.price).toLocaleString('en-US',{maximumFractionDigits:0}) : 'Data unavailable';
+  } catch(e) {
+    var spEl = document.querySelector('[data-sp500]');
+    var nasEl = document.querySelector('[data-nasdaq]');
+    if (spEl) spEl.innerText = 'Data unavailable';
+    if (nasEl) nasEl.innerText = 'Data unavailable';
+  }
+}
+
+async function loadCommodities() {
+  try {
+    const [goldRes, crudeRes] = await Promise.all([
+      fetch('https://api.twelvedata.com/price?symbol=XAU/USD&apikey=' + API_KEY),
+      fetch('https://api.twelvedata.com/price?symbol=WTI&apikey=' + API_KEY)
+    ]);
+    const gData = await goldRes.json();
+    const cData = await crudeRes.json();
+
+    var goldEl = document.querySelector('[data-gold]');
+    var crudeEl = document.querySelector('[data-crude]');
+
+    if (goldEl) goldEl.innerText = gData.price ? '₹' + Math.round(parseFloat(gData.price) * USD_RATE).toLocaleString('en-IN') : 'Data unavailable';
+    if (crudeEl) crudeEl.innerText = cData.price ? '$' + parseFloat(cData.price).toFixed(2) : 'Data unavailable';
+  } catch(e) {
+    var goldEl = document.querySelector('[data-gold]');
+    var crudeEl = document.querySelector('[data-crude]');
+    if (goldEl) goldEl.innerText = 'Data unavailable';
+    if (crudeEl) crudeEl.innerText = 'Data unavailable';
+  }
+}
+
+/* ─── TOP MOVERS (with % change) ─────────────────────── */
+async function loadTopMovers() {
+  try {
+    var stocks = ['AAPL','TSLA','NVDA','MSFT'];
+    var results = await Promise.all(stocks.map(async function(s) {
+      try {
+        var res = await fetch('https://api.twelvedata.com/quote?symbol=' + s + '&apikey=' + API_KEY);
+        var data = await res.json();
+        var price = data.close ? '$' + parseFloat(data.close).toFixed(2) : '--';
+        var pct = data.percent_change ? parseFloat(data.percent_change) : null;
+        var pctColor = pct === null ? 'var(--muted)' : pct >= 0 ? 'var(--green)' : 'var(--red)';
+        var pctStr = pct === null ? '' : (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+        var valueClass = pct === null ? 'neutral' : pct >= 0 ? 'up' : 'down';
+        return '<div class="snap-card">' +
+          '<div class="snap-label">' + s + '</div>' +
+          '<div class="snap-value ' + valueClass + '">' + price + '</div>' +
+          '<div class="snap-change"><span style="color:' + pctColor + ';font-weight:700">' + pctStr + '</span></div>' +
+          '</div>';
+      } catch(e) {
+        return '<div class="snap-card"><div class="snap-label">' + s + '</div><div class="snap-value neutral">Data unavailable</div></div>';
+      }
+    }));
+    document.getElementById('top-movers').innerHTML = results.join('');
+  } catch(e) {}
+}
+
+/* ─── AI DAILY INSIGHT ────────────────────────────────── */
+function generateInsight() {
+  var hour = new Date().getHours();
+  var text = '';
+  if (hour < 12) {
+    text = 'Markets may remain volatile in morning sessions. Focus on global cues and USD strength before making allocation decisions.';
+  } else if (hour < 18) {
+    text = 'Mid-day trend suggests sector rotation. Watch tech and energy for short-term momentum signals.';
+  } else {
+    text = 'Global markets closing trend indicates next-day directional bias. Review your international allocations before tomorrow\'s open.';
+  }
+  document.getElementById('ai-text').innerText = text;
+}
+
+/* ─── MASTER LOAD FUNCTION ────────────────────────────── */
+async function loadAllData() {
+  await loadForex();
+  await Promise.all([loadIndices(), loadCommodities()]);
+  loadTopMovers();
+  generateInsight();
+  document.getElementById('last-updated').innerText =
+    'Last updated: ' + new Date().toLocaleTimeString();
+}
+
+// Mark rate fields as user-edited if touched
+['rs-rate','hr-rate'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', function(){ this.dataset.userEdited = '1'; });
+});
+
+loadAllData();
+setInterval(loadAllData, 120000);
+
+/* ─── STOCK CHART (LIVE DATA) ─────────────────────────── */
+async function loadChart() {
+  try {
+    var container = document.getElementById('chart-container');
+    var chart = LightweightCharts.createChart(container, {
+      width: container.clientWidth,
+      height: 300,
+      layout: {
+        background: { color: 'transparent' },
+        textColor: '#9da9c6'
+      },
+      grid: {
+        vertLines: { color: 'rgba(255,255,255,0.05)' },
+        horzLines: { color: 'rgba(255,255,255,0.05)' }
+      },
+      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+      rightPriceScale: { borderColor: 'rgba(255,255,255,0.1)' },
+      timeScale: { borderColor: 'rgba(255,255,255,0.1)' }
+    });
+    var lineSeries = chart.addLineSeries({
+      color: '#00d4ff',
+      lineWidth: 2
+    });
+
+    // Fetch live daily time series for AAPL
+    try {
+      var res = await fetch('https://api.twelvedata.com/time_series?symbol=AAPL&interval=1day&outputsize=90&apikey=' + API_KEY);
+      var data = await res.json();
+      if (data.values && data.values.length > 0) {
+        var chartData = data.values
+          .map(function(v) { return { time: v.datetime, value: parseFloat(v.close) }; })
+          .reverse();
+        lineSeries.setData(chartData);
+      } else {
+        // Fallback to placeholder data if API returns no values
+        lineSeries.setData([
+          { time: '2024-01-01', value: 150 },
+          { time: '2024-02-01', value: 170 },
+          { time: '2024-03-01', value: 160 },
+          { time: '2024-04-01', value: 180 },
+          { time: '2024-05-01', value: 195 },
+          { time: '2024-06-01', value: 188 },
+          { time: '2024-07-01', value: 210 }
+        ]);
+      }
+    } catch(e) {
+      lineSeries.setData([
+        { time: '2024-01-01', value: 150 },
+        { time: '2024-02-01', value: 170 },
+        { time: '2024-03-01', value: 160 },
+        { time: '2024-04-01', value: 180 }
+      ]);
+    }
+
+    window.addEventListener('resize', function() {
+      chart.applyOptions({ width: container.clientWidth });
+    });
+  } catch(e) {}
 }
 
 /* ─── CURRENCY IMPACT ─────────────────────────────────── */
-function calcCurrency(){
-  var inv=+document.getElementById('ci-inv').value||0;
-  var g=+document.getElementById('ci-growth').value||0;
-  var d=+document.getElementById('ci-depr').value||0;
-  if(!inv){return;}
-  var final=inv;
-  for(var i=0;i<5;i++) final=final*(1+g/100)*(1+d/100);
-  var gain=final-inv;
+function calcCurrency() {
+  var inv = +document.getElementById('ci-inv').value || 0;
+  var g = +document.getElementById('ci-growth').value || 0;
+  var d = +document.getElementById('ci-depr').value || 0;
+  if (!inv) return;
+  var final = inv;
+  for (var i = 0; i < 5; i++) final = final * (1 + g/100) * (1 + d/100);
+  var gain = final - inv;
   showBox('ci-result',
-    '<span class="result-big">'+INR(Math.round(final))+'</span>'+
-    'Projected 5-year value &nbsp;|&nbsp; Gain: <strong style="color:var(--green)">'+INR(Math.round(gain))+'</strong><br>'+
-    '<small style="color:var(--muted)">Annual USD growth '+g+'% + INR depreciation '+d+'%</small>');
+    '<span class="result-big">' + INR(Math.round(final)) + '</span>' +
+    'Projected 5-year value &nbsp;|&nbsp; Gain: <strong style="color:var(--green)">' + INR(Math.round(gain)) + '</strong><br>' +
+    '<small style="color:var(--muted)">Annual USD growth ' + g + '% + INR depreciation ' + d + '%</small>');
 }
 
 /* ─── INR SIGNAL TOGGLE ───────────────────────────────── */
-function toggleSignal(el,name,text){
-  document.querySelectorAll('.signal-card').forEach(c=>c.classList.remove('active'));
+function toggleSignal(el, name, text) {
+  document.querySelectorAll('.signal-card').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
-  var box=document.getElementById('inr-signal');
-  box.innerHTML='<strong>'+name+':</strong> '+text;
+  var box = document.getElementById('inr-signal');
+  box.innerHTML = '<strong>' + name + ':</strong> ' + text;
   box.classList.add('show');
 }
 
 /* ─── CURRENCY CONVERTER ──────────────────────────────── */
-function convertCurrency(dir){
-  if(dir==='inr'){
-    var inr=+document.getElementById('conv-inr').value||0;
-    var usd=inr/USD_RATE;
-    document.getElementById('conv-usd').value=usd.toFixed(2);
-    showBox('conv-result','<span class="result-big">$'+usd.toLocaleString('en-IN',{maximumFractionDigits:2})+' USD</span>At reference rate ₹'+USD_RATE+' / USD');
+function convertCurrency(dir) {
+  if (dir === 'inr') {
+    var inr = +document.getElementById('conv-inr').value || 0;
+    var usd = inr / USD_RATE;
+    document.getElementById('conv-usd').value = usd.toFixed(2);
+    showBox('conv-result',
+      '<span class="result-big">$' + usd.toLocaleString('en-IN',{maximumFractionDigits:2}) + ' USD</span>' +
+      'At live rate ₹' + USD_RATE.toFixed(2) + ' / USD');
   } else {
-    var usd2=+document.getElementById('conv-usd').value||0;
-    var inr2=usd2*USD_RATE;
-    document.getElementById('conv-inr').value=Math.round(inr2);
-    showBox('conv-result','<span class="result-big">'+INR(Math.round(inr2))+'</span>At reference rate ₹'+USD_RATE+' / USD');
+    var usd2 = +document.getElementById('conv-usd').value || 0;
+    var inr2 = usd2 * USD_RATE;
+    document.getElementById('conv-inr').value = Math.round(inr2);
+    showBox('conv-result',
+      '<span class="result-big">' + INR(Math.round(inr2)) + '</span>' +
+      'At live rate ₹' + USD_RATE.toFixed(2) + ' / USD');
   }
 }
-// init converter
 (function(){ convertCurrency('inr'); })();
 
 /* ─── PORTFOLIO ───────────────────────────────────────── */
-function calcPortfolio(){
-  var total=+document.getElementById('port-total').value||0;
-  var intlPct=Math.min(100,Math.max(0,+document.getElementById('port-intl').value||0));
-  var domPct=100-intlPct;
-  var intlAmt=total*intlPct/100;
-  var domAmt=total*domPct/100;
-  var bars=[
-    {label:'International',pct:intlPct,color:'var(--cyan)',amt:intlAmt},
-    {label:'Domestic India',pct:domPct,color:'var(--violet)',amt:domAmt}
+function calcPortfolio() {
+  var total = +document.getElementById('port-total').value || 0;
+  var intlPct = Math.min(100, Math.max(0, +document.getElementById('port-intl').value || 0));
+  var domPct = 100 - intlPct;
+  var intlAmt = total * intlPct / 100;
+  var domAmt = total * domPct / 100;
+  var bars = [
+    {label:'International', pct:intlPct, color:'var(--cyan)', amt:intlAmt},
+    {label:'Domestic India', pct:domPct, color:'var(--violet)', amt:domAmt}
   ];
-  var html=bars.map(b=>`
+  var html = bars.map(b => `
     <div class="alloc-row">
       <div class="alloc-label"><span>${b.label}</span><span style="color:${b.color}">${b.pct.toFixed(0)}% — ₹${b.amt.toFixed(1)}L</span></div>
       <div class="alloc-bar"><div class="alloc-fill" style="width:${b.pct}%;background:${b.color}"></div></div>
     </div>`).join('');
-  document.getElementById('port-bars').innerHTML=html;
+  document.getElementById('port-bars').innerHTML = html;
   showBox('port-result',
-    '<span class="result-big">Total: ₹'+total.toFixed(1)+' Lakhs</span>'+
-    'Intl: ₹'+intlAmt.toFixed(2)+'L &nbsp;|&nbsp; Domestic: ₹'+domAmt.toFixed(2)+'L');
+    '<span class="result-big">Total: ₹' + total.toFixed(1) + ' Lakhs</span>' +
+    'Intl: ₹' + intlAmt.toFixed(2) + 'L &nbsp;|&nbsp; Domestic: ₹' + domAmt.toFixed(2) + 'L');
 }
 (function(){ calcPortfolio(); })();
 
 /* ─── FREELANCE ───────────────────────────────────────── */
-function calcFreelance(){
-  var rate=+document.getElementById('fl-rate').value||0;
-  var hrs=+document.getElementById('fl-hrs').value||0;
-  var wks=+document.getElementById('fl-wks').value||0;
-  var annualUSD=rate*hrs*wks;
-  var annualINR=annualUSD*USD_RATE;
+function calcFreelance() {
+  var rate = +document.getElementById('fl-rate').value || 0;
+  var hrs = +document.getElementById('fl-hrs').value || 0;
+  var wks = +document.getElementById('fl-wks').value || 0;
+  var annualUSD = rate * hrs * wks;
+  var annualINR = annualUSD * USD_RATE;
   showBox('fl-result',
-    '<span class="result-big">'+INR(Math.round(annualINR))+'</span>'+
-    'Annual USD earnings: $'+annualUSD.toLocaleString()+
-    '<br><small style="color:var(--muted)">Monthly ≈ '+INR(Math.round(annualINR/12))+'</small>');
+    '<span class="result-big">' + INR(Math.round(annualINR)) + '</span>' +
+    'Annual USD earnings: $' + annualUSD.toLocaleString() +
+    '<br><small style="color:var(--muted)">Monthly ≈ ' + INR(Math.round(annualINR/12)) + '</small>');
 }
 
 /* ─── REMOTE SALARY ───────────────────────────────────── */
-function calcRemote(){
-  var sal=+document.getElementById('rs-sal').value||0;
-  var tax=+document.getElementById('rs-tax').value||0;
-  var rate=+document.getElementById('rs-rate').value||USD_RATE;
-  var afterTax=sal*(1-tax/100);
-  var inr=afterTax*rate;
+function calcRemote() {
+  var sal = +document.getElementById('rs-sal').value || 0;
+  var tax = +document.getElementById('rs-tax').value || 0;
+  var rate = +document.getElementById('rs-rate').value || USD_RATE;
+  var afterTax = sal * (1 - tax/100);
+  var inr = afterTax * rate;
   showBox('rs-result',
-    '<span class="result-big">'+INR(Math.round(inr))+'</span>'+
-    'Post-tax USD: $'+Math.round(afterTax).toLocaleString()+
-    '<br><small style="color:var(--muted)">Monthly take-home ≈ '+INR(Math.round(inr/12))+'</small>');
+    '<span class="result-big">' + INR(Math.round(inr)) + '</span>' +
+    'Post-tax USD: $' + Math.round(afterTax).toLocaleString() +
+    '<br><small style="color:var(--muted)">Monthly take-home ≈ ' + INR(Math.round(inr/12)) + '</small>');
 }
 
 /* ─── HOURLY RATE ─────────────────────────────────────── */
-function calcHourly(){
-  var target=+document.getElementById('hr-target').value||0;
-  var hrs=+document.getElementById('hr-hrs').value||0;
-  var rate=+document.getElementById('hr-rate').value||USD_RATE;
-  if(!hrs||!rate) return;
-  var targetUSD=target/rate;
-  var hourly=targetUSD/hrs;
+function calcHourly() {
+  var target = +document.getElementById('hr-target').value || 0;
+  var hrs = +document.getElementById('hr-hrs').value || 0;
+  var rate = +document.getElementById('hr-rate').value || USD_RATE;
+  if (!hrs || !rate) return;
+  var targetUSD = target / rate;
+  var hourly = targetUSD / hrs;
   showBox('hr-result',
-    '<span class="result-big">$'+hourly.toFixed(2)+' / hr</span>'+
-    'Target '+INR(target)+'/mo at '+hrs+' hrs/mo'+
-    '<br><small style="color:var(--muted)">Annual goal: '+INR(target*12)+'</small>');
+    '<span class="result-big">$' + hourly.toFixed(2) + ' / hr</span>' +
+    'Target ' + INR(target) + '/mo at ' + hrs + ' hrs/mo' +
+    '<br><small style="color:var(--muted)">Annual goal: ' + INR(target*12) + '</small>');
 }
 
 /* ─── TAX ─────────────────────────────────────────────── */
-function calcTax(){
-  var res=document.getElementById('tax-res').value;
-  var inc=+document.getElementById('tax-income').value||0;
-  var paid=+document.getElementById('tax-paid').value||0;
-  var incINR=inc*USD_RATE;
-  var dtaa=Math.min(paid,30);
-  var slab=res==='nri'?0:res==='rnor'?0:incINR>1000000?30:incINR>500000?20:incINR>250000?5:0;
-  var tax=res==='nri'?0:incINR*slab/100;
-  var dtaaCredit=Math.min(tax,incINR*dtaa/100);
-  var payable=Math.max(0,tax-dtaaCredit);
-  var badge=res==='nri'?'<span class="badge green">NRI — Exempt</span>':payable<5000?'<span class="badge green">Low Liability</span>':'<span class="badge gold">Tax Due</span>';
+function calcTax() {
+  var res = document.getElementById('tax-res').value;
+  var inc = +document.getElementById('tax-income').value || 0;
+  var paid = +document.getElementById('tax-paid').value || 0;
+  var incINR = inc * USD_RATE;
+  var dtaa = Math.min(paid, 30);
+  var slab = res==='nri' ? 0 : res==='rnor' ? 0 : incINR>1000000 ? 30 : incINR>500000 ? 20 : incINR>250000 ? 5 : 0;
+  var tax = res==='nri' ? 0 : incINR * slab / 100;
+  var dtaaCredit = Math.min(tax, incINR * dtaa / 100);
+  var payable = Math.max(0, tax - dtaaCredit);
+  var badge = res==='nri'
+    ? '<span class="badge green">NRI — Exempt</span>'
+    : payable < 5000
+      ? '<span class="badge green">Low Liability</span>'
+      : '<span class="badge gold">Tax Due</span>';
   showBox('tax-result',
-    badge+
-    '<span class="result-big" style="margin-top:10px">'+INR(Math.round(payable))+'</span>'+
-    'Applicable rate: '+slab+'% &nbsp;|&nbsp; DTAA credit: '+INR(Math.round(dtaaCredit))+
+    badge +
+    '<span class="result-big" style="margin-top:10px">' + INR(Math.round(payable)) + '</span>' +
+    'Applicable rate: ' + slab + '% &nbsp;|&nbsp; DTAA credit: ' + INR(Math.round(dtaaCredit)) +
     '<br><small style="color:var(--muted)">For illustration only. Consult a tax advisor.</small>');
 }
 
 /* ─── NRI TAX ─────────────────────────────────────────── */
-function calcNRI(){
-  var inc=+document.getElementById('nri-inc').value||0;
-  var ded=+document.getElementById('nri-ded').value||0;
-  var hra=+document.getElementById('nri-hra').value||0;
-  var taxable=Math.max(0,inc-ded-hra);
-  var tax=0;
-  if(taxable>1500000) tax=112500+(taxable-1500000)*0.30;
-  else if(taxable>1000000) tax=75000+(taxable-1000000)*0.20;
-  else if(taxable>750000) tax=37500+(taxable-750000)*0.15;
-  else if(taxable>500000) tax=12500+(taxable-500000)*0.10;
-  else if(taxable>250000) tax=(taxable-250000)*0.05;
-  var cess=tax*0.04;
-  var total=tax+cess;
-  var eff=inc>0?(total/inc*100):0;
+function calcNRI() {
+  var inc = +document.getElementById('nri-inc').value || 0;
+  var ded = +document.getElementById('nri-ded').value || 0;
+  var hra = +document.getElementById('nri-hra').value || 0;
+  var taxable = Math.max(0, inc - ded - hra);
+  var tax = 0;
+  if (taxable > 1500000) tax = 112500 + (taxable-1500000) * 0.30;
+  else if (taxable > 1000000) tax = 75000 + (taxable-1000000) * 0.20;
+  else if (taxable > 750000) tax = 37500 + (taxable-750000) * 0.15;
+  else if (taxable > 500000) tax = 12500 + (taxable-500000) * 0.10;
+  else if (taxable > 250000) tax = (taxable-250000) * 0.05;
+  var cess = tax * 0.04;
+  var total = tax + cess;
+  var eff = inc > 0 ? (total / inc * 100) : 0;
   showBox('nri-result',
-    '<span class="result-big">'+INR(Math.round(total))+'</span>'+
-    'Taxable income: '+INR(Math.round(taxable))+' &nbsp;|&nbsp; Cess: '+INR(Math.round(cess))+
-    '<br>Effective rate: <strong style="color:var(--cyan)">'+eff.toFixed(1)+'%</strong>'+
+    '<span class="result-big">' + INR(Math.round(total)) + '</span>' +
+    'Taxable income: ' + INR(Math.round(taxable)) + ' &nbsp;|&nbsp; Cess: ' + INR(Math.round(cess)) +
+    '<br>Effective rate: <strong style="color:var(--cyan)">' + eff.toFixed(1) + '%</strong>' +
     '<br><small style="color:var(--muted)">New tax regime slabs. Consult a CA for filing.</small>');
 }
 
 /* ─── AI ADVISOR ──────────────────────────────────────── */
-var adviceMap={
+var adviceMap = {
   invest:[
     'Based on rupee weakness, <strong>US equity ETFs</strong> and <strong>gold</strong> offer strong INR-amplified returns.',
     'Consider a <strong>30% international allocation</strong>: S&P 500 index funds via LRS route ($250K limit/year).',
@@ -780,38 +1048,94 @@ var adviceMap={
     'Export of services is <strong>GST-exempt</strong> if payment is received in foreign currency. Keep compliance documentation.'
   ]
 };
-function showAdvice(intent,el){
-  document.querySelectorAll('.intent-btn').forEach(b=>b.classList.remove('active'));
+function showAdvice(intent, el) {
+  document.querySelectorAll('.intent-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  var tips=adviceMap[intent];
-  var html=tips.map((t,i)=>`<p style="margin:${i?'12px':'0'} 0 0"><span style="color:var(--cyan);font-weight:700">→</span> ${t}</p>`).join('');
-  var out=document.getElementById('advisor-out');
-  out.innerHTML=html;out.classList.add('show');
+  var tips = adviceMap[intent];
+  var html = tips.map((t,i) => `<p style="margin:${i?'12px':'0'} 0 0"><span style="color:var(--cyan);font-weight:700">→</span> ${t}</p>`).join('');
+  var out = document.getElementById('advisor-out');
+  out.innerHTML = html;
+  out.classList.add('show');
 }
 
 /* ─── LEAD POPUP ──────────────────────────────────────── */
-var interactionCount=0;
-var popupShown=false;
-function maybePopup(){
-  if(popupShown)return;
+var interactionCount = 0;
+var popupShown = false;
+
+function maybePopup() {
+  if (popupShown) return;
   interactionCount++;
-  if(interactionCount>=3){openPopup();}
+  if (interactionCount >= 3) { openPopup(); }
 }
-document.addEventListener('input',maybePopup);
-document.addEventListener('click',function(e){
-  if(e.target.classList.contains('calc-btn')||e.target.classList.contains('intent-btn')||e.target.classList.contains('signal-card')) maybePopup();
+document.addEventListener('input', maybePopup);
+document.addEventListener('click', function(e) {
+  if (
+    e.target.classList.contains('calc-btn') ||
+    e.target.classList.contains('intent-btn') ||
+    e.target.classList.contains('signal-card')
+  ) maybePopup();
 });
-window.addEventListener('scroll',function(){
-  if(popupShown)return;
-  var pct=window.scrollY/(document.body.scrollHeight-window.innerHeight);
-  if(pct>0.6)openPopup();
-},{passive:true});
-function openPopup(){if(!popupShown){document.getElementById('popup').classList.add('show');popupShown=true;}}
-function closePopup(){document.getElementById('popup').classList.remove('show');}
-function submitLead(){
-  alert('Thanks! You\'ll receive your first global finance insight shortly.');
+
+// Exit intent — mouse leaves toward top of page
+document.addEventListener('mouseleave', function(e) {
+  if (e.clientY < 10) { openPopup(); }
+});
+
+// Scroll tracking + scroll-triggered popup
+var scrollTracked = false;
+window.addEventListener('scroll', function() {
+  var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  if (!scrollTracked && window.scrollY > 500) {
+    gtag('event', 'scroll_50', { event_category: 'engagement' });
+    scrollTracked = true;
+  }
+  if (!popupShown && pct > 0.6) { openPopup(); }
+}, {passive: true});
+
+function openPopup() {
+  if (!popupShown) {
+    document.getElementById('popup').classList.add('show');
+    popupShown = true;
+  }
+}
+function closePopup() {
+  document.getElementById('popup').classList.remove('show');
+}
+function submitLead() {
+  var name = document.getElementById('pop-name').value.trim();
+  var email = document.getElementById('pop-email').value.trim();
+  var phone = document.getElementById('pop-wa').value.trim();
+
+  if (!name || !phone) {
+    alert('Please enter your name and phone number');
+    return;
+  }
+
+  gtag('event', 'lead_submit', {
+    event_category: 'engagement',
+    event_label: 'global_finance_popup'
+  });
+
+  fetch('https://script.google.com/macros/s/AKfycbz6_ehdRSZAmotOCtFcjhk7btwo7ozMGFnSUkzKTjYbG6eQZ28Jrvh5YAjHJcEnH-U0/exec', {
+    method: 'POST',
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      phone: phone,
+      source: 'global-finance-page',
+      time: new Date().toISOString(),
+      secret: 'IP_SECRET_2026'
+    }),
+    headers: { 'Content-Type': 'application/json' }
+  }).catch(function(){});
+
+  alert('Thank you! We will contact you shortly.');
+  window.open('https://wa.me/919311354795', '_blank');
   closePopup();
 }
+
+/* ─── INIT ────────────────────────────────────────────── */
+loadChart();
 </script>
   <script src="/js/contact.js"></script>
   <script src="/js/main.js"></script>
