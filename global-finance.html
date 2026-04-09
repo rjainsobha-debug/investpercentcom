@@ -639,7 +639,7 @@
 gtag('event', 'page_loaded', { event_category: 'engagement' });
 
 /* ─── NAVBAR LOAD ─────────────────────────────────────── */
-fetch('components/navbar.html')
+fetch('/components/navbar.html')
   .then(r => r.text())
   .then(html => { document.getElementById('navbar-slot').innerHTML = html; })
   .catch(() => {
