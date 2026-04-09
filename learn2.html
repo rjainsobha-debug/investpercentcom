@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="css/navbar.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learn &amp; Play Finance — investpercent</title>
@@ -553,7 +553,7 @@
     .reward-toast.show{transform:translateX(-50%) translateY(0)}
     @media(max-width:760px){.blog-grid{grid-template-columns:1fr}.daily-challenge{padding:14px}}
   </style>
-  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="css/navbar.css">
   <link rel="canonical" href="https://investpercent.com/learn.html" />
 </head>
 <body>
@@ -607,6 +607,29 @@
       </div>
 
       <div class="gamebar" id="gameBar">
+        <div class="daily-challenge" id="dailyChallenge">
+  <div class="dc-top">
+    <h3>🔥 Daily Challenge</h3>
+    <div class="dc-reward">+50 XP</div>
+  </div>
+
+  <div class="dc-tasks">
+    <div class="dc-task" id="task1">
+      <div class="dc-check">✓</div>
+      <span>Read 1 topic</span>
+    </div>
+    <div class="dc-task" id="task2">
+      <div class="dc-check">✓</div>
+      <span>Play 1 game</span>
+    </div>
+    <div class="dc-task" id="task3">
+      <div class="dc-check">✓</div>
+      <span>Complete 1 quiz</span>
+    </div>
+  </div>
+
+  <button class="dc-start" onclick="startDailyChallenge()">Start Challenge</button>
+</div>
         <div class="gam-item">
           <span class="gi-icon">&#x26A1;</span>
           <span class="gi-val" id="xpValue">0</span>
@@ -2940,5 +2963,73 @@ function startDailyChallenge(){
 })();
 </script>
   <script src="/js/common.js"></script>
+<script>
+window.openAdvisor = window.openAdvisor || function(source="learn"){
+  const phone = "919311354795";
+  const msg = encodeURIComponent("Hi, I need help. Source: " + source);
+  window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+
+  if(window.gtag){
+    gtag('event','whatsapp_click',{source});
+  }
+};
+</script>
+<script>
+let leadOpened=false;
+
+function openLead(){
+  if(leadOpened) return;
+  leadOpened=true;
+  document.querySelector('.lead-overlay')?.style.display='flex';
+}
+
+setTimeout(openLead,25000);
+
+window.addEventListener('scroll',()=>{
+  if(window.scrollY > window.innerHeight*0.4){
+    openLead();
+  }
+});
+</script>
+<script>
+function startDailyChallenge(){
+
+  let xp = parseInt(localStorage.getItem("xp") || "0");
+  xp += 50;
+  localStorage.setItem("xp", xp);
+
+  document.getElementById("task1").classList.add("done");
+  document.getElementById("task2").classList.add("done");
+  document.getElementById("task3").classList.add("done");
+
+  // XP UI update
+  document.getElementById("xpValue").innerText = xp;
+
+  // GA tracking
+  if(window.gtag){
+    gtag('event','daily_challenge_completed');
+  }
+
+  // WhatsApp trigger (VERY IMPORTANT FOR LEADS)
+  openAdvisor('daily_challenge');
+
+  // Toast
+  showRewardToast("🔥 Daily Challenge Complete! +50 XP");
+}
+</script>
+<script>
+function showRewardToast(msg){
+  let toast = document.createElement("div");
+  toast.className = "reward-toast show";
+  toast.innerText = msg;
+
+  document.body.appendChild(toast);
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+    setTimeout(()=>toast.remove(),300);
+  },2000);
+}
+</script>
 </body>
 </html>
