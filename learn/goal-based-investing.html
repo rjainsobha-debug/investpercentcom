@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Goal-Based Investing — Invest with Purpose | investpercent</title>
+  <meta name="description" content="Learn goal-based investing — map short, medium, and long-term financial goals to the right investment instruments and timelines for maximum efficiency."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1V4L60RZZP');</script>
+  <style>
+    :root{--bg:#060915;--line:rgba(255,255,255,.08);--text:#f7fbff;--muted:#9da9c6;--cyan:#00d4ff;--blue:#4fa3ff;--green:#00e676;--gold:#ffd76a;--red:#ff607d;--grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%);}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--bg);min-height:100vh;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:860px;margin:0 auto;padding:24px 16px 48px}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:22px}
+    .breadcrumb a{color:var(--blue)}.breadcrumb span{color:rgba(255,255,255,.2)}
+    .page-hero{padding:28px;border-radius:22px;background:radial-gradient(circle at 15% 20%,rgba(0,212,255,.12),transparent 30%),linear-gradient(180deg,#070c18,#091224);border:1px solid var(--line);margin-bottom:24px}
+    .page-tag{display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;text-transform:uppercase;margin-bottom:12px;background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid rgba(0,212,255,.2)}
+    .page-hero h1{font-family:Poppins,sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800;letter-spacing:-.04em;line-height:1.15;margin-bottom:10px}
+    .page-hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .page-hero p{color:var(--muted);font-size:15px;line-height:1.65}
+    .content-block{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px}
+    .content-block h2{font-size:18px;font-weight:800;margin-bottom:12px}
+    .content-block p{color:#c8d4f0;font-size:14px;line-height:1.75;margin-bottom:12px}
+    .content-block ul{padding-left:20px;margin-bottom:12px}
+    .content-block ul li{color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:5px}
+    .content-block ul li strong{color:var(--text)}
+    .example-box{padding:16px;border-radius:14px;background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.15);margin:12px 0}
+    .ex-label{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--green);margin-bottom:7px}
+    .example-box p{color:#c8f0dc;font-size:14px;line-height:1.65;margin:0}
+    .tip-box{padding:14px;border-radius:14px;background:rgba(79,163,255,.07);border:1px solid rgba(79,163,255,.18);margin:12px 0;font-size:14px;color:#c8d4f0;line-height:1.65}
+    .tip-box strong{color:var(--blue)}
+    .goal-row{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+    .goal-item{padding:14px 16px;border-radius:14px;border:1px solid;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px}
+    .goal-item.short{background:rgba(0,212,255,.07);border-color:rgba(0,212,255,.15)}
+    .goal-item.mid{background:rgba(255,215,106,.07);border-color:rgba(255,215,106,.15)}
+    .goal-item.long{background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.15)}
+    .goal-horizon{font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;white-space:nowrap}
+    .short .goal-horizon{background:rgba(0,212,255,.15);color:var(--cyan)}
+    .mid .goal-horizon{background:rgba(255,215,106,.15);color:var(--gold)}
+    .long .goal-horizon{background:rgba(0,230,118,.15);color:var(--green)}
+    .goal-name{font-size:14px;font-weight:800}
+    .goal-fund{font-size:12px;color:var(--muted)}
+    .cta-section{margin-top:28px;padding:26px;border-radius:22px;background:radial-gradient(circle at 10% 50%,rgba(0,212,255,.12),transparent 40%),linear-gradient(135deg,rgba(15,24,48,.98),rgba(10,18,37,.98));border:1px solid rgba(255,255,255,.1);text-align:center}
+    .cta-section h2{font-family:Poppins,sans-serif;font-size:clamp(18px,3vw,24px);font-weight:800;margin-bottom:8px}
+    .cta-section p{color:var(--muted);font-size:14px;margin-bottom:22px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.6}
+    .cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .cta-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;border:none;transition:.2s;text-decoration:none}
+    .cta-btn:hover{transform:translateY(-2px)}
+    .cta-btn.wa{background:rgba(37,211,102,.15);color:#25d366;border:1px solid rgba(37,211,102,.3)}
+    .cta-btn.back{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--line)}
+    @media(max-width:600px){.wrap{padding:14px 12px 36px}.goal-item{grid-template-columns:1fr}.cta-btns{flex-direction:column;align-items:stretch}.cta-btn{justify-content:center}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="breadcrumb"><a href="/learn.html">📚 Learn</a><span>›</span><span>Goal-Based Investing</span></div>
+  <div class="page-hero">
+    <div class="page-tag">🎯 Strategy</div>
+    <h1><span class="g">Goal-Based Investing</span> — Invest with Purpose</h1>
+    <p>Random investing leads to random outcomes. When each rupee is mapped to a specific goal with a deadline, you pick the right instruments, stay disciplined, and actually achieve your dreams.</p>
+  </div>
+
+  <div class="content-block">
+    <h2>Why Goal-Based Investing Works</h2>
+    <p>Most people invest without clear goals — they pick funds based on past returns and panic-sell in downturns. Goal-based investing fixes this by anchoring each investment to a specific financial goal, timeline, and required return.</p>
+    <div class="tip-box"><strong>Key insight:</strong> The right investment for a 2-year goal (vacation fund) is completely different from the right investment for a 20-year goal (retirement corpus). Treating them the same destroys both goals.</div>
+  </div>
+
+  <div class="content-block">
+    <h2>Mapping Goals to Investment Instruments</h2>
+    <div class="goal-row">
+      <div class="goal-item short"><div class="goal-horizon">0–2 Years</div><div><div class="goal-name">Emergency Fund / Down Payment / Vacation</div><div class="goal-fund">→ Liquid Funds, High-Yield Savings, Arbitrage Funds, Short-term FDs</div></div></div>
+      <div class="goal-item mid"><div class="goal-horizon">3–7 Years</div><div><div class="goal-name">Car / Wedding / Home Renovation / Child Education</div><div class="goal-fund">→ Hybrid Funds, Debt + Equity Mix, ELSS, Balanced Advantage Funds</div></div></div>
+      <div class="goal-item long"><div class="goal-horizon">7+ Years</div><div><div class="goal-name">Retirement / Child's Higher Education / Own Home</div><div class="goal-fund">→ Equity Index Funds, Mid/Small Cap Funds, NPS, PPF, Equity SIPs</div></div></div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h2>Building Your Goal Portfolio — Step by Step</h2>
+    <ul>
+      <li><strong>Step 1: List all goals</strong> — Every financial goal you have (vacation, home, retirement, education)</li>
+      <li><strong>Step 2: Assign timeline</strong> — When do you need the money?</li>
+      <li><strong>Step 3: Calculate target amount</strong> — In today's value, then inflate to future value</li>
+      <li><strong>Step 4: Calculate monthly SIP needed</strong> — Backwards from target</li>
+      <li><strong>Step 5: Select fund type</strong> — Based on timeline (short = debt, long = equity)</li>
+      <li><strong>Step 6: Review annually</strong> — Rebalance if you're off track</li>
+    </ul>
+    <div class="example-box">
+      <div class="ex-label">Example: ₹60,000 Salary, Multiple Goals</div>
+      <p>Emergency Fund (target ₹2L) → ₹5,000/month liquid fund for 4 months<br>Vacation 2 years (target ₹1.5L) → ₹5,800/month arbitrage fund<br>Retirement 25 years (target ₹3 Cr) → ₹5,000/month Nifty 50 Index SIP<br>Child education 15 years (target ₹50L) → ₹8,000/month equity fund<br><strong>Total invested: ₹23,800 → ₹36,200 left for living expenses</strong></p>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <h2>Get Your Goals Mapped to the Right Investments</h2>
+    <p>Tell us your goals and timeline — we'll build the exact portfolio blueprint for you.</p>
+    <div class="cta-btns">
+      <a class="cta-btn wa" href="https://wa.me/919311354795?text=I want help with goal-based investment planning" target="_blank" rel="noopener">💬 WhatsApp Advisor</a>
+      <a class="cta-btn back" href="/learn.html">← Back to Learn</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

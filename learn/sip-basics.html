@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SIP Basics — What is SIP & How It Works | investpercent</title>
+  <meta name="description" content="Learn what SIP (Systematic Investment Plan) is, how it works, the power of rupee cost averaging, and how ₹5,000/month can grow into ₹1.76 crore in 30 years."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1V4L60RZZP');</script>
+  <style>
+    :root{--bg:#060915;--panel:#0f1830;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);--text:#f7fbff;--muted:#9da9c6;--cyan:#00d4ff;--blue:#4fa3ff;--violet:#7b61ff;--green:#00e676;--gold:#ffd76a;--red:#ff607d;--grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%);--shadow:0 22px 70px rgba(0,0,0,.38);}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--bg);min-height:100vh;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:860px;margin:0 auto;padding:24px 16px 48px}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:22px;flex-wrap:wrap}
+    .breadcrumb a{color:var(--blue);transition:.2s}.breadcrumb a:hover{color:var(--cyan)}.breadcrumb span{color:rgba(255,255,255,.2)}
+    .page-hero{padding:28px 28px 22px;border-radius:22px;background:radial-gradient(circle at 15% 20%,rgba(0,212,255,.15),transparent 30%),linear-gradient(180deg,#070c18 0%,#091224 100%);border:1px solid var(--line);margin-bottom:24px}
+    .page-tag{display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid rgba(0,212,255,.2)}
+    .page-hero h1{font-family:Poppins,sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800;letter-spacing:-.04em;line-height:1.15;margin-bottom:10px}
+    .page-hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .page-hero p{color:var(--muted);font-size:15px;line-height:1.65;max-width:700px}
+    .content-block{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px}
+    .content-block h2{font-size:18px;font-weight:800;letter-spacing:-.03em;margin-bottom:12px;color:var(--text)}
+    .content-block h3{font-size:15px;font-weight:800;color:var(--cyan);margin:16px 0 8px}
+    .content-block p{color:#c8d4f0;font-size:14px;line-height:1.75;margin-bottom:12px}
+    .content-block ul{padding-left:20px;margin-bottom:12px}
+    .content-block ul li{color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:5px}
+    .content-block ul li strong{color:var(--text)}
+    .example-box{padding:16px;border-radius:14px;background:radial-gradient(circle at top left,rgba(0,230,118,.08),transparent 50%),rgba(255,255,255,.03);border:1px solid rgba(0,230,118,.15);margin:12px 0}
+    .ex-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--green);margin-bottom:7px}
+    .example-box p{color:#c8f0dc;margin-bottom:0}
+    .tip-box{padding:14px 16px;border-radius:14px;background:rgba(79,163,255,.07);border:1px solid rgba(79,163,255,.18);margin:12px 0;font-size:14px;color:#c8d4f0;line-height:1.65}
+    .tip-box strong{color:var(--blue)}
+    .warn-box{padding:14px 16px;border-radius:14px;background:rgba(255,96,125,.06);border:1px solid rgba(255,96,125,.18);margin:12px 0;font-size:14px;color:#f0c8d0;line-height:1.65}
+    .warn-box strong{color:var(--red)}
+    .data-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .data-table th{background:rgba(0,212,255,.08);color:var(--cyan);font-size:13px;font-weight:800;padding:10px 12px;text-align:left;border-bottom:1px solid rgba(0,212,255,.15)}
+    .data-table td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--line);color:#c8d4f0}
+    .data-table tr:last-child td{border-bottom:none}
+    .cta-section{margin-top:28px;padding:26px;border-radius:22px;background:radial-gradient(circle at 10% 50%,rgba(0,212,255,.12),transparent 40%),radial-gradient(circle at 90% 50%,rgba(123,97,255,.12),transparent 40%),linear-gradient(135deg,rgba(15,24,48,.98),rgba(10,18,37,.98));border:1px solid rgba(255,255,255,.1);text-align:center}
+    .cta-section h2{font-family:Poppins,sans-serif;font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.04em;margin-bottom:8px}
+    .cta-section p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:22px;max-width:500px;margin-left:auto;margin-right:auto}
+    .cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .cta-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;border:none;transition:.2s;text-decoration:none}
+    .cta-btn:hover{transform:translateY(-2px)}
+    .cta-btn.primary{background:var(--grad);color:#071120;box-shadow:0 10px 26px rgba(79,163,255,.25)}
+    .cta-btn.wa{background:rgba(37,211,102,.15);color:#25d366;border:1px solid rgba(37,211,102,.3)}
+    .cta-btn.quiz{background:rgba(123,97,255,.15);color:#c4b5fd;border:1px solid rgba(123,97,255,.3)}
+    .cta-btn.back{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--line)}
+    .cta-btn.back:hover{color:var(--text);border-color:var(--line2)}
+    @media(max-width:600px){.wrap{padding:14px 12px 36px}.page-hero{padding:18px}.cta-btns{flex-direction:column;align-items:stretch}.cta-btn{justify-content:center}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="breadcrumb">
+    <a href="/learn.html">📚 Learn</a><span>›</span><span>SIP Basics</span>
+  </div>
+
+  <div class="page-hero">
+    <div class="page-tag">📈 Investing</div>
+    <h1>What is <span class="g">SIP</span>?<br>Systematic Investment Plan Explained</h1>
+    <p>India's most powerful wealth-building tool — how ₹5,000/month invested consistently can grow into over ₹1.76 crore in 30 years, without timing the market.</p>
+  </div>
+
+  <div class="content-block">
+    <h2>What is a SIP?</h2>
+    <p>A Systematic Investment Plan (SIP) allows you to invest a fixed amount in a mutual fund at regular intervals — usually monthly. Think of it like an EMI, but instead of paying off a debt, you're building wealth.</p>
+    <p>When you start a SIP, a fixed amount is automatically debited from your bank account on a chosen date every month, and units of the selected mutual fund are allocated to you at the prevailing NAV (Net Asset Value) price.</p>
+    <div class="tip-box"><strong>Key Insight:</strong> SIP doesn't require you to time the market. You invest the same amount every month — whether the market is up or down. This is called Rupee Cost Averaging.</div>
+  </div>
+
+  <div class="content-block">
+    <h2>How Rupee Cost Averaging Works</h2>
+    <p>When markets fall, your fixed SIP amount buys more units. When markets rise, it buys fewer units. Over time, your average cost per unit reduces — giving you better returns than a lump-sum investor who tried to time the market.</p>
+    <div class="example-box">
+      <div class="ex-label">Example</div>
+      <p>You invest ₹5,000/month. January: NAV ₹100 → 50 units. February: NAV ₹80 → 62.5 units. March: NAV ₹110 → 45.45 units. Average cost: ₹96.7 vs current NAV ₹110. You're already in profit even though the market went down first.</p>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h2>The Real Power: Compounding Over Time</h2>
+    <table class="data-table">
+      <tr><th>Monthly SIP</th><th>Years</th><th>Total Invested</th><th>Value at 12% CAGR</th></tr>
+      <tr><td>₹5,000</td><td>10</td><td>₹6,00,000</td><td>₹11.6 Lakh</td></tr>
+      <tr><td>₹5,000</td><td>20</td><td>₹12,00,000</td><td>₹49.9 Lakh</td></tr>
+      <tr><td>₹5,000</td><td>30</td><td>₹18,00,000</td><td>₹1.76 Crore</td></tr>
+      <tr><td>₹10,000</td><td>20</td><td>₹24,00,000</td><td>₹99.9 Lakh</td></tr>
+    </table>
+    <p>Notice how the last 10 years (20→30) add far more than the first 10 years. That's compounding accelerating — the longer you stay, the faster your wealth grows.</p>
+  </div>
+
+  <div class="content-block">
+    <h2>Benefits of SIP</h2>
+    <ul>
+      <li><strong>Start small:</strong> Begin with as little as ₹500/month</li>
+      <li><strong>Disciplined investing:</strong> Auto-debit removes the temptation to skip</li>
+      <li><strong>No market timing needed:</strong> Rupee cost averaging handles volatility</li>
+      <li><strong>Flexible:</strong> Pause, increase, or stop anytime</li>
+      <li><strong>Tax efficient:</strong> ELSS SIPs save tax under Section 80C</li>
+      <li><strong>Transparent:</strong> Daily NAV, SEBI regulated, audited funds</li>
+    </ul>
+  </div>
+
+  <div class="content-block">
+    <h2>Common SIP Mistakes to Avoid</h2>
+    <div class="warn-box"><strong>Mistake #1: Stopping SIP when markets fall.</strong> This is the worst time to stop — you're actually buying more units at lower prices. Stopping locks in losses and breaks compounding.</div>
+    <div class="warn-box"><strong>Mistake #2: Too many funds.</strong> 3–4 well-chosen funds are better than 15 overlapping ones. Diversification within a fund is already built in.</div>
+    <div class="warn-box"><strong>Mistake #3: Choosing regular plan over direct.</strong> Regular plans pay 0.5–1.5% commission to agents annually. Over 20 years, this can cost you ₹15–25 lakh on a modest SIP.</div>
+    <div class="warn-box"><strong>Mistake #4: Ignoring step-up SIP.</strong> Increase your SIP by 10% each year as your salary grows. ₹5,000/month stepped up to 10% annually for 20 years generates 2.5× more than a flat SIP.</div>
+  </div>
+
+  <div class="content-block">
+    <h2>How to Start Your First SIP</h2>
+    <ul>
+      <li><strong>Step 1:</strong> Complete KYC via Aadhaar + PAN (takes 10 minutes online)</li>
+      <li><strong>Step 2:</strong> Choose a platform — Zerodha Coin, Groww, MFCentral, or your bank</li>
+      <li><strong>Step 3:</strong> Select a fund — for beginners, start with a Nifty 50 Index Fund</li>
+      <li><strong>Step 4:</strong> Set your SIP date, amount, and bank mandate</li>
+      <li><strong>Step 5:</strong> Never touch it for at least 5 years. Let compounding work.</li>
+    </ul>
+    <div class="tip-box"><strong>Best First Fund:</strong> Nifty 50 Index Fund (Direct Plan) from any major AMC. Low expense ratio (0.1–0.2%), fully diversified, market-beating over most 10-year periods.</div>
+  </div>
+
+  <div class="cta-section">
+    <h2>Ready to Start Your SIP Journey?</h2>
+    <p>Talk to our advisors for a personalized SIP plan based on your income, goals, and risk profile — completely free.</p>
+    <div class="cta-btns">
+      <a class="cta-btn primary" href="/investment.html">📊 SIP Calculator</a>
+      <a class="cta-btn wa" href="https://wa.me/919311354795?text=I want financial guidance on SIP" target="_blank" rel="noopener">💬 WhatsApp Advisor</a>
+      <a class="cta-btn quiz" href="/learn.html">🧠 Take Quiz on Learn Page</a>
+      <a class="cta-btn back" href="/learn.html">← Back to Learn</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

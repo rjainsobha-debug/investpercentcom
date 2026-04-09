@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Power of Compounding — How Money Multiplies Over Time | investpercent</title>
+  <meta name="description" content="Understand the power of compounding with real examples. See how ₹1 lakh grows to ₹96 lakh over 30 years at 12% and why starting early is the single most important financial decision."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1V4L60RZZP');</script>
+  <style>
+    :root{--bg:#060915;--line:rgba(255,255,255,.08);--text:#f7fbff;--muted:#9da9c6;--cyan:#00d4ff;--blue:#4fa3ff;--green:#00e676;--gold:#ffd76a;--red:#ff607d;--grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%);}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--bg);min-height:100vh;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:860px;margin:0 auto;padding:24px 16px 48px}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:22px}
+    .breadcrumb a{color:var(--blue)}.breadcrumb span{color:rgba(255,255,255,.2)}
+    .page-hero{padding:28px;border-radius:22px;background:radial-gradient(circle at 15% 20%,rgba(0,212,255,.15),transparent 30%),linear-gradient(180deg,#070c18,#091224);border:1px solid var(--line);margin-bottom:24px}
+    .page-tag{display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;text-transform:uppercase;margin-bottom:12px;background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+    .page-hero h1{font-family:Poppins,sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800;letter-spacing:-.04em;line-height:1.15;margin-bottom:10px}
+    .page-hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .page-hero p{color:var(--muted);font-size:15px;line-height:1.65}
+    .content-block{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px}
+    .content-block h2{font-size:18px;font-weight:800;margin-bottom:12px}
+    .content-block p{color:#c8d4f0;font-size:14px;line-height:1.75;margin-bottom:12px}
+    .content-block ul{padding-left:20px;margin-bottom:12px}
+    .content-block ul li{color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:5px}
+    .content-block ul li strong{color:var(--text)}
+    .example-box{padding:16px;border-radius:14px;background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.15);margin:12px 0}
+    .ex-label{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--green);margin-bottom:7px}
+    .example-box p{color:#c8f0dc;font-size:14px;line-height:1.65;margin:0}
+    .tip-box{padding:14px;border-radius:14px;background:rgba(79,163,255,.07);border:1px solid rgba(79,163,255,.18);margin:12px 0;font-size:14px;color:#c8d4f0;line-height:1.65}
+    .tip-box strong{color:var(--blue)}
+    .compound-timeline{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:14px 0}
+    .ct-item{padding:14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line);text-align:center}
+    .ct-year{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px}
+    .ct-val{font-size:18px;font-weight:800;color:var(--cyan);letter-spacing:-.02em}
+    .data-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .data-table th{background:rgba(0,212,255,.08);color:var(--cyan);font-size:13px;font-weight:800;padding:10px 12px;text-align:left;border-bottom:1px solid rgba(0,212,255,.15)}
+    .data-table td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--line);color:#c8d4f0}
+    .data-table tr:last-child td{border-bottom:none}
+    .cta-section{margin-top:28px;padding:26px;border-radius:22px;background:radial-gradient(circle at 10% 50%,rgba(0,212,255,.12),transparent 40%),linear-gradient(135deg,rgba(15,24,48,.98),rgba(10,18,37,.98));border:1px solid rgba(255,255,255,.1);text-align:center}
+    .cta-section h2{font-family:Poppins,sans-serif;font-size:clamp(18px,3vw,24px);font-weight:800;margin-bottom:8px}
+    .cta-section p{color:var(--muted);font-size:14px;margin-bottom:22px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.6}
+    .cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .cta-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;border:none;transition:.2s;text-decoration:none}
+    .cta-btn:hover{transform:translateY(-2px)}
+    .cta-btn.primary{background:var(--grad);color:#071120}
+    .cta-btn.wa{background:rgba(37,211,102,.15);color:#25d366;border:1px solid rgba(37,211,102,.3)}
+    .cta-btn.quiz{background:rgba(123,97,255,.15);color:#c4b5fd;border:1px solid rgba(123,97,255,.3)}
+    .cta-btn.back{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--line)}
+    @media(max-width:600px){.wrap{padding:14px 12px 36px}.cta-btns{flex-direction:column;align-items:stretch}.cta-btn{justify-content:center}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="breadcrumb"><a href="/learn.html">📚 Learn</a><span>›</span><span>Power of Compounding</span></div>
+
+  <div class="page-hero">
+    <div class="page-tag">🚀 Fundamentals</div>
+    <h1>The <span class="g">Power of Compounding</span> — Einstein's 8th Wonder</h1>
+    <p>Compound interest is the most powerful force in wealth creation. Understand why starting 5 years earlier can mean the difference between ₹50 lakh and ₹1 crore at retirement.</p>
+  </div>
+
+  <div class="content-block">
+    <h2>What is Compounding?</h2>
+    <p>Compounding means your investment returns also earn returns. Unlike simple interest (which grows linearly), compound interest grows exponentially — slowly at first, then explosively over time.</p>
+    <p><strong>Formula:</strong> Future Value = Principal × (1 + rate)^years</p>
+    <div class="example-box">
+      <div class="ex-label">Simple vs Compound Interest on ₹1,00,000 at 12%</div>
+      <p>Simple Interest (20 years): ₹1L + ₹2.4L interest = ₹3.4L total<br>Compound Interest (20 years): ₹1L grows to ₹9.65L — nearly 3× more!<br><strong>The extra ₹6.25L is entirely from compounding — you invested nothing extra.</strong></p>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h2>₹1 Lakh at 12% — Watch It Grow</h2>
+    <div class="compound-timeline">
+      <div class="ct-item"><div class="ct-year">Year 5</div><div class="ct-val">₹1.76L</div></div>
+      <div class="ct-item"><div class="ct-year">Year 10</div><div class="ct-val">₹3.1L</div></div>
+      <div class="ct-item"><div class="ct-year">Year 15</div><div class="ct-val">₹5.47L</div></div>
+      <div class="ct-item"><div class="ct-year">Year 20</div><div class="ct-val">₹9.65L</div></div>
+      <div class="ct-item"><div class="ct-year">Year 25</div><div class="ct-val">₹17L</div></div>
+      <div class="ct-item"><div class="ct-year">Year 30</div><div class="ct-val">₹29.96L</div></div>
+    </div>
+    <p>Notice how ₹1L becomes ₹30L in 30 years — but the last 10 years (Year 20→30) add ₹20.3L, while the first 10 years only added ₹2.1L. This is compounding accelerating.</p>
+  </div>
+
+  <div class="content-block">
+    <h2>The Early Start Advantage</h2>
+    <table class="data-table">
+      <tr><th>Investor</th><th>Start Age</th><th>Monthly SIP</th><th>Stops At</th><th>Value at 60</th></tr>
+      <tr><td>Priya (early)</td><td>25</td><td>₹5,000</td><td>35 (10 yrs)</td><td>₹1.7 Crore</td></tr>
+      <tr><td>Rahul (late)</td><td>35</td><td>₹5,000</td><td>60 (25 yrs)</td><td>₹94 Lakh</td></tr>
+    </table>
+    <p>Priya invested for only 10 years (₹6L total) but ends up with MORE than Rahul who invested for 25 years (₹15L total). The 10-year head start at age 25 is worth ₹76 lakh — just from compounding time.</p>
+    <div class="tip-box"><strong>The most important financial decision you'll ever make: START NOW. Not next month, not when you get a raise. Today. Even ₹500/month started at 22 beats ₹5,000/month started at 32.</strong></div>
+  </div>
+
+  <div class="content-block">
+    <h2>Rule of 72 — Mental Math for Compounding</h2>
+    <p>The Rule of 72 tells you how many years it takes to double your money: <strong>72 ÷ Annual Return = Years to Double</strong></p>
+    <ul>
+      <li><strong>Savings account (4%):</strong> 72 ÷ 4 = 18 years to double</li>
+      <li><strong>Fixed deposit (7%):</strong> 72 ÷ 7 = ~10 years to double</li>
+      <li><strong>Equity MF (12%):</strong> 72 ÷ 12 = 6 years to double</li>
+      <li><strong>Credit card debt (36%):</strong> 72 ÷ 36 = 2 years your DEBT doubles</li>
+    </ul>
+    <div class="example-box">
+      <div class="ex-label">Doubling Journey at 12% CAGR</div>
+      <p>₹10L → ₹20L (Year 6) → ₹40L (Year 12) → ₹80L (Year 18) → ₹1.6 Cr (Year 24) → ₹3.2 Cr (Year 30)<br>Your money doubles 5 times in 30 years — all without adding a single rupee more.</p>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h2>What Kills Compounding</h2>
+    <ul>
+      <li><strong>Withdrawing early:</strong> Breaking compounding resets the clock entirely</li>
+      <li><strong>High expenses:</strong> 1.5% extra annual fee reduces your 30-year wealth by 30%</li>
+      <li><strong>Pausing SIPs:</strong> Even 6 months of missed SIPs can cost lakhs long-term</li>
+      <li><strong>Inflation ignorance:</strong> 6% inflation halves purchasing power in 12 years</li>
+    </ul>
+  </div>
+
+  <div class="cta-section">
+    <h2>Let Compounding Work for You — Start Today</h2>
+    <p>Talk to our advisors to set up the right SIP that maximizes compounding for your specific goals.</p>
+    <div class="cta-btns">
+      <a class="cta-btn primary" href="/investment.html">📊 SIP Calculator</a>
+      <a class="cta-btn wa" href="https://wa.me/919311354795?text=I want to start investing and understand compounding" target="_blank" rel="noopener">💬 WhatsApp Advisor</a>
+      <a class="cta-btn back" href="/learn.html">← Back to Learn</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
