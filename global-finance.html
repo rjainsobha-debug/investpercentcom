@@ -681,35 +681,42 @@ function showBox(id, html) {
   b.classList.add('show');
 }
 
-/* ─── LIVE MARKET DATA (TWELVE DATA) ──────────────────── */
-const API_KEY = "26895022fc184825993b1d8270381a70";
+/* ─── LIVE MARKET DATA (SECURE VIA WORKER) ──────────────────── */
+
+const API_BASE = "https://flat-sky-5536.rjain-sobha.workers.dev";
 
 async function loadForex() {
   try {
     const [usdRes, eurRes] = await Promise.all([
-      fetch('https://api.twelvedata.com/price?symbol=USD/INR&apikey=' + API_KEY),
-      fetch('https://api.twelvedata.com/price?symbol=EUR/INR&apikey=' + API_KEY)
+      fetch(`${API_BASE}?symbol=USD/INR&type=forex`),
+      fetch(`${API_BASE}?symbol=EUR/INR&type=forex`)
     ]);
+
     const usdData = await usdRes.json();
     const eurData = await eurRes.json();
 
-    if (usdData.price) {
-      USD_RATE = parseFloat(usdData.price);
+    if (usdData.values && usdData.values.length) {
+      USD_RATE = parseFloat(usdData.values[0].close);
       document.getElementById('usd-inr').innerText = '₹' + USD_RATE.toFixed(2);
+
       var rsRate = document.getElementById('rs-rate');
       var hrRate = document.getElementById('hr-rate');
+
       if (rsRate && !rsRate.dataset.userEdited) rsRate.value = USD_RATE.toFixed(2);
       if (hrRate && !hrRate.dataset.userEdited) hrRate.value = USD_RATE.toFixed(2);
+
       convertCurrency('inr');
     } else {
       document.getElementById('usd-inr').innerText = 'Data unavailable';
     }
 
-    if (eurData.price) {
-      document.getElementById('eur-inr').innerText = '₹' + parseFloat(eurData.price).toFixed(2);
+    if (eurData.values && eurData.values.length) {
+      document.getElementById('eur-inr').innerText =
+        '₹' + parseFloat(eurData.values[0].close).toFixed(2);
     } else {
       document.getElementById('eur-inr').innerText = 'Data unavailable';
     }
+
   } catch(e) {
     document.getElementById('usd-inr').innerText = 'Data unavailable';
     document.getElementById('eur-inr').innerText = 'Data unavailable';
@@ -719,19 +726,32 @@ async function loadForex() {
 async function loadIndices() {
   try {
     const [spRes, nasRes] = await Promise.all([
-      fetch('https://api.twelvedata.com/price?symbol=SPX&apikey=' + API_KEY),
-      fetch('https://api.twelvedata.com/price?symbol=IXIC&apikey=' + API_KEY)
+      fetch(`${API_BASE}?symbol=SPX&type=stock`),
+      fetch(`${API_BASE}?symbol=IXIC&type=stock`)
     ]);
+
     const spData = await spRes.json();
     const nasData = await nasRes.json();
 
     var spEl = document.querySelector('[data-sp500]');
     var nasEl = document.querySelector('[data-nasdaq]');
-    if (spEl) spEl.innerText = spData.price ? parseFloat(spData.price).toLocaleString('en-US',{maximumFractionDigits:0}) : 'Data unavailable';
-    if (nasEl) nasEl.innerText = nasData.price ? parseFloat(nasData.price).toLocaleString('en-US',{maximumFractionDigits:0}) : 'Data unavailable';
+
+    if (spEl) {
+      spEl.innerText = spData.values
+        ? parseFloat(spData.values[0].close).toLocaleString('en-US',{maximumFractionDigits:0})
+        : 'Data unavailable';
+    }
+
+    if (nasEl) {
+      nasEl.innerText = nasData.values
+        ? parseFloat(nasData.values[0].close).toLocaleString('en-US',{maximumFractionDigits:0})
+        : 'Data unavailable';
+    }
+
   } catch(e) {
     var spEl = document.querySelector('[data-sp500]');
     var nasEl = document.querySelector('[data-nasdaq]');
+
     if (spEl) spEl.innerText = 'Data unavailable';
     if (nasEl) nasEl.innerText = 'Data unavailable';
   }
@@ -740,20 +760,32 @@ async function loadIndices() {
 async function loadCommodities() {
   try {
     const [goldRes, crudeRes] = await Promise.all([
-      fetch('https://api.twelvedata.com/price?symbol=XAU/USD&apikey=' + API_KEY),
-      fetch('https://api.twelvedata.com/price?symbol=WTI&apikey=' + API_KEY)
+      fetch(`${API_BASE}?symbol=XAU/USD&type=forex`),
+      fetch(`${API_BASE}?symbol=WTI&type=stock`)
     ]);
+
     const gData = await goldRes.json();
     const cData = await crudeRes.json();
 
     var goldEl = document.querySelector('[data-gold]');
     var crudeEl = document.querySelector('[data-crude]');
 
-    if (goldEl) goldEl.innerText = gData.price ? '₹' + Math.round(parseFloat(gData.price) * USD_RATE).toLocaleString('en-IN') : 'Data unavailable';
-    if (crudeEl) crudeEl.innerText = cData.price ? '$' + parseFloat(cData.price).toFixed(2) : 'Data unavailable';
+    if (goldEl) {
+      goldEl.innerText = gData.values
+        ? '₹' + Math.round(parseFloat(gData.values[0].close) * USD_RATE).toLocaleString('en-IN')
+        : 'Data unavailable';
+    }
+
+    if (crudeEl) {
+      crudeEl.innerText = cData.values
+        ? '$' + parseFloat(cData.values[0].close).toFixed(2)
+        : 'Data unavailable';
+    }
+
   } catch(e) {
     var goldEl = document.querySelector('[data-gold]');
     var crudeEl = document.querySelector('[data-crude]');
+
     if (goldEl) goldEl.innerText = 'Data unavailable';
     if (crudeEl) crudeEl.innerText = 'Data unavailable';
   }
