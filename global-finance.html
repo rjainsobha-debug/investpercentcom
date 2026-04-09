@@ -854,6 +854,7 @@ setInterval(loadAllData, 120000);
 async function loadChart() {
   try {
     var container = document.getElementById('chart-container');
+
     var chart = LightweightCharts.createChart(container, {
       width: container.clientWidth,
       height: 300,
@@ -869,33 +870,40 @@ async function loadChart() {
       rightPriceScale: { borderColor: 'rgba(255,255,255,0.1)' },
       timeScale: { borderColor: 'rgba(255,255,255,0.1)' }
     });
+
     var lineSeries = chart.addLineSeries({
       color: '#00d4ff',
       lineWidth: 2
     });
 
-    // Fetch live daily time series for AAPL
-    try {
-     var res = await fetch(`${API_BASE}?symbol=AAPL&type=stock`);
-      var data = await res.json();
-      if (data.values && data.values.length > 0) {
-        var chartData = data.values
-          .map(function(v) { return { time: v.datetime, value: parseFloat(v.close) }; })
-          .reverse();
-        lineSeries.setData(chartData);
-      } else {
-        // Fallback to placeholder data if API returns no values
-        lineSeries.setData([
-          { time: '2024-01-01', value: 150 },
-          { time: '2024-02-01', value: 170 },
-          { time: '2024-03-01', value: 160 },
-          { time: '2024-04-01', value: 180 },
-          { time: '2024-05-01', value: 195 },
-          { time: '2024-06-01', value: 188 },
-          { time: '2024-07-01', value: 210 }
-        ]);
-      }
-    } catch(e) {
+    // ✅ Fetch from Worker
+    var res = await fetch(`${API_BASE}?symbol=AAPL&type=stock`);
+    var data = await res.json();
+
+    if (data.values && data.values.length > 0) {
+      var chartData = data.values
+        .map(function(v) {
+          return {
+            time: v.datetime.split(" ")[0], // ✅ IMPORTANT FIX
+            value: parseFloat(v.close)
+          };
+        })
+        .reverse();
+
+      lineSeries.setData(chartData);
+    } else {
+      console.log("No data from API");
+    }
+
+    window.addEventListener('resize', function() {
+      chart.applyOptions({ width: container.clientWidth });
+    });
+
+  } catch(e) {
+    console.log("Chart error:", e);
+  }
+}
+  } catch(e) {
       lineSeries.setData([
         { time: '2024-01-01', value: 150 },
         { time: '2024-02-01', value: 170 },
