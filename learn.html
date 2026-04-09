@@ -6,10 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learn &amp; Play Finance — investpercent</title>
   <meta name="description" content="Master finance through 60+ topics, 15 interactive games, 5 expert quizzes, XP gamification, AI assistant, and certificates. Free financial education by investpercent." />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V4L60RZZP');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <style>
     :root{
       --bg:#060915;--bg2:#0b1224;--panel:#0f1830;--panel2:#121e3c;--soft:#18284d;
@@ -460,6 +471,87 @@
       .ux-nudge{flex-direction:column;align-items:flex-start}
       .smart-cta{flex-direction:column;align-items:flex-start}
     }
+    /* ── FIREBASE LOGIN MODAL ── */
+    #loginModal{position:fixed;inset:0;background:rgba(6,9,21,.88);display:none;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(8px);padding:20px}
+    .login-box{background:linear-gradient(180deg,rgba(15,24,48,.99),rgba(9,16,34,.99));padding:28px;border-radius:24px;width:100%;max-width:360px;text-align:center;border:1px solid rgba(255,255,255,.12);box-shadow:0 32px 80px rgba(0,0,0,.7);animation:modalIn .25s ease}
+    .login-box h3{margin:0 0 6px;font-family:Poppins,sans-serif;font-size:22px;font-weight:800;letter-spacing:-.03em;color:var(--text)}
+    .login-box .login-sub{color:var(--muted);font-size:13px;margin-bottom:20px;line-height:1.55}
+    .login-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted);font-size:12px;font-weight:700}
+    .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+    .login-input{width:100%;padding:12px 14px;border-radius:12px;margin-bottom:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--text);font-size:14px;font-weight:500;outline:none;transition:.2s ease;font-family:inherit}
+    .login-input:focus{border-color:rgba(0,212,255,.4);background:rgba(0,212,255,.04)}
+    .login-input::placeholder{color:var(--muted)}
+    .login-btn{width:100%;padding:12px;border-radius:12px;border:none;margin-bottom:10px;font-weight:800;font-size:14px;cursor:pointer;transition:.2s ease;font-family:inherit}
+    .login-btn:hover{transform:translateY(-1px)}
+    .login-btn.otp-send{background:var(--grad);color:#071120;box-shadow:0 8px 22px rgba(0,212,255,.25)}
+    .login-btn.otp-verify{background:rgba(79,163,255,.18);color:var(--blue);border:1px solid rgba(79,163,255,.3)}
+    .login-btn.google{background:rgba(123,97,255,.18);color:#c4b5fd;border:1px solid rgba(123,97,255,.3)}
+    .login-btn.otp-verify:hover,.login-btn.google:hover{background:rgba(255,255,255,.08)}
+    .login-skip{background:none;border:none;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;margin-top:6px;transition:.2s;font-family:inherit}
+    .login-skip:hover{color:var(--text)}
+    .login-status{font-size:13px;font-weight:700;margin:8px 0;min-height:18px}
+    .login-status.success{color:var(--green)}
+    .login-status.error{color:var(--red)}
+    .login-user-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:12px;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.18);font-size:13px;font-weight:700;color:var(--green);cursor:pointer;transition:.2s ease}
+    .login-user-bar:hover{background:rgba(0,230,118,.12)}
+    .login-user-bar .lub-icon{font-size:16px}
+    .login-user-bar .lub-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+    .login-user-bar .lub-logout{font-size:11px;color:var(--muted);font-weight:800;padding:4px 10px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    #otpSection{display:none}
+    /* ── DAILY CHALLENGE ── */
+    .daily-challenge{margin:12px 0;padding:18px 22px;border-radius:22px;background:radial-gradient(circle at 10% 50%,rgba(255,215,106,.12),transparent 40%),radial-gradient(circle at 90% 50%,rgba(0,230,118,.1),transparent 40%),linear-gradient(135deg,rgba(15,24,48,.97),rgba(10,18,37,.97));border:1px solid rgba(255,215,106,.18);box-shadow:var(--shadow2)}
+    .dc-top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+    .dc-top h3{margin:0;font-size:18px;font-weight:800;letter-spacing:-.03em}
+    .dc-top .dc-reward{padding:7px 14px;border-radius:12px;background:rgba(255,215,106,.12);border:1px solid rgba(255,215,106,.25);font-size:13px;font-weight:800;color:var(--gold);white-space:nowrap}
+    .dc-tasks{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+    .dc-task{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);font-size:13px;font-weight:700;color:var(--text);transition:.2s}
+    .dc-task.done{background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.2);color:var(--green)}
+    .dc-task .dc-check{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+    .dc-task.done .dc-check{background:var(--green);border-color:var(--green);color:#071120}
+    .dc-start{display:block;width:100%;padding:12px;border-radius:14px;background:var(--grad);border:none;color:#071120;font-weight:800;font-size:14px;cursor:pointer;transition:.2s}
+    .dc-start:hover{transform:translateY(-1px)}
+    /* ── REWARDS PANEL ── */
+    .rewards-panel{padding:16px;margin-top:14px;border-radius:22px;background:radial-gradient(circle at 10% 30%,rgba(255,215,106,.1),transparent 40%),linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));border:1px solid rgba(255,215,106,.15)}
+    .reward-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);margin-bottom:8px;cursor:pointer;transition:.2s}
+    .reward-item:hover{border-color:rgba(255,215,106,.3);background:rgba(255,215,106,.05)}
+    .reward-item.unlocked{border-color:rgba(0,230,118,.25);background:rgba(0,230,118,.06)}
+    .reward-item:last-child{margin-bottom:0}
+    .reward-icon{font-size:22px;flex-shrink:0}
+    .reward-info{flex:1;min-width:0}
+    .reward-name{font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px}
+    .reward-xp{font-size:12px;font-weight:700;color:var(--muted)}
+    .reward-status{font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;white-space:nowrap}
+    .reward-status.locked{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid rgba(255,255,255,.08)}
+    .reward-status.unlocked{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.25)}
+    /* ── BLOG SECTION ── */
+    .blog-section{margin-top:24px;padding:22px;border-radius:24px;background:linear-gradient(180deg,rgba(15,24,48,.98),rgba(10,18,37,.98));border:1px solid var(--line);box-shadow:var(--shadow)}
+    .blog-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+    .blog-head h2{margin:0;font-family:Poppins,sans-serif;font-size:clamp(18px,2.5vw,24px);font-weight:800;letter-spacing:-.04em}
+    .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+    .blog-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:18px;transition:.25s ease;cursor:pointer}
+    .blog-card:hover{border-color:rgba(0,212,255,.25);transform:translateY(-2px);background:rgba(0,212,255,.03)}
+    .blog-tag{display:inline-block;padding:4px 10px;border-radius:8px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+    .blog-tag.tips{background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid rgba(0,212,255,.2)}
+    .blog-tag.tax{background:rgba(255,215,106,.1);color:var(--gold);border:1px solid rgba(255,215,106,.2)}
+    .blog-tag.invest{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+    .blog-tag.mistakes{background:rgba(255,96,125,.1);color:var(--red);border:1px solid rgba(255,96,125,.2)}
+    .blog-tag.guide{background:rgba(123,97,255,.1);color:#c4b5fd;border:1px solid rgba(123,97,255,.2)}
+    .blog-title{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px;line-height:1.35}
+    .blog-summary{color:var(--muted);font-size:13px;line-height:1.55;margin-bottom:14px}
+    .blog-read{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;background:var(--grad);border:none;color:#071120;font-size:13px;font-weight:800;cursor:pointer;transition:.2s}
+    .blog-read:hover{transform:translateY(-1px)}
+    /* ── TOPIC CTA BUTTONS ── */
+    .topic-cta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)}
+    .tcta-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;transition:.2s;border:1px solid;text-decoration:none}
+    .tcta-btn:hover{transform:translateY(-1px)}
+    .tcta-btn.guide{background:rgba(79,163,255,.1);border-color:rgba(79,163,255,.25);color:var(--blue)}
+    .tcta-btn.quiz{background:rgba(123,97,255,.1);border-color:rgba(123,97,255,.25);color:#c4b5fd}
+    .tcta-btn.calc{background:rgba(0,230,118,.08);border-color:rgba(0,230,118,.2);color:var(--green)}
+    .tcta-btn.wa{background:rgba(37,211,102,.12);border-color:rgba(37,211,102,.3);color:#25d366}
+    /* ── REWARD TOAST ── */
+    .reward-toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:1300;padding:14px 22px;border-radius:16px;background:linear-gradient(135deg,rgba(255,215,106,.95),rgba(255,160,60,.95));color:#1a0e00;font-size:15px;font-weight:800;box-shadow:0 16px 48px rgba(0,0,0,.6);transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;text-align:center}
+    .reward-toast.show{transform:translateX(-50%) translateY(0)}
+    @media(max-width:760px){.blog-grid{grid-template-columns:1fr}.daily-challenge{padding:14px}}
   </style>
   <link rel="stylesheet" href="/css/navbar.css">
 </head>
@@ -485,6 +577,7 @@
           <button class="btn primary" onclick="document.getElementById('learnContent').scrollIntoView({behavior:'smooth'})">Start Learning</button>
           <button class="btn secondary" onclick="switchPageSection('play',null);setTimeout(()=>document.getElementById('gamesSection')?.scrollIntoView({behavior:'smooth'}),300)">🎮 Practice Finance</button>
           <button class="btn secondary" onclick="window.open('https://investpercent.com','_blank')">Talk to Advisor</button>
+          <div id="authBarArea"></div>
           <div class="mode-toggle">
             <button class="mode-btn active" id="learnModeBtn" onclick="setMode('learn')">&#x1F4DA; Learn</button>
             <button class="mode-btn" id="decisionModeBtn" onclick="setMode('decision')">&#x1F3AF; Decide</button>
@@ -884,6 +977,36 @@
 
   <!-- BACK TO TOP -->
   <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+  <!-- ══ FIREBASE LOGIN MODAL ══ -->
+  <div id="loginModal" style="display:none;align-items:center;justify-content:center">
+    <div class="login-box">
+      <div style="font-size:36px;margin-bottom:12px">🔐</div>
+      <h3>Save Your Progress</h3>
+      <p class="login-sub">Login to unlock XP rewards, save your progress, and get a personalised financial plan.</p>
+
+      <div id="phoneSection">
+        <input id="loginPhone" class="login-input" type="tel" placeholder="Enter Mobile Number (e.g. 9876543210)" maxlength="10" />
+        <div id="recaptcha-container"></div>
+        <button class="login-btn otp-send" onclick="sendOTP()">📱 Send OTP</button>
+      </div>
+
+      <div id="otpSection">
+        <input id="loginOtp" class="login-input" type="number" placeholder="Enter 6-digit OTP" maxlength="6" />
+        <button class="login-btn otp-verify" onclick="verifyOTP()">✅ Verify OTP</button>
+        <button class="login-skip" onclick="document.getElementById('phoneSection').style.display='block';document.getElementById('otpSection').style.display='none'">← Change Number</button>
+      </div>
+
+      <div id="loginStatus" class="login-status"></div>
+
+      <div class="login-divider">or</div>
+
+      <button class="login-btn google" onclick="googleLogin()">🔵 Continue with Google</button>
+
+      <br>
+      <button class="login-skip" onclick="closeLogin()">Skip for now →</button>
+    </div>
+  </div>
 
   <!-- LEARN LEAD POPUP -->
   <div id="leadOverlay" style="display:none">
@@ -2497,6 +2620,284 @@ document.addEventListener('DOMContentLoaded', function(){
   trackEvent('page_load', { userLevel: getUserLevel() });
 });
 </script>
+
+<!-- ══ FIREBASE AUTH SYSTEM ══ -->
+<script>
+/* ─────────────────────────────────────────────────────────
+   FIREBASE CONFIGURATION
+   Replace PASTE_HERE values with your actual Firebase config
+───────────────────────────────────────────────────────── */
+const firebaseConfig = {
+  apiKey: "PASTE_HERE",
+  authDomain: "PASTE_HERE",
+  projectId: "PASTE_HERE",
+  storageBucket: "PASTE_HERE",
+  messagingSenderId: "PASTE_HERE",
+  appId: "PASTE_HERE"
+};
+
+let fbApp, fbAuth, fbDb;
+let _firebaseReady = false;
+
+try {
+  fbApp  = firebase.initializeApp(firebaseConfig);
+  fbAuth = firebase.auth();
+  fbDb   = firebase.firestore();
+  _firebaseReady = true;
+} catch(e) {
+  console.warn('[Firebase] Init skipped — config not set yet.', e.message);
+}
+
+/* ─────────────────────────────────────────────────────────
+   RECAPTCHA (lazy init — only when modal opens)
+───────────────────────────────────────────────────────── */
+let recaptchaVerifier = null;
+let confirmationResult = null;
+
+function initRecaptcha() {
+  if (!_firebaseReady) return;
+  if (recaptchaVerifier) return;
+  try {
+    recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+      size: 'invisible'
+    });
+  } catch(e) {
+    console.warn('[Firebase] Recaptcha init error:', e.message);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   MODAL OPEN / CLOSE
+───────────────────────────────────────────────────────── */
+function openLogin() {
+  const modal = document.getElementById('loginModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  setLoginStatus('', '');
+  document.getElementById('phoneSection').style.display = 'block';
+  document.getElementById('otpSection').style.display = 'none';
+  if (_firebaseReady) initRecaptcha();
+}
+
+function closeLogin() {
+  const modal = document.getElementById('loginModal');
+  if (!modal) return;
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+/* Close modal when clicking backdrop */
+document.getElementById('loginModal').addEventListener('click', function(e) {
+  if (e.target === this) closeLogin();
+});
+
+/* ─────────────────────────────────────────────────────────
+   STATUS HELPER
+───────────────────────────────────────────────────────── */
+function setLoginStatus(msg, type) {
+  const el = document.getElementById('loginStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'login-status' + (type ? ' ' + type : '');
+}
+
+/* ─────────────────────────────────────────────────────────
+   PHONE / OTP LOGIN
+───────────────────────────────────────────────────────── */
+function sendOTP() {
+  if (!_firebaseReady) {
+    setLoginStatus('Firebase not configured yet. Please paste your Firebase config.', 'error');
+    return;
+  }
+  const phone = (document.getElementById('loginPhone').value || '').trim();
+  if (!phone || phone.length < 10) {
+    setLoginStatus('Please enter a valid 10-digit mobile number.', 'error');
+    return;
+  }
+  const fullPhone = '+91' + phone.replace(/\D/g, '').slice(-10);
+  setLoginStatus('Sending OTP…', '');
+
+  initRecaptcha();
+  fbAuth.signInWithPhoneNumber(fullPhone, recaptchaVerifier)
+    .then(function(result) {
+      confirmationResult = result;
+      document.getElementById('phoneSection').style.display = 'none';
+      document.getElementById('otpSection').style.display = 'block';
+      setLoginStatus('OTP sent to ' + fullPhone, 'success');
+    })
+    .catch(function(error) {
+      setLoginStatus(error.message, 'error');
+      /* Reset recaptcha on error so user can retry */
+      recaptchaVerifier = null;
+      initRecaptcha();
+    });
+}
+
+function verifyOTP() {
+  if (!confirmationResult) {
+    setLoginStatus('Please request an OTP first.', 'error');
+    return;
+  }
+  const otp = (document.getElementById('loginOtp').value || '').trim();
+  if (!otp || otp.length < 6) {
+    setLoginStatus('Please enter the 6-digit OTP.', 'error');
+    return;
+  }
+  setLoginStatus('Verifying…', '');
+  confirmationResult.confirm(otp)
+    .then(function(result) {
+      const user = result.user;
+      const userData = {
+        name: user.displayName || 'User',
+        mobile: user.phoneNumber,
+        email: user.email || '',
+        source: 'learn_page',
+        loginMethod: 'phone',
+        uid: user.uid,
+        timestamp: new Date().toISOString()
+      };
+      saveFirebaseUser(userData);
+      setLoginStatus('✓ Login successful! Welcome.', 'success');
+      setTimeout(closeLogin, 1200);
+      onLoginSuccess(userData);
+    })
+    .catch(function(err) {
+      setLoginStatus('Invalid OTP. Please try again.', 'error');
+    });
+}
+
+/* ─────────────────────────────────────────────────────────
+   GOOGLE LOGIN
+───────────────────────────────────────────────────────── */
+function googleLogin() {
+  if (!_firebaseReady) {
+    setLoginStatus('Firebase not configured yet. Please paste your Firebase config.', 'error');
+    return;
+  }
+  const provider = new firebase.auth.GoogleAuthProvider();
+  setLoginStatus('Opening Google sign-in…', '');
+  fbAuth.signInWithPopup(provider)
+    .then(function(result) {
+      const user = result.user;
+      const userData = {
+        name: user.displayName || 'User',
+        email: user.email || '',
+        mobile: user.phoneNumber || '',
+        photoURL: user.photoURL || '',
+        source: 'learn_page',
+        loginMethod: 'google',
+        uid: user.uid,
+        timestamp: new Date().toISOString()
+      };
+      saveFirebaseUser(userData);
+      setLoginStatus('✓ Signed in as ' + (user.displayName || user.email), 'success');
+      setTimeout(closeLogin, 1200);
+      onLoginSuccess(userData);
+    })
+    .catch(function(err) {
+      setLoginStatus(err.message, 'error');
+    });
+}
+
+/* ─────────────────────────────────────────────────────────
+   SAVE USER — Firestore + localStorage
+───────────────────────────────────────────────────────── */
+function saveFirebaseUser(userData) {
+  /* Save to localStorage immediately */
+  try { localStorage.setItem('fb_user', JSON.stringify(userData)); } catch(e) {}
+
+  /* Save to Firestore (only once per uid) */
+  if (!_firebaseReady || !userData.uid) return;
+  try {
+    fbDb.collection('leads').doc(userData.uid).set(userData, { merge: true })
+      .then(function() {
+        console.log('[Firebase] User saved to Firestore.');
+      })
+      .catch(function(err) {
+        console.warn('[Firebase] Firestore save error:', err.message);
+      });
+  } catch(e) {
+    console.warn('[Firebase] Firestore error:', e.message);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   ON LOGIN SUCCESS — update UI
+───────────────────────────────────────────────────────── */
+function onLoginSuccess(userData) {
+  updateAuthBar(userData);
+  /* Optionally mark lead captured so the existing lead popup doesn't re-appear */
+  try { localStorage.setItem('leadCaptured', 'true'); } catch(e) {}
+}
+
+/* ─────────────────────────────────────────────────────────
+   AUTH BAR UI — shown in hero CTA after login
+───────────────────────────────────────────────────────── */
+function updateAuthBar(userData) {
+  const area = document.getElementById('authBarArea');
+  if (!area) return;
+  if (userData) {
+    const name = userData.name || userData.email || 'You';
+    area.innerHTML = `<div class="login-user-bar" onclick="confirmLogout()" title="Click to log out">
+      <span class="lub-icon">✅</span>
+      <span class="lub-name">${escapeHtml(name)}</span>
+      <span class="lub-logout">Logout</span>
+    </div>`;
+  } else {
+    area.innerHTML = `<button class="btn secondary" onclick="openLogin()" style="white-space:nowrap">🔐 Login / Save XP</button>`;
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function confirmLogout() {
+  if (!confirm('Log out?')) return;
+  if (_firebaseReady) fbAuth.signOut().catch(function(){});
+  try { localStorage.removeItem('fb_user'); } catch(e) {}
+  updateAuthBar(null);
+}
+
+/* ─────────────────────────────────────────────────────────
+   AUTH STATE OBSERVER — restore session on page load
+───────────────────────────────────────────────────────── */
+(function restoreAuthSession() {
+  /* Restore from localStorage immediately (instant, no network) */
+  try {
+    const stored = JSON.parse(localStorage.getItem('fb_user') || 'null');
+    if (stored) updateAuthBar(stored);
+    else updateAuthBar(null);
+  } catch(e) {
+    updateAuthBar(null);
+  }
+
+  /* Then verify with Firebase auth state (async) */
+  if (!_firebaseReady) return;
+  fbAuth.onAuthStateChanged(function(user) {
+    if (user) {
+      const cached = JSON.parse(localStorage.getItem('fb_user') || '{}');
+      const userData = Object.assign({
+        name: user.displayName || cached.name || 'User',
+        email: user.email || cached.email || '',
+        mobile: user.phoneNumber || cached.mobile || '',
+        uid: user.uid,
+        source: 'learn_page'
+      }, cached);
+      updateAuthBar(userData);
+      try { localStorage.setItem('fb_user', JSON.stringify(userData)); } catch(e) {}
+    } else {
+      try {
+        const stored = JSON.parse(localStorage.getItem('fb_user') || 'null');
+        /* Keep showing stored user if Firebase config isn't set */
+        if (!stored) updateAuthBar(null);
+      } catch(e) { updateAuthBar(null); }
+    }
+  });
+})();
+</script>
+
   <script src="/js/contact.js"></script>
   <script src="/js/main.js"></script>
 </body>
