@@ -2862,14 +2862,27 @@ function saveFirebaseUser(userData) {
 ───────────────────────────────────────────────────────── */
 function onLoginSuccess(userData) {
   updateAuthBar(userData);
-  try { localStorage.setItem('leadCaptured', 'true'); } catch(e) {}
-  if(typeof gtag==='function') gtag('event','login',{method: userData.loginMethod||'phone'});
-  if(typeof saveLead==='function') saveLead({
-    name: userData.name||'',
-    mobile: userData.mobile||'',
-    email: userData.email||'',
-    source: 'login_learn'
-  });
+
+  try {
+    localStorage.setItem('leadCaptured', 'true');
+  } catch(e) {}
+
+  // GA tracking
+  if (typeof gtag === 'function') {
+    gtag('event', 'login', {
+      method: userData.loginMethod || 'phone'
+    });
+  }
+
+  // 🔥 SAVE LEAD (FINAL PLACE)
+  if (typeof saveLead === 'function') {
+    saveLead({
+      name: userData.name || '',
+      mobile: userData.mobile || '',
+      email: userData.email || '',
+      source: 'login_learn'
+    });
+  }
 }
 
 /* ─────────────────────────────────────────────────────────
