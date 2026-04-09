@@ -2974,7 +2974,7 @@ function startDailyChallenge(){
   document.addEventListener('mouseout', function(e){
     if(!e.toElement && !e.relatedTarget && !exitShown){
       exitShown = true;
-      if(typeof openAdvisor === 'function') openAdvisor('exit_intent');
+      if(typeof openAdvisor === 'function') openAdvisor('Learn Pge of Investpercent.com');
     }
   });
 })();
@@ -3082,19 +3082,6 @@ function completeDailyChallenge() {
 function startDailyChallenge() {
   if (typeof openAdvisor === 'function') openAdvisor('daily_challenge');
 }
-</script>
-
-<script>
-/* ── EXIT INTENT ── */
-(function(){
-  var exitShown = false;
-  document.addEventListener('mouseout', function(e){
-    if(!e.toElement && !e.relatedTarget && !exitShown){
-      exitShown = true;
-      if(typeof openAdvisor === 'function') openAdvisor('exit_intent');
-    }
-  });
-})();
 </script>
 <script>
 function saveLead(data){
