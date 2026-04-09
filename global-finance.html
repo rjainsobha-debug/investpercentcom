@@ -16,13 +16,10 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-1V4L60RZZP', {
-      page_title: document.title,
-      page_path: window.location.pathname
-    });
+    gtag('config', 'G-1V4L60RZZP', { page_title: document.title, page_path: window.location.pathname });
   </script>
 
-  <!-- Lightweight Charts for stock chart -->
+  <!-- Lightweight Charts -->
   <script src="https://cdn.jsdelivr.net/npm/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 
   <style>
@@ -32,40 +29,35 @@
       --cyan:#00d4ff;--blue:#4fa3ff;--violet:#7b61ff;--green:#00e676;--gold:#ffd76a;--red:#ff607d;
       --shadow:0 22px 70px rgba(0,0,0,.38);
       --grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%);
-      --hero:radial-gradient(circle at 16% 20%,rgba(0,212,255,.18),transparent 28%),radial-gradient(circle at 88% 12%,rgba(123,97,255,.18),transparent 24%),linear-gradient(180deg,#070c18 0%,#091224 100%);
+      --hero:radial-gradient(circle at 16% 20%,rgba(0,212,255,.18),transparent 28%),
+             radial-gradient(circle at 88% 12%,rgba(123,97,255,.18),transparent 24%),
+             linear-gradient(180deg,#070c18 0%,#091224 100%);
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{
-      font-family:Inter,system-ui,sans-serif;
-      color:var(--text);
+      font-family:Inter,system-ui,sans-serif;color:var(--text);
       background:radial-gradient(circle at top left,rgba(0,212,255,.06),transparent 18%),
                  radial-gradient(circle at bottom right,rgba(123,97,255,.08),transparent 22%),
                  var(--bg);
-      min-height:100vh;
-      overflow-x:hidden;
+      min-height:100vh;overflow-x:hidden;
     }
     body::before{
       content:"";position:fixed;inset:0;pointer-events:none;
       background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
                        linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
       background-size:34px 34px;
-      mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 92%);
-      z-index:0;
+      mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 92%);z-index:0;
     }
     a{text-decoration:none;color:inherit}
     button,input,select,textarea{font:inherit}
 
-    /* PAGE WRAPPER */
     .page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:20px 20px 60px}
 
     /* HERO */
     .hero{
-      background:var(--hero);
-      border:1px solid var(--line);border-radius:32px;
-      padding:36px 36px 32px;
-      box-shadow:var(--shadow);
-      overflow:hidden;position:relative;margin-bottom:20px;
+      background:var(--hero);border:1px solid var(--line);border-radius:32px;
+      padding:36px 36px 32px;box-shadow:var(--shadow);overflow:hidden;position:relative;margin-bottom:20px;
     }
     .hero::after{
       content:"";position:absolute;inset:auto -120px -120px auto;
@@ -73,18 +65,13 @@
       background:radial-gradient(circle,rgba(0,212,255,.18),transparent 62%);
       filter:blur(14px);pointer-events:none;
     }
-    .hero h1{
-      margin:0;font-family:Poppins,sans-serif;
-      font-size:clamp(32px,4.5vw,54px);line-height:1.08;letter-spacing:-.04em;
-    }
+    .hero h1{margin:0;font-family:Poppins,sans-serif;font-size:clamp(32px,4.5vw,54px);line-height:1.08;letter-spacing:-.04em}
     .hero h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
     .hero p{margin:12px 0 0;color:var(--muted);font-size:17px;max-width:680px;line-height:1.6}
     .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-    .btn{
-      border:none;cursor:pointer;border-radius:14px;
-      padding:13px 22px;font-weight:700;font-size:15px;
-      transition:.18s ease;display:inline-flex;align-items:center;gap:8px;
-    }
+
+    /* BUTTONS */
+    .btn{border:none;cursor:pointer;border-radius:14px;padding:13px 22px;font-weight:700;font-size:15px;transition:.18s ease;display:inline-flex;align-items:center;gap:8px}
     .btn:hover{transform:translateY(-1px);opacity:.92}
     .btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
     .btn.secondary{color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--line2)}
@@ -97,16 +84,11 @@
     .section-label::after{content:"";flex:1;height:1px;background:var(--line)}
 
     /* SNAPSHOT GRID */
-    .snap-grid{
-      display:grid;
-      grid-template-columns:repeat(6,1fr);
-      gap:12px;margin-bottom:8px;
-    }
+    .snap-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:8px}
     .snap-card{
       background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
-      border:1px solid var(--line);border-radius:18px;
-      padding:16px;position:relative;overflow:hidden;
-      transition:border-color .2s;
+      border:1px solid var(--line);border-radius:18px;padding:16px;
+      position:relative;overflow:hidden;transition:border-color .2s;
     }
     .snap-card:hover{border-color:var(--line2)}
     .snap-label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.03em;margin-bottom:6px}
@@ -115,88 +97,63 @@
     .snap-change{font-size:12px;margin-top:4px;color:var(--muted)}
     .snap-change span.up{color:var(--green)}.snap-change span.down{color:var(--red)}
 
-    /* TWO-COL LAYOUT */
+    /* LAYOUTS */
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 
     /* PANEL */
     .panel{
       background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));
-      border:1px solid var(--line);border-radius:26px;
-      padding:24px;box-shadow:var(--shadow);
+      border:1px solid var(--line);border-radius:26px;padding:24px;box-shadow:var(--shadow);
     }
     .panel-title{font-size:16px;font-weight:800;letter-spacing:.01em;margin-bottom:4px}
     .panel-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
 
-    /* INPUT */
+    /* FIELDS */
     .field{margin-bottom:14px}
     .field label{display:block;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
     .field input,.field select{
-      width:100%;background:rgba(255,255,255,.04);
-      border:1px solid var(--line);border-radius:12px;
-      padding:11px 14px;color:var(--text);font-size:15px;
-      outline:none;transition:border-color .18s;
+      width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);
+      border-radius:12px;padding:11px 14px;color:var(--text);font-size:15px;outline:none;transition:border-color .18s;
     }
     .field input:focus,.field select:focus{border-color:var(--blue)}
     .field input::placeholder{color:rgba(255,255,255,.25)}
     .calc-btn{
-      width:100%;background:var(--grad);color:#071120;
-      border:none;border-radius:12px;padding:12px;
-      font-weight:800;font-size:15px;cursor:pointer;
-      transition:.18s ease;margin-top:4px;
+      width:100%;background:var(--grad);color:#071120;border:none;border-radius:12px;
+      padding:12px;font-weight:800;font-size:15px;cursor:pointer;transition:.18s ease;margin-top:4px;
     }
     .calc-btn:hover{opacity:.9;transform:translateY(-1px)}
 
     /* RESULT BOX */
     .result-box{
-      margin-top:16px;background:rgba(0,212,255,.06);
-      border:1px solid rgba(0,212,255,.2);border-radius:14px;
-      padding:16px;min-height:56px;
-      font-size:14px;color:var(--cyan);line-height:1.6;
-      display:none;
+      margin-top:16px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);
+      border-radius:14px;padding:16px;min-height:56px;font-size:14px;color:var(--cyan);line-height:1.6;display:none;
     }
     .result-box.show{display:block}
     .result-box .result-big{font-size:clamp(22px,3vw,34px);font-weight:800;color:var(--text);display:block;margin-bottom:4px}
 
-    /* INR STRENGTH */
+    /* SIGNAL CARDS */
     .signal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .signal-card{
-      background:rgba(255,255,255,.03);border:1px solid var(--line);
-      border-radius:14px;padding:14px;cursor:pointer;
-      transition:border-color .2s,background .2s;
+      background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;
+      padding:14px;cursor:pointer;transition:border-color .2s,background .2s;
     }
     .signal-card:hover,.signal-card.active{border-color:var(--cyan);background:rgba(0,212,255,.07)}
     .signal-name{font-size:13px;font-weight:700;margin-bottom:6px}
-    .signal-tag{
-      display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;
-      letter-spacing:.04em;
-    }
+    .signal-tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;letter-spacing:.04em}
     .signal-tag.buy{background:rgba(0,230,118,.15);color:var(--green)}
     .signal-tag.sell{background:rgba(255,96,125,.15);color:var(--red)}
     .signal-tag.hold{background:rgba(255,215,106,.15);color:var(--gold)}
     .signal-reason{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
 
-    /* PORTFOLIO BAR */
+    /* PORTFOLIO */
     .alloc-row{margin-bottom:12px}
     .alloc-label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px}
     .alloc-bar{height:8px;border-radius:99px;background:rgba(255,255,255,.07)}
     .alloc-fill{height:100%;border-radius:99px;transition:width .4s ease}
 
-    /* INCOME TABS */
-    .tab-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-    .tab-pill{
-      padding:8px 16px;border-radius:20px;border:1px solid var(--line);
-      font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);
-      background:rgba(255,255,255,.03);transition:.18s;
-    }
-    .tab-pill:hover{color:var(--text)}
-    .tab-pill.active{background:var(--grad);color:#071120;border-color:transparent}
-
-    /* TAX BADGE */
-    .badge{
-      display:inline-block;font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;
-      margin-right:6px;letter-spacing:.04em;text-transform:uppercase;
-    }
+    /* BADGES */
+    .badge{display:inline-block;font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;margin-right:6px;letter-spacing:.04em;text-transform:uppercase}
     .badge.green{background:rgba(0,230,118,.14);color:var(--green)}
     .badge.gold{background:rgba(255,215,106,.14);color:var(--gold)}
     .badge.red{background:rgba(255,96,125,.14);color:var(--red)}
@@ -205,30 +162,25 @@
     /* CTA CARD */
     .cta-card{
       background:radial-gradient(circle at 12% 18%,rgba(0,212,255,.18),transparent 32%),
-                 radial-gradient(circle at 90% 80%,rgba(123,97,255,.2),transparent 36%),
-                 var(--panel);
-      border:1px solid var(--line2);border-radius:28px;
-      padding:36px;box-shadow:var(--shadow);
-      display:flex;align-items:center;justify-content:space-between;
-      gap:24px;flex-wrap:wrap;
-      margin-top:8px;
+                 radial-gradient(circle at 90% 80%,rgba(123,97,255,.2),transparent 36%),var(--panel);
+      border:1px solid var(--line2);border-radius:28px;padding:36px;box-shadow:var(--shadow);
+      display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:8px;
     }
     .cta-copy h3{margin:0 0 8px;font-family:Poppins,sans-serif;font-size:clamp(22px,2.8vw,32px);letter-spacing:-.03em}
     .cta-copy p{margin:0;color:var(--muted);font-size:15px;max-width:520px;line-height:1.6}
     .cta-copy h3 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
     .cta-actions{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
 
-    /* EXPLORE GRID */
+    /* EXPLORE */
     .explore-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
     .explore-card{
       background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;
-      padding:18px;font-weight:700;font-size:14px;
-      transition:border-color .2s,background .2s;cursor:pointer;
+      padding:18px;font-weight:700;font-size:14px;transition:border-color .2s,background .2s;cursor:pointer;
     }
     .explore-card:hover{border-color:var(--line2);background:rgba(255,255,255,.05)}
     .explore-icon{font-size:24px;margin-bottom:8px}
 
-    /* AI ADVISOR */
+    /* ADVISOR */
     .advisor-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
     .intent-btn{
       background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;
@@ -240,48 +192,37 @@
     .intent-label{font-size:13px;font-weight:700}
     .advisor-output{
       background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.15);
-      border-radius:16px;padding:18px;font-size:14px;line-height:1.7;color:var(--text);
-      min-height:80px;display:none;
+      border-radius:16px;padding:18px;font-size:14px;line-height:1.7;color:var(--text);min-height:80px;display:none;
     }
     .advisor-output.show{display:block}
 
-    /* CHART CONTAINER */
+    /* CHART */
     #chart-container{
       background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));
-      border:1px solid var(--line);border-radius:26px;
-      overflow:hidden;box-shadow:var(--shadow);
+      border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:var(--shadow);
     }
 
-    /* LEAD POPUP */
+    /* POPUP */
     .popup-overlay{
       display:none;position:fixed;inset:0;z-index:2000;
-      background:rgba(6,9,21,.82);backdrop-filter:blur(8px);
-      align-items:center;justify-content:center;
+      background:rgba(6,9,21,.82);backdrop-filter:blur(8px);align-items:center;justify-content:center;
     }
     .popup-overlay.show{display:flex}
     .popup-box{
-      background:linear-gradient(180deg,#0e1a35,#091020);
-      border:1px solid var(--line2);border-radius:28px;
-      padding:36px;max-width:440px;width:calc(100% - 40px);
-      box-shadow:0 32px 80px rgba(0,0,0,.5);position:relative;
+      background:linear-gradient(180deg,#0e1a35,#091020);border:1px solid var(--line2);border-radius:28px;
+      padding:36px;max-width:440px;width:calc(100% - 40px);box-shadow:0 32px 80px rgba(0,0,0,.5);position:relative;
     }
-    .popup-close{
-      position:absolute;top:16px;right:18px;
-      background:none;border:none;color:var(--muted);
-      font-size:22px;cursor:pointer;
-    }
+    .popup-close{position:absolute;top:16px;right:18px;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer}
     .popup-box h3{margin:0 0 6px;font-family:Poppins,sans-serif;font-size:22px}
     .popup-box p{margin:0 0 20px;color:var(--muted);font-size:14px}
     .popup-field{margin-bottom:14px}
     .popup-field input{
-      width:100%;background:rgba(255,255,255,.05);
-      border:1px solid var(--line2);border-radius:12px;
+      width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line2);border-radius:12px;
       padding:12px 16px;color:var(--text);font-size:15px;outline:none;
     }
     .popup-submit{
-      width:100%;padding:13px;background:var(--grad);
-      color:#071120;border:none;border-radius:12px;
-      font-weight:800;font-size:15px;cursor:pointer;
+      width:100%;padding:13px;background:var(--grad);color:#071120;border:none;
+      border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;
     }
 
     @media(max-width:900px){
@@ -296,14 +237,17 @@
 </head>
 <body>
 
-<!-- NAVBAR LOADED EXTERNALLY -->
+<!-- NAVBAR SLOT -->
 <div id="navbar-slot"></div>
 
-<!-- STICKY WHATSAPP BUTTON -->
+<!-- STICKY WHATSAPP -->
 <a href="https://wa.me/919311354795"
    target="_blank"
-   style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:white;padding:14px 18px;border-radius:50px;font-weight:700;font-size:15px;box-shadow:0 10px 30px rgba(0,0,0,.4);text-decoration:none;display:flex;align-items:center;gap:8px;"
-   onclick="gtag('event','whatsapp_click',{event_category:'engagement',event_label:'whatsapp_sticky'})">
+   onclick="gtag('event','whatsapp_click',{event_category:'engagement',event_label:'whatsapp_sticky'})"
+   style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#25D366;color:#fff;
+          padding:14px 18px;border-radius:50px;font-weight:700;font-size:15px;
+          box-shadow:0 10px 30px rgba(0,0,0,.4);text-decoration:none;
+          display:flex;align-items:center;gap:8px;">
   💬 Chat Now
 </a>
 
@@ -329,31 +273,31 @@
     </div>
     <div class="snap-card">
       <div class="snap-label">EUR/INR</div>
-      <div class="snap-value down" id="eur-inr">Loading…</div>
-      <div class="snap-change"><span class="down">Live</span> &nbsp;Euro</div>
+      <div class="snap-value neutral" id="eur-inr">Loading…</div>
+      <div class="snap-change"><span class="up">Live</span> &nbsp;Euro</div>
     </div>
     <div class="snap-card">
       <div class="snap-label">Gold Price</div>
-      <div class="snap-value up" data-gold>Loading…</div>
+      <div class="snap-value up" id="gold-price">Loading…</div>
       <div class="snap-change"><span class="up">Live</span> &nbsp;XAU/USD → INR</div>
     </div>
     <div class="snap-card">
       <div class="snap-label">Crude Oil</div>
-      <div class="snap-value down" data-crude>Loading…</div>
+      <div class="snap-value down" id="crude-price">Loading…</div>
       <div class="snap-change"><span class="down">Live</span> &nbsp;WTI Crude</div>
     </div>
     <div class="snap-card">
       <div class="snap-label">S&amp;P 500</div>
-      <div class="snap-value up" data-sp500>Loading…</div>
+      <div class="snap-value up" id="sp500-price">Loading…</div>
       <div class="snap-change"><span class="up">Live</span> &nbsp;US Equity Index</div>
     </div>
     <div class="snap-card">
       <div class="snap-label">Nasdaq</div>
-      <div class="snap-value up" data-nasdaq>Loading…</div>
+      <div class="snap-value up" id="nasdaq-price">Loading…</div>
       <div class="snap-change"><span class="up">Live</span> &nbsp;Tech Index</div>
     </div>
   </div>
-  <div id="last-updated" style="font-size:12px;color:#9da9c6;margin-top:6px"></div>
+  <div id="last-updated" style="font-size:12px;color:#9da9c6;margin-top:6px;min-height:16px;"></div>
 
   <!-- TOP MOVERS -->
   <div class="section-label">Top Movers Today</div>
@@ -368,47 +312,37 @@
   <div class="section-label">AI Market Insight</div>
   <div class="panel" id="ai-insight">
     <div class="panel-title">Today's Market View</div>
-    <div class="panel-sub" id="ai-text">Loading insight…</div>
+    <div class="panel-sub" id="ai-text">Analysing market conditions…</div>
     <a href="https://wa.me/919311354795"
        target="_blank"
-       style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:#25D366;color:#fff;padding:11px 20px;border-radius:12px;font-weight:700;font-size:14px;text-decoration:none;"
-       onclick="gtag('event','whatsapp_click',{event_category:'engagement',event_label:'whatsapp_insight_cta'})">
+       onclick="gtag('event','whatsapp_click',{event_category:'engagement',event_label:'whatsapp_insight_cta'})"
+       style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:#25D366;
+              color:#fff;padding:11px 20px;border-radius:12px;font-weight:700;font-size:14px;text-decoration:none;">
       💬 Get Personalized Plan → WhatsApp
     </a>
   </div>
 
   <!-- LIVE STOCK CHART -->
-  <div class="section-label">Live Stock Chart</div>
+  <div class="section-label">Live Stock Chart (AAPL)</div>
   <div id="chart-container" style="height:300px;"></div>
 
   <!-- CURRENCY INTELLIGENCE -->
   <div class="section-label">Currency Intelligence</div>
   <div class="two-col">
 
-    <!-- Currency Impact Calculator -->
     <div class="panel">
       <div class="panel-title">Currency Impact Calculator</div>
       <div class="panel-sub">Model how USD growth &amp; INR depreciation affect your investment over 5 years.</div>
-      <div class="field">
-        <label>Investment (INR)</label>
-        <input type="number" id="ci-inv" placeholder="e.g. 10,00,000" value="1000000">
-      </div>
-      <div class="field">
-        <label>Annual USD Growth %</label>
-        <input type="number" id="ci-growth" placeholder="e.g. 8" value="8">
-      </div>
-      <div class="field">
-        <label>Annual INR Depreciation %</label>
-        <input type="number" id="ci-depr" placeholder="e.g. 3" value="3">
-      </div>
+      <div class="field"><label>Investment (INR)</label><input type="number" id="ci-inv" value="1000000"></div>
+      <div class="field"><label>Annual USD Growth %</label><input type="number" id="ci-growth" value="8"></div>
+      <div class="field"><label>Annual INR Depreciation %</label><input type="number" id="ci-depr" value="3"></div>
       <button class="calc-btn" onclick="calcCurrency()">Calculate 5-Year Projection</button>
       <div class="result-box" id="ci-result"></div>
     </div>
 
-    <!-- INR Strength Indicator -->
     <div class="panel">
       <div class="panel-title">INR Strength Indicator</div>
-      <div class="panel-sub">Which asset class benefits from the current INR direction? Click to explore.</div>
+      <div class="panel-sub">Which asset class benefits from current INR direction? Click to explore.</div>
       <div class="signal-grid">
         <div class="signal-card active" onclick="toggleSignal(this,'US Stocks','A weak rupee makes US stocks more valuable in INR terms. Great for USD-denominated ETFs.')">
           <div class="signal-name">🇺🇸 US Stocks</div>
@@ -442,36 +376,21 @@
   <div class="section-label">Global Investing</div>
   <div class="two-col">
 
-    <!-- INR → USD Converter -->
     <div class="panel">
       <div class="panel-title">INR → USD Live Converter</div>
-      <div class="panel-sub">Convert between Indian Rupees and US Dollars at current live rate.</div>
-      <div class="field">
-        <label>Amount (INR)</label>
-        <input type="number" id="conv-inr" placeholder="e.g. 83,420" value="83420" oninput="convertCurrency('inr')">
-      </div>
-      <div class="field">
-        <label>Amount (USD)</label>
-        <input type="number" id="conv-usd" placeholder="e.g. 1000" oninput="convertCurrency('usd')">
-      </div>
+      <div class="panel-sub">Convert between Indian Rupees and US Dollars at the live rate.</div>
+      <div class="field"><label>Amount (INR)</label><input type="number" id="conv-inr" value="83420" oninput="convertCurrency('inr')"></div>
+      <div class="field"><label>Amount (USD)</label><input type="number" id="conv-usd" oninput="convertCurrency('usd')"></div>
       <div class="result-box show" id="conv-result">
-        <span class="result-big">Loading live rate…</span>
-        Fetching current USD/INR rate.
+        <span class="result-big">Loading live rate…</span>Fetching current USD/INR rate.
       </div>
     </div>
 
-    <!-- Portfolio Allocation -->
     <div class="panel">
       <div class="panel-title">Global Portfolio Allocation</div>
-      <div class="panel-sub">Adjust your international vs domestic split and see the projected portfolio balance.</div>
-      <div class="field">
-        <label>Total Portfolio (₹ Lakhs)</label>
-        <input type="number" id="port-total" value="50" oninput="calcPortfolio()">
-      </div>
-      <div class="field">
-        <label>International Allocation %</label>
-        <input type="number" id="port-intl" value="30" min="0" max="100" oninput="calcPortfolio()">
-      </div>
+      <div class="panel-sub">Adjust your international vs domestic split and see the projected balance.</div>
+      <div class="field"><label>Total Portfolio (₹ Lakhs)</label><input type="number" id="port-total" value="50" oninput="calcPortfolio()"></div>
+      <div class="field"><label>International Allocation %</label><input type="number" id="port-intl" value="30" min="0" max="100" oninput="calcPortfolio()"></div>
       <div id="port-bars" style="margin-top:8px"></div>
       <div class="result-box show" id="port-result" style="margin-top:14px"></div>
     </div>
@@ -482,35 +401,32 @@
   <div class="section-label">Global Income Engine</div>
   <div class="three-col">
 
-    <!-- Freelance Calculator -->
     <div class="panel">
       <div class="panel-title">💻 Freelance USD Calculator</div>
       <div class="panel-sub">Estimate your annual INR earnings from freelance USD income.</div>
-      <div class="field"><label>Hourly Rate (USD)</label><input type="number" id="fl-rate" placeholder="e.g. 25" value="25"></div>
-      <div class="field"><label>Hours / Week</label><input type="number" id="fl-hrs" placeholder="e.g. 20" value="20"></div>
-      <div class="field"><label>Weeks / Year</label><input type="number" id="fl-wks" placeholder="e.g. 48" value="48"></div>
+      <div class="field"><label>Hourly Rate (USD)</label><input type="number" id="fl-rate" value="25"></div>
+      <div class="field"><label>Hours / Week</label><input type="number" id="fl-hrs" value="20"></div>
+      <div class="field"><label>Weeks / Year</label><input type="number" id="fl-wks" value="48"></div>
       <button class="calc-btn" onclick="calcFreelance()">Calculate Earnings</button>
       <div class="result-box" id="fl-result"></div>
     </div>
 
-    <!-- Remote Salary -->
     <div class="panel">
       <div class="panel-title">🌍 Remote Salary Calculator</div>
       <div class="panel-sub">Convert your annual USD remote salary to INR equivalent.</div>
-      <div class="field"><label>Annual Salary (USD)</label><input type="number" id="rs-sal" placeholder="e.g. 60000" value="60000"></div>
-      <div class="field"><label>Tax Deduction %</label><input type="number" id="rs-tax" placeholder="e.g. 30" value="30"></div>
-      <div class="field"><label>USD/INR Rate</label><input type="number" id="rs-rate" placeholder="e.g. 83.42" value="83.42"></div>
+      <div class="field"><label>Annual Salary (USD)</label><input type="number" id="rs-sal" value="60000"></div>
+      <div class="field"><label>Tax Deduction %</label><input type="number" id="rs-tax" value="30"></div>
+      <div class="field"><label>USD/INR Rate</label><input type="number" id="rs-rate" value="83.42"></div>
       <button class="calc-btn" onclick="calcRemote()">Calculate Take-Home</button>
       <div class="result-box" id="rs-result"></div>
     </div>
 
-    <!-- Hourly Rate Finder -->
     <div class="panel">
       <div class="panel-title">🎯 Hourly Rate Finder</div>
-      <div class="panel-sub">Know the minimum USD hourly rate to hit your INR income goal.</div>
-      <div class="field"><label>Target Monthly Income (₹)</label><input type="number" id="hr-target" placeholder="e.g. 1,00,000" value="100000"></div>
-      <div class="field"><label>Billable Hours / Month</label><input type="number" id="hr-hrs" placeholder="e.g. 80" value="80"></div>
-      <div class="field"><label>USD/INR Rate</label><input type="number" id="hr-rate" placeholder="e.g. 83.42" value="83.42"></div>
+      <div class="panel-sub">Know the minimum USD rate to hit your INR income goal.</div>
+      <div class="field"><label>Target Monthly Income (₹)</label><input type="number" id="hr-target" value="100000"></div>
+      <div class="field"><label>Billable Hours / Month</label><input type="number" id="hr-hrs" value="80"></div>
+      <div class="field"><label>USD/INR Rate</label><input type="number" id="hr-rate" value="83.42"></div>
       <button class="calc-btn" onclick="calcHourly()">Find My Rate</button>
       <div class="result-box" id="hr-result"></div>
     </div>
@@ -521,10 +437,9 @@
   <div class="section-label">Global Tax Simplifier</div>
   <div class="two-col">
 
-    <!-- Foreign Income Tax -->
     <div class="panel">
       <div class="panel-title">Foreign Income Tax Estimator</div>
-      <div class="panel-sub">Estimate Indian tax liability on foreign-sourced income based on your residency status.</div>
+      <div class="panel-sub">Estimate Indian tax liability on foreign-sourced income.</div>
       <div class="field">
         <label>Residency Status</label>
         <select id="tax-res">
@@ -533,19 +448,18 @@
           <option value="rnor">RNOR</option>
         </select>
       </div>
-      <div class="field"><label>Foreign Income (USD / year)</label><input type="number" id="tax-income" placeholder="e.g. 30000" value="30000"></div>
-      <div class="field"><label>Tax Already Paid Abroad (%)</label><input type="number" id="tax-paid" placeholder="e.g. 25" value="25"></div>
+      <div class="field"><label>Foreign Income (USD / year)</label><input type="number" id="tax-income" value="30000"></div>
+      <div class="field"><label>Tax Already Paid Abroad (%)</label><input type="number" id="tax-paid" value="25"></div>
       <button class="calc-btn" onclick="calcTax()">Estimate Tax</button>
       <div class="result-box" id="tax-result"></div>
     </div>
 
-    <!-- NRI Tax Calculator -->
     <div class="panel">
       <div class="panel-title">NRI Income Tax Calculator</div>
       <div class="panel-sub">Quick slab-based estimate for NRI income tax in India (FY 2024-25).</div>
-      <div class="field"><label>Indian Income (₹ / year)</label><input type="number" id="nri-inc" placeholder="e.g. 12,00,000" value="1200000"></div>
-      <div class="field"><label>Deductions under 80C (₹)</label><input type="number" id="nri-ded" placeholder="e.g. 1,50,000" value="150000"></div>
-      <div class="field"><label>HRA / Other Exemptions (₹)</label><input type="number" id="nri-hra" placeholder="e.g. 0" value="0"></div>
+      <div class="field"><label>Indian Income (₹ / year)</label><input type="number" id="nri-inc" value="1200000"></div>
+      <div class="field"><label>Deductions under 80C (₹)</label><input type="number" id="nri-ded" value="150000"></div>
+      <div class="field"><label>HRA / Other Exemptions (₹)</label><input type="number" id="nri-hra" value="0"></div>
       <button class="calc-btn" onclick="calcNRI()">Compute Tax</button>
       <div class="result-box" id="nri-result"></div>
     </div>
@@ -558,18 +472,9 @@
     <div class="panel-title">What do you want to do with your global finances?</div>
     <div class="panel-sub">Select your primary intent for personalised AI-driven guidance.</div>
     <div class="advisor-grid">
-      <div class="intent-btn" onclick="showAdvice('invest',this)">
-        <div class="intent-icon">📈</div>
-        <div class="intent-label">Invest Globally</div>
-      </div>
-      <div class="intent-btn" onclick="showAdvice('earn',this)">
-        <div class="intent-icon">💸</div>
-        <div class="intent-label">Earn in USD</div>
-      </div>
-      <div class="intent-btn" onclick="showAdvice('expand',this)">
-        <div class="intent-icon">🌏</div>
-        <div class="intent-label">Expand Business</div>
-      </div>
+      <div class="intent-btn" onclick="showAdvice('invest',this)"><div class="intent-icon">📈</div><div class="intent-label">Invest Globally</div></div>
+      <div class="intent-btn" onclick="showAdvice('earn',this)"><div class="intent-icon">💸</div><div class="intent-label">Earn in USD</div></div>
+      <div class="intent-btn" onclick="showAdvice('expand',this)"><div class="intent-icon">🌏</div><div class="intent-label">Expand Business</div></div>
     </div>
     <div class="advisor-output" id="advisor-out"></div>
   </div>
@@ -579,13 +484,11 @@
   <div class="cta-card">
     <div class="cta-copy">
       <h3>Business Finance <span class="grad">Decision Dashboard</span></h3>
-      <p>8 powerful calculators — Break-Even, Profit Margin, ROI, Startup Valuation, Loan Eligibility, Cash Flow, Unit Economics &amp; GST Tracker. All in one premium shell.</p>
+      <p>8 powerful calculators — Break-Even, Profit Margin, ROI, Startup Valuation, Loan Eligibility, Cash Flow, Unit Economics &amp; GST Tracker.</p>
     </div>
     <div class="cta-actions">
       <a class="btn primary" href="business-dashboard.html">Open Dashboard →</a>
-      <a class="btn secondary"
-         href="https://wa.me/919311354795"
-         target="_blank"
+      <a class="btn secondary" href="https://wa.me/919311354795" target="_blank"
          onclick="gtag('event','whatsapp_click',{event_category:'engagement',event_label:'whatsapp_cta'})">Talk to Advisor</a>
     </div>
   </div>
@@ -593,30 +496,12 @@
   <!-- EXPLORE MORE -->
   <div class="section-label">Explore More</div>
   <div class="explore-grid">
-    <a class="explore-card" href="#">
-      <div class="explore-icon">📊</div>
-      Mutual Fund Planner
-    </a>
-    <a class="explore-card" href="#">
-      <div class="explore-icon">🪙</div>
-      Digital Assets
-    </a>
-    <a class="explore-card" href="#">
-      <div class="explore-icon">🏠</div>
-      Real Estate ROI
-    </a>
-    <a class="explore-card" href="#">
-      <div class="explore-icon">✈️</div>
-      Travel Budget
-    </a>
-    <a class="explore-card" href="#">
-      <div class="explore-icon">🛡️</div>
-      Insurance Planner
-    </a>
-    <a class="explore-card" href="#">
-      <div class="explore-icon">📚</div>
-      Learn Finance
-    </a>
+    <a class="explore-card" href="#"><div class="explore-icon">📊</div>Mutual Fund Planner</a>
+    <a class="explore-card" href="#"><div class="explore-icon">🪙</div>Digital Assets</a>
+    <a class="explore-card" href="#"><div class="explore-icon">🏠</div>Real Estate ROI</a>
+    <a class="explore-card" href="#"><div class="explore-icon">✈️</div>Travel Budget</a>
+    <a class="explore-card" href="#"><div class="explore-icon">🛡️</div>Insurance Planner</a>
+    <a class="explore-card" href="#"><div class="explore-icon">📚</div>Learn Finance</a>
   </div>
 
 </div><!-- end .page -->
@@ -635,456 +520,541 @@
 </div>
 
 <script>
-/* ─── PAGE LOAD EVENT ─────────────────────────────────── */
-gtag('event', 'page_loaded', { event_category: 'engagement' });
+/* ═══════════════════════════════════════════════════════
+   ALL LOGIC RUNS INSIDE DOMContentLoaded
+   ═══════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function () {
 
-/* ─── NAVBAR LOAD ─────────────────────────────────────── */
-fetch('/components/navbar.html')
-  .then(r => r.text())
-  .then(html => { document.getElementById('navbar-slot').innerHTML = html; })
-  .catch(() => {
-    document.getElementById('navbar-slot').innerHTML = `
-      <nav class="site-nav">
-        <div class="nav-inner">
-          <a class="nav-brand" href="Global-finance.html">
-            <div class="logo-mark">%</div>
-            <span class="brand-text">invest<span class="brand-grad">percent</span></span>
-          </a>
-          <div class="nav-rows">
-            <div class="nav-row">
-              <a class="nav-link" href="Global-finance.html">Home</a>
-              <a class="nav-link" href="#">Personal Finance</a>
-              <a class="nav-link" href="#">Investments</a>
-              <a class="nav-link" href="#">Insurance</a>
-              <a class="nav-link" href="#">Travel</a>
-            </div>
-            <div class="nav-row">
-              <a class="nav-link" href="#">Real Estate</a>
-              <a class="nav-link" href="#">Digital Assets</a>
-              <a class="nav-link active" href="Global-finance.html">Global Finance</a>
-              <a class="nav-link" href="#">Learn</a>
-              <a class="nav-link nav-cta" href="business-dashboard.html">Business</a>
-            </div>
-          </div>
-        </div>
-      </nav>`;
-  });
+  /* ── PAGE LOAD GA4 ──────────────────────────────────── */
+  gtag('event', 'page_loaded', { event_category: 'engagement' });
 
-/* ─── HELPERS ─────────────────────────────────────────── */
-const INR = n => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
-
-let USD_RATE = 83;
-
-function showBox(id, html) {
-  var b = document.getElementById(id);
-  b.innerHTML = html;
-  b.classList.add('show');
-}
-
-/* ─── GLOBAL API ───────────────── */
-const API_BASE = "https://flat-sky-5536.rjain-sobha.workers.dev";
-let USD_RATE = 83;
-
-/* ─── LIVE MARKET DATA ───────────────── */
-async function loadAllData() {
-  try {
-    // Forex
-    const [usdRes, eurRes] = await Promise.all([
-      fetch(`${API_BASE}?symbol=USD/INR&type=forex`),
-      fetch(`${API_BASE}?symbol=EUR/INR&type=forex`)
-    ]);
-
-    const usdData = await usdRes.json();
-    const eurData = await eurRes.json();
-
-    if (usdData.values?.length) {
-      USD_RATE = parseFloat(usdData.values[0].close);
-      document.getElementById('usd-inr').innerText = '₹' + USD_RATE.toFixed(2);
-    }
-
-    if (eurData.values?.length) {
-      document.getElementById('eur-inr').innerText =
-        '₹' + parseFloat(eurData.values[0].close).toFixed(2);
-    }
-
-    // Indices
-    const [spRes, nasRes] = await Promise.all([
-      fetch(`${API_BASE}?symbol=SPX&type=stock`),
-      fetch(`${API_BASE}?symbol=IXIC&type=stock`)
-    ]);
-
-    const spData = await spRes.json();
-    const nasData = await nasRes.json();
-
-    document.querySelector('[data-sp500]').innerText =
-      spData.values?.length ? parseFloat(spData.values[0].close).toFixed(0) : '--';
-
-    document.querySelector('[data-nasdaq]').innerText =
-      nasData.values?.length ? parseFloat(nasData.values[0].close).toFixed(0) : '--';
-
-    // Commodities
-    const [goldRes, crudeRes] = await Promise.all([
-      fetch(`${API_BASE}?symbol=XAU/USD&type=forex`),
-      fetch(`${API_BASE}?symbol=WTI&type=stock`)
-    ]);
-
-    const gData = await goldRes.json();
-    const cData = await crudeRes.json();
-
-    document.querySelector('[data-gold]').innerText =
-      gData.values?.length ? '₹' + Math.round(gData.values[0].close * USD_RATE) : '--';
-
-    document.querySelector('[data-crude]').innerText =
-      cData.values?.length ? '$' + parseFloat(cData.values[0].close).toFixed(2) : '--';
-
-    // Top Movers
-    loadTopMovers();
-
-    // AI Insight
-    generateInsight();
-
-    document.getElementById('last-updated').innerText =
-      'Last updated: ' + new Date().toLocaleTimeString();
-
-  } catch (e) {
-    console.log("DATA ERROR", e);
-  }
-}
-
-/* ─── TOP MOVERS ───────────────── */
-async function loadTopMovers() {
-  const stocks = ['AAPL','TSLA','NVDA','MSFT'];
-
-  const results = await Promise.all(stocks.map(async s => {
-    try {
-      const res = await fetch(`${API_BASE}?symbol=${s}&type=stock`);
-      const data = await res.json();
-
-      if (data.values?.length) {
-        const price = parseFloat(data.values[0].close);
-        return `
-          <div class="snap-card">
-            <div class="snap-label">${s}</div>
-            <div class="snap-value neutral">$${price.toFixed(2)}</div>
-          </div>`;
-      }
-    } catch(e){}
-
-    return `<div class="snap-card"><div class="snap-label">${s}</div><div class="snap-value">--</div></div>`;
-  }));
-
-  document.getElementById('top-movers').innerHTML = results.join('');
-}
-
-/* ─── AI INSIGHT ───────────────── */
-function generateInsight() {
-  const hour = new Date().getHours();
-  let text = '';
-
-  if (hour < 12) {
-    text = "Morning volatility expected. Watch USD strength.";
-  } else if (hour < 18) {
-    text = "Mid-session trend forming. Tech & energy active.";
-  } else {
-    text = "Closing signals indicate next-day direction.";
-  }
-
-  document.getElementById('ai-text').innerText = text;
-}
-
-/* ─── STOCK CHART ───────────────── */
-async function loadChart() {
-  try {
-    const container = document.getElementById('chart-container');
-
-    const chart = LightweightCharts.createChart(container, {
-      width: container.clientWidth,
-      height: 300
+  /* ── NAVBAR (absolute path, inline fallback) ────────── */
+  fetch('/components/navbar.html')
+    .then(function(r) {
+      if (!r.ok) throw new Error('navbar fetch failed');
+      return r.text();
+    })
+    .then(function(html) {
+      document.getElementById('navbar-slot').innerHTML = html;
+      console.log('[Navbar] loaded from /components/navbar.html');
+    })
+    .catch(function(err) {
+      console.warn('[Navbar] fallback used:', err.message);
+      document.getElementById('navbar-slot').innerHTML =
+        '<nav class="site-nav"><div class="nav-inner">' +
+        '<a class="nav-brand" href="Global-finance.html"><div class="logo-mark">%</div>' +
+        '<span class="brand-text">invest<span class="brand-grad">percent</span></span></a>' +
+        '<div class="nav-rows">' +
+        '<div class="nav-row">' +
+        '<a class="nav-link" href="Global-finance.html">Home</a>' +
+        '<a class="nav-link" href="#">Personal Finance</a>' +
+        '<a class="nav-link" href="#">Investments</a>' +
+        '<a class="nav-link" href="#">Insurance</a>' +
+        '<a class="nav-link" href="#">Travel</a></div>' +
+        '<div class="nav-row">' +
+        '<a class="nav-link" href="#">Real Estate</a>' +
+        '<a class="nav-link" href="#">Digital Assets</a>' +
+        '<a class="nav-link active" href="Global-finance.html">Global Finance</a>' +
+        '<a class="nav-link" href="#">Learn</a>' +
+        '<a class="nav-link nav-cta" href="business-dashboard.html">Business</a>' +
+        '</div></div></div></nav>';
     });
 
-    const lineSeries = chart.addLineSeries();
+  /* ── CONSTANTS & STATE ──────────────────────────────── */
+  const API_BASE = 'https://flat-sky-5536.rjain-sobha.workers.dev';
+  const INR = function(n) {
+    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n);
+  };
+  var USD_RATE = 83; // single declaration — updated by live API
 
-    const res = await fetch(`${API_BASE}?symbol=AAPL&type=stock`);
-    const data = await res.json();
-
-    if (data.values?.length) {
-      const chartData = data.values.map(v => ({
-        time: v.datetime.split(" ")[0],
-        value: parseFloat(v.close)
-      })).reverse();
-
-      lineSeries.setData(chartData);
-    }
-
-  } catch(e) {
-    console.log("Chart error", e);
-  }
-}
-
-/* ─── INIT ───────────────── */
-document.addEventListener("DOMContentLoaded", function () {
-  loadAllData();
-  loadChart();
-
-  setInterval(loadAllData, 120000);
-});/* ─── CURRENCY IMPACT ─────────────────────────────────── */
-function calcCurrency() {
-  var inv = +document.getElementById('ci-inv').value || 0;
-  var g = +document.getElementById('ci-growth').value || 0;
-  var d = +document.getElementById('ci-depr').value || 0;
-  if (!inv) return;
-  var final = inv;
-  for (var i = 0; i < 5; i++) final = final * (1 + g/100) * (1 + d/100);
-  var gain = final - inv;
-  showBox('ci-result',
-    '<span class="result-big">' + INR(Math.round(final)) + '</span>' +
-    'Projected 5-year value &nbsp;|&nbsp; Gain: <strong style="color:var(--green)">' + INR(Math.round(gain)) + '</strong><br>' +
-    '<small style="color:var(--muted)">Annual USD growth ' + g + '% + INR depreciation ' + d + '%</small>');
-}
-
-/* ─── INR SIGNAL TOGGLE ───────────────────────────────── */
-function toggleSignal(el, name, text) {
-  document.querySelectorAll('.signal-card').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  var box = document.getElementById('inr-signal');
-  box.innerHTML = '<strong>' + name + ':</strong> ' + text;
-  box.classList.add('show');
-}
-
-/* ─── CURRENCY CONVERTER ──────────────────────────────── */
-function convertCurrency(dir) {
-  if (dir === 'inr') {
-    var inr = +document.getElementById('conv-inr').value || 0;
-    var usd = inr / USD_RATE;
-    document.getElementById('conv-usd').value = usd.toFixed(2);
-    showBox('conv-result',
-      '<span class="result-big">$' + usd.toLocaleString('en-IN',{maximumFractionDigits:2}) + ' USD</span>' +
-      'At live rate ₹' + USD_RATE.toFixed(2) + ' / USD');
-  } else {
-    var usd2 = +document.getElementById('conv-usd').value || 0;
-    var inr2 = usd2 * USD_RATE;
-    document.getElementById('conv-inr').value = Math.round(inr2);
-    showBox('conv-result',
-      '<span class="result-big">' + INR(Math.round(inr2)) + '</span>' +
-      'At live rate ₹' + USD_RATE.toFixed(2) + ' / USD');
-  }
-}
-(function(){ convertCurrency('inr'); })();
-
-/* ─── PORTFOLIO ───────────────────────────────────────── */
-function calcPortfolio() {
-  var total = +document.getElementById('port-total').value || 0;
-  var intlPct = Math.min(100, Math.max(0, +document.getElementById('port-intl').value || 0));
-  var domPct = 100 - intlPct;
-  var intlAmt = total * intlPct / 100;
-  var domAmt = total * domPct / 100;
-  var bars = [
-    {label:'International', pct:intlPct, color:'var(--cyan)', amt:intlAmt},
-    {label:'Domestic India', pct:domPct, color:'var(--violet)', amt:domAmt}
-  ];
-  var html = bars.map(b => `
-    <div class="alloc-row">
-      <div class="alloc-label"><span>${b.label}</span><span style="color:${b.color}">${b.pct.toFixed(0)}% — ₹${b.amt.toFixed(1)}L</span></div>
-      <div class="alloc-bar"><div class="alloc-fill" style="width:${b.pct}%;background:${b.color}"></div></div>
-    </div>`).join('');
-  document.getElementById('port-bars').innerHTML = html;
-  showBox('port-result',
-    '<span class="result-big">Total: ₹' + total.toFixed(1) + ' Lakhs</span>' +
-    'Intl: ₹' + intlAmt.toFixed(2) + 'L &nbsp;|&nbsp; Domestic: ₹' + domAmt.toFixed(2) + 'L');
-}
-(function(){ calcPortfolio(); })();
-
-/* ─── FREELANCE ───────────────────────────────────────── */
-function calcFreelance() {
-  var rate = +document.getElementById('fl-rate').value || 0;
-  var hrs = +document.getElementById('fl-hrs').value || 0;
-  var wks = +document.getElementById('fl-wks').value || 0;
-  var annualUSD = rate * hrs * wks;
-  var annualINR = annualUSD * USD_RATE;
-  showBox('fl-result',
-    '<span class="result-big">' + INR(Math.round(annualINR)) + '</span>' +
-    'Annual USD earnings: $' + annualUSD.toLocaleString() +
-    '<br><small style="color:var(--muted)">Monthly ≈ ' + INR(Math.round(annualINR/12)) + '</small>');
-}
-
-/* ─── REMOTE SALARY ───────────────────────────────────── */
-function calcRemote() {
-  var sal = +document.getElementById('rs-sal').value || 0;
-  var tax = +document.getElementById('rs-tax').value || 0;
-  var rate = +document.getElementById('rs-rate').value || USD_RATE;
-  var afterTax = sal * (1 - tax/100);
-  var inr = afterTax * rate;
-  showBox('rs-result',
-    '<span class="result-big">' + INR(Math.round(inr)) + '</span>' +
-    'Post-tax USD: $' + Math.round(afterTax).toLocaleString() +
-    '<br><small style="color:var(--muted)">Monthly take-home ≈ ' + INR(Math.round(inr/12)) + '</small>');
-}
-
-/* ─── HOURLY RATE ─────────────────────────────────────── */
-function calcHourly() {
-  var target = +document.getElementById('hr-target').value || 0;
-  var hrs = +document.getElementById('hr-hrs').value || 0;
-  var rate = +document.getElementById('hr-rate').value || USD_RATE;
-  if (!hrs || !rate) return;
-  var targetUSD = target / rate;
-  var hourly = targetUSD / hrs;
-  showBox('hr-result',
-    '<span class="result-big">$' + hourly.toFixed(2) + ' / hr</span>' +
-    'Target ' + INR(target) + '/mo at ' + hrs + ' hrs/mo' +
-    '<br><small style="color:var(--muted)">Annual goal: ' + INR(target*12) + '</small>');
-}
-
-/* ─── TAX ─────────────────────────────────────────────── */
-function calcTax() {
-  var res = document.getElementById('tax-res').value;
-  var inc = +document.getElementById('tax-income').value || 0;
-  var paid = +document.getElementById('tax-paid').value || 0;
-  var incINR = inc * USD_RATE;
-  var dtaa = Math.min(paid, 30);
-  var slab = res==='nri' ? 0 : res==='rnor' ? 0 : incINR>1000000 ? 30 : incINR>500000 ? 20 : incINR>250000 ? 5 : 0;
-  var tax = res==='nri' ? 0 : incINR * slab / 100;
-  var dtaaCredit = Math.min(tax, incINR * dtaa / 100);
-  var payable = Math.max(0, tax - dtaaCredit);
-  var badge = res==='nri'
-    ? '<span class="badge green">NRI — Exempt</span>'
-    : payable < 5000
-      ? '<span class="badge green">Low Liability</span>'
-      : '<span class="badge gold">Tax Due</span>';
-  showBox('tax-result',
-    badge +
-    '<span class="result-big" style="margin-top:10px">' + INR(Math.round(payable)) + '</span>' +
-    'Applicable rate: ' + slab + '% &nbsp;|&nbsp; DTAA credit: ' + INR(Math.round(dtaaCredit)) +
-    '<br><small style="color:var(--muted)">For illustration only. Consult a tax advisor.</small>');
-}
-
-/* ─── NRI TAX ─────────────────────────────────────────── */
-function calcNRI() {
-  var inc = +document.getElementById('nri-inc').value || 0;
-  var ded = +document.getElementById('nri-ded').value || 0;
-  var hra = +document.getElementById('nri-hra').value || 0;
-  var taxable = Math.max(0, inc - ded - hra);
-  var tax = 0;
-  if (taxable > 1500000) tax = 112500 + (taxable-1500000) * 0.30;
-  else if (taxable > 1000000) tax = 75000 + (taxable-1000000) * 0.20;
-  else if (taxable > 750000) tax = 37500 + (taxable-750000) * 0.15;
-  else if (taxable > 500000) tax = 12500 + (taxable-500000) * 0.10;
-  else if (taxable > 250000) tax = (taxable-250000) * 0.05;
-  var cess = tax * 0.04;
-  var total = tax + cess;
-  var eff = inc > 0 ? (total / inc * 100) : 0;
-  showBox('nri-result',
-    '<span class="result-big">' + INR(Math.round(total)) + '</span>' +
-    'Taxable income: ' + INR(Math.round(taxable)) + ' &nbsp;|&nbsp; Cess: ' + INR(Math.round(cess)) +
-    '<br>Effective rate: <strong style="color:var(--cyan)">' + eff.toFixed(1) + '%</strong>' +
-    '<br><small style="color:var(--muted)">New tax regime slabs. Consult a CA for filing.</small>');
-}
-
-/* ─── AI ADVISOR ──────────────────────────────────────── */
-var adviceMap = {
-  invest:[
-    'Based on rupee weakness, <strong>US equity ETFs</strong> and <strong>gold</strong> offer strong INR-amplified returns.',
-    'Consider a <strong>30% international allocation</strong>: S&P 500 index funds via LRS route ($250K limit/year).',
-    'Use INR depreciation as a tailwind. Even 3-5% annual INR decline adds meaningfully to USD asset returns in rupee terms.'
-  ],
-  earn:[
-    'Freelance USD income in the $20-40/hr range can yield ₹40-80L annually — taxed as business income.',
-    'Remote salary via payroll: Declare as foreign salary income. Get DTAA credit to avoid double taxation.',
-    'Use Wise/Payoneer for low-cost remittances. Convert in tranches to average out INR rate.'
-  ],
-  expand:[
-    'Register a <strong>Delaware C-Corp</strong> for US clients. Tax-efficient with ₹ cost base in India.',
-    'GIFT City (Gujarat) offers a regulated fintech hub with tax holidays — ideal for global expansion.',
-    'Export of services is <strong>GST-exempt</strong> if payment is received in foreign currency. Keep compliance documentation.'
-  ]
-};
-function showAdvice(intent, el) {
-  document.querySelectorAll('.intent-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  var tips = adviceMap[intent];
-  var html = tips.map((t,i) => `<p style="margin:${i?'12px':'0'} 0 0"><span style="color:var(--cyan);font-weight:700">→</span> ${t}</p>`).join('');
-  var out = document.getElementById('advisor-out');
-  out.innerHTML = html;
-  out.classList.add('show');
-}
-
-/* ─── LEAD POPUP ──────────────────────────────────────── */
-var interactionCount = 0;
-var popupShown = false;
-
-function maybePopup() {
-  if (popupShown) return;
-  interactionCount++;
-  if (interactionCount >= 3) { openPopup(); }
-}
-document.addEventListener('input', maybePopup);
-document.addEventListener('click', function(e) {
-  if (
-    e.target.classList.contains('calc-btn') ||
-    e.target.classList.contains('intent-btn') ||
-    e.target.classList.contains('signal-card')
-  ) maybePopup();
-});
-
-// Exit intent — mouse leaves toward top of page
-document.addEventListener('mouseleave', function(e) {
-  if (e.clientY < 10) { openPopup(); }
-});
-
-// Scroll tracking + scroll-triggered popup
-var scrollTracked = false;
-window.addEventListener('scroll', function() {
-  var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-  if (!scrollTracked && window.scrollY > 500) {
-    gtag('event', 'scroll_50', { event_category: 'engagement' });
-    scrollTracked = true;
-  }
-  if (!popupShown && pct > 0.6) { openPopup(); }
-}, {passive: true});
-
-function openPopup() {
-  if (!popupShown) {
-    document.getElementById('popup').classList.add('show');
-    popupShown = true;
-  }
-}
-function closePopup() {
-  document.getElementById('popup').classList.remove('show');
-}
-function submitLead() {
-  var name = document.getElementById('pop-name').value.trim();
-  var email = document.getElementById('pop-email').value.trim();
-  var phone = document.getElementById('pop-wa').value.trim();
-
-  if (!name || !phone) {
-    alert('Please enter your name and phone number');
-    return;
+  /* ── HELPERS ────────────────────────────────────────── */
+  function setText(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.innerText = val;
   }
 
-  gtag('event', 'lead_submit', {
-    event_category: 'engagement',
-    event_label: 'global_finance_popup'
+  function showBox(id, html) {
+    var b = document.getElementById(id);
+    if (!b) return;
+    b.innerHTML = html;
+    b.classList.add('show');
+  }
+
+  function safeClose(data) {
+    /* returns close price from Worker response, or null */
+    if (!data) return null;
+    if (Array.isArray(data.values) && data.values.length > 0 && data.values[0].close)
+      return parseFloat(data.values[0].close);
+    if (data.close) return parseFloat(data.close);
+    if (data.price) return parseFloat(data.price);
+    return null;
+  }
+
+  async function apiFetch(symbol, type) {
+    var url = API_BASE + '?symbol=' + encodeURIComponent(symbol) + '&type=' + encodeURIComponent(type);
+    console.log('[API] fetching', url);
+    var res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status + ' for ' + symbol);
+    var data = await res.json();
+    console.log('[API] ' + symbol, data);
+    return data;
+  }
+
+  /* ── SYNC USD_RATE INTO INCOME CALC FIELDS ──────────── */
+  function syncRateFields() {
+    var rsRate = document.getElementById('rs-rate');
+    var hrRate = document.getElementById('hr-rate');
+    if (rsRate && !rsRate.dataset.userEdited) rsRate.value = USD_RATE.toFixed(2);
+    if (hrRate && !hrRate.dataset.userEdited) hrRate.value = USD_RATE.toFixed(2);
+  }
+
+  ['rs-rate', 'hr-rate'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', function() { this.dataset.userEdited = '1'; });
   });
 
-  fetch('https://script.google.com/macros/s/AKfycbz6_ehdRSZAmotOCtFcjhk7btwo7ozMGFnSUkzKTjYbG6eQZ28Jrvh5YAjHJcEnH-U0/exec', {
-    method: 'POST',
-    body: JSON.stringify({
-      name: name,
-      email: email,
-      phone: phone,
-      source: 'global-finance-page',
-      time: new Date().toISOString(),
-      secret: 'IP_SECRET_2026'
-    }),
-    headers: { 'Content-Type': 'application/json' }
-  }).catch(function(){});
+  /* ── LOAD ALL MARKET DATA ───────────────────────────── */
+  async function loadAllData() {
+    console.log('[loadAllData] starting…');
 
-  alert('Thank you! We will contact you shortly.');
-  window.open('https://wa.me/919311354795', '_blank');
-  closePopup();
-}
+    /* FOREX */
+    try {
+      var usdData = await apiFetch('USD/INR', 'forex');
+      var usdClose = safeClose(usdData);
+      if (usdClose) {
+        USD_RATE = usdClose;
+        setText('usd-inr', '₹' + USD_RATE.toFixed(2));
+        syncRateFields();
+        convertCurrency('inr');
+        console.log('[Forex] USD_RATE =', USD_RATE);
+      } else {
+        setText('usd-inr', 'Unavailable');
+      }
+    } catch(e) {
+      console.error('[Forex USD]', e.message);
+      setText('usd-inr', 'Unavailable');
+    }
 
-/* ─── INIT ────────────────────────────────────────────── */
-loadChart();
+    try {
+      var eurData = await apiFetch('EUR/INR', 'forex');
+      var eurClose = safeClose(eurData);
+      setText('eur-inr', eurClose ? '₹' + eurClose.toFixed(2) : 'Unavailable');
+    } catch(e) {
+      console.error('[Forex EUR]', e.message);
+      setText('eur-inr', 'Unavailable');
+    }
+
+    /* INDICES */
+    try {
+      var spData = await apiFetch('SPX', 'stock');
+      var spClose = safeClose(spData);
+      setText('sp500-price', spClose ? spClose.toLocaleString('en-US', { maximumFractionDigits: 0 }) : 'Unavailable');
+    } catch(e) {
+      console.error('[SPX]', e.message);
+      setText('sp500-price', 'Unavailable');
+    }
+
+    try {
+      var nasData = await apiFetch('IXIC', 'stock');
+      var nasClose = safeClose(nasData);
+      setText('nasdaq-price', nasClose ? nasClose.toLocaleString('en-US', { maximumFractionDigits: 0 }) : 'Unavailable');
+    } catch(e) {
+      console.error('[IXIC]', e.message);
+      setText('nasdaq-price', 'Unavailable');
+    }
+
+    /* COMMODITIES */
+    try {
+      var goldData = await apiFetch('XAU/USD', 'forex');
+      var goldClose = safeClose(goldData);
+      if (goldClose) {
+        var goldINR = Math.round(goldClose * USD_RATE);
+        setText('gold-price', '₹' + goldINR.toLocaleString('en-IN'));
+      } else {
+        setText('gold-price', 'Unavailable');
+      }
+    } catch(e) {
+      console.error('[Gold]', e.message);
+      setText('gold-price', 'Unavailable');
+    }
+
+    try {
+      var crudeData = await apiFetch('WTI', 'stock');
+      var crudeClose = safeClose(crudeData);
+      setText('crude-price', crudeClose ? '$' + crudeClose.toFixed(2) : 'Unavailable');
+    } catch(e) {
+      console.error('[WTI]', e.message);
+      setText('crude-price', 'Unavailable');
+    }
+
+    /* TOP MOVERS & INSIGHT */
+    loadTopMovers();
+    generateInsight();
+
+    setText('last-updated', 'Last updated: ' + new Date().toLocaleTimeString());
+    console.log('[loadAllData] complete');
+  }
+
+  /* ── TOP MOVERS ─────────────────────────────────────── */
+  async function loadTopMovers() {
+    var stocks = ['AAPL', 'TSLA', 'NVDA', 'MSFT'];
+    var cards = await Promise.all(stocks.map(async function(s) {
+      try {
+        var data = await apiFetch(s, 'stock');
+        var close = safeClose(data);
+        /* Try to get percent_change from response */
+        var pct = null;
+        if (data && data.percent_change != null) pct = parseFloat(data.percent_change);
+        else if (data && Array.isArray(data.values) && data.values.length > 1) {
+          var c0 = parseFloat(data.values[0].close);
+          var c1 = parseFloat(data.values[1].close);
+          if (c1) pct = ((c0 - c1) / c1) * 100;
+        }
+        var priceStr = close ? '$' + close.toFixed(2) : '--';
+        var pctStr = pct !== null ? (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%' : '';
+        var valueClass = pct === null ? 'neutral' : pct >= 0 ? 'up' : 'down';
+        var pctColor = pct === null ? 'var(--muted)' : pct >= 0 ? 'var(--green)' : 'var(--red)';
+        return '<div class="snap-card">' +
+          '<div class="snap-label">' + s + '</div>' +
+          '<div class="snap-value ' + valueClass + '">' + priceStr + '</div>' +
+          '<div class="snap-change"><span style="color:' + pctColor + ';font-weight:700">' + pctStr + '</span></div>' +
+          '</div>';
+      } catch(e) {
+        console.error('[Mover ' + s + ']', e.message);
+        return '<div class="snap-card"><div class="snap-label">' + s + '</div>' +
+               '<div class="snap-value neutral">Unavailable</div></div>';
+      }
+    }));
+    var movers = document.getElementById('top-movers');
+    if (movers) movers.innerHTML = cards.join('');
+  }
+
+  /* ── AI INSIGHT ─────────────────────────────────────── */
+  function generateInsight() {
+    var h = new Date().getHours();
+    var text = h < 12
+      ? 'Markets may remain volatile in morning sessions. Focus on global cues and USD strength before making allocation decisions.'
+      : h < 18
+        ? 'Mid-day trend suggests sector rotation. Watch tech and energy for short-term momentum signals.'
+        : 'Global markets closing trend indicates next-day directional bias. Review your international allocations before tomorrow\'s open.';
+    setText('ai-text', text);
+  }
+
+  /* ── STOCK CHART (LIVE) ─────────────────────────────── */
+  async function loadChart() {
+    var container = document.getElementById('chart-container');
+    if (!container) { console.warn('[Chart] container missing'); return; }
+    if (typeof LightweightCharts === 'undefined') { console.warn('[Chart] LightweightCharts not loaded'); return; }
+
+    try {
+      var chart = LightweightCharts.createChart(container, {
+        width: container.clientWidth,
+        height: 300,
+        layout: { background: { color: 'transparent' }, textColor: '#9da9c6' },
+        grid: { vertLines: { color: 'rgba(255,255,255,0.05)' }, horzLines: { color: 'rgba(255,255,255,0.05)' } },
+        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+        rightPriceScale: { borderColor: 'rgba(255,255,255,0.1)' },
+        timeScale: { borderColor: 'rgba(255,255,255,0.1)' }
+      });
+      var lineSeries = chart.addLineSeries({ color: '#00d4ff', lineWidth: 2 });
+
+      var chartData = [];
+      try {
+        var data = await apiFetch('AAPL', 'stock');
+        if (data && Array.isArray(data.values) && data.values.length > 0) {
+          chartData = data.values
+            .filter(function(v) { return v.datetime && v.close; })
+            .map(function(v) {
+              return { time: v.datetime.split(' ')[0], value: parseFloat(v.close) };
+            })
+            .reverse();
+          console.log('[Chart] using', chartData.length, 'data points from API');
+        }
+      } catch(e) {
+        console.warn('[Chart] API error, using fallback:', e.message);
+      }
+
+      /* Fallback data if API returns nothing */
+      if (!chartData.length) {
+        chartData = [
+          { time: '2024-01-02', value: 185.2 },
+          { time: '2024-02-01', value: 191.6 },
+          { time: '2024-03-01', value: 179.7 },
+          { time: '2024-04-01', value: 171.2 },
+          { time: '2024-05-01', value: 183.3 },
+          { time: '2024-06-03', value: 194.3 },
+          { time: '2024-07-01', value: 216.8 },
+          { time: '2024-08-01', value: 219.9 },
+          { time: '2024-09-02', value: 228.9 }
+        ];
+        console.log('[Chart] using fallback data');
+      }
+
+      lineSeries.setData(chartData);
+
+      window.addEventListener('resize', function() {
+        if (container && chart) chart.applyOptions({ width: container.clientWidth });
+      });
+    } catch(e) {
+      console.error('[Chart] failed to create:', e.message);
+    }
+  }
+
+  /* ── CURRENCY CONVERTER ─────────────────────────────── */
+  function convertCurrency(dir) {
+    var convInr = document.getElementById('conv-inr');
+    var convUsd = document.getElementById('conv-usd');
+    if (!convInr || !convUsd) return;
+    if (dir === 'inr') {
+      var inr = parseFloat(convInr.value) || 0;
+      var usd = inr / USD_RATE;
+      convUsd.value = usd.toFixed(2);
+      showBox('conv-result',
+        '<span class="result-big">$' + usd.toLocaleString('en-IN', { maximumFractionDigits: 2 }) + ' USD</span>' +
+        'At live rate ₹' + USD_RATE.toFixed(2) + ' / USD');
+    } else {
+      var usd2 = parseFloat(convUsd.value) || 0;
+      var inr2 = usd2 * USD_RATE;
+      convInr.value = Math.round(inr2);
+      showBox('conv-result',
+        '<span class="result-big">' + INR(Math.round(inr2)) + '</span>' +
+        'At live rate ₹' + USD_RATE.toFixed(2) + ' / USD');
+    }
+  }
+  /* expose for oninput handlers in HTML */
+  window.convertCurrency = convertCurrency;
+  convertCurrency('inr');
+
+  /* ── PORTFOLIO ──────────────────────────────────────── */
+  function calcPortfolio() {
+    var total = parseFloat(document.getElementById('port-total').value) || 0;
+    var intlPct = Math.min(100, Math.max(0, parseFloat(document.getElementById('port-intl').value) || 0));
+    var domPct = 100 - intlPct;
+    var bars = [
+      { label: 'International', pct: intlPct, color: 'var(--cyan)', amt: total * intlPct / 100 },
+      { label: 'Domestic India', pct: domPct, color: 'var(--violet)', amt: total * domPct / 100 }
+    ];
+    document.getElementById('port-bars').innerHTML = bars.map(function(b) {
+      return '<div class="alloc-row">' +
+        '<div class="alloc-label"><span>' + b.label + '</span>' +
+        '<span style="color:' + b.color + '">' + b.pct.toFixed(0) + '% — ₹' + b.amt.toFixed(1) + 'L</span></div>' +
+        '<div class="alloc-bar"><div class="alloc-fill" style="width:' + b.pct + '%;background:' + b.color + '"></div></div></div>';
+    }).join('');
+    showBox('port-result',
+      '<span class="result-big">Total: ₹' + total.toFixed(1) + ' Lakhs</span>' +
+      'Intl: ₹' + (total * intlPct / 100).toFixed(2) + 'L &nbsp;|&nbsp; Domestic: ₹' + (total * domPct / 100).toFixed(2) + 'L');
+  }
+  window.calcPortfolio = calcPortfolio;
+  calcPortfolio();
+
+  /* ── CALCULATORS ────────────────────────────────────── */
+  window.calcCurrency = function() {
+    var inv = parseFloat(document.getElementById('ci-inv').value) || 0;
+    var g = parseFloat(document.getElementById('ci-growth').value) || 0;
+    var d = parseFloat(document.getElementById('ci-depr').value) || 0;
+    if (!inv) return;
+    var final = inv;
+    for (var i = 0; i < 5; i++) final = final * (1 + g / 100) * (1 + d / 100);
+    showBox('ci-result',
+      '<span class="result-big">' + INR(Math.round(final)) + '</span>' +
+      'Projected 5-year value &nbsp;|&nbsp; Gain: <strong style="color:var(--green)">' + INR(Math.round(final - inv)) + '</strong><br>' +
+      '<small style="color:var(--muted)">Annual USD growth ' + g + '% + INR depreciation ' + d + '%</small>');
+  };
+
+  window.calcFreelance = function() {
+    var rate = parseFloat(document.getElementById('fl-rate').value) || 0;
+    var hrs = parseFloat(document.getElementById('fl-hrs').value) || 0;
+    var wks = parseFloat(document.getElementById('fl-wks').value) || 0;
+    var annualUSD = rate * hrs * wks;
+    var annualINR = annualUSD * USD_RATE;
+    showBox('fl-result',
+      '<span class="result-big">' + INR(Math.round(annualINR)) + '</span>' +
+      'Annual USD: $' + annualUSD.toLocaleString() +
+      '<br><small style="color:var(--muted)">Monthly ≈ ' + INR(Math.round(annualINR / 12)) + '</small>');
+  };
+
+  window.calcRemote = function() {
+    var sal = parseFloat(document.getElementById('rs-sal').value) || 0;
+    var tax = parseFloat(document.getElementById('rs-tax').value) || 0;
+    var rate = parseFloat(document.getElementById('rs-rate').value) || USD_RATE;
+    var afterTax = sal * (1 - tax / 100);
+    var inr = afterTax * rate;
+    showBox('rs-result',
+      '<span class="result-big">' + INR(Math.round(inr)) + '</span>' +
+      'Post-tax USD: $' + Math.round(afterTax).toLocaleString() +
+      '<br><small style="color:var(--muted)">Monthly ≈ ' + INR(Math.round(inr / 12)) + '</small>');
+  };
+
+  window.calcHourly = function() {
+    var target = parseFloat(document.getElementById('hr-target').value) || 0;
+    var hrs = parseFloat(document.getElementById('hr-hrs').value) || 0;
+    var rate = parseFloat(document.getElementById('hr-rate').value) || USD_RATE;
+    if (!hrs || !rate) return;
+    var hourly = (target / rate) / hrs;
+    showBox('hr-result',
+      '<span class="result-big">$' + hourly.toFixed(2) + ' / hr</span>' +
+      'Target ' + INR(target) + '/mo at ' + hrs + ' hrs/mo' +
+      '<br><small style="color:var(--muted)">Annual goal: ' + INR(target * 12) + '</small>');
+  };
+
+  window.calcTax = function() {
+    var res = document.getElementById('tax-res').value;
+    var inc = parseFloat(document.getElementById('tax-income').value) || 0;
+    var paid = parseFloat(document.getElementById('tax-paid').value) || 0;
+    var incINR = inc * USD_RATE;
+    var dtaa = Math.min(paid, 30);
+    var slab = (res === 'nri' || res === 'rnor') ? 0 : incINR > 1000000 ? 30 : incINR > 500000 ? 20 : incINR > 250000 ? 5 : 0;
+    var tax = (res === 'nri' || res === 'rnor') ? 0 : incINR * slab / 100;
+    var dtaaCredit = Math.min(tax, incINR * dtaa / 100);
+    var payable = Math.max(0, tax - dtaaCredit);
+    var badge = res === 'nri'
+      ? '<span class="badge green">NRI — Exempt</span>'
+      : payable < 5000
+        ? '<span class="badge green">Low Liability</span>'
+        : '<span class="badge gold">Tax Due</span>';
+    showBox('tax-result',
+      badge +
+      '<span class="result-big" style="margin-top:10px">' + INR(Math.round(payable)) + '</span>' +
+      'Rate: ' + slab + '% &nbsp;|&nbsp; DTAA credit: ' + INR(Math.round(dtaaCredit)) +
+      '<br><small style="color:var(--muted)">Illustration only. Consult a tax advisor.</small>');
+  };
+
+  window.calcNRI = function() {
+    var inc = parseFloat(document.getElementById('nri-inc').value) || 0;
+    var ded = parseFloat(document.getElementById('nri-ded').value) || 0;
+    var hra = parseFloat(document.getElementById('nri-hra').value) || 0;
+    var taxable = Math.max(0, inc - ded - hra);
+    var tax = 0;
+    if (taxable > 1500000) tax = 112500 + (taxable - 1500000) * 0.30;
+    else if (taxable > 1000000) tax = 75000 + (taxable - 1000000) * 0.20;
+    else if (taxable > 750000) tax = 37500 + (taxable - 750000) * 0.15;
+    else if (taxable > 500000) tax = 12500 + (taxable - 500000) * 0.10;
+    else if (taxable > 250000) tax = (taxable - 250000) * 0.05;
+    var cess = tax * 0.04;
+    var total = tax + cess;
+    var eff = inc > 0 ? (total / inc * 100) : 0;
+    showBox('nri-result',
+      '<span class="result-big">' + INR(Math.round(total)) + '</span>' +
+      'Taxable: ' + INR(Math.round(taxable)) + ' &nbsp;|&nbsp; Cess: ' + INR(Math.round(cess)) +
+      '<br>Effective rate: <strong style="color:var(--cyan)">' + eff.toFixed(1) + '%</strong>' +
+      '<br><small style="color:var(--muted)">New regime slabs. Consult a CA for filing.</small>');
+  };
+
+  /* ── INR SIGNAL ─────────────────────────────────────── */
+  window.toggleSignal = function(el, name, text) {
+    document.querySelectorAll('.signal-card').forEach(function(c) { c.classList.remove('active'); });
+    el.classList.add('active');
+    var box = document.getElementById('inr-signal');
+    box.innerHTML = '<strong>' + name + ':</strong> ' + text;
+    box.classList.add('show');
+  };
+
+  /* ── AI ADVISOR ─────────────────────────────────────── */
+  var adviceMap = {
+    invest: [
+      'Based on rupee weakness, <strong>US equity ETFs</strong> and <strong>gold</strong> offer strong INR-amplified returns.',
+      'Consider a <strong>30% international allocation</strong>: S&P 500 index funds via LRS route ($250K limit/year).',
+      'Use INR depreciation as a tailwind — even 3-5% annual INR decline adds meaningfully to USD asset returns.'
+    ],
+    earn: [
+      'Freelance USD income in the $20-40/hr range can yield ₹40-80L annually — taxed as business income.',
+      'Remote salary via payroll: Declare as foreign salary income. Get DTAA credit to avoid double taxation.',
+      'Use Wise/Payoneer for low-cost remittances. Convert in tranches to average out INR rate.'
+    ],
+    expand: [
+      'Register a <strong>Delaware C-Corp</strong> for US clients. Tax-efficient with ₹ cost base in India.',
+      'GIFT City (Gujarat) offers a regulated fintech hub with tax holidays — ideal for global expansion.',
+      'Export of services is <strong>GST-exempt</strong> if payment is received in foreign currency.'
+    ]
+  };
+  window.showAdvice = function(intent, el) {
+    document.querySelectorAll('.intent-btn').forEach(function(b) { b.classList.remove('active'); });
+    el.classList.add('active');
+    var tips = adviceMap[intent];
+    var html = tips.map(function(t, i) {
+      return '<p style="margin:' + (i ? '12px' : '0') + ' 0 0"><span style="color:var(--cyan);font-weight:700">→</span> ' + t + '</p>';
+    }).join('');
+    var out = document.getElementById('advisor-out');
+    out.innerHTML = html;
+    out.classList.add('show');
+  };
+
+  /* ── LEAD POPUP ─────────────────────────────────────── */
+  var interactionCount = 0;
+  var popupShown = false;
+
+  function maybePopup() {
+    if (popupShown) return;
+    interactionCount++;
+    if (interactionCount >= 3) openPopup();
+  }
+
+  document.addEventListener('input', maybePopup);
+  document.addEventListener('click', function(e) {
+    var t = e.target;
+    if (t.classList.contains('calc-btn') || t.classList.contains('intent-btn') || t.classList.contains('signal-card'))
+      maybePopup();
+  });
+
+  /* exit intent */
+  document.addEventListener('mouseleave', function(e) {
+    if (e.clientY < 10) openPopup();
+  });
+
+  /* scroll tracking + trigger */
+  var scrollTracked = false;
+  window.addEventListener('scroll', function() {
+    if (!scrollTracked && window.scrollY > 500) {
+      gtag('event', 'scroll_50', { event_category: 'engagement' });
+      scrollTracked = true;
+    }
+    var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    if (!popupShown && pct > 0.6) openPopup();
+  }, { passive: true });
+
+  window.openPopup = function() {
+    if (!popupShown) {
+      document.getElementById('popup').classList.add('show');
+      popupShown = true;
+    }
+  };
+  window.closePopup = function() {
+    document.getElementById('popup').classList.remove('show');
+  };
+  window.submitLead = function() {
+    var name = document.getElementById('pop-name').value.trim();
+    var email = document.getElementById('pop-email').value.trim();
+    var phone = document.getElementById('pop-wa').value.trim();
+
+    if (!name || !phone) {
+      alert('Please enter your name and phone number');
+      return;
+    }
+
+    gtag('event', 'lead_submit', { event_category: 'engagement', event_label: 'global_finance_popup' });
+
+    fetch('https://script.google.com/macros/s/AKfycbz6_ehdRSZAmotOCtFcjhk7btwo7ozMGFnSUkzKTjYbG6eQZ28Jrvh5YAjHJcEnH-U0/exec', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: name, email: email, phone: phone,
+        source: 'global-finance-page',
+        time: new Date().toISOString(),
+        secret: 'IP_SECRET_2026'
+      }),
+      headers: { 'Content-Type': 'application/json' }
+    }).catch(function() {});
+
+    alert('Thank you! We will contact you shortly.');
+    window.open('https://wa.me/919311354795', '_blank');
+    window.closePopup();
+  };
+
+  /* ── BOOT ───────────────────────────────────────────── */
+  loadAllData();
+  setInterval(loadAllData, 120000);
+  loadChart();
+
+}); /* end DOMContentLoaded */
 </script>
   <script src="/js/contact.js"></script>
   <script src="/js/main.js"></script>
