@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Investment Calculator India | SIP, Retirement &amp; Portfolio Planner</title>
+  <meta name="description" content="Free investment calculator for SIP, lumpsum, retirement planning. Get your personalized investment plan on WhatsApp instantly."/>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V4L60RZZP"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1V4L60RZZP');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+  --bg:#060915;--bg2:#0b1224;--panel:#0f1830;--panel2:#121e3c;--soft:#18284d;
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);
+  --text:#f7fbff;--muted:#9da9c6;
+  --cyan:#00d4ff;--blue:#4fa3ff;--violet:#7b61ff;
+  --green:#00e676;--gold:#ffd76a;--red:#ff607d;
+  --shadow:0 22px 70px rgba(0,0,0,.38);--shadow2:0 12px 34px rgba(0,0,0,.24);
+  --grad:linear-gradient(135deg,#00d4ff 0%,#4fa3ff 42%,#7b61ff 100%);
+  --hero:radial-gradient(circle at 16% 20%,rgba(0,212,255,.18),transparent 28%),
+         radial-gradient(circle at 88% 12%,rgba(123,97,255,.18),transparent 24%),
+         linear-gradient(180deg,#070c18 0%,#091224 100%);
+}
+
+/* ── NAVBAR ── */
+.nav{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 20px;margin-bottom:18px;border:1px solid var(--line);border-radius:22px;background:rgba(6,10,24,.75);backdrop-filter:blur(18px);box-shadow:0 12px 34px rgba(0,0,0,.24);overflow:visible}
+.brand{display:flex;align-items:center;gap:14px;cursor:pointer;flex-shrink:0}
+.brand-mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--grad);color:#07101e;font-weight:800;box-shadow:0 10px 24px rgba(79,163,255,.22)}
+.brand-name{font-family:Poppins,sans-serif;font-size:22px;font-weight:800;white-space:nowrap}
+.brand-name span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-links{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0;align-items:flex-end}
+.nav-row{display:flex;gap:8px;justify-content:flex-end;width:100%;flex-wrap:wrap;min-width:0}
+.nav-row.sub{justify-content:flex-end}
+.nav-link{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border-radius:12px;color:var(--muted);font-weight:700;text-decoration:none;border:1px solid transparent;white-space:nowrap;transition:.25s ease;flex:0 0 auto}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08);transform:translateY(-1px)}
+.nav-link.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 8px 20px rgba(79,163,255,.25)}
+.nav-link.active::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:60%;height:2px;border-radius:999px;background:var(--grad);opacity:.9}
+.mobile-toggle{display:none;width:44px;height:44px;border:none;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer;flex-shrink:0;transition:.2s ease}
+.mobile-toggle:hover{background:rgba(255,255,255,.15)}
+.mobile-drawer{display:none;width:100%;margin-top:12px;border:1px solid var(--line);border-radius:16px;background:#0a1428;padding:12px;animation:fadeIn .2s ease}
+.mobile-drawer.open{display:block}
+.mobile-drawer .nav-link{display:block;width:100%;padding:12px;border-radius:10px;text-decoration:none;color:#d9e4ff;font-weight:600;transition:.2s ease;min-height:unset;border:none}
+.mobile-drawer .nav-link:hover{background:rgba(255,255,255,.05);color:#fff}
+.mobile-drawer .nav-link.active{background:var(--grad);color:#071120;box-shadow:none}
+@media(max-width:1100px){.nav{gap:14px;padding:12px 16px}.nav-link{padding:8px 11px;font-size:.875rem}}
+@media(max-width:900px){.nav{flex-wrap:wrap;align-items:center}.nav-links{display:none}.mobile-toggle{display:block;margin-left:auto}.mobile-drawer{order:3}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+/* ── END NAVBAR ── */
+
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(0,212,255,.06),transparent 18%),radial-gradient(circle at bottom right,rgba(123,97,255,.08),transparent 22%),var(--bg);min-height:100vh;overflow-x:hidden;margin:0;padding:0}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 92%);z-index:0}
+*{box-sizing:border-box}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.page{position:relative;z-index:1;max-width:1450px;margin:0 auto;padding:14px 16px 38px}
+
+/* ── SUPER TAB BAR ── */
+.super-hero{background:var(--hero);border:1px solid var(--line);border-radius:28px;padding:28px 28px 22px;box-shadow:var(--shadow);margin-bottom:18px;position:relative;overflow:hidden}
+.super-hero::after{content:"";position:absolute;inset:auto -120px -120px auto;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.18),transparent 62%);filter:blur(14px);pointer-events:none}
+.super-hero h1{margin:0 0 6px;font-family:Poppins,sans-serif;font-size:clamp(28px,4vw,52px);line-height:1.05;letter-spacing:-.04em}
+.super-hero h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.super-hero p{margin:0 0 20px;color:var(--muted);font-size:16px;max-width:760px;line-height:1.6}
+.super-tabbar{display:flex;gap:10px;flex-wrap:wrap}
+.super-tab{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:16px;padding:13px 20px;font-weight:800;font-size:14px;cursor:pointer;transition:.2s cubic-bezier(.22,1,.36,1)}
+.super-tab:hover{color:var(--text);border-color:var(--line2);transform:translateY(-1px)}
+.super-tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 10px 22px rgba(79,163,255,.22)}
+
+/* ── SHARED COMPONENTS ── */
+.hidden{display:none!important}
+.hero{background:var(--hero);border:1px solid var(--line);border-radius:24px;padding:20px 22px;box-shadow:var(--shadow);margin-bottom:14px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto -120px -120px auto;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.18),transparent 62%);filter:blur(14px);pointer-events:none}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:14px}
+.hero-copy h2{margin:0;font-family:Poppins,sans-serif;font-size:clamp(22px,3vw,36px);line-height:1.1;letter-spacing:-.04em}
+.hero-copy h2 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-copy p{margin:8px 0 0;color:var(--muted);font-size:15px;max-width:760px;line-height:1.6}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:none;cursor:pointer;border-radius:14px;padding:11px 16px;font-weight:800;font-size:14px;transition:.2s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--grad);color:#071120;box-shadow:0 12px 26px rgba(79,163,255,.22)}
+.btn.secondary{color:var(--text);background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tab{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--line);border-radius:14px;padding:11px 14px;font-weight:800;cursor:pointer;transition:.2s ease;font-size:13px}
+.tab:hover{color:var(--text);border-color:var(--line2)}
+.tab.active{color:#071120;background:var(--grad);border-color:transparent;box-shadow:0 8px 20px rgba(79,163,255,.2)}
+.top-metrics{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}
+.metric-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:20px;padding:14px;min-height:90px;position:relative;overflow:hidden}
+.metric-card::before{content:"";position:absolute;top:-20%;right:-10%;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.06),transparent 60%);pointer-events:none}
+.metric-label{color:var(--muted);font-size:13px;font-weight:800;letter-spacing:.02em;margin-bottom:10px;text-transform:uppercase}
+.metric-value{font-size:clamp(22px,2.5vw,36px);font-weight:800;letter-spacing:-.04em;line-height:1}
+.metric-value.cyan{color:var(--cyan)}.metric-value.green{color:var(--green)}.metric-value.gold{color:var(--gold)}.metric-value.red{color:var(--red)}
+.metric-sub{margin-top:8px;color:#8390b1;font-size:13px}
+.layout{display:grid;grid-template-columns:390px minmax(0,1fr);gap:16px;margin-top:14px}
+.panel{background:linear-gradient(180deg,rgba(15,24,48,.97),rgba(10,18,37,.97));border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}
+.controls{padding:18px;position:relative;overflow:hidden}
+.controls::after{content:"";position:absolute;inset:auto -70px -70px auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(123,97,255,.12),transparent 60%);pointer-events:none}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.panel-title{font-size:22px;font-weight:800;letter-spacing:-.03em}
+.panel-desc{margin-top:6px;color:var(--muted);font-size:13px;line-height:1.55}
+.badge{align-self:flex-start;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:11px;font-weight:800;white-space:nowrap}
+.control-group{margin-bottom:13px;padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);transition:.18s ease}
+.control-group:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.09)}
+.control-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.control-name{font-size:13px;font-weight:700;color:var(--text)}
+.control-value{min-width:100px;text-align:right;font-weight:800;color:var(--cyan);letter-spacing:-.02em;font-size:14px}
+input[type=range]{width:100%;appearance:none;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;margin-top:-7px;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)}
+input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,212,255,.7),rgba(123,97,255,.65))}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,212,255,.14)}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.mini{padding:13px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.mini .k{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:7px}
+.mini .v{font-size:17px;font-weight:800;letter-spacing:-.03em}
+.advisor-card{margin-top:14px;padding:16px;border-radius:18px;background:radial-gradient(circle at top left,rgba(0,212,255,.18),transparent 36%),linear-gradient(135deg,rgba(79,163,255,.12),rgba(123,97,255,.14));border:1px solid rgba(255,255,255,.1)}
+.advisor-card h4{margin:0 0 7px;font-size:17px;font-weight:800;letter-spacing:-.03em}
+.advisor-card p{margin:0 0 12px;color:#d8e2ff;font-size:13px;line-height:1.6}
+.advisor-actions{display:flex;gap:10px;flex-wrap:wrap}
+.advisor-actions .btn{flex:1;min-width:130px}
+.dashboard{padding:16px;display:grid;grid-template-rows:auto auto 1fr auto;gap:12px;min-height:700px}
+.dash-top{display:grid;grid-template-columns:1.4fr .95fr;gap:12px}
+.wealth-card,.insight-card,.chart-card,.timeline-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:20px}
+.wealth-card{padding:18px;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 20% 20%,rgba(0,212,255,.14),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02))}
+.wealth-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.wealth-title{font-size:14px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.pill{padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:11px;font-weight:800}
+.wealth-number{font-size:clamp(36px,4vw,60px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin:6px 0 8px;color:#fff;transition:.35s ease}
+.wealth-number .grad{background:linear-gradient(135deg,#fff 0%,#9feeff 38%,#00e676 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wealth-sub{color:var(--muted);font-size:14px;line-height:1.6;max-width:660px}
+.wealth-split{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.wealth-stat{padding:12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.wealth-stat .s-label{color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:700;margin-bottom:7px}
+.wealth-stat .s-value{font-size:20px;font-weight:800;letter-spacing:-.03em}
+.insight-card{padding:16px;display:flex;flex-direction:column;gap:10px}
+.insight-title{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.insight-box{padding:12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);flex:1}
+.insight-box strong{display:block;font-size:14px;margin-bottom:5px;letter-spacing:-.02em}
+.insight-box span{color:var(--muted);font-size:12px;line-height:1.55}
+.chart-card{padding:16px;min-height:280px;display:flex;flex-direction:column}
+.chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.chart-title{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.chart-meta{color:var(--muted);font-size:13px;margin-top:5px}
+.legend{display:flex;gap:10px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;font-weight:700;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:8px 11px;border-radius:999px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+.chart-wrap{position:relative;flex:1;min-height:240px;margin-top:8px;opacity:0;transition:opacity .5s ease}
+.chart-wrap.loaded{opacity:1}
+.timeline-card{padding:14px}
+.timeline-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.timeline-title{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.milestone{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);transition:.18s ease}
+.milestone:hover{transform:translateY(-2px);background:rgba(255,255,255,.05)}
+.m-year{color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;margin-bottom:7px}
+.m-amount{font-size:22px;font-weight:800;letter-spacing:-.04em;margin-bottom:7px}
+.m-note{color:#8390b1;font-size:12px;line-height:1.45}
+
+/* Portfolio allocation bars */
+.alloc-bar-wrap{margin:6px 0 4px}
+.alloc-bar-track{height:10px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:5px}
+.alloc-bar-fill{height:100%;border-radius:999px;transition:width .5s ease}
+
+@media(max-width:1180px){.top-metrics{grid-template-columns:1fr 1fr}.layout{grid-template-columns:1fr}.dashboard{min-height:auto}.dash-top{grid-template-columns:1fr}.timeline-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.page{padding:10px 10px 24px}.super-hero{padding:16px}.hero{padding:14px}.controls,.dashboard{padding:12px}.wealth-split,.timeline-grid,.mini-grid,.top-metrics{grid-template-columns:1fr}.wealth-number{font-size:36px}.super-tabbar{gap:7px}.super-tab{padding:10px 14px;font-size:13px}}
+@media(max-width:768px){.btn{width:100%}#stickyCTA{flex-direction:column;gap:6px}}
+</style>
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="canonical" href="https://investpercent.com/investments.html" />
+</head>
+<body>
+<div class="page">
+  <div id="navbar"></div>
+
+  <!-- SUPER HERO & TAB NAV -->
+  <div class="super-hero">
+    <h1>Investment <span class="grad">Planner</span></h1>
+    <p>Build long-term wealth using SIP, lumpsum, retirement and portfolio strategies.</p>
+    <div class="super-tabbar">
+      <button class="super-tab active" data-tab="sip" onclick="switchSuper('sip')">📈 SIP</button>
+      <button class="super-tab" data-tab="lumpsum" onclick="switchSuper('lumpsum')">💰 Lumpsum</button>
+      <button class="super-tab" data-tab="cagr" onclick="switchSuper('cagr')">📊 CAGR</button>
+      <button class="super-tab" data-tab="retire" onclick="switchSuper('retire')">🎯 Retirement</button>
+      <button class="super-tab" data-tab="portfolio" onclick="switchSuper('portfolio')">📦 Portfolio</button>
+    </div>
+    <div style="margin-top:15px;padding:14px;border-radius:14px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div style="font-weight:700">💡 Get your personalized investment plan in 30 seconds</div>
+      <button class="btn primary" onclick="submitLead('hero_cta')">💡 Get My Investment Plan</button>
+    </div>
+  </div>
+  <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+    <div style="font-size:13px">✔ Free Planning | ✔ No Spam | ✔ Expert Guidance</div>
+    <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 1 — SIP
+  ═══════════════════════════════════════ -->
+  <div id="section-sip">
+    <div class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h2>SIP <span class="grad">Growth Engine</span></h2>
+          <p>SIP, Step-Up SIP and SWP — model your monthly investing journey with real-time corpus projections.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="document.getElementById('sip_controlsAnchor').scrollIntoView({behavior:'smooth'})">Start Planning</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
+        </div>
+      </div>
+      <div class="tabbar" id="sip_tabs"></div>
+      <div class="top-metrics">
+        <div class="metric-card"><div class="metric-label">Current mode</div><div class="metric-value cyan" id="sip_modeHeadline">—</div><div class="metric-sub" id="sip_modeSub">—</div></div>
+        <div class="metric-card"><div class="metric-label">Projected Corpus</div><div class="metric-value green" id="sip_topProjected">—</div><div class="metric-sub">At maturity</div></div>
+        <div class="metric-card"><div class="metric-label">Wealth Gain</div><div class="metric-value cyan" id="sip_topGains">—</div><div class="metric-sub">Above invested</div></div>
+        <div class="metric-card"><div class="metric-label">Expected Return</div><div class="metric-value gold" id="sip_topRate">—</div><div class="metric-sub">Annual assumption</div></div>
+      </div>
+    </div>
+    <section class="layout">
+      <aside class="panel controls" id="sip_controlsAnchor">
+        <div class="panel-head">
+          <div><div class="panel-title">Investment Controls</div><div class="panel-desc" id="sip_controlDesc">Tune inputs. Dashboard updates instantly.</div></div>
+          <div class="badge" id="sip_panelBadge">SIP MODE</div>
+        </div>
+        <div id="sip_dynamicControls"></div>
+        <div class="mini-grid">
+          <div class="mini"><div class="k">Investment Mood</div><div class="v" id="sip_miniMood">—</div></div>
+          <div class="mini"><div class="k">Power Insight</div><div class="v" id="sip_miniInsight">—</div></div>
+        </div>
+        <div class="advisor-card">
+          <h4>Ready to start your SIP journey?</h4>
+          <p>Start SIP early to benefit from compounding. Increase SIP yearly by 10% to accelerate wealth creation.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="submitLead('sip_cta')">Start Investing Now</button>
+            <button class="btn secondary" onclick="sipCopySummary()">Copy Summary</button>
+          </div>
+        </div>
+      </aside>
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head"><div class="wealth-title" id="sip_wealthTitle">SIP Projection</div><div class="pill" id="sip_wealthPill">Live</div></div>
+              <div class="wealth-number"><span class="grad" id="sip_wealthNumber">₹0</span></div>
+              <div class="wealth-sub" id="sip_wealthNarrative">Adjust inputs to see your SIP corpus grow.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat"><div class="s-label" id="sip_stat1Label">Invested</div><div class="s-value" id="sip_stat1Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="sip_stat2Label">Gains</div><div class="s-value" id="sip_stat2Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="sip_stat3Label">Multiple</div><div class="s-value" id="sip_stat3Value">—</div></div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title">Investment Insights</div>
+            <div class="insight-box"><strong id="sip_insight1Title"></strong><span id="sip_insight1Text"></span></div>
+            <div class="insight-box"><strong id="sip_insight2Title"></strong><span id="sip_insight2Text"></span></div>
+            <div class="insight-box"><strong id="sip_insight3Title"></strong><span id="sip_insight3Text"></span></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div><div class="chart-title" id="sip_chartTitle">Corpus Growth Curve</div><div class="chart-meta" id="sip_chartMeta">Year-by-year corpus vs invested capital.</div></div>
+            <div class="legend" id="sip_chartLegend"></div>
+          </div>
+          <div class="chart-wrap loaded"><canvas id="sip_chart"></canvas></div>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-head"><div><div class="timeline-title" id="sip_timelineTitle">Milestones</div><div class="chart-meta" id="sip_timelineMeta">Key corpus checkpoints.</div></div></div>
+          <div class="timeline-grid" id="sip_timelineGrid"></div>
+        </div>
+      </section>
+    </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Investment Tip: Start SIP early to benefit from compounding. Increase SIP yearly by 10% to build significantly more wealth.</div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('sip_cta')">Get My Investment Plan</button></div>
+  </div><!-- /section-sip -->
+
+  <!-- ═══════════════════════════════════════
+       SECTION 2 — LUMPSUM
+  ═══════════════════════════════════════ -->
+  <div id="section-lumpsum" class="hidden">
+    <div class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h2>Lumpsum <span class="grad">Calculator</span></h2>
+          <p>Model a one-time investment and see how it compounds over time. Compare with SIP and goal-based planning.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="document.getElementById('lmp_controlsAnchor').scrollIntoView({behavior:'smooth'})">Calculate Now</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
+        </div>
+      </div>
+      <div class="tabbar" id="lmp_tabs"></div>
+      <div class="top-metrics">
+        <div class="metric-card"><div class="metric-label">Current Mode</div><div class="metric-value cyan" id="lmp_modeHeadline">—</div><div class="metric-sub" id="lmp_modeSub">—</div></div>
+        <div class="metric-card"><div class="metric-label">Future Value</div><div class="metric-value green" id="lmp_topProjected">—</div><div class="metric-sub">At maturity</div></div>
+        <div class="metric-card"><div class="metric-label">Total Gain</div><div class="metric-value cyan" id="lmp_topGains">—</div><div class="metric-sub">Over invested</div></div>
+        <div class="metric-card"><div class="metric-label">Return Rate</div><div class="metric-value gold" id="lmp_topRate">—</div><div class="metric-sub">Annual rate</div></div>
+      </div>
+    </div>
+    <section class="layout">
+      <aside class="panel controls" id="lmp_controlsAnchor">
+        <div class="panel-head">
+          <div><div class="panel-title">Investment Controls</div><div class="panel-desc" id="lmp_controlDesc">Tune inputs for real-time lumpsum results.</div></div>
+          <div class="badge" id="lmp_panelBadge">LUMPSUM</div>
+        </div>
+        <div id="lmp_dynamicControls"></div>
+        <div class="mini-grid">
+          <div class="mini"><div class="k">Investment Mood</div><div class="v" id="lmp_miniMood">—</div></div>
+          <div class="mini"><div class="k">Power Insight</div><div class="v" id="lmp_miniInsight">—</div></div>
+        </div>
+        <div class="advisor-card">
+          <h4>Maximize your lumpsum returns</h4>
+          <p>Diversify portfolio across asset classes. Invest lumpsum when markets are down for better entry points.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="submitLead('lumpsum_cta')">Get Expert Advice</button>
+            <button class="btn secondary" onclick="lmpCopySummary()">Copy Summary</button>
+          </div>
+        </div>
+      </aside>
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head"><div class="wealth-title" id="lmp_wealthTitle">Lumpsum Projection</div><div class="pill" id="lmp_wealthPill">Live</div></div>
+              <div class="wealth-number"><span class="grad" id="lmp_wealthNumber">₹0</span></div>
+              <div class="wealth-sub" id="lmp_wealthNarrative">Adjust inputs to see your lumpsum grow.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat"><div class="s-label" id="lmp_stat1Label">Invested</div><div class="s-value" id="lmp_stat1Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="lmp_stat2Label">Gains</div><div class="s-value" id="lmp_stat2Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="lmp_stat3Label">Multiple</div><div class="s-value" id="lmp_stat3Value">—</div></div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title">Investment Insights</div>
+            <div class="insight-box"><strong id="lmp_insight1Title"></strong><span id="lmp_insight1Text"></span></div>
+            <div class="insight-box"><strong id="lmp_insight2Title"></strong><span id="lmp_insight2Text"></span></div>
+            <div class="insight-box"><strong id="lmp_insight3Title"></strong><span id="lmp_insight3Text"></span></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div><div class="chart-title" id="lmp_chartTitle">Compounding Path</div><div class="chart-meta" id="lmp_chartMeta">How your lumpsum grows year by year.</div></div>
+            <div class="legend" id="lmp_chartLegend"></div>
+          </div>
+          <div class="chart-wrap loaded"><canvas id="lmp_chart"></canvas></div>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-head"><div><div class="timeline-title" id="lmp_timelineTitle">Growth Milestones</div><div class="chart-meta" id="lmp_timelineMeta">Value checkpoints over your horizon.</div></div></div>
+          <div class="timeline-grid" id="lmp_timelineGrid"></div>
+        </div>
+      </section>
+    </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Investment Tip: Diversify portfolio across asset classes. Avoid timing the market — time in market beats timing the market.</div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('lumpsum_cta')">Get My Investment Plan</button></div>
+  </div><!-- /section-lumpsum -->
+
+  <!-- ═══════════════════════════════════════
+       SECTION 3 — CAGR
+  ═══════════════════════════════════════ -->
+  <div id="section-cagr" class="hidden">
+    <div class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h2>CAGR <span class="grad">Calculator</span></h2>
+          <p>Calculate annualized return rates, use the Rule of 72 to find doubling time, and benchmark your portfolio performance.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="document.getElementById('cagr_controlsAnchor').scrollIntoView({behavior:'smooth'})">Calculate CAGR</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
+        </div>
+      </div>
+      <div class="tabbar" id="cagr_tabs"></div>
+      <div class="top-metrics">
+        <div class="metric-card"><div class="metric-label">Current Mode</div><div class="metric-value cyan" id="cagr_modeHeadline">—</div><div class="metric-sub" id="cagr_modeSub">—</div></div>
+        <div class="metric-card"><div class="metric-label">CAGR</div><div class="metric-value green" id="cagr_topProjected">—</div><div class="metric-sub">Annualized return</div></div>
+        <div class="metric-card"><div class="metric-label">Total Return</div><div class="metric-value cyan" id="cagr_topGains">—</div><div class="metric-sub">Absolute gain</div></div>
+        <div class="metric-card"><div class="metric-label">Doubling Time</div><div class="metric-value gold" id="cagr_topRate">—</div><div class="metric-sub">Rule of 72</div></div>
+      </div>
+    </div>
+    <section class="layout">
+      <aside class="panel controls" id="cagr_controlsAnchor">
+        <div class="panel-head">
+          <div><div class="panel-title">Investment Controls</div><div class="panel-desc" id="cagr_controlDesc">Enter start and end values to compute CAGR.</div></div>
+          <div class="badge" id="cagr_panelBadge">CAGR</div>
+        </div>
+        <div id="cagr_dynamicControls"></div>
+        <div class="mini-grid">
+          <div class="mini"><div class="k">Return Grade</div><div class="v" id="cagr_miniMood">—</div></div>
+          <div class="mini"><div class="k">Benchmark</div><div class="v" id="cagr_miniInsight">—</div></div>
+        </div>
+        <div class="advisor-card">
+          <h4>Is your portfolio performing well?</h4>
+          <p>Compare your CAGR against Nifty 50 (12–15%), FD (6–7%) and inflation (6%). Know if you are beating the market.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="submitLead('cagr_cta')">Get Portfolio Review</button>
+            <button class="btn secondary" onclick="cagrCopySummary()">Copy Summary</button>
+          </div>
+        </div>
+      </aside>
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head"><div class="wealth-title" id="cagr_wealthTitle">CAGR Result</div><div class="pill" id="cagr_wealthPill">Live</div></div>
+              <div class="wealth-number"><span class="grad" id="cagr_wealthNumber">0%</span></div>
+              <div class="wealth-sub" id="cagr_wealthNarrative">Enter start and end values to compute your annualized return rate.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat"><div class="s-label" id="cagr_stat1Label">Start Value</div><div class="s-value" id="cagr_stat1Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="cagr_stat2Label">End Value</div><div class="s-value" id="cagr_stat2Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="cagr_stat3Label">Multiple</div><div class="s-value" id="cagr_stat3Value">—</div></div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title">Return Analysis</div>
+            <div class="insight-box"><strong id="cagr_insight1Title"></strong><span id="cagr_insight1Text"></span></div>
+            <div class="insight-box"><strong id="cagr_insight2Title"></strong><span id="cagr_insight2Text"></span></div>
+            <div class="insight-box"><strong id="cagr_insight3Title"></strong><span id="cagr_insight3Text"></span></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div><div class="chart-title" id="cagr_chartTitle">Growth Path</div><div class="chart-meta" id="cagr_chartMeta">Illustrative path from start to end value at computed CAGR.</div></div>
+            <div class="legend" id="cagr_chartLegend"></div>
+          </div>
+          <div class="chart-wrap loaded"><canvas id="cagr_chart"></canvas></div>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-head"><div><div class="timeline-title" id="cagr_timelineTitle">Value Milestones</div><div class="chart-meta" id="cagr_timelineMeta">Projected value at key intervals.</div></div></div>
+          <div class="timeline-grid" id="cagr_timelineGrid"></div>
+        </div>
+      </section>
+    </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Benchmark: Nifty 50 historical CAGR ~12–15% | FD ~6–7% | Inflation ~6% | Beat inflation to create real wealth.</div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('cagr_cta')">Get Portfolio Review</button></div>
+  </div><!-- /section-cagr -->
+
+  <!-- ═══════════════════════════════════════
+       SECTION 4 — RETIREMENT
+  ═══════════════════════════════════════ -->
+  <div id="section-retire" class="hidden">
+    <div class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h2>Retirement <span class="grad">Planner</span></h2>
+          <p>Calculate the corpus you need, the SIP required to get there, and how long your savings will last after retirement.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="document.getElementById('ret_controlsAnchor').scrollIntoView({behavior:'smooth'})">Plan Retirement</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
+        </div>
+      </div>
+      <div class="tabbar" id="ret_tabs"></div>
+      <div class="top-metrics">
+        <div class="metric-card"><div class="metric-label">Current Mode</div><div class="metric-value cyan" id="ret_modeHeadline">—</div><div class="metric-sub" id="ret_modeSub">—</div></div>
+        <div class="metric-card"><div class="metric-label">Corpus Needed</div><div class="metric-value green" id="ret_topProjected">—</div><div class="metric-sub">Inflation-adjusted</div></div>
+        <div class="metric-card"><div class="metric-label">SIP Required</div><div class="metric-value cyan" id="ret_topGains">—</div><div class="metric-sub">Monthly investment</div></div>
+        <div class="metric-card"><div class="metric-label">Years to Retire</div><div class="metric-value gold" id="ret_topRate">—</div><div class="metric-sub">Planning horizon</div></div>
+      </div>
+    </div>
+    <section class="layout">
+      <aside class="panel controls" id="ret_controlsAnchor">
+        <div class="panel-head">
+          <div><div class="panel-title">Investment Controls</div><div class="panel-desc" id="ret_controlDesc">Set your retirement goals and see the plan.</div></div>
+          <div class="badge" id="ret_panelBadge">RETIREMENT</div>
+        </div>
+        <div id="ret_dynamicControls"></div>
+        <div class="mini-grid">
+          <div class="mini"><div class="k">Retirement Mood</div><div class="v" id="ret_miniMood">—</div></div>
+          <div class="mini"><div class="k">Key Signal</div><div class="v" id="ret_miniInsight">—</div></div>
+        </div>
+        <div class="advisor-card">
+          <h4>Build your retirement corpus early</h4>
+          <p>Every year of delay increases the required SIP significantly. Starting at 25 vs 35 can halve your monthly requirement.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="submitLead('retirement_cta')">Get Retirement Plan</button>
+            <button class="btn secondary" onclick="retCopySummary()">Copy Summary</button>
+          </div>
+        </div>
+      </aside>
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head"><div class="wealth-title" id="ret_wealthTitle">Retirement Corpus</div><div class="pill" id="ret_wealthPill">Live</div></div>
+              <div class="wealth-number"><span class="grad" id="ret_wealthNumber">₹0</span></div>
+              <div class="wealth-sub" id="ret_wealthNarrative">Adjust inputs to calculate your retirement corpus requirement.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat"><div class="s-label" id="ret_stat1Label">Monthly Expense</div><div class="s-value" id="ret_stat1Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="ret_stat2Label">Corpus Needed</div><div class="s-value" id="ret_stat2Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="ret_stat3Label">SIP Required</div><div class="s-value" id="ret_stat3Value">—</div></div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title">Retirement Insights</div>
+            <div class="insight-box"><strong id="ret_insight1Title"></strong><span id="ret_insight1Text"></span></div>
+            <div class="insight-box"><strong id="ret_insight2Title"></strong><span id="ret_insight2Text"></span></div>
+            <div class="insight-box"><strong id="ret_insight3Title"></strong><span id="ret_insight3Text"></span></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div><div class="chart-title" id="ret_chartTitle">Corpus Build-Up</div><div class="chart-meta" id="ret_chartMeta">Projected corpus accumulation vs requirement.</div></div>
+            <div class="legend" id="ret_chartLegend"></div>
+          </div>
+          <div class="chart-wrap loaded"><canvas id="ret_chart"></canvas></div>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-head"><div><div class="timeline-title" id="ret_timelineTitle">Retirement Milestones</div><div class="chart-meta" id="ret_timelineMeta">Corpus at key intervals on your journey.</div></div></div>
+          <div class="timeline-grid" id="ret_timelineGrid"></div>
+        </div>
+      </section>
+    </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Retirement Tip: Start building your corpus now. Inflation erodes purchasing power — your corpus must be inflation-adjusted to sustain your lifestyle.</div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('retirement_cta')">Get My Retirement Plan</button></div>
+  </div><!-- /section-retire -->
+
+  <!-- ═══════════════════════════════════════
+       SECTION 5 — PORTFOLIO
+  ═══════════════════════════════════════ -->
+  <div id="section-portfolio" class="hidden">
+    <div class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h2>Portfolio <span class="grad">Planner</span></h2>
+          <p>Design your ideal asset allocation across Equity, Debt and Gold. Rebalance, assess risk and model portfolio returns.</p>
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary" onclick="document.getElementById('pf2_controlsAnchor').scrollIntoView({behavior:'smooth'})">Build Portfolio</button>
+          <button class="btn secondary" onclick="submitLead('advisor_cta')">Talk to Advisor</button>
+        </div>
+      </div>
+      <div class="tabbar" id="pf2_tabs"></div>
+      <div class="top-metrics">
+        <div class="metric-card"><div class="metric-label">Current Mode</div><div class="metric-value cyan" id="pf2_modeHeadline">—</div><div class="metric-sub" id="pf2_modeSub">—</div></div>
+        <div class="metric-card"><div class="metric-label">Expected Return</div><div class="metric-value green" id="pf2_topProjected">—</div><div class="metric-sub">Blended annual</div></div>
+        <div class="metric-card"><div class="metric-label">Risk Level</div><div class="metric-value cyan" id="pf2_topGains">—</div><div class="metric-sub">Portfolio risk score</div></div>
+        <div class="metric-card"><div class="metric-label">10-Year Value</div><div class="metric-value gold" id="pf2_topRate">—</div><div class="metric-sub">On ₹10L invested</div></div>
+      </div>
+    </div>
+    <section class="layout">
+      <aside class="panel controls" id="pf2_controlsAnchor">
+        <div class="panel-head">
+          <div><div class="panel-title">Investment Controls</div><div class="panel-desc" id="pf2_controlDesc">Set allocation % across asset classes.</div></div>
+          <div class="badge" id="pf2_panelBadge">ALLOCATOR</div>
+        </div>
+        <div id="pf2_dynamicControls"></div>
+        <div class="mini-grid">
+          <div class="mini"><div class="k">Portfolio Type</div><div class="v" id="pf2_miniMood">—</div></div>
+          <div class="mini"><div class="k">Strategy Signal</div><div class="v" id="pf2_miniInsight">—</div></div>
+        </div>
+        <div class="advisor-card">
+          <h4>Get a tailored portfolio plan</h4>
+          <p>The right asset mix depends on your age, risk appetite and goal timeline. Our advisors build it for free.</p>
+          <div class="advisor-actions">
+            <button class="btn primary" onclick="submitLead('portfolio_cta')">Get Portfolio Plan</button>
+            <button class="btn secondary" onclick="pf2CopySummary()">Copy Summary</button>
+          </div>
+        </div>
+      </aside>
+      <section class="panel dashboard">
+        <div class="dash-top">
+          <div class="wealth-card">
+            <div>
+              <div class="wealth-head"><div class="wealth-title" id="pf2_wealthTitle">Portfolio Mix</div><div class="pill" id="pf2_wealthPill">Live</div></div>
+              <div class="wealth-number"><span class="grad" id="pf2_wealthNumber">0%</span></div>
+              <div class="wealth-sub" id="pf2_wealthNarrative">Adjust allocation to model your portfolio blended return.</div>
+            </div>
+            <div class="wealth-split">
+              <div class="wealth-stat"><div class="s-label" id="pf2_stat1Label">Equity</div><div class="s-value" id="pf2_stat1Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="pf2_stat2Label">Debt</div><div class="s-value" id="pf2_stat2Value">—</div></div>
+              <div class="wealth-stat"><div class="s-label" id="pf2_stat3Label">Gold</div><div class="s-value" id="pf2_stat3Value">—</div></div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title">Portfolio Insights</div>
+            <div class="insight-box"><strong id="pf2_insight1Title"></strong><span id="pf2_insight1Text"></span></div>
+            <div class="insight-box"><strong id="pf2_insight2Title"></strong><span id="pf2_insight2Text"></span></div>
+            <div class="insight-box"><strong id="pf2_insight3Title"></strong><span id="pf2_insight3Text"></span></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head">
+            <div><div class="chart-title" id="pf2_chartTitle">Asset Allocation</div><div class="chart-meta" id="pf2_chartMeta">Portfolio split across asset classes.</div></div>
+            <div class="legend" id="pf2_chartLegend"></div>
+          </div>
+          <div class="chart-wrap loaded"><canvas id="pf2_chart"></canvas></div>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-head"><div><div class="timeline-title" id="pf2_timelineTitle">10-Year Projection</div><div class="chart-meta" id="pf2_timelineMeta">How ₹10L grows in each asset class over 10 years.</div></div></div>
+          <div class="timeline-grid" id="pf2_timelineGrid"></div>
+        </div>
+      </section>
+    </section>
+    <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);font-size:13px">💡 Portfolio Tip: Diversify across asset classes. Rebalance once a year to maintain your target allocation.</div>
+    <div style="margin-top:14px;text-align:center"><button class="btn primary" onclick="submitLead('portfolio_cta')">Get My Portfolio Plan</button></div>
+    <div style="margin-top:16px;text-align:center">
+      <button class="btn secondary" onclick="openTelegramChannel()">Join Free Investment Tips Channel</button>
+    </div>
+  </div><!-- /section-portfolio -->
+
+</div><!-- /.page -->
+
+<!-- STICKY CTA -->
+<div id="stickyCTA" style="position:fixed;bottom:0;left:0;width:100%;background:#071120;border-top:1px solid rgba(255,255,255,.1);padding:10px 16px;display:none;justify-content:space-between;align-items:center;z-index:999;">
+  <div style="font-size:13px;color:#9da9c6">Get your personalized investment plan</div>
+  <button class="btn primary" onclick="submitLead('sticky_cta')">Get Plan</button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     GLOBAL JS
+═══════════════════════════════════════════ -->
+<script>
+function toggleMenu(){ document.getElementById("mobileDrawer")?.classList.toggle("open"); }
+
+function switchSuper(tab){
+  ['sip','lumpsum','cagr','retire','portfolio'].forEach(t=>{
+    const el=document.getElementById('section-'+t);
+    if(el) el.classList.toggle('hidden', t!==tab);
+  });
+  document.querySelectorAll('.super-tab').forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab===tab);
+  });
+}
+
+window.addEventListener("scroll",function(){
+  if(window.scrollY>1200){
+    const bar=document.getElementById("stickyCTA");
+    if(bar) bar.style.display="flex";
+  }
+});
+</script>
+
+<!-- ═══════════════════════════════════════════
+     SIP JS
+═══════════════════════════════════════════ -->
+<script>
+(function(){
+const $s = id => document.getElementById('sip_'+id);
+
+const CALCS_SIP = {
+  sip:    {label:"SIP",     badge:"SIP MODE",   title:"SIP Growth Engine",      sub:"Monthly investing with compounding and long-term wealth projection.",  desc:"Adjust contribution, return and duration to project your SIP corpus.",   controls:[{id:"monthly",label:"Monthly Investment",min:500,max:100000,step:500,value:10000,fmt:"currency"},{id:"rate",label:"Expected Return %",min:1,max:30,step:0.5,value:12,fmt:"percent"},{id:"years",label:"Duration (Years)",min:1,max:40,step:1,value:15,fmt:"years"}]},
+  stepup: {label:"Step-Up", badge:"STEP-UP",    title:"Step-Up SIP Accelerator", sub:"Increase your SIP every year to push the corpus much higher.",          desc:"Model a rising SIP where contribution increases each year.",             controls:[{id:"monthly",label:"Starting Monthly SIP",min:500,max:100000,step:500,value:10000,fmt:"currency"},{id:"stepup",label:"Annual Step-Up %",min:0,max:25,step:1,value:10,fmt:"percent"},{id:"rate",label:"Expected Return %",min:1,max:30,step:0.5,value:12,fmt:"percent"},{id:"years",label:"Duration (Years)",min:1,max:40,step:1,value:15,fmt:"years"}]},
+  swp:    {label:"SWP",     badge:"SWP MODE",   title:"Withdrawal Sustainability", sub:"Test how long your corpus can support recurring monthly withdrawals.",  desc:"Model a withdrawing portfolio and watch corpus sustainability.",         controls:[{id:"corpus",label:"Starting Corpus",min:100000,max:50000000,step:50000,value:1000000,fmt:"currency"},{id:"withdraw",label:"Monthly Withdrawal",min:1000,max:500000,step:1000,value:10000,fmt:"currency"},{id:"rate",label:"Expected Return %",min:1,max:20,step:0.5,value:10,fmt:"percent"},{id:"years",label:"Duration (Years)",min:1,max:40,step:1,value:10,fmt:"years"}]}
+};
+
+let sipState={}, sipActive='sip', sipChart=null;
+
+function fmtC(v){return '₹'+Math.round(v).toLocaleString('en-IN');}
+function fmtS(v){const a=Math.abs(v);if(a>=10000000)return '₹'+(v/10000000).toFixed(2).replace(/\.00$/,'')+' Cr';if(a>=100000)return '₹'+(v/100000).toFixed(2).replace(/\.00$/,'')+' L';return fmtC(v);}
+function fmtV(v,fmt){v=Number(v);if(fmt==='currency')return fmtC(v);if(fmt==='percent')return v.toFixed(1).replace(/\.0$/,'')+'%';if(fmt==='years')return Math.round(v)+' Yrs';return v;}
+
+function sipInitState(){Object.keys(CALCS_SIP).forEach(k=>{sipState[k]={};CALCS_SIP[k].controls.forEach(c=>sipState[k][c.id]=c.value);});}
+function sipRenderTabs(){
+  $s('tabs').innerHTML=Object.keys(CALCS_SIP).map(k=>`<button class="tab ${k===sipActive?'active':''}" onclick="sipSwitch('${k}')">${CALCS_SIP[k].label}</button>`).join('');
+}
+window.sipSwitch=function(k){sipActive=k;sipRenderTabs();sipRenderControls();sipUpdate();};
+function sipRenderControls(){
+  const cfg=CALCS_SIP[sipActive];
+  $s('panelBadge').textContent=cfg.badge;$s('controlDesc').textContent=cfg.desc;
+  $s('modeHeadline').textContent=cfg.title;$s('modeSub').textContent=cfg.sub;
+  $s('dynamicControls').innerHTML=cfg.controls.map(c=>`
+    <div class="control-group">
+      <div class="control-top"><div class="control-name">${c.label}</div><div class="control-value" id="sip_view-${c.id}">${fmtV(sipState[sipActive][c.id],c.fmt)}</div></div>
+      <input type="range" id="sip_ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${sipState[sipActive][c.id]}">
+    </div>`).join('');
+  cfg.controls.forEach(c=>{
+    const el=document.getElementById('sip_ctrl-'+c.id);
+    if(el) el.addEventListener('input',e=>{sipState[sipActive][c.id]=Number(e.target.value);document.getElementById('sip_view-'+c.id).textContent=fmtV(sipState[sipActive][c.id],c.fmt);sipUpdate();});
+  });
+}
+function sipSetTop(proj,gains,rate){$s('topProjected').textContent=fmtS(proj);$s('topGains').textContent=fmtS(gains);$s('topRate').textContent=rate;}
+function sipSetCard({title,pill,value,narrative,s1l,s1v,s2l,s2v,s3l,s3v,mood,insight}){
+  $s('wealthTitle').textContent=title;$s('wealthPill').textContent=pill;
+  $s('wealthNumber').textContent=fmtS(value);$s('wealthNarrative').textContent=narrative;
+  $s('stat1Label').textContent=s1l;$s('stat1Value').textContent=s1v;
+  $s('stat2Label').textContent=s2l;$s('stat2Value').textContent=s2v;
+  $s('stat3Label').textContent=s3l;$s('stat3Value').textContent=s3v;
+  $s('miniMood').textContent=mood;$s('miniInsight').textContent=insight;
+}
+function sipSetInsights(a,b,c){
+  $s('insight1Title').textContent=a.t;$s('insight1Text').textContent=a.d;
+  $s('insight2Title').textContent=b.t;$s('insight2Text').textContent=b.d;
+  $s('insight3Title').textContent=c.t;$s('insight3Text').textContent=c.d;
+}
+function sipRenderChart(labels,datasets){
+  const ctx=$s('chart').getContext('2d');
+  const grad=ctx.createLinearGradient(0,0,0,360);
+  grad.addColorStop(0,'rgba(0,212,255,.28)');grad.addColorStop(1,'rgba(0,212,255,0)');
+  if(sipChart) sipChart.destroy();
+  sipChart=new Chart(ctx,{type:'line',data:{labels,datasets:datasets.map((d,i)=>({label:d.label,data:d.data,borderColor:d.color,backgroundColor:i===0?grad:'transparent',fill:i===0,borderWidth:i===0?3:2,pointRadius:0,pointHoverRadius:5,tension:.38}))},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(7,12,28,.96)',titleColor:'#fff',bodyColor:'#dce6ff',padding:12,callbacks:{label:c=>`${c.dataset.label}: ${fmtC(c.raw)}`}}},scales:{x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)',font:{size:11},callback:v=>fmtS(v)}}}}});
+  $s('chartLegend').innerHTML=datasets.map(d=>`<div class="legend-item"><span class="dot" style="background:${d.color}"></span>${d.label}</div>`).join('');
+}
+function sipRenderMiles(items){
+  $s('timelineGrid').innerHTML=items.map(it=>`<div class="milestone"><div class="m-year">${it.label}</div><div class="m-amount">${fmtS(it.value)}</div><div class="m-note">${it.note}</div></div>`).join('');
+}
+function sipMiles(labels,corpus,base){
+  const n=labels.length;
+  const picks=[0,Math.floor(n*.33),Math.floor(n*.66),n-1].filter((v,i,a)=>a.indexOf(v)===i);
+  return picks.map(i=>({label:labels[i],value:corpus[i],note:corpus[i]>base[i]?fmtS(corpus[i]-base[i])+' gained':'Building corpus'}));
+}
+
+function sipUpdate(){
+  const s=sipState[sipActive], cfg=CALCS_SIP[sipActive];
+  $s('modeHeadline').textContent=cfg.title;$s('modeSub').textContent=cfg.sub;
+
+  if(sipActive==='sip'){
+    const r=s.rate/12/100;let v=0,inv=0;
+    const labels=[],corpus=[],base=[],gains=[];
+    for(let y=1;y<=s.years;y++){for(let m=0;m<12;m++){v=v*(1+r)+s.monthly;inv+=s.monthly;}labels.push('Yr '+y);corpus.push(Math.round(v));base.push(Math.round(inv));gains.push(Math.round(v-inv));}
+    const g=v-inv;
+    sipSetTop(v,g,s.rate.toFixed(1)+'%');
+    sipSetCard({title:'SIP Corpus',pill:'Live SIP',value:v,narrative:`Investing ${fmtC(s.monthly)}/month for ${s.years} years at ${s.rate}% can build ${fmtS(Math.round(v))}.`,s1l:'Invested',s1v:fmtS(inv),s2l:'Gains',s2v:fmtS(g),s3l:'Multiple',s3v:(v/inv).toFixed(2)+'x',mood:s.years>=10?'Long Game':'Early Builder',insight:`Doubles in ~${(72/s.rate).toFixed(1)} yrs`});
+    sipSetInsights({t:'Time is your biggest asset.',d:`Over ${s.years} years, the last few years contribute more to wealth than all earlier years combined.`},{t:g>inv?'Returns are overtaking capital.':'Capital is still leading.',d:g>inv?'Wealth gains are now a bigger engine than fresh contributions.':'You are in the capital accumulation phase — extending duration helps.'},{t:'Consistency over timing.',d:'A regular SIP keeps you on track even when markets move unevenly over shorter periods.'});
+    sipRenderChart(labels,[{label:'Corpus',data:corpus,color:'#00d4ff'},{label:'Invested',data:base,color:'#4fa3ff'},{label:'Gains',data:gains,color:'#00e676'}]);
+    sipRenderMiles(sipMiles(labels,corpus,base));
+  }
+  if(sipActive==='stepup'){
+    const r=s.rate/12/100;let v=0,inv=0,cur=s.monthly;
+    const labels=[],corpus=[],base=[],gains=[];
+    for(let y=1;y<=s.years;y++){for(let m=0;m<12;m++){v=v*(1+r)+cur;inv+=cur;}labels.push('Yr '+y);corpus.push(Math.round(v));base.push(Math.round(inv));gains.push(Math.round(v-inv));cur*=(1+s.stepup/100);}
+    const g=v-inv;
+    sipSetTop(v,g,s.rate.toFixed(1)+'%');
+    sipSetCard({title:'Step-Up SIP Corpus',pill:'Step-Up',value:v,narrative:`Starting at ${fmtC(s.monthly)}/month with ${s.stepup}% annual step-up at ${s.rate}% for ${s.years} years builds ${fmtS(Math.round(v))}.`,s1l:'Total Invested',s1v:fmtS(inv),s2l:'Wealth Gains',s2v:fmtS(g),s3l:'Multiple',s3v:(v/inv).toFixed(2)+'x',mood:s.stepup>=10?'Aggressive Builder':'Disciplined Saver',insight:`Step-up ${s.stepup}%/yr`});
+    sipSetInsights({t:'Rising SIPs create outsized impact.',d:'When contributions increase with income, the final corpus moves much faster than a flat SIP path.'},{t:g>inv?'Compounding and step-up are aligned.':'Contribution expansion is building momentum.',d:g>inv?'Both rising capital and portfolio growth are working together.':'The early years lay the foundation for later acceleration.'},{t:'Useful for salary-linked planning.',d:'This suits professionals who want investing to grow as cash flow grows.'});
+    sipRenderChart(labels,[{label:'Corpus',data:corpus,color:'#00d4ff'},{label:'Invested',data:base,color:'#4fa3ff'},{label:'Gains',data:gains,color:'#00e676'}]);
+    sipRenderMiles(sipMiles(labels,corpus,base));
+  }
+  if(sipActive==='swp'){
+    const r=s.rate/12/100;let c=s.corpus,withdrawn=0;
+    const labels=[],vals=[],base=[],capp=[];
+    for(let y=1;y<=s.years;y++){for(let m=0;m<12;m++){c=c*(1+r)-s.withdraw;withdrawn+=s.withdraw;if(c<0) c=0;}labels.push('Yr '+y);vals.push(Math.round(c));base.push(Math.round(withdrawn));capp.push(Math.round(s.corpus-c));}
+    const endC=Math.max(vals[vals.length-1]||0,0);
+    sipSetTop(endC,s.withdraw*s.years*12,s.rate.toFixed(1)+'%');
+    sipSetCard({title:'SWP Sustainability',pill:'Income Phase',value:endC,narrative:`Starting with ${fmtS(s.corpus)} and withdrawing ${fmtC(s.withdraw)}/month at ${s.rate}% over ${s.years} years. Ending corpus: ${fmtS(endC)}.`,s1l:'Starting Corpus',s1v:fmtS(s.corpus),s2l:'Total Withdrawn',s2v:fmtS(s.withdraw*s.years*12),s3l:'Ending Corpus',s3v:fmtS(endC),mood:endC>s.corpus*0.5?'Sustainable':'Stress Test',insight:endC>0?'Corpus Alive':'Corpus Depleted'});
+    sipSetInsights({t:endC>0?'Corpus is still standing.':'Withdrawal rate too aggressive.',d:endC>0?'The projected ending corpus stays positive under these assumptions.':'This withdrawal level may deplete the corpus before the horizon ends.'},{t:'Return assumption matters a lot.',d:'A small difference in return rate can materially change sustainability in the income phase.'},{t:'SWP is a retirement-style lens.',d:'This mode is useful for testing post-retirement monthly cash flow discipline.'});
+    sipRenderChart(labels,[{label:'Remaining Corpus',data:vals,color:'#00d4ff'},{label:'Total Withdrawn',data:base,color:'#4fa3ff'},{label:'Capital Consumed',data:capp,color:'#ff607d'}]);
+    sipRenderMiles(sipMiles(labels,vals,base));
+  }
+}
+
+window.sipCopySummary=function(){
+  const txt=`investpercent Investment Dashboard\nSIP Mode: ${CALCS_SIP[sipActive].label}\nCorpus: ${document.getElementById('sip_wealthNumber').textContent}\nInvested: ${document.getElementById('sip_stat1Value').textContent}\nGains: ${document.getElementById('sip_stat2Value').textContent}`;
+  navigator.clipboard.writeText(txt).catch(()=>{});
+};
+
+sipInitState();sipRenderTabs();sipRenderControls();sipUpdate();
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════
+     LUMPSUM JS
+═══════════════════════════════════════════ -->
+<script>
+(function(){
+const $l = id => document.getElementById('lmp_'+id);
+
+const CALCS_LMP = {
+  lumpsum: {label:"Lumpsum",    badge:"LUMPSUM",    title:"Lumpsum Investment",   sub:"One-time capital deployment with compounding over your chosen horizon.",  desc:"Model a single investment amount and see how it compounds.",  controls:[{id:"amount",label:"Investment Amount",min:10000,max:10000000,step:10000,value:500000,fmt:"currency"},{id:"rate",label:"Expected Return %",min:1,max:30,step:0.5,value:12,fmt:"percent"},{id:"years",label:"Duration (Years)",min:1,max:40,step:1,value:10,fmt:"years"}]},
+  goal:    {label:"Goal-Based", badge:"GOAL PLAN",  title:"Goal-Based Planning",  sub:"Find out how much to invest today to reach a future financial goal.",      desc:"Set your target goal and see the lumpsum needed today.",      controls:[{id:"target",label:"Target Goal Amount",min:100000,max:50000000,step:100000,value:2000000,fmt:"currency"},{id:"rate",label:"Expected Return %",min:1,max:30,step:0.5,value:12,fmt:"percent"},{id:"years",label:"Years to Goal",min:1,max:40,step:1,value:10,fmt:"years"}]},
+  compare: {label:"SIP vs Lump",badge:"COMPARE",    title:"SIP vs Lumpsum",       sub:"Compare a monthly SIP with a lumpsum investment of the same total capital.", desc:"Same total capital — which approach builds more wealth?",     controls:[{id:"capital",label:"Total Capital Available",min:100000,max:10000000,step:50000,value:1200000,fmt:"currency"},{id:"rate",label:"Expected Return %",min:1,max:30,step:0.5,value:12,fmt:"percent"},{id:"years",label:"Duration (Years)",min:1,max:40,step:1,value:10,fmt:"years"}]}
+};
+
+let lmpState={}, lmpActive='lumpsum', lmpChart=null;
+
+function fmtC(v){return '₹'+Math.round(v).toLocaleString('en-IN');}
+function fmtS(v){const a=Math.abs(v);if(a>=10000000)return '₹'+(v/10000000).toFixed(2).replace(/\.00$/,'')+' Cr';if(a>=100000)return '₹'+(v/100000).toFixed(2).replace(/\.00$/,'')+' L';return fmtC(v);}
+function fmtV(v,fmt){v=Number(v);if(fmt==='currency')return fmtC(v);if(fmt==='percent')return v.toFixed(1).replace(/\.0$/,'')+'%';if(fmt==='years')return Math.round(v)+' Yrs';return v;}
+
+function lmpInitState(){Object.keys(CALCS_LMP).forEach(k=>{lmpState[k]={};CALCS_LMP[k].controls.forEach(c=>lmpState[k][c.id]=c.value);});}
+function lmpRenderTabs(){
+  $l('tabs').innerHTML=Object.keys(CALCS_LMP).map(k=>`<button class="tab ${k===lmpActive?'active':''}" onclick="lmpSwitch('${k}')">${CALCS_LMP[k].label}</button>`).join('');
+}
+window.lmpSwitch=function(k){lmpActive=k;lmpRenderTabs();lmpRenderControls();lmpUpdate();};
+function lmpRenderControls(){
+  const cfg=CALCS_LMP[lmpActive];
+  $l('panelBadge').textContent=cfg.badge;$l('controlDesc').textContent=cfg.desc;
+  $l('modeHeadline').textContent=cfg.title;$l('modeSub').textContent=cfg.sub;
+  $l('dynamicControls').innerHTML=cfg.controls.map(c=>`
+    <div class="control-group">
+      <div class="control-top"><div class="control-name">${c.label}</div><div class="control-value" id="lmp_view-${c.id}">${fmtV(lmpState[lmpActive][c.id],c.fmt)}</div></div>
+      <input type="range" id="lmp_ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${lmpState[lmpActive][c.id]}">
+    </div>`).join('');
+  cfg.controls.forEach(c=>{
+    const el=document.getElementById('lmp_ctrl-'+c.id);
+    if(el) el.addEventListener('input',e=>{lmpState[lmpActive][c.id]=Number(e.target.value);document.getElementById('lmp_view-'+c.id).textContent=fmtV(lmpState[lmpActive][c.id],c.fmt);lmpUpdate();});
+  });
+}
+function lmpSetTop(proj,gains,rate){$l('topProjected').textContent=fmtS(proj);$l('topGains').textContent=fmtS(gains);$l('topRate').textContent=rate;}
+function lmpSetCard({title,pill,value,narrative,s1l,s1v,s2l,s2v,s3l,s3v,mood,insight}){
+  $l('wealthTitle').textContent=title;$l('wealthPill').textContent=pill;
+  $l('wealthNumber').textContent=fmtS(value);$l('wealthNarrative').textContent=narrative;
+  $l('stat1Label').textContent=s1l;$l('stat1Value').textContent=s1v;
+  $l('stat2Label').textContent=s2l;$l('stat2Value').textContent=s2v;
+  $l('stat3Label').textContent=s3l;$l('stat3Value').textContent=s3v;
+  $l('miniMood').textContent=mood;$l('miniInsight').textContent=insight;
+}
+function lmpSetInsights(a,b,c){
+  $l('insight1Title').textContent=a.t;$l('insight1Text').textContent=a.d;
+  $l('insight2Title').textContent=b.t;$l('insight2Text').textContent=b.d;
+  $l('insight3Title').textContent=c.t;$l('insight3Text').textContent=c.d;
+}
+function lmpRenderChart(labels,datasets){
+  const ctx=$l('chart').getContext('2d');
+  const grad=ctx.createLinearGradient(0,0,0,360);
+  grad.addColorStop(0,'rgba(0,212,255,.28)');grad.addColorStop(1,'rgba(0,212,255,0)');
+  if(lmpChart) lmpChart.destroy();
+  lmpChart=new Chart(ctx,{type:'line',data:{labels,datasets:datasets.map((d,i)=>({label:d.label,data:d.data,borderColor:d.color,backgroundColor:i===0?grad:'transparent',fill:i===0,borderWidth:i===0?3:2,pointRadius:0,pointHoverRadius:5,tension:.38}))},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(7,12,28,.96)',titleColor:'#fff',bodyColor:'#dce6ff',padding:12,callbacks:{label:c=>`${c.dataset.label}: ${fmtC(c.raw)}`}}},scales:{x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)',font:{size:11},callback:v=>fmtS(v)}}}}});
+  $l('chartLegend').innerHTML=datasets.map(d=>`<div class="legend-item"><span class="dot" style="background:${d.color}"></span>${d.label}</div>`).join('');
+}
+function lmpRenderMiles(items){
+  $l('timelineGrid').innerHTML=items.map(it=>`<div class="milestone"><div class="m-year">${it.label}</div><div class="m-amount">${fmtS(it.value)}</div><div class="m-note">${it.note}</div></div>`).join('');
+}
+
+function lmpUpdate(){
+  const s=lmpState[lmpActive], cfg=CALCS_LMP[lmpActive];
+  $l('modeHeadline').textContent=cfg.title;$l('modeSub').textContent=cfg.sub;
+
+  if(lmpActive==='lumpsum'){
+    const labels=[],corpus=[],base=[];
+    for(let y=1;y<=s.years;y++){const v=s.amount*Math.pow(1+s.rate/100,y);labels.push('Yr '+y);corpus.push(Math.round(v));base.push(s.amount);}
+    const fv=corpus[corpus.length-1],gain=fv-s.amount;
+    lmpSetTop(fv,gain,s.rate.toFixed(1)+'%');
+    lmpSetCard({title:'Lumpsum Corpus',pill:'One-Time',value:fv,narrative:`${fmtC(s.amount)} invested at ${s.rate}% for ${s.years} years grows to ${fmtS(fv)}.`,s1l:'Invested',s1v:fmtS(s.amount),s2l:'Gains',s2v:fmtS(gain),s3l:'Multiple',s3v:(fv/s.amount).toFixed(2)+'x',mood:s.years>=10?'Patient Investor':'Capital Deployed',insight:`Doubles in ~${(72/s.rate).toFixed(1)} yrs`});
+    lmpSetInsights({t:'Time in market beats timing.',d:'A lumpsum invested early benefits the most from compounding over long horizons.'},{t:gain>s.amount?'Returns now exceed capital.':'Capital still dominates.',d:gain>s.amount?'Your wealth gain now surpasses the original investment.':'More time or rate would push gains above the principal.'},{t:'Best for windfalls and bonuses.',d:'Lumpsum is ideal for deploying idle cash, bonus money or a windfall into markets.'});
+    lmpRenderChart(labels,[{label:'Corpus',data:corpus,color:'#00d4ff'},{label:'Invested',data:base,color:'#4fa3ff'}]);
+    const picks=[0,Math.floor(s.years*.33),Math.floor(s.years*.66),s.years-1];
+    lmpRenderMiles(picks.filter((v,i,a)=>a.indexOf(v)===i).map(i=>({label:labels[i],value:corpus[i],note:`${((corpus[i]/s.amount-1)*100).toFixed(0)}% absolute return`})));
+  }
+  if(lmpActive==='goal'){
+    const pv=s.target/Math.pow(1+s.rate/100,s.years);
+    const labels=[],corpus=[],target=[];
+    for(let y=1;y<=s.years;y++){corpus.push(Math.round(pv*Math.pow(1+s.rate/100,y)));target.push(Math.round(s.target));labels.push('Yr '+y);}
+    lmpSetTop(pv,s.target-pv,s.rate.toFixed(1)+'%');
+    lmpSetCard({title:'Goal Planner',pill:'Goal-Based',value:pv,narrative:`To reach ${fmtS(s.target)} in ${s.years} years at ${s.rate}%, you need to invest ${fmtS(pv)} today.`,s1l:'Invest Today',s1v:fmtS(pv),s2l:'Target Goal',s2v:fmtS(s.target),s3l:'Gain',s3v:fmtS(s.target-pv),mood:'Goal Tracker',insight:`${s.years} yr horizon`});
+    lmpSetInsights({t:'Start earlier, invest less.',d:`A longer horizon reduces the lumpsum needed today. ${s.years+5} years at ${s.rate}% would need only ${fmtS(s.target/Math.pow(1+s.rate/100,s.years+5))}.`},{t:'Return rate matters significantly.',d:'Even a 2% higher return can dramatically reduce the capital required to hit the same goal.'},{t:'Inflation erodes goals.',d:'If your goal is a future purchase, factor in 6% inflation to ensure the target amount is realistic.'});
+    lmpRenderChart(labels,[{label:'Corpus Path',data:corpus,color:'#00d4ff'},{label:'Target',data:target,color:'#00e676'}]);
+    const picks=[0,Math.floor(s.years*.33),Math.floor(s.years*.66),s.years-1];
+    lmpRenderMiles(picks.filter((v,i,a)=>a.indexOf(v)===i).map(i=>({label:labels[i],value:corpus[i],note:corpus[i]>=s.target?'Goal reached!':'Building toward goal'})));
+  }
+  if(lmpActive==='compare'){
+    const monthly=s.capital/(s.years*12);
+    const r=s.rate/12/100;let sipV=0;
+    const labels=[],lumpCorpus=[],sipCorpus=[];
+    for(let y=1;y<=s.years;y++){
+      const lv=s.capital*Math.pow(1+s.rate/100,y);
+      for(let m=0;m<12;m++) sipV=sipV*(1+r)+monthly;
+      labels.push('Yr '+y);lumpCorpus.push(Math.round(lv));sipCorpus.push(Math.round(sipV));
+    }
+    const lf=lumpCorpus[lumpCorpus.length-1],sf=sipCorpus[sipCorpus.length-1];
+    const winner=lf>sf?'Lumpsum Wins':'SIP Wins';
+    lmpSetTop(Math.max(lf,sf),Math.abs(lf-sf),s.rate.toFixed(1)+'%');
+    lmpSetCard({title:'SIP vs Lumpsum',pill:'Comparison',value:Math.max(lf,sf),narrative:`With ${fmtS(s.capital)} total capital at ${s.rate}% over ${s.years} years: Lumpsum → ${fmtS(lf)} | SIP → ${fmtS(sf)}.`,s1l:'Lumpsum',s1v:fmtS(lf),s2l:'SIP',s2v:fmtS(sf),s3l:'Difference',s3v:fmtS(Math.abs(lf-sf)),mood:winner,insight:'Same capital, different strategy'});
+    lmpSetInsights({t:lf>sf?'Lumpsum beats SIP here.':'SIP beats lumpsum here.',d:lf>sf?'Deploying full capital early wins when the return rate is high and time is long.':'Monthly SIP wins when capital is deployed gradually — common in shorter horizons.'},{t:'Lumpsum works best with time.',d:'The longer the horizon, the more powerful early full deployment becomes due to compounding.'},{t:'SIP reduces timing risk.',d:'SIP averages entry price over time, reducing the impact of investing at market peaks.'});
+    lmpRenderChart(labels,[{label:'Lumpsum',data:lumpCorpus,color:'#00d4ff'},{label:'SIP',data:sipCorpus,color:'#00e676'}]);
+    const picks=[0,Math.floor(s.years*.33),Math.floor(s.years*.66),s.years-1];
+    lmpRenderMiles(picks.filter((v,i,a)=>a.indexOf(v)===i).map(i=>({label:labels[i],value:Math.max(lumpCorpus[i],sipCorpus[i]),note:lumpCorpus[i]>sipCorpus[i]?'Lumpsum ahead':'SIP ahead'})));
+  }
+}
+
+window.lmpCopySummary=function(){
+  const txt=`investpercent Investment Dashboard\nLumpsum Mode: ${CALCS_LMP[lmpActive].label}\nResult: ${document.getElementById('lmp_wealthNumber').textContent}`;
+  navigator.clipboard.writeText(txt).catch(()=>{});
+};
+
+lmpInitState();lmpRenderTabs();lmpRenderControls();lmpUpdate();
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════
+     CAGR JS
+═══════════════════════════════════════════ -->
+<script>
+(function(){
+const $c = id => document.getElementById('cagr_'+id);
+
+const CALCS_CAGR = {
+  cagr:   {label:"CAGR",          badge:"CAGR CALC",  title:"CAGR Calculator",     sub:"Compute the annualized return rate from a start value to an end value.",          desc:"Enter start value, end value and duration to compute CAGR.",         controls:[{id:"start",label:"Start Value",min:1000,max:100000000,step:1000,value:100000,fmt:"currency"},{id:"end",label:"End Value",min:1000,max:200000000,step:1000,value:250000,fmt:"currency"},{id:"years",label:"Duration (Years)",min:1,max:40,step:1,value:8,fmt:"years"}]},
+  rule72: {label:"Rule of 72",     badge:"RULE OF 72", title:"Rule of 72",           sub:"Estimate how many years it takes your investment to double at a given rate.",      desc:"Enter your expected return rate to see the doubling time.",           controls:[{id:"rate",label:"Annual Return %",min:1,max:30,step:0.5,value:12,fmt:"percent"}]},
+  return: {label:"Return Checker", badge:"RETURNS",    title:"Return Rate Checker",  sub:"Check if your investment has beaten FD, inflation and market benchmarks.",         desc:"Compare your investment return against common benchmarks.",           controls:[{id:"start",label:"Amount Invested",min:1000,max:100000000,step:1000,value:500000,fmt:"currency"},{id:"end",label:"Current Value",min:1000,max:200000000,step:1000,value:750000,fmt:"currency"},{id:"years",label:"Years Held",min:1,max:30,step:1,value:5,fmt:"years"}]}
+};
+
+let cagrState={}, cagrActive='cagr', cagrChart=null;
+
+function fmtC(v){return '₹'+Math.round(v).toLocaleString('en-IN');}
+function fmtS(v){const a=Math.abs(v);if(a>=10000000)return '₹'+(v/10000000).toFixed(2).replace(/\.00$/,'')+' Cr';if(a>=100000)return '₹'+(v/100000).toFixed(2).replace(/\.00$/,'')+' L';return fmtC(v);}
+function fmtV(v,fmt){v=Number(v);if(fmt==='currency')return fmtC(v);if(fmt==='percent')return v.toFixed(1).replace(/\.0$/,'')+'%';if(fmt==='years')return Math.round(v)+' Yrs';return v;}
+
+function cagrInitState(){Object.keys(CALCS_CAGR).forEach(k=>{cagrState[k]={};CALCS_CAGR[k].controls.forEach(c=>cagrState[k][c.id]=c.value);});}
+function cagrRenderTabs(){
+  $c('tabs').innerHTML=Object.keys(CALCS_CAGR).map(k=>`<button class="tab ${k===cagrActive?'active':''}" onclick="cagrSwitch('${k}')">${CALCS_CAGR[k].label}</button>`).join('');
+}
+window.cagrSwitch=function(k){cagrActive=k;cagrRenderTabs();cagrRenderControls();cagrUpdate();};
+function cagrRenderControls(){
+  const cfg=CALCS_CAGR[cagrActive];
+  $c('panelBadge').textContent=cfg.badge;$c('controlDesc').textContent=cfg.desc;
+  $c('modeHeadline').textContent=cfg.title;$c('modeSub').textContent=cfg.sub;
+  $c('dynamicControls').innerHTML=cfg.controls.map(c=>`
+    <div class="control-group">
+      <div class="control-top"><div class="control-name">${c.label}</div><div class="control-value" id="cagr_view-${c.id}">${fmtV(cagrState[cagrActive][c.id],c.fmt)}</div></div>
+      <input type="range" id="cagr_ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${cagrState[cagrActive][c.id]}">
+    </div>`).join('');
+  cfg.controls.forEach(c=>{
+    const el=document.getElementById('cagr_ctrl-'+c.id);
+    if(el) el.addEventListener('input',e=>{cagrState[cagrActive][c.id]=Number(e.target.value);document.getElementById('cagr_view-'+c.id).textContent=fmtV(cagrState[cagrActive][c.id],c.fmt);cagrUpdate();});
+  });
+}
+function cagrRenderChart(labels,datasets){
+  const ctx=$c('chart').getContext('2d');
+  const grad=ctx.createLinearGradient(0,0,0,360);
+  grad.addColorStop(0,'rgba(0,230,118,.22)');grad.addColorStop(1,'rgba(0,230,118,0)');
+  if(cagrChart) cagrChart.destroy();
+  cagrChart=new Chart(ctx,{type:'line',data:{labels,datasets:datasets.map((d,i)=>({label:d.label,data:d.data,borderColor:d.color,backgroundColor:i===0?grad:'transparent',fill:i===0,borderWidth:i===0?3:2,pointRadius:0,pointHoverRadius:5,tension:.38}))},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(7,12,28,.96)',titleColor:'#fff',bodyColor:'#dce6ff',padding:12,callbacks:{label:c=>`${c.dataset.label}: ${fmtC(c.raw)}`}}},scales:{x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)',font:{size:11},callback:v=>fmtS(v)}}}}});
+  $c('chartLegend').innerHTML=datasets.map(d=>`<div class="legend-item"><span class="dot" style="background:${d.color}"></span>${d.label}</div>`).join('');
+}
+function cagrRenderMiles(items){
+  $c('timelineGrid').innerHTML=items.map(it=>`<div class="milestone"><div class="m-year">${it.label}</div><div class="m-amount">${it.value}</div><div class="m-note">${it.note}</div></div>`).join('');
+}
+
+function cagrUpdate(){
+  const s=cagrState[cagrActive], cfg=CALCS_CAGR[cagrActive];
+  $c('modeHeadline').textContent=cfg.title;$c('modeSub').textContent=cfg.sub;
+
+  if(cagrActive==='cagr'){
+    if(s.end<=0||s.start<=0||s.years<=0){return;}
+    const rate=((Math.pow(s.end/s.start,1/s.years)-1)*100);
+    const dbl=(72/rate).toFixed(1);
+    const labels=[],corpus=[],base=[];
+    for(let y=1;y<=s.years;y++){corpus.push(Math.round(s.start*Math.pow(1+rate/100,y)));base.push(s.start);labels.push('Yr '+y);}
+    $c('topProjected').textContent=rate.toFixed(2)+'%';$c('topGains').textContent=fmtS(s.end-s.start);$c('topRate').textContent=dbl+' yrs';
+    $c('wealthTitle').textContent='CAGR Result';$c('wealthPill').textContent='Annualized';
+    $c('wealthNumber').textContent=rate.toFixed(2)+'%';
+    $c('wealthNarrative').textContent=`From ${fmtS(s.start)} to ${fmtS(s.end)} over ${s.years} years implies a CAGR of ${rate.toFixed(2)}%.`;
+    $c('stat1Label').textContent='Start Value';$c('stat1Value').textContent=fmtS(s.start);
+    $c('stat2Label').textContent='End Value';$c('stat2Value').textContent=fmtS(s.end);
+    $c('stat3Label').textContent='Multiple';$c('stat3Value').textContent=(s.end/s.start).toFixed(2)+'x';
+    $c('miniMood').textContent=rate>=15?'Exceptional':rate>=12?'Market-Beating':rate>=8?'Moderate':rate>=6?'FD-Level':'Below Inflation';
+    $c('miniInsight').textContent=`vs Nifty50 ~13%`;
+    $c('insight1Title').textContent='CAGR normalizes growth.';$c('insight1Text').textContent='It converts the journey into one clean annualized rate for easy comparison across assets and time periods.';
+    $c('insight2Title').textContent=rate>=13?'Market-beating return.':'Compare vs benchmarks.';$c('insight2Text').textContent=rate>=13?`${rate.toFixed(1)}% beats Nifty50 (~13%). Excellent portfolio performance.`:`FD: ~7% | Inflation: ~6% | Nifty50: ~13% | Your CAGR: ${rate.toFixed(1)}%`;
+    $c('insight3Title').textContent='Real return matters.';$c('insight3Text').textContent=`Real CAGR after 6% inflation: ${(rate-6).toFixed(1)}%. This is what actually grows your purchasing power.`;
+    cagrRenderChart(labels,[{label:'Growth Path',data:corpus,color:'#00e676'},{label:'Initial Value',data:base,color:'#4fa3ff'}]);
+    const picks=[0,Math.floor(s.years*.33),Math.floor(s.years*.66),s.years-1];
+    cagrRenderMiles(picks.filter((v,i,a)=>a.indexOf(v)===i).map(i=>({label:labels[i],value:rate.toFixed(2)+'% CAGR',note:`Value at ${labels[i]}: ${fmtS(corpus[i])}`})));
+  }
+  if(cagrActive==='rule72'){
+    const r=s.rate||12;
+    const dbl=72/r;
+    const benchmarks=[{name:'FD (7%)',r:7},{name:'PPF (7.1%)',r:7.1},{name:'Nifty50 (13%)',r:13},{name:'Your Rate',r:r}];
+    $c('topProjected').textContent=dbl.toFixed(1)+' yrs';$c('topGains').textContent='@'+r+'%';$c('topRate').textContent=r.toFixed(1)+'%';
+    $c('wealthTitle').textContent='Doubling Time';$c('wealthPill').textContent='Rule of 72';
+    $c('wealthNumber').textContent=dbl.toFixed(1)+' yrs';
+    $c('wealthNarrative').textContent=`At ${r}% annual return, your money doubles approximately every ${dbl.toFixed(1)} years.`;
+    $c('stat1Label').textContent='Return Rate';$c('stat1Value').textContent=r.toFixed(1)+'%';
+    $c('stat2Label').textContent='Doubling Time';$c('stat2Value').textContent=dbl.toFixed(1)+' yrs';
+    $c('stat3Label').textContent='10-yr Multiple';$c('stat3Value').textContent=Math.pow(1+r/100,10).toFixed(2)+'x';
+    $c('miniMood').textContent=r>=15?'High Growth':r>=10?'Solid Return':'Conservative';
+    $c('miniInsight').textContent=`₹1L → ₹${(Math.pow(1+r/100,10)/1).toFixed(2)}L in 10yrs`;
+    $c('insight1Title').textContent='Rule of 72 is a shortcut.';$c('insight1Text').textContent='Divide 72 by your return rate to get approximate doubling time. It works well for rates between 5–20%.';
+    $c('insight2Title').textContent='Higher return = faster doubling.';$c('insight2Text').textContent=`FD at 7% doubles in 10.3 years. Equity at 15% doubles in just 4.8 years. Rate matters exponentially.`;
+    $c('insight3Title').textContent='Multiple doublings compound power.';$c('insight3Text').textContent=`At ${r}%, money doubles in ${dbl.toFixed(1)} yrs. Over 30 years: ${(30/dbl).toFixed(1)} doublings = ${Math.pow(2,(30/dbl)).toFixed(1)}x growth.`;
+    const labels=benchmarks.map(b=>b.name),data=benchmarks.map(b=>Math.round(72/b.r*10)/10);
+    if(cagrChart) cagrChart.destroy();
+    const ctx=$c('chart').getContext('2d');
+    cagrChart=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Doubling Time (years)',data,backgroundColor:['rgba(79,163,255,.7)','rgba(255,215,106,.7)','rgba(0,230,118,.7)','rgba(0,212,255,.9)'],borderRadius:10,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(7,12,28,.96)',titleColor:'#fff',bodyColor:'#dce6ff',padding:12,callbacks:{label:c=>`${c.raw} years to double`}}},scales:{x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)'}},y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)'},beginAtZero:true}}}});
+    $c('chartLegend').innerHTML='';$c('chartTitle').textContent='Doubling Time Comparison';$c('chartMeta').textContent='Years for ₹1 to become ₹2 at different return rates.';
+    cagrRenderMiles(benchmarks.map(b=>({label:b.name,value:(72/b.r).toFixed(1)+' yrs',note:`At ${b.r}% annual return`})));
+  }
+  if(cagrActive==='return'){
+    if(s.start<=0||s.end<=0||s.years<=0) return;
+    const rate=((Math.pow(s.end/s.start,1/s.years)-1)*100);
+    const fd=7,nifty=13,inflation=6;
+    const beatFD=rate>fd,beatNifty=rate>nifty,beatInflation=rate>inflation;
+    $c('topProjected').textContent=rate.toFixed(2)+'%';$c('topGains').textContent=fmtS(s.end-s.start);$c('topRate').textContent=(72/rate).toFixed(1)+' yr dbl';
+    $c('wealthTitle').textContent='Your CAGR';$c('wealthPill').textContent='Return Check';
+    $c('wealthNumber').textContent=rate.toFixed(2)+'%';
+    $c('wealthNarrative').textContent=`Your investment of ${fmtS(s.start)} grew to ${fmtS(s.end)} over ${s.years} years — a CAGR of ${rate.toFixed(2)}%.`;
+    $c('stat1Label').textContent='Absolute Return';$c('stat1Value').textContent=((s.end/s.start-1)*100).toFixed(0)+'%';
+    $c('stat2Label').textContent='vs FD (7%)';$c('stat2Value').textContent=beatFD?'✓ Beating':'✗ Lagging';
+    $c('stat3Label').textContent='vs Nifty (13%)';$c('stat3Value').textContent=beatNifty?'✓ Beating':'✗ Lagging';
+    $c('miniMood').textContent=beatNifty?'Market Beater':beatFD?'FD Beater':'Underperforming';
+    $c('miniInsight').textContent=`Real return: ${(rate-inflation).toFixed(1)}%`;
+    $c('insight1Title').textContent=beatInflation?'Beating inflation. ✓':'Losing to inflation. ✗';$c('insight1Text').textContent=beatInflation?`Your ${rate.toFixed(1)}% return beats inflation (${inflation}%). Real wealth is growing.`:`Your ${rate.toFixed(1)}% return is below inflation (${inflation}%). Purchasing power is declining.`;
+    $c('insight2Title').textContent=beatFD?'Better than FD. ✓':'FD would have been better.';$c('insight2Text').textContent=beatFD?`You beat FD rate (${fd}%) by ${(rate-fd).toFixed(1)}%. Equity has delivered.`:`FD at ${fd}% would have grown to ${fmtS(s.start*Math.pow(1+fd/100,s.years))} vs your ${fmtS(s.end)}.`;
+    $c('insight3Title').textContent=beatNifty?'Market-beating returns! ✓':'Nifty50 performed better.';$c('insight3Text').textContent=beatNifty?`Outperforming Nifty50 (~${nifty}%) by ${(rate-nifty).toFixed(1)}% — excellent stock selection.`:`Nifty50 at ${nifty}% would have grown to ${fmtS(s.start*Math.pow(1+nifty/100,s.years))} vs your ${fmtS(s.end)}.`;
+    const labels=[],yours=[],fdLine=[],niftyLine=[];
+    for(let y=1;y<=s.years;y++){yours.push(Math.round(s.start*Math.pow(1+rate/100,y)));fdLine.push(Math.round(s.start*Math.pow(1+fd/100,y)));niftyLine.push(Math.round(s.start*Math.pow(1+nifty/100,y)));labels.push('Yr '+y);}
+    cagrRenderChart(labels,[{label:'Your Return',data:yours,color:'#00d4ff'},{label:'FD (7%)',data:fdLine,color:'#ffd76a'},{label:'Nifty (13%)',data:niftyLine,color:'#00e676'}]);
+    $c('chartTitle').textContent='Your Return vs Benchmarks';$c('chartMeta').textContent='How your investment compares against FD and Nifty50.';
+    cagrRenderMiles([{label:'Your CAGR',value:rate.toFixed(2)+'%',note:beatNifty?'Market-beating':'Below Nifty'},{label:'vs FD',value:(rate-fd>0?'+':'')+( rate-fd).toFixed(1)+'%',note:beatFD?'Beating FD':'Below FD'},{label:'vs Nifty',value:(rate-nifty>0?'+':'')+(rate-nifty).toFixed(1)+'%',note:beatNifty?'Beating Nifty':'Below Nifty'},{label:'Real Return',value:(rate-inflation).toFixed(1)+'%',note:'After inflation'}]);
+  }
+}
+
+window.cagrCopySummary=function(){
+  const txt=`investpercent CAGR Calculator\nMode: ${CALCS_CAGR[cagrActive].label}\nResult: ${document.getElementById('cagr_wealthNumber').textContent}`;
+  navigator.clipboard.writeText(txt).catch(()=>{});
+};
+
+cagrInitState();cagrRenderTabs();cagrRenderControls();cagrUpdate();
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════
+     RETIREMENT JS
+═══════════════════════════════════════════ -->
+<script>
+(function(){
+const $r = id => document.getElementById('ret_'+id);
+
+const CALCS_RET = {
+  corpus: {label:"Corpus Planner",  badge:"CORPUS",     title:"Retirement Corpus Planner",  sub:"Calculate the inflation-adjusted corpus you need to retire comfortably.",      desc:"Set monthly expense, inflation and years to retire to compute corpus.",  controls:[{id:"expense",label:"Current Monthly Expense",min:10000,max:500000,step:5000,value:50000,fmt:"currency"},{id:"inflation",label:"Inflation Rate %",min:1,max:12,step:0.5,value:6,fmt:"percent"},{id:"years",label:"Years to Retire",min:1,max:40,step:1,value:25,fmt:"years"},{id:"lifeexp",label:"Retirement Duration (Yrs)",min:10,max:40,step:1,value:25,fmt:"years"},{id:"postrate",label:"Post-Retirement Return %",min:1,max:15,step:0.5,value:8,fmt:"percent"}]},
+  sipneeded: {label:"SIP Needed",  badge:"SIP PLAN",    title:"SIP Required to Retire",     sub:"Find the monthly SIP you need to start today to build your retirement corpus.",  desc:"Set retirement corpus target and return rate to compute SIP needed.",    controls:[{id:"target",label:"Target Corpus",min:1000000,max:200000000,step:500000,value:20000000,fmt:"currency"},{id:"rate",label:"Expected Return %",min:1,max:25,step:0.5,value:12,fmt:"percent"},{id:"years",label:"Years to Retire",min:1,max:40,step:1,value:20,fmt:"years"}]},
+  drawdown: {label:"Post-Retire",   badge:"DRAWDOWN",    title:"Post-Retirement Drawdown",   sub:"How long will your corpus last if you withdraw a fixed amount every month?",      desc:"Model your retirement corpus durability after you stop working.",        controls:[{id:"corpus",label:"Retirement Corpus",min:1000000,max:200000000,step:500000,value:20000000,fmt:"currency"},{id:"withdraw",label:"Monthly Withdrawal",min:10000,max:500000,step:5000,value:60000,fmt:"currency"},{id:"rate",label:"Portfolio Return %",min:1,max:15,step:0.5,value:8,fmt:"percent"}]}
+};
+
+let retState={}, retActive='corpus', retChart=null;
+
+function fmtC(v){return '₹'+Math.round(v).toLocaleString('en-IN');}
+function fmtS(v){const a=Math.abs(v);if(a>=10000000)return '₹'+(v/10000000).toFixed(2).replace(/\.00$/,'')+' Cr';if(a>=100000)return '₹'+(v/100000).toFixed(2).replace(/\.00$/,'')+' L';return fmtC(v);}
+function fmtV(v,fmt){v=Number(v);if(fmt==='currency')return fmtC(v);if(fmt==='percent')return v.toFixed(1).replace(/\.0$/,'')+'%';if(fmt==='years')return Math.round(v)+' Yrs';return v;}
+
+function retInitState(){Object.keys(CALCS_RET).forEach(k=>{retState[k]={};CALCS_RET[k].controls.forEach(c=>retState[k][c.id]=c.value);});}
+function retRenderTabs(){
+  $r('tabs').innerHTML=Object.keys(CALCS_RET).map(k=>`<button class="tab ${k===retActive?'active':''}" onclick="retSwitch('${k}')">${CALCS_RET[k].label}</button>`).join('');
+}
+window.retSwitch=function(k){retActive=k;retRenderTabs();retRenderControls();retUpdate();};
+function retRenderControls(){
+  const cfg=CALCS_RET[retActive];
+  $r('panelBadge').textContent=cfg.badge;$r('controlDesc').textContent=cfg.desc;
+  $r('modeHeadline').textContent=cfg.title;$r('modeSub').textContent=cfg.sub;
+  $r('dynamicControls').innerHTML=cfg.controls.map(c=>`
+    <div class="control-group">
+      <div class="control-top"><div class="control-name">${c.label}</div><div class="control-value" id="ret_view-${c.id}">${fmtV(retState[retActive][c.id],c.fmt)}</div></div>
+      <input type="range" id="ret_ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${retState[retActive][c.id]}">
+    </div>`).join('');
+  cfg.controls.forEach(c=>{
+    const el=document.getElementById('ret_ctrl-'+c.id);
+    if(el) el.addEventListener('input',e=>{retState[retActive][c.id]=Number(e.target.value);document.getElementById('ret_view-'+c.id).textContent=fmtV(retState[retActive][c.id],c.fmt);retUpdate();});
+  });
+}
+function retRenderChart(labels,datasets){
+  const ctx=$r('chart').getContext('2d');
+  const grad=ctx.createLinearGradient(0,0,0,360);
+  grad.addColorStop(0,'rgba(0,212,255,.28)');grad.addColorStop(1,'rgba(0,212,255,0)');
+  if(retChart) retChart.destroy();
+  retChart=new Chart(ctx,{type:'line',data:{labels,datasets:datasets.map((d,i)=>({label:d.label,data:d.data,borderColor:d.color,backgroundColor:i===0?grad:'transparent',fill:i===0,borderWidth:i===0?3:2,pointRadius:0,pointHoverRadius:5,tension:.38}))},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(7,12,28,.96)',titleColor:'#fff',bodyColor:'#dce6ff',padding:12,callbacks:{label:c=>`${c.dataset.label}: ${fmtC(c.raw)}`}}},scales:{x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)',font:{size:11},callback:v=>fmtS(v)}}}}});
+  $r('chartLegend').innerHTML=datasets.map(d=>`<div class="legend-item"><span class="dot" style="background:${d.color}"></span>${d.label}</div>`).join('');
+}
+function retRenderMiles(items){
+  $r('timelineGrid').innerHTML=items.map(it=>`<div class="milestone"><div class="m-year">${it.label}</div><div class="m-amount">${fmtS(it.value)}</div><div class="m-note">${it.note}</div></div>`).join('');
+}
+
+function retUpdate(){
+  const s=retState[retActive], cfg=CALCS_RET[retActive];
+  $r('modeHeadline').textContent=cfg.title;$r('modeSub').textContent=cfg.sub;
+
+  if(retActive==='corpus'){
+    const futureExpense=s.expense*Math.pow(1+s.inflation/100,s.years);
+    const annualExpense=futureExpense*12;
+    const realRate=(s.postrate-s.inflation)/100;
+    let corpus;
+    if(Math.abs(realRate)<0.001){ corpus=annualExpense*s.lifeexp; }
+    else { corpus=annualExpense*(1-Math.pow(1+realRate,-s.lifeexp))/realRate; }
+    corpus=Math.round(corpus);
+    const sipR=12/100/12;const sipN=s.years*12;
+    const sipNeeded=corpus*sipR/(Math.pow(1+sipR,sipN)-1)*(1/(1+sipR));
+    const labels=[],build=[],target=[];
+    let v=0;
+    for(let y=1;y<=s.years;y++){for(let m=0;m<12;m++) v=v*(1+sipR)+sipNeeded;labels.push('Yr '+y);build.push(Math.round(v));target.push(corpus);}
+    $r('topProjected').textContent=fmtS(corpus);$r('topGains').textContent=fmtC(Math.round(sipNeeded))+'/mo';$r('topRate').textContent=s.years+' yrs';
+    $r('wealthTitle').textContent='Corpus Required';$r('wealthPill').textContent='Inflation-Adjusted';
+    $r('wealthNumber').textContent=fmtS(corpus);
+    $r('wealthNarrative').textContent=`With ${fmtC(s.expense)}/month today, ${s.years} years of ${s.inflation}% inflation needs a corpus of ${fmtS(corpus)} to sustain ${s.lifeexp} years of retirement.`;
+    $r('stat1Label').textContent='Future Monthly Expense';$r('stat1Value').textContent=fmtC(Math.round(futureExpense));
+    $r('stat2Label').textContent='Corpus Required';$r('stat2Value').textContent=fmtS(corpus);
+    $r('stat3Label').textContent='Monthly SIP Now';$r('stat3Value').textContent=fmtC(Math.round(sipNeeded));
+    $r('miniMood').textContent=corpus>=10000000?'Significant Goal':corpus>=5000000?'Achievable':'Start Now';
+    $r('miniInsight').textContent=`SIP needed: ${fmtC(Math.round(sipNeeded))}`;
+    $r('insight1Title').textContent='Inflation doubles expenses.';$r('insight1Text').textContent=`At ${s.inflation}%, your ${fmtC(s.expense)}/month today becomes ${fmtC(Math.round(futureExpense))}/month at retirement. The corpus must fund this.`;
+    $r('insight2Title').textContent='Start the SIP now.';$r('insight2Text').textContent=`A monthly SIP of ${fmtC(Math.round(sipNeeded))} at 12% for ${s.years} years builds the required corpus. Delay increases this significantly.`;
+    $r('insight3Title').textContent='Real rate drives sustainability.';$r('insight3Text').textContent=`Post-retirement, your portfolio earns ${s.postrate}% against ${s.inflation}% inflation. Real return: ${(s.postrate-s.inflation).toFixed(1)}% — this determines corpus durability.`;
+    retRenderChart(labels,[{label:'SIP Builds',data:build,color:'#00d4ff'},{label:'Corpus Target',data:target,color:'#00e676'}]);
+    const picks=[0,Math.floor(s.years*.33),Math.floor(s.years*.66),s.years-1];
+    retRenderMiles(picks.filter((v,i,a)=>a.indexOf(v)===i).map(i=>({label:labels[i],value:build[i],note:`${((build[i]/corpus)*100).toFixed(0)}% of target`})));
+  }
+  if(retActive==='sipneeded'){
+    const r=12/100/12;const n=s.years*12;
+    const sip=s.target*r/(Math.pow(1+r,n)-1)*(1/(1+r));
+    const labels=[],corpus=[];let v=0;
+    for(let y=1;y<=s.years;y++){for(let m=0;m<12;m++) v=v*(1+r)+sip;labels.push('Yr '+y);corpus.push(Math.round(v));}
+    $r('topProjected').textContent=fmtS(s.target);$r('topGains').textContent=fmtC(Math.round(sip))+'/mo';$r('topRate').textContent=s.years+' yrs';
+    $r('wealthTitle').textContent='Monthly SIP Required';$r('wealthPill').textContent='Retirement SIP';
+    $r('wealthNumber').textContent=fmtC(Math.round(sip));
+    $r('wealthNarrative').textContent=`To build a retirement corpus of ${fmtS(s.target)} in ${s.years} years at ${s.rate}%, you need a monthly SIP of ${fmtC(Math.round(sip))}.`;
+    $r('stat1Label').textContent='Monthly SIP';$r('stat1Value').textContent=fmtC(Math.round(sip));
+    $r('stat2Label').textContent='Target Corpus';$r('stat2Value').textContent=fmtS(s.target);
+    $r('stat3Label').textContent='Total Invested';$r('stat3Value').textContent=fmtS(Math.round(sip*s.years*12));
+    $r('miniMood').textContent=sip<=20000?'Affordable':'Stretch Goal';
+    $r('miniInsight').textContent=`${s.years} yrs to retire`;
+    $r('insight1Title').textContent='Every year of delay costs more.';$r('insight1Text').textContent=`Starting ${s.years} years out needs ${fmtC(Math.round(sip))}/month. Starting ${s.years-5} years out would need ${fmtC(Math.round(s.target*(12/100/12)/(Math.pow(1+12/100/12,(s.years-5)*12)-1)*(1/(1+12/100/12))))}/month — significantly more.`;
+    $r('insight2Title').textContent='Increase SIP with income growth.';$r('insight2Text').textContent='Step up your SIP by 10% annually. This can dramatically reduce the monthly burden in early years while building more corpus.';
+    $r('insight3Title').textContent='Account for inflation.';$r('insight3Text').textContent='The corpus target should be inflation-adjusted. Use the Corpus Planner tab to calculate the right corpus based on your current expenses.';
+    retRenderChart(labels,[{label:'Corpus Build-Up',data:corpus,color:'#00d4ff'}]);
+    $r('chartTitle').textContent='Corpus Accumulation Path';$r('chartMeta').textContent=`Monthly SIP of ${fmtC(Math.round(sip))} building toward ${fmtS(s.target)}.`;
+    const picks=[0,Math.floor(s.years*.33),Math.floor(s.years*.66),s.years-1];
+    retRenderMiles(picks.filter((v,i,a)=>a.indexOf(v)===i).map(i=>({label:labels[i],value:corpus[i],note:`${((corpus[i]/s.target)*100).toFixed(0)}% of target`})));
+  }
+  if(retActive==='drawdown'){
+    const r=s.rate/12/100;let c=s.corpus;
+    const labels=[],vals=[];
+    for(let y=1;y<=40;y++){for(let m=0;m<12;m++){c=c*(1+r)-s.withdraw;if(c<0){c=0;break;}}labels.push('Yr '+y);vals.push(Math.round(c));if(c===0) break;}
+    const exhaustedAt=vals.findIndex(v=>v===0);
+    const duration=exhaustedAt===-1?'>40 yrs':`${exhaustedAt+1} years`;
+    const totalWithdrawn=s.withdraw*(exhaustedAt===-1?40:exhaustedAt+1)*12;
+    $r('topProjected').textContent=duration;$r('topGains').textContent=fmtS(totalWithdrawn);$r('topRate').textContent=s.rate.toFixed(1)+'%';
+    $r('wealthTitle').textContent='Corpus Durability';$r('wealthPill').textContent='Drawdown';
+    $r('wealthNumber').textContent=duration;
+    $r('wealthNarrative').textContent=`With ${fmtS(s.corpus)} corpus, withdrawing ${fmtC(s.withdraw)}/month at ${s.rate}% return, the corpus ${exhaustedAt===-1?'sustains for 40+ years':'depletes in '+duration}.`;
+    $r('stat1Label').textContent='Starting Corpus';$r('stat1Value').textContent=fmtS(s.corpus);
+    $r('stat2Label').textContent='Monthly Withdrawal';$r('stat2Value').textContent=fmtC(s.withdraw);
+    $r('stat3Label').textContent='Corpus Lasts';$r('stat3Value').textContent=duration;
+    $r('miniMood').textContent=exhaustedAt===-1||exhaustedAt>25?'Sustainable':exhaustedAt>15?'Moderate':'Aggressive Draw';
+    $r('miniInsight').textContent=exhaustedAt===-1?'Corpus never depletes':'Review withdrawal rate';
+    $r('insight1Title').textContent=exhaustedAt===-1?'Corpus is sustainable.':'Corpus depletes too fast.';$r('insight1Text').textContent=exhaustedAt===-1?`At ${fmtC(s.withdraw)}/month, your corpus is projected to sustain for 40+ years. Conservative withdrawal strategy.`:`Your current withdrawal rate depletes the corpus in ${duration}. Consider reducing monthly withdrawal.`;
+    $r('insight2Title').textContent='The 4% rule.';$r('insight2Text').textContent=`Safe withdrawal rate = 4% of corpus per year = ${fmtC(Math.round(s.corpus*0.04/12))}/month. This is considered sustainable for 25–30 years.`;
+    $r('insight3Title').textContent='Return rate is critical.';$r('insight3Text').textContent='Even a 1–2% higher portfolio return can dramatically extend the corpus life. Keep a portion in equity for continued growth.';
+    retRenderChart(labels,[{label:'Remaining Corpus',data:vals,color:'#00d4ff'}]);
+    $r('chartTitle').textContent='Corpus Drawdown Over Time';$r('chartMeta').textContent='How your retirement corpus shrinks with monthly withdrawals.';
+    const picks=[0,Math.min(4,labels.length-1),Math.min(9,labels.length-1),labels.length-1];
+    retRenderMiles(picks.filter((v,i,a)=>a.indexOf(v)===i).map(i=>({label:labels[i],value:vals[i],note:vals[i]===0?'Corpus exhausted':vals[i]>s.corpus*0.5?'Still strong':'Running low'})));
+  }
+}
+
+window.retCopySummary=function(){
+  const txt=`investpercent Retirement Planner\nMode: ${CALCS_RET[retActive].label}\nResult: ${document.getElementById('ret_wealthNumber').textContent}`;
+  navigator.clipboard.writeText(txt).catch(()=>{});
+};
+
+retInitState();retRenderTabs();retRenderControls();retUpdate();
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════
+     PORTFOLIO JS
+═══════════════════════════════════════════ -->
+<script>
+(function(){
+const $p = id => document.getElementById('pf2_'+id);
+
+const CALCS_PF2 = {
+  allocate:  {label:"Allocator",    badge:"ALLOCATOR",  title:"Asset Allocator",       sub:"Design your ideal portfolio split across Equity, Debt and Gold.",             desc:"Set allocation % across asset classes. Returns are blended.",          controls:[{id:"equity",label:"Equity %",min:0,max:100,step:5,value:60,fmt:"percent"},{id:"debt",label:"Debt %",min:0,max:100,step:5,value:30,fmt:"percent"},{id:"gold",label:"Gold %",min:0,max:100,step:5,value:10,fmt:"percent"},{id:"amount",label:"Investment Amount",min:100000,max:10000000,step:100000,value:1000000,fmt:"currency"}]},
+  rebalance: {label:"Rebalancer",   badge:"REBALANCE",  title:"Portfolio Rebalancer",   sub:"Check if your portfolio has drifted from target allocation and rebalance.",     desc:"Enter current values to compute drift and rebalancing trades.",        controls:[{id:"curEquity",label:"Current Equity Value",min:0,max:10000000,step:50000,value:700000,fmt:"currency"},{id:"curDebt",label:"Current Debt Value",min:0,max:10000000,step:50000,value:200000,fmt:"currency"},{id:"curGold",label:"Current Gold Value",min:0,max:10000000,step:50000,value:100000,fmt:"currency"},{id:"tgtEquity",label:"Target Equity %",min:0,max:100,step:5,value:60,fmt:"percent"}]},
+  risk:      {label:"Risk Score",   badge:"RISK SCORE", title:"Risk Profile Scorer",    sub:"Assess your portfolio risk based on allocation, age and investment horizon.",   desc:"Enter your profile details to get a portfolio risk score.",           controls:[{id:"age",label:"Your Age",min:20,max:65,step:1,value:30,fmt:"years"},{id:"equity",label:"Equity %",min:0,max:100,step:5,value:60,fmt:"percent"},{id:"horizon",label:"Investment Horizon (Yrs)",min:1,max:40,step:1,value:15,fmt:"years"}]}
+};
+
+let pf2State={}, pf2Active='allocate', pf2Chart=null;
+
+function fmtC(v){return '₹'+Math.round(v).toLocaleString('en-IN');}
+function fmtS(v){const a=Math.abs(v);if(a>=10000000)return '₹'+(v/10000000).toFixed(2).replace(/\.00$/,'')+' Cr';if(a>=100000)return '₹'+(v/100000).toFixed(2).replace(/\.00$/,'')+' L';return fmtC(v);}
+function fmtV(v,fmt){v=Number(v);if(fmt==='currency')return fmtC(v);if(fmt==='percent')return v.toFixed(1).replace(/\.0$/,'')+'%';if(fmt==='years')return Math.round(v)+' Yrs';return v;}
+
+function pf2InitState(){Object.keys(CALCS_PF2).forEach(k=>{pf2State[k]={};CALCS_PF2[k].controls.forEach(c=>pf2State[k][c.id]=c.value);});}
+function pf2RenderTabs(){
+  $p('tabs').innerHTML=Object.keys(CALCS_PF2).map(k=>`<button class="tab ${k===pf2Active?'active':''}" onclick="pf2Switch('${k}')">${CALCS_PF2[k].label}</button>`).join('');
+}
+window.pf2Switch=function(k){pf2Active=k;pf2RenderTabs();pf2RenderControls();pf2Update();};
+function pf2RenderControls(){
+  const cfg=CALCS_PF2[pf2Active];
+  $p('panelBadge').textContent=cfg.badge;$p('controlDesc').textContent=cfg.desc;
+  $p('modeHeadline').textContent=cfg.title;$p('modeSub').textContent=cfg.sub;
+  $p('dynamicControls').innerHTML=cfg.controls.map(c=>`
+    <div class="control-group">
+      <div class="control-top"><div class="control-name">${c.label}</div><div class="control-value" id="pf2_view-${c.id}">${fmtV(pf2State[pf2Active][c.id],c.fmt)}</div></div>
+      <input type="range" id="pf2_ctrl-${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${pf2State[pf2Active][c.id]}">
+    </div>`).join('');
+  cfg.controls.forEach(c=>{
+    const el=document.getElementById('pf2_ctrl-'+c.id);
+    if(el) el.addEventListener('input',e=>{pf2State[pf2Active][c.id]=Number(e.target.value);document.getElementById('pf2_view-'+c.id).textContent=fmtV(pf2State[pf2Active][c.id],c.fmt);pf2Update();});
+  });
+}
+function pf2RenderDonut(labels,data,colors){
+  const ctx=$p('chart').getContext('2d');
+  if(pf2Chart) pf2Chart.destroy();
+  pf2Chart=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderColor:'#060915',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'right',labels:{color:'rgba(220,230,255,.7)',font:{size:12},padding:12}},tooltip:{backgroundColor:'rgba(7,12,28,.96)',titleColor:'#fff',bodyColor:'#dce6ff',padding:10,callbacks:{label:c=>`${c.label}: ${c.raw}%`}}}}});
+  $p('chartLegend').innerHTML=labels.map((l,i)=>`<div class="legend-item"><span class="dot" style="background:${colors[i]}"></span>${l}</div>`).join('');
+}
+function pf2RenderMiles(items){
+  $p('timelineGrid').innerHTML=items.map(it=>`<div class="milestone"><div class="m-year">${it.label}</div><div class="m-amount">${it.value}</div><div class="m-note">${it.note}</div></div>`).join('');
+}
+
+function pf2Update(){
+  const s=pf2State[pf2Active], cfg=CALCS_PF2[pf2Active];
+  $p('modeHeadline').textContent=cfg.title;$p('modeSub').textContent=cfg.sub;
+
+  if(pf2Active==='allocate'){
+    const eq=s.equity||0,dt=s.debt||0,gd=s.gold||0;
+    const total=eq+dt+gd||1;
+    const eqN=eq/total*100,dtN=dt/total*100,gdN=gd/total*100;
+    const blended=(eqN*13+dtN*7+gdN*8)/100;
+    const fv10=s.amount*Math.pow(1+blended/100,10);
+    const risk=eqN>=70?'High':eqN>=40?'Moderate':'Conservative';
+    $p('topProjected').textContent=blended.toFixed(1)+'%';$p('topGains').textContent=risk;$p('topRate').textContent=fmtS(Math.round(fv10));
+    $p('wealthTitle').textContent='Blended Return';$p('wealthPill').textContent='Portfolio';
+    $p('wealthNumber').textContent=blended.toFixed(1)+'%';
+    $p('wealthNarrative').textContent=`Equity: ${eqN.toFixed(0)}% (13%), Debt: ${dtN.toFixed(0)}% (7%), Gold: ${gdN.toFixed(0)}% (8%). Blended return: ${blended.toFixed(1)}% | ${fmtS(s.amount)} grows to ${fmtS(Math.round(fv10))} in 10 years.`;
+    $p('stat1Label').textContent='Equity';$p('stat1Value').textContent=eqN.toFixed(0)+'%';
+    $p('stat2Label').textContent='Debt';$p('stat2Value').textContent=dtN.toFixed(0)+'%';
+    $p('stat3Label').textContent='Gold';$p('stat3Value').textContent=gdN.toFixed(0)+'%';
+    $p('miniMood').textContent=risk+' Portfolio';$p('miniInsight').textContent=`${blended.toFixed(1)}% blended return`;
+    $p('insight1Title').textContent='Asset mix drives returns.';$p('insight1Text').textContent=`Higher equity allocation = higher return potential with more volatility. Debt provides stability, Gold acts as inflation hedge.`;
+    $p('insight2Title').textContent=eqN>70?'High equity — high growth, high risk.':eqN<30?'Conservative — stable but lower growth.':'Balanced allocation.';$p('insight2Text').textContent=eqN>70?'Consider if your risk tolerance and time horizon support 70%+ equity.':eqN<30?'Very stable but may not beat inflation significantly over long term.':'Good balance of growth and stability.';
+    $p('insight3Title').textContent='Gold: 5–15% allocation.';$p('insight3Text').textContent='Gold acts as a hedge against inflation and market volatility. 5–15% allocation reduces portfolio drawdown during market crashes.';
+    pf2RenderDonut(['Equity','Debt','Gold'],[eqN.toFixed(1),dtN.toFixed(1),gdN.toFixed(1)],['#00d4ff','#4fa3ff','#ffd76a']);
+    $p('chartTitle').textContent='Asset Allocation Mix';$p('chartMeta').textContent='Portfolio composition across Equity, Debt and Gold.';
+    const classes=[{name:'Equity (13%)',r:13},{name:'Debt (7%)',r:7},{name:'Gold (8%)',r:8},{name:'Blended',r:blended}];
+    pf2RenderMiles(classes.map(c=>({label:c.name,value:fmtS(Math.round(s.amount*Math.pow(1+c.r/100,10))),note:`10yr @${c.r.toFixed(1)}%`})));
+  }
+  if(pf2Active==='rebalance'){
+    const total=s.curEquity+s.curDebt+s.curGold||1;
+    const curEqPct=(s.curEquity/total*100),curDtPct=(s.curDebt/total*100),curGdPct=(s.curGold/total*100);
+    const tgtEq=s.tgtEquity, tgtDt=(100-tgtEq)*0.75, tgtGd=(100-tgtEq)*0.25;
+    const tgtEqAmt=total*tgtEq/100, tgtDtAmt=total*tgtDt/100, tgtGdAmt=total*tgtGd/100;
+    const eqDrift=Math.abs(curEqPct-tgtEq);
+    $p('topProjected').textContent=eqDrift.toFixed(1)+'% drift';$p('topGains').textContent=fmtS(total);$p('topRate').textContent=tgtEq+'% target';
+    $p('wealthTitle').textContent='Rebalancing Analysis';$p('wealthPill').textContent='Drift Check';
+    $p('wealthNumber').textContent=eqDrift.toFixed(1)+'%';
+    $p('wealthNarrative').textContent=`Portfolio total: ${fmtS(total)}. Current equity: ${curEqPct.toFixed(1)}% vs target ${tgtEq}%. Drift: ${eqDrift.toFixed(1)}%.`;
+    $p('stat1Label').textContent='Equity Drift';$p('stat1Value').textContent=(curEqPct-tgtEq>0?'+':'')+( curEqPct-tgtEq).toFixed(1)+'%';
+    $p('stat2Label').textContent='Equity Action';$p('stat2Value').textContent=tgtEqAmt>s.curEquity?'Buy '+fmtS(tgtEqAmt-s.curEquity):'Sell '+fmtS(s.curEquity-tgtEqAmt);
+    $p('stat3Label').textContent='Rebalance?';$p('stat3Value').textContent=eqDrift>5?'Yes — Rebalance':'No — On Track';
+    $p('miniMood').textContent=eqDrift>10?'High Drift':eqDrift>5?'Moderate Drift':'Balanced';$p('miniInsight').textContent=eqDrift>5?'Rebalance recommended':'Portfolio on track';
+    $p('insight1Title').textContent=eqDrift>5?'Rebalancing needed.':'Portfolio is well-balanced.';$p('insight1Text').textContent=eqDrift>5?`Equity has drifted ${eqDrift.toFixed(1)}% from target. Rebalance to restore risk profile.`:`Equity allocation is within 5% of target — no immediate rebalancing needed.`;
+    $p('insight2Title').textContent='Rebalance annually.';$p('insight2Text').textContent='Annual rebalancing maintains your risk profile and forces buy-low/sell-high discipline automatically.';
+    $p('insight3Title').textContent='Tax implications.';$p('insight3Text').textContent='Selling equity may trigger LTCG/STCG tax. Consider using new inflows to rebalance instead of selling existing holdings.';
+    pf2RenderDonut(['Current Equity','Current Debt','Current Gold'],[curEqPct.toFixed(1),curDtPct.toFixed(1),curGdPct.toFixed(1)],['#00d4ff','#4fa3ff','#ffd76a']);
+    $p('chartTitle').textContent='Current vs Target Allocation';$p('chartMeta').textContent='Your current portfolio composition vs target allocation.';
+    pf2RenderMiles([{label:'Current Equity',value:fmtS(s.curEquity),note:`${curEqPct.toFixed(1)}% of portfolio`},{label:'Target Equity',value:fmtS(Math.round(tgtEqAmt)),note:`${tgtEq}% target`},{label:'Equity Action',value:tgtEqAmt>s.curEquity?'Buy '+fmtS(Math.round(tgtEqAmt-s.curEquity)):'Sell '+fmtS(Math.round(s.curEquity-tgtEqAmt)),note:'To reach target'},{label:'Drift',value:eqDrift.toFixed(1)+'%',note:eqDrift>5?'Rebalance now':'Within range'}]);
+  }
+  if(pf2Active==='risk'){
+    const ageScore=(65-s.age)/45*40;
+    const eqScore=(s.equity/100)*35;
+    const horizonScore=Math.min(s.horizon/30,1)*25;
+    const score=Math.min(100,Math.round(ageScore+eqScore+horizonScore));
+    const riskLabel=score>=75?'Aggressive':score>=55?'Moderately Aggressive':score>=35?'Moderate':score>=20?'Conservative':'Very Conservative';
+    const sugEq=score>=75?70:score>=55?60:score>=35?45:score>=20?30:20;
+    $p('topProjected').textContent=score+'/100';$p('topGains').textContent=riskLabel;$p('topRate').textContent=sugEq+'% equity';
+    $p('wealthTitle').textContent='Risk Score';$p('wealthPill').textContent='Risk Profile';
+    $p('wealthNumber').textContent=score+'/100';
+    $p('wealthNarrative').textContent=`Age ${s.age}, ${s.equity}% equity, ${s.horizon}-year horizon gives a risk score of ${score}/100 — ${riskLabel} profile. Suggested equity: ${sugEq}%.`;
+    $p('stat1Label').textContent='Risk Score';$p('stat1Value').textContent=score+'/100';
+    $p('stat2Label').textContent='Profile';$p('stat2Value').textContent=riskLabel;
+    $p('stat3Label').textContent='Suggested Equity';$p('stat3Value').textContent=sugEq+'%';
+    $p('miniMood').textContent=riskLabel;$p('miniInsight').textContent=`${sugEq}% equity suggested`;
+    $p('insight1Title').textContent='Younger = higher risk capacity.';$p('insight1Text').textContent=`At ${s.age}, you have time to recover from market downturns. Younger investors can hold more equity for growth.`;
+    $p('insight2Title').textContent=s.equity<=sugEq?'Equity allocation is conservative.':'Equity allocation matches your profile.';$p('insight2Text').textContent=s.equity<=sugEq?`Consider increasing equity to ${sugEq}% for better long-term growth given your ${s.horizon}-year horizon.`:`Your equity allocation aligns with your risk profile.`;
+    $p('insight3Title').textContent='Horizon determines strategy.';$p('insight3Text').textContent=`With ${s.horizon} years to invest, short-term volatility is manageable. Longer horizons support more equity exposure.`;
+    if(pf2Chart) pf2Chart.destroy();
+    const ctx=$p('chart').getContext('2d');
+    pf2Chart=new Chart(ctx,{type:'bar',data:{labels:['Your Score','Aggressive (75+)','Moderate (35-54)','Conservative (<35)'],datasets:[{label:'Risk Score',data:[score,75,45,20],backgroundColor:['rgba(0,212,255,.9)','rgba(255,96,125,.6)','rgba(0,230,118,.6)','rgba(255,215,106,.6)'],borderRadius:10,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(7,12,28,.96)',titleColor:'#fff',bodyColor:'#dce6ff',padding:12}},scales:{x:{grid:{display:false},ticks:{color:'rgba(220,230,255,.55)'}},y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'rgba(220,230,255,.55)'},max:100,beginAtZero:true}}}});
+    $p('chartLegend').innerHTML='';$p('chartTitle').textContent='Your Risk Score';$p('chartMeta').textContent='Risk profile comparison across categories.';
+    pf2RenderMiles([{label:'Risk Score',value:score+'/100',note:riskLabel},{label:'Suggested Equity',value:sugEq+'%',note:'Based on profile'},{label:'Horizon',value:s.horizon+' yrs',note:'Investment window'},{label:'Age Factor',value:'Age '+s.age,note:s.age<=35?'High capacity':s.age<=50?'Moderate':'Conservative'}]);
+  }
+}
+
+window.pf2CopySummary=function(){
+  const txt=`investpercent Portfolio Planner\nMode: ${CALCS_PF2[pf2Active].label}\nResult: ${document.getElementById('pf2_wealthNumber').textContent}`;
+  navigator.clipboard.writeText(txt).catch(()=>{});
+};
+
+pf2InitState();pf2RenderTabs();pf2RenderControls();pf2Update();
+})();
+</script>
+
+
+<script>
+function trackEvent(name, params) {
+  params = params || {};
+  if (typeof gtag === "function") {
+    gtag("event", name, params);
+  }
+}
+</script>
+
+<script>
+function submitLead(source) {
+  source = source || "investment_page";
+
+  var phone = prompt("Enter your WhatsApp number");
+
+  if (!phone || phone.length < 10) {
+    alert("Please enter valid number");
+    return;
+  }
+
+  var data = {
+    name: "Investment User",
+    phone: phone,
+    time: new Date().toLocaleString(),
+    source: source
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbzlg4cka5aIqI8km913ciIxGAX_LsX3-blC0Dr399bCD63RVH_pgDFmhSi5GH6uR06ZQg/exec", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(function() {
+    trackEvent("lead_submitted", { source: source });
+    var message = encodeURIComponent("Hi, I want my investment plan");
+    window.open("https://wa.me/919311354795?text=" + message, "_blank");
+  })
+  .catch(function() {
+    window.open("https://wa.me/919311354795", "_blank");
+  });
+}
+</script>
+
+<script>
+function openTelegramChannel(){
+  trackEvent("telegram_channel_click");
+  window.open("https://t.me/investpercent", "_blank");
+}
+</script>
+
+<a href="https://wa.me/919311354795"
+  target="_blank"
+  onclick="trackEvent('whatsapp_float_click')"
+  style="
+    position:fixed;
+    bottom:80px;
+    right:20px;
+    background:#25D366;
+    color:white;
+    padding:14px 16px;
+    border-radius:50px;
+    font-weight:700;
+    z-index:999;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+  ">
+  WhatsApp
+</a>
+
+<div id="leadPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#0f1830;padding:20px;border-radius:16px;text-align:center;max-width:360px;width:90%;border:1px solid rgba(255,255,255,.12);">
+    <h3 style="margin:0 0 8px;color:#f7fbff;">Get Your Investment Plan</h3>
+    <p style="margin:0 0 16px;color:#9da9c6;">Free | No Spam | Expert Advice</p>
+    <button onclick="submitLead('popup')" class="btn primary" style="width:100%;margin-bottom:10px;">
+      WhatsApp Now
+    </button>
+    <br>
+    <button onclick="openTelegramChannel()" class="btn secondary" style="width:100%;">
+      Join Free Tips Channel
+    </button>
+    <br><br>
+    <button onclick="document.getElementById('leadPopup').style.display='none'" style="background:none;border:none;color:#9da9c6;cursor:pointer;font-size:13px;">Close</button>
+  </div>
+</div>
+
+<script>
+var leadOpened = false;
+
+function openLead(){
+  if(leadOpened) return;
+  leadOpened = true;
+  document.getElementById("leadPopup").style.display = "flex";
+  trackEvent("lead_popup_open");
+}
+
+setTimeout(openLead, 25000);
+
+window.addEventListener("scroll", function(){
+  if(window.scrollY > 800) openLead();
+});
+
+document.addEventListener("mouseleave", function(e){
+  if(e.clientY < 10) openLead();
+});
+</script>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/navbar.js"></script>
+</body>
+</html>
