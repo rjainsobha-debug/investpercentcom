@@ -1,5 +1,5 @@
 const CONTACT = {
-  whatsapp: "919311354795",
+  whatsapp: "919718773000",
   telegram: "investpercent"
 };
 
