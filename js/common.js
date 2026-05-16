@@ -7,7 +7,7 @@ function openAdvisor(source = "page") {
   }
 
   window.open(
-    'https://wa.me/919311354795?text=Hi, I came from ' + source + ' and need help',
+    'https://wa.me/919718773000?text=Hi, I came from ' + source + ' and need help',
     '_blank'
   );
 }
